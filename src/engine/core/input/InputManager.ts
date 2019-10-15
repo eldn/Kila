@@ -4,7 +4,8 @@ import { Message } from "../message/Message";
 
  export const MESSAGE_MOUSE_DOWN: string = "MOUSE_DOWN";
  export const MESSAGE_MOUSE_UP: string = "MOUSE_UP";
-
+ export const MESSAGE_KEY_DOWN: string = "KEY_DOWN";
+ export const MESSAGE_KEY_UP: string = "KEY_UP";
 
  export class MouseContext {
 
@@ -20,6 +21,9 @@ import { Message } from "../message/Message";
          this.position = position;
      }
  }
+
+
+
 
  export class InputManager {
 

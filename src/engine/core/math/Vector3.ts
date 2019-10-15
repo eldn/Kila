@@ -121,11 +121,27 @@ import { Vector2 } from "./Vector2";
         return this;
     }
 
+    public addValue( v: number ): Vector3 {
+        this._x += v;
+        this._y += v;
+        this._z += v;
+
+        return this;
+    }
+
    
     public subtract( v: Vector3 ): Vector3 {
         this._x -= v._x;
         this._y -= v._y;
         this._z -= v._z;
+
+        return this;
+    }
+
+    public subtractValue( v: number ): Vector3 {
+        this._x -= v;
+        this._y -= v;
+        this._z -= v;
 
         return this;
     }
@@ -139,11 +155,27 @@ import { Vector2 } from "./Vector2";
         return this;
     }
 
+    public multiplyValue( v: number ): Vector3 {
+        this._x *= v;
+        this._y *= v;
+        this._z *= v;
+
+        return this;
+    }
+
    
     public divide( v: Vector3 ): Vector3 {
         this._x /= v._x;
         this._y /= v._y;
         this._z /= v._z;
+
+        return this;
+    }
+
+    public divideValue( v: number ): Vector3 {
+        this._x /= v;
+        this._y /= v;
+        this._z /= v;
 
         return this;
     }
@@ -159,5 +191,37 @@ import { Vector2 } from "./Vector2";
 
     public clone(): Vector3 {
         return new Vector3( this._x, this._y, this._z );
+    }
+
+    public length() : number{
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
+    public dot(v : Vector3) : number{
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
+
+    public cross(v : Vector3) : Vector3{
+        this.x = this.y * v.z - this.z * v.y;
+        this.y = this.z * v.x - this.x * v.z;
+        this.z = this.x * v.y - this.y * v.x;
+        return this;
+    }
+
+    public normalize() : Vector3{
+        let len : number = this.length();
+        this.x /= len;
+        this.y /= len;
+        this.z /= len;
+        return this;
+    }
+
+    public rotate(angle : number) : Vector3{
+        let rad : number = angle * (Math.PI / 180);
+        let cos : number = Math.cos(rad);
+        let sin : number = Math.sin(rad);
+        this.x = this.x * cos - this.y * sin;
+        this.y = this.x * sin + this.y * cos;
+        return this;
     }
 }

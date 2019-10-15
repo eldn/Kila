@@ -80,7 +80,30 @@ export class Vector2 {
         }
     }
 
-  
+    public length() : number{
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
+    public dot(v : Vector2) : number{
+        return this.x * v.x + this.y * v.y;
+    }
+
+    public normalize() : Vector2{
+        let len : number = this.length();
+        this.x /= len;
+        this.y /= len;
+        return this;
+    }
+
+    public rotate(angle : number) : Vector2{
+        let rad : number = angle * (Math.PI / 180);
+        let cos : number = Math.cos(rad);
+        let sin : number = Math.sin(rad);
+        this.x = this.x * cos - this.y * sin;
+        this.y = this.x * sin + this.y * cos;
+        return this;
+    }
+
     public add( v: Vector2 ): Vector2 {
         this._x += v._x;
         this._y += v._y;
@@ -88,6 +111,11 @@ export class Vector2 {
         return this;
     }
 
+    public addValue(value : number) : Vector2{
+        this.x += value;
+        this.y += value;
+        return this;
+    }
    
     public subtract( v: Vector2 ): Vector2 {
         this._x -= v._x;
@@ -95,6 +123,13 @@ export class Vector2 {
 
         return this;
     }
+
+    public subtractValue(value : number) : Vector2{
+        this.x -= value;
+        this.y -= value;
+        return this;
+    }
+   
 
    
     public multiply( v: Vector2 ): Vector2 {
@@ -104,11 +139,23 @@ export class Vector2 {
         return this;
     }
 
+    public multiplyValue(value : number) : Vector2{
+        this.x *= value;
+        this.y *= value;
+        return this;
+    }
+
    
     public divide( v: Vector2 ): Vector2 {
         this._x /= v._x;
         this._y /= v._y;
 
+        return this;
+    }
+
+    public divideValue(value : number) : Vector2{
+        this.x /= value;
+        this.y /= value;
         return this;
     }
 
