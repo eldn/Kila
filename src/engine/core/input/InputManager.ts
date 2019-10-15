@@ -1,18 +1,10 @@
 import { Vector2 } from "../math/Vector2";
+import { Message } from "../message/Message";
 
 
  export const MESSAGE_MOUSE_DOWN: string = "MOUSE_DOWN";
-
-
  export const MESSAGE_MOUSE_UP: string = "MOUSE_UP";
 
-
- export enum Keys {
-     LEFT = 37,
-     UP = 38,
-     RIGHT = 39,
-     DOWN = 40
- }
 
  export class MouseContext {
 
@@ -56,7 +48,7 @@ import { Vector2 } from "../math/Vector2";
      }
 
     
-     public static isKeyDown( key: Keys ): boolean {
+     public static isKeyDown( key: number ): boolean {
          return InputManager._keys[key];
      }
 
@@ -98,7 +90,7 @@ import { Vector2 } from "../math/Vector2";
              this._rightDown = true;
          }
 
-        // Message.send( MESSAGE_MOUSE_DOWN, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition() ) );
+        Message.send( MESSAGE_MOUSE_DOWN, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition() ) );
      }
 
      private static onMouseUp( event: MouseEvent ): void {
@@ -108,6 +100,6 @@ import { Vector2 } from "../math/Vector2";
              this._rightDown = false;
          }
 
-         //Message.send( MESSAGE_MOUSE_UP, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition() ) );
+         Message.send( MESSAGE_MOUSE_UP, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition() ) );
      }
  }

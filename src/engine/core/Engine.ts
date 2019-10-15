@@ -61,7 +61,7 @@ export class Engine {
         this._totalFrames = 0;
         this._lastUpdate = performance.now();
 
-        InputManager.initialize()
+        // InputManager.initialize()
 
         this.loop();
     }
