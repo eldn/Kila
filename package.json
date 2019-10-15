@@ -1,0 +1,30 @@
+{
+  "name": "3dgameengine",
+  "version": "1.0.0",
+  "description": "A webgl based 3d game engine.",
+  "main": "index.js",
+  "bin": {
+    "3dgameengine": "MainComponnet.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eldn/GameEngine.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eldn/GameEngine/issues"
+  },
+  "homepage": "https://github.com/eldn/GameEngine#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^5.0.1",
+    "rollup": "^1.23.1",
+    "rollup-plugin-glsl": "^1.3.0",
+    "rollup-plugin-typescript2": "^0.24.3",
+    "typescript": "^3.6.4"
+  }
+}
