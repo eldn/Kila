@@ -192,6 +192,7 @@ export class Matrix4x4 {
         return m;
     }
 
+
     public toFloat32Array(): Float32Array {
         return new Float32Array( this._data );
     }
@@ -201,5 +202,14 @@ export class Matrix4x4 {
         for ( let i = 0; i < 16; ++i ) {
             this._data[i] = m._data[i];
         }
+    }
+
+    public set(x : number, y : number, v : number) : Matrix4x4{
+        this._data[x][y] = v;
+        return this;
+    }
+
+    public get(x : number, y : number) : number{
+        return this._data[x][y];
     }
 }
