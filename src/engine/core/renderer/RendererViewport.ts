@@ -74,9 +74,21 @@ export class RendererViewport {
         this._canvas = GLUtilities.initialize( createInfo.elementId );
 
         // GL init
-        gl.clearColor( 146 / 255, 206 / 255, 247 / 255, 1 );
+        gl.clearColor( 0, 0, 0, 1 );
+
+        // 顺时针表示正面、 剔除后面
+        gl.frontFace(gl.CW);
+        gl.cullFace(gl.BACK);
+        gl.enable(gl.CULL_FACE);
+
+        // 深度测试
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LESS);
+
         gl.enable( gl.BLEND );
         gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
+
+        // gl.enable(gl.FRAMEBUFFER_SRGB);
 
         // Matrix4x4.orthographic( 0, this._canvas.width, this._canvas.height, 0, -100.0, 100.0 )
     }

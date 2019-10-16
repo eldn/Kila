@@ -38,7 +38,7 @@ export class Renderer {
     }
 
     public BeginRender(): void {
-        gl.clear( gl.COLOR_BUFFER_BIT );
+        gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
 
     public EndRender(): void {
