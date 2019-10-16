@@ -5,6 +5,7 @@ import { gl } from "../gl/GLUtilities";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { BasicShader } from "../gl/shaders/BasicShader";
 import { Shader } from "../gl/shaders/Shader";
+import { LevelManager } from "../world/LevelManager";
 
 export class Renderer {
 
@@ -49,11 +50,11 @@ export class Renderer {
 
         // Use the active camera's matrix as the view
         let view: Matrix4x4;
-        // if ( LevelManager.isLoaded && LevelManager.activeLevelActiveCamera !== undefined ) {
-        //     view = LevelManager.activeLevelActiveCamera.view;
-        // } else {
+        if ( LevelManager.isLoaded && LevelManager.activeLevelActiveCamera !== undefined ) {
+            view = LevelManager.activeLevelActiveCamera.view;
+        } else {
             view = Matrix4x4.identity();
-        // }
+        }
         let viewPosition = this._basicShader.getUniformLocation( "u_view" );
         gl.uniformMatrix4fv( viewPosition, false, view.toFloat32Array() );
 
