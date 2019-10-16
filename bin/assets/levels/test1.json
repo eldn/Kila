@@ -1,0 +1,42 @@
+{
+	"name": "TestLevel",
+	"description": "A simple test level for... testing.",
+	"id": 0,
+	"defaultCamera": "defaultCamera",
+	"objects": [
+		{
+			"name": "testCube",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": -1
+				}
+			},
+			"components": [
+				{
+					"name": "testSprite",
+					"type": "sprite",
+					"materialName": "container",
+					"width": 4,
+					"height": 4
+				}
+			],
+			"behaviors": [
+
+			]
+		},
+		{
+			"name": "defaultCamera",
+			"type": "perspectiveCamera",
+			"transform": {
+				"position": {
+					"z": -2
+				},
+				"rotation": {
+					"y": 0.71
+				}
+			}
+		}
+	]
+}

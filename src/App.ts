@@ -1,21 +1,33 @@
 import { Engine } from "./Engine/Core/Engine";
+import { IGame } from "./game/IGame";
+import { LevelManager } from "./Engine/Core/world/LevelManager";
+import { Shader } from "./Engine/Core/gl/shaders/Shader";
 
 
-let engine : Engine;
+class TestGame implements IGame {
 
-window.onload = function(){
-    engine = new Engine(800, 600);
-    engine.start();
+  updateReady(): void {
+    // Load the test level. This should be configurable.
+    LevelManager.changeLevel("test 1");
+  }
+
+  update(time: number): void {
+  }
+
+  render(shader: Shader): void {
+
+  }
+  
 }
 
-window.onresize = function(){
-    engine.resize();
+
+let engine: Engine;
+
+window.onload = function () {
+  engine = new Engine(800, 600);
+  engine.start(new TestGame(), "viewport");
 }
 
-document.addEventListener("visibilitychange", ()=>{
-    if (document.visibilityState === 'visible') {
-        engine.stop();
-      } else {
-        engine.start();
-      }
-});
+window.onresize = function () {
+  engine.resize();
+}

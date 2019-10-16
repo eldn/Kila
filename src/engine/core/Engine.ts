@@ -1,90 +1,153 @@
-import { Game } from "../game/Game";
-import { Time } from "./utils/Time";
+import { Renderer } from "./renderer/Renderer";
+import { IGame } from "../../game/IGame";
+import { RendererViewportCreateInfo, ViewportProjectionType } from "./renderer/RendererViewport";
+import { AssetManager } from "./assets/AssetManager";
 import { InputManager } from "./input/InputManager";
+import { LevelManager } from "./world/LevelManager";
+import { MaterialManager } from "./graphics/MaterialManager";
+import { MessageBus } from "./message/MessageBus";
+import { ComponentManager } from "./components/ComponentManager";
+import { BehaviorManager } from "./behaviors/BehaviorManager";
 
 export class Engine {
 
+    private _previousTime: number = 0;
     private _gameWidth: number;
     private _gameHeight: number;
-    private _isRunning: boolean;
 
-    // FPS
-    private _frameRate: number = 60;
-    private _totalFrames: number = 0;
-    private _lastUpdate: number = 0;
-    private _deltaTime: number = 0.0;
+    private _isFirstUpdate: boolean = true;
 
-    private _game: Game = null;
+    private _renderer: Renderer;
+    private _game: IGame;
 
-    public constructor(width?: number, height?: number) {
+    /**
+     * Creates a new engine.
+     * @param width The width of the game in pixels.
+     * @param height The height of the game in pixels.
+     * */
+    public constructor( width?: number, height?: number ) {
         this._gameWidth = width;
         this._gameHeight = height;
-        this._isRunning = false;
-        this._game = new Game();
-
-        // FPS
-        this._totalFrames = 0;
-        this._lastUpdate = 0;
-        this._deltaTime = 0.0;
     }
 
-    public start(): void {
-        if (this._isRunning) {
-            return;
-        }
-        this.run();
+    /**
+     * Starts up this engine.
+     * @param game The object containing game-specific logic.
+     * @param elementName The name (id) of the HTML element to use as the viewport. Must be the id of a canvas element.
+     * */
+    public start( game: IGame, elementName?: string ): void {
+
+        this._game = game;
+
+        let rendererViewportCreateInfo: RendererViewportCreateInfo = new RendererViewportCreateInfo();
+        rendererViewportCreateInfo.elementId = elementName;
+        rendererViewportCreateInfo.projectionType = ViewportProjectionType.PERSPECTIVE;
+        rendererViewportCreateInfo.width = this._gameWidth;
+        rendererViewportCreateInfo.height = this._gameHeight;
+        rendererViewportCreateInfo.nearClip = 0.1;
+        rendererViewportCreateInfo.farClip = 1000.0;
+        rendererViewportCreateInfo.fov = 45.0 * (Math.PI / 180);
+        rendererViewportCreateInfo.x = 0;
+        rendererViewportCreateInfo.y = 0;
+
+        this._renderer = new Renderer( rendererViewportCreateInfo );
+
+        // Initialize various sub-systems.
+        AssetManager.initialize();
+        InputManager.initialize( this._renderer.windowViewportCanvas );
+        ComponentManager.initialize();
+        BehaviorManager.initialize();
+
+        // Initialize the renderer.
+        this._renderer.Initialize();
+        // Load fonts
+        // BitmapFontManager.load();
+
+        // Load level config
+        LevelManager.load();
+
+        // Load material configs
+        MaterialManager.load();
+
+        // Load audio. Note that this does not hold up the engine from being ready.
+        // AudioManager.load();
+
+        // Trigger a resize to make sure the viewport is corrent.
+        this.resize();
+
+        // Begin the preloading phase, which waits for various thing to be loaded before starting the game.
+        this.preloading();
     }
 
-    public stop(): void {
-        if (!this._isRunning) {
-            return;
-        }
-
-        this._isRunning = false;
-    }
-
+    /**
+     * Resizes the canvas to fit the window.
+     * */
     public resize(): void {
-
+        if ( this._renderer ) {
+            this._renderer.Resize();
+        }
     }
 
+    /**
+     * The main game loop.
+     */
+    private loop(): void {
+        if ( this._isFirstUpdate ) {
 
-    calculateDeltaTime(now: number) {
-        if (!now) now = performance.now();
-        this._deltaTime = (now - this._lastUpdate) / 1000;
-        this._lastUpdate = now;
+        }
+
+        this.update();
+        this.render();
+
+        requestAnimationFrame( this.loop.bind( this ) );
     }
 
-    private run(): void {
-        this._isRunning = true;
+    private preloading(): void {
 
-        this._deltaTime = 0;
-        this._totalFrames = 0;
-        this._lastUpdate = performance.now();
+        // Make sure to always update the message bus.
+        MessageBus.update( 0 );
 
-        // InputManager.initialize()
+        // if ( !BitmapFontManager.isLoaded ) {
+        //     requestAnimationFrame( this.preloading.bind( this ) );
+        //     return;
+        // }
 
+        if ( !MaterialManager.isLoaded ) {
+            requestAnimationFrame( this.preloading.bind( this ) );
+            return;
+        }
+
+        if ( !LevelManager.isLoaded ) {
+            requestAnimationFrame( this.preloading.bind( this ) );
+            return;
+        }
+
+        // Perform items such as loading the first/initial level, etc.
+        this._game.updateReady();
+
+        // Kick off the render loop.
         this.loop();
     }
 
-    private loop(now?: number): void {
+    private update(): void {
+        let delta = performance.now() - this._previousTime;
 
-        this.calculateDeltaTime(now);
-        Time.setDelat(this._deltaTime);
-        
-        // let fps : number = Math.floor(1000 / this._deltaTime);
-        // console.log(this._deltaTime);
+        MessageBus.update( delta );
+        LevelManager.update( delta );
+        // CollisionManager.update( delta );
 
-        this._game.input();
-        this._game.update();
+        this._game.update( delta );
 
-        this.render();
-
-        requestAnimationFrame(this.loop.bind(this));
+        this._previousTime = performance.now();
     }
 
     private render(): void {
-        if (!this._isRunning) {
-            return;
-        }
+        this._renderer.BeginRender();
+
+        LevelManager.render( this._renderer.worldShader );
+
+        this._game.render( this._renderer.worldShader );
+
+        this._renderer.EndRender();
     }
 }

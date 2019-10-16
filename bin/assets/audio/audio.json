@@ -1,0 +1,19 @@
+{
+    "soundEffects": [
+        {
+            "name": "flap",
+            "audioFile": "assets/audio/flap.mp3",
+            "loop": false
+        },
+        {
+            "name": "ting",
+            "audioFile": "assets/audio/ting.mp3",
+            "loop": false
+        },
+        {
+            "name": "dead",
+            "audioFile": "assets/audio/dead.mp3",
+            "loop": false
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "bitmapFonts": [
+        {
+            "name": "default",
+            "fontFile": "assets/fonts/text.txt"
+        }
+    ]
+}

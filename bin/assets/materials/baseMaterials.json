@@ -1,0 +1,9 @@
+{
+    "materials": [
+        {
+            "name": "container",
+            "diffuse": "assets/textures/hay.png",
+            "specular": "assets/textures/container_spec.png"
+        }
+    ]
+}

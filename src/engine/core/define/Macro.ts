@@ -1,9 +1,8 @@
 
 
-export let Macro = {KEY:{}};
 
 
-Macro.KEY = {
+export let KEY_CODE_MACRO = {
     /**
      * !#en None
      * !#zh 没有分配
