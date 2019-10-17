@@ -38,6 +38,20 @@ export abstract class Shader {
         return this._uniforms[name];
     }
 
+    public setUniformMatrix4fv(name : string, transpose: GLboolean, value : Float32Array) : void{
+        let location = this.getUniformLocation(name);
+        gl.uniformMatrix4fv(location, transpose, value);
+    }
+
+    public setUniform4fv(name : string, value : Float32Array) : void{
+        let location = this.getUniformLocation(name);
+        gl.uniform4fv(location, value);
+    }
+
+    public setUniform1i(name : string, value : number) : void{
+        let location = this.getUniformLocation(name);
+        gl.uniform1i(location, value);
+    }
   
     protected load(vertexSource: string, fragmentSource: string): void {
         let vertexShader = this.loadShader(vertexSource, gl.VERTEX_SHADER);
