@@ -106,16 +106,12 @@ export class Sprite {
      */
     public draw(shader: Shader, model: Matrix4x4): void {
 
-        let modelLocation = shader.getUniformLocation("u_model");
-        gl.uniformMatrix4fv(modelLocation, false, model.toFloat32Array());
-
-        let colorLocation = shader.getUniformLocation("u_tint");
-        gl.uniform4fv(colorLocation, this._material.tint.toFloat32Array());
+        shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 
         if (this._material.diffuseTexture !== undefined) {
             this._material.diffuseTexture.activateAndBind(0);
-            let diffuseLocation = shader.getUniformLocation("u_diffuse");
-            gl.uniform1i(diffuseLocation, 0);
+            shader.setUniform1i("u_diffuse", 0);
         }
 
         this._buffer.bind();
