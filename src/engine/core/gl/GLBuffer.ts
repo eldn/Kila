@@ -26,7 +26,7 @@ export class GLBuffer {
     private _hasAttributeLocation: boolean = false;
     private _elementSize: number;
     private _stride: number;
-    private _buffer: WebGLBuffer;
+    private _vbo: WebGLBuffer;
 
     private _targetBufferType: number;
     private _dataType: number;
@@ -67,14 +67,14 @@ export class GLBuffer {
                 throw new Error("Unrecognized data type: " + dataType.toString());
         }
 
-        this._buffer = gl.createBuffer();
+        this._vbo = gl.createBuffer();
     }
 
     /**
      * Destroys this buffer.
      * */
     public destroy(): void {
-        gl.deleteBuffer(this._buffer);
+        gl.deleteBuffer(this._vbo);
     }
 
     /**
@@ -82,7 +82,7 @@ export class GLBuffer {
      * @param normalized Indicates if the data should be normalized. Default: false
      */
     public bind(normalized: boolean = false): void {
-        gl.bindBuffer(this._targetBufferType, this._buffer);
+        gl.bindBuffer(this._targetBufferType, this._vbo);
 
         if (this._hasAttributeLocation) {
             for (let it of this._attributes) {
@@ -145,7 +145,7 @@ export class GLBuffer {
      * Uploads this buffer's data to the GPU.
      * */
     public upload(): void {
-        gl.bindBuffer(this._targetBufferType, this._buffer);
+        gl.bindBuffer(this._targetBufferType, this._vbo);
 
         let bufferData: ArrayBuffer;
         switch (this._dataType) {
