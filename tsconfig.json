@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "module": "ES2015",
-    "lib": [ "dom", "es5", "es2015.promise" ],
-    "target": "es5",
+    "lib": [ "dom", "es6"],
+    "target": "es6",
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "outDir": "./bin",
     "sourceMap": true,
-     "declaration": false,
+     "declaration": false
   },
   "exclude": [
     "node_modules",
