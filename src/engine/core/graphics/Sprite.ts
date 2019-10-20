@@ -4,8 +4,8 @@ import { Vertex } from "./Vertex";
 import { MaterialManager } from "./MaterialManager";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
-import { gl } from "../gl/GLUtilities";
-import { GLBuffer, AttributeInfo } from "../gl/GLBuffer";
+import { GLBuffer } from "../gl/GLBuffer";
+import { AttributeInfo } from "../gl/AttributeInfo";
 
 export class Sprite {
 

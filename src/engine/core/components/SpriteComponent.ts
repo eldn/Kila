@@ -4,7 +4,6 @@ import { IComponentBuilder } from "./IComponentBuilder";
 import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
-import { ComponentManager } from "./ComponentManager";
 import { Sprite } from "../graphics/Sprite";
 
 export class SpriteComponentData implements IComponentData {

@@ -3,12 +3,13 @@ import { IComponentBuilder } from "./IComponentBuilder";
 import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
-import Mesh from "../assets/ObjLoader/mesh";
+import { Mesh } from "../graphics/Mesh";
+import { Vector3 } from "../math/Vector3";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
-
-    public mesh : Mesh;
+    public path : string;
+    public origin: Vector3 = Vector3.zero;
 
     public setFromJson(json: any): void {
         
@@ -17,7 +18,11 @@ export class MeshRendererCoponentData implements IComponentData {
         }
 
         if (json.mesh !== undefined) {
-            // this.mesh.setFromJson(json.mesh);
+            this.path = String(json.path);
+        }
+
+        if (json.origin !== undefined) {
+            this.origin.setFromJson(json.origin);
         }
     }
 }
@@ -41,22 +46,21 @@ export class MeshRendererComponent extends BaseComponent {
 
     private _mesh: Mesh;
 
-
     public constructor(data: MeshRendererCoponentData) {
         super(data);
 
-      
-        // this._mesh = new Sprite(name, data.materialName, this._width, this._height);
+        this._mesh = new Mesh(data.name, data.path);
+        if (!data.origin.equals(Vector3.zero)) {
+            this._mesh.origin.copyFrom(data.origin);
+        }
     }
 
     public load(): void {
-        // this._sprite.load();
+        this._mesh.load();
     }
 
-
     public render(shader: Shader): void {
-        // this._sprite.draw(shader, this.owner.worldMatrix);
-
+        this._mesh.draw(shader, this.owner.worldMatrix);
         super.render(shader);
     }
 }

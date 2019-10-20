@@ -1,5 +1,4 @@
-import Mesh from "../assets/ObjLoader/mesh";
-
+import { Mesh } from "./Mesh";
 
 
 class MeshReferenceNode {
@@ -12,7 +11,7 @@ class MeshReferenceNode {
 
     /**
      * Creates a new MeshReferenceNode.
-     * @param texture The Texture to be referenced.
+     * @param mesh The mesh to be referenced.
      */
     public constructor(mesh: Mesh) {
         this.mesh = mesh;
@@ -35,8 +34,8 @@ export class MeshManager {
      */
     public static getMesh(meshName: string): Mesh {
         if (MeshManager._meshes[meshName] === undefined) {
-            let texture = new Mesh(meshName);
-            MeshManager._meshes[meshName] = new MeshReferenceNode(texture);
+            let mesh = new Mesh(meshName);
+            MeshManager._meshes[meshName] = new MeshReferenceNode(mesh);
         } else {
             MeshManager._meshes[meshName].referenceCount++;
         }

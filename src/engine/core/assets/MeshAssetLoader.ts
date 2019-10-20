@@ -30,10 +30,8 @@ export class MeshAssetLoader implements IAssetLoader {
     }
 
     private onMeshLoaded( assetName: string, request: XMLHttpRequest ): void {
-        console.log( "onObjLoaded: assetName/image", assetName );
         if (request.readyState === request.DONE) {
-            let json = JSON.parse(request.responseText);
-            let asset = new MeshAsset(assetName, json);
+            let asset = new MeshAsset(assetName, request.responseText);
             AssetManager.onAssetLoaded(asset);
         }
     }

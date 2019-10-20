@@ -5,12 +5,12 @@
 	"defaultCamera": "defaultCamera",
 	"objects": [
 		{
-			"name": "testCube",
+			"name": "testSprite",
 			"transform": {
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": -1
+					"z": -2
 				}
 			},
 			"components": [
@@ -20,6 +20,26 @@
 					"materialName": "container",
 					"width": 4,
 					"height": 4
+				}
+			],
+			"behaviors": [
+
+			]
+		},
+		{
+			"name": "testMesh",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": -1
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh",
+					"type": "mesh",
+					"meshName": "box"
 				}
 			],
 			"behaviors": [
