@@ -9,6 +9,7 @@ import { IMessageHandler } from "../message/IMessageHandler";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { Vector3 } from "../math/Vector3";
+import { Material } from "./Material";
 
 
 export class Mesh implements IMessageHandler{
@@ -57,14 +58,14 @@ export class Mesh implements IMessageHandler{
         this._isLoaded = true;
 
         this._vertex.push(
-            new Vertex(1.000000 1.000000 -1.000000),
-            new Vertex(1.000000 -1.000000 -1.000000),
-            new Vertex(1.000000 1.000000 1.000000),
-            new Vertex(1.000000 -1.000000 1.000000),
-            new Vertex(-1.000000 1.000000 -1.000000),
-            new Vertex(-1.000000 -1.000000 -1.000000),
-            new Vertex(-1.000000 1.000000 1.000000),
-            new Vertex(-1.000000 -1.000000 1.000000),    
+            new Vertex(1.000000,1.000000,-1.000000),
+            new Vertex(1.000000,-1.000000,-1.000000),
+            new Vertex(1.000000,1.000000,1.000000),
+            new Vertex(1.000000,-1.000000,1.000000),
+            new Vertex(-1.000000,1.000000,-1.000000),
+            new Vertex(-1.000000,-1.000000,-1.000000),
+            new Vertex(-1.000000,1.000000,1.000000),
+            new Vertex(-1.000000,-1.000000,1.000000),    
         );
 
         this._indices = [
@@ -92,10 +93,10 @@ export class Mesh implements IMessageHandler{
     public addVertices(vertices : Array<Vertex>, indices : Array<number>) : void{
 
         // 处理顶点数据
-        let positionAttribute = new AttributeInfo();
-        positionAttribute.location = 0;
-        positionAttribute.size = 3;
-        this._vertextBuffer.addAttributeLocation(positionAttribute);
+        // let positionAttribute = new AttributeInfo();
+        // positionAttribute.location = 0;
+        // positionAttribute.size = 3;
+        // this._vertextBuffer.addAttributeLocation(positionAttribute);
 
         // let texCoordAttribute = new AttributeInfo();
         // texCoordAttribute.location = 1;
@@ -103,10 +104,10 @@ export class Mesh implements IMessageHandler{
         // this._vertextBuffer.addAttributeLocation(texCoordAttribute);
 
 
-        for (let v of vertices) {
-            let data : Array<number> = v.toArray();
-            this._vertextBuffer.pushBackData(data);
-        }
+        // for (let v of vertices) {
+        //     let data : Array<number> = v.toArray();
+        //     this._vertextBuffer.pushBackData(data);
+        // }
 
         // TODO测试只使用position
         let positionAttribute = new AttributeInfo();
