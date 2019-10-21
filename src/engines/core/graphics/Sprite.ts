@@ -1,11 +1,11 @@
 import { Vector3 } from "../math/Vector3";
-import { Material } from "./Material";
 import { Vertex } from "./Vertex";
-import { MaterialManager } from "./MaterialManager";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { GLBuffer } from "../gl/GLBuffer";
 import { AttributeInfo } from "../gl/AttributeInfo";
+import { SpriteMaterial } from "../material/SpriteMaterial";
+import { MaterialManager } from "../material/MaterialManager";
 
 export class Sprite {
 
@@ -16,7 +16,7 @@ export class Sprite {
 
     protected _buffer: GLBuffer;
     protected _materialName: string;
-    protected _material: Material;
+    protected _material: SpriteMaterial;
     protected _vertices: Vertex[] = [];
 
     /**
@@ -31,7 +31,7 @@ export class Sprite {
         this._width = width;
         this._height = height;
         this._materialName = materialName;
-        this._material = MaterialManager.getMaterial(this._materialName);
+        this._material = MaterialManager.getMaterial(this._materialName) as SpriteMaterial;
     }
 
     /** The name of this sprite. */
@@ -106,12 +106,13 @@ export class Sprite {
      */
     public draw(shader: Shader, model: Matrix4x4): void {
 
-        shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
+        this._material.shader.use();
+        this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        this._material.shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 
         if (this._material.diffuseTexture !== undefined) {
             this._material.diffuseTexture.activateAndBind(0);
-            shader.setUniform1i("u_diffuse", 0);
+            this._material.shader.setUniform1i("u_diffuse", 0);
         }
 
         this._buffer.bind();

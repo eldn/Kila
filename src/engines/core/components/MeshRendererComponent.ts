@@ -4,7 +4,6 @@ import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
 import { Mesh } from "../graphics/Mesh";
-import { Vector3 } from "../math/Vector3";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;

@@ -4,10 +4,10 @@ import { RendererViewportCreateInfo, ViewportProjectionType } from "./renderer/R
 import { AssetManager } from "./assets/AssetManager";
 import { InputManager } from "./input/InputManager";
 import { LevelManager } from "./world/LevelManager";
-import { MaterialManager } from "./graphics/MaterialManager";
 import { MessageBus } from "./message/MessageBus";
 import { ComponentManager } from "./components/ComponentManager";
 import { BehaviorManager } from "./behaviors/BehaviorManager";
+import { MaterialManager } from "./material/MaterialManager";
 
 export class Engine {
 

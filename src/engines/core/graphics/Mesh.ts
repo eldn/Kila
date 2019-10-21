@@ -9,7 +9,6 @@ import { IMessageHandler } from "../message/IMessageHandler";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { Vector3 } from "../math/Vector3";
-import { Material } from "./Material";
 
 
 export class Mesh implements IMessageHandler{
@@ -21,7 +20,7 @@ export class Mesh implements IMessageHandler{
     private _isLoaded: boolean = false;
     protected _origin: Vector3 = Vector3.zero;
     protected _materialName: string;
-    protected _material: Material;
+    // protected _material: MaterialBase;
 
     private _vertex : Array<Vertex> = [];
     private _indices : Array<number> = [];
@@ -133,17 +132,12 @@ export class Mesh implements IMessageHandler{
 
     public draw(shader: Shader, model: Matrix4x4) :void{
 
-        shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
-
-        // if (this._material.diffuseTexture !== undefined) {
-        //     this._material.diffuseTexture.activateAndBind(0);
-        //     shader.setUniform1i("u_diffuse", 0);
-        // }
+        // shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        // shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 
 
-        this._vertextBuffer.bind();
-        this._indexBuffer.bind();
-        this._indexBuffer.draw();
+        // this._vertextBuffer.bind();
+        // this._indexBuffer.bind();
+        // this._indexBuffer.draw();
     }
 }

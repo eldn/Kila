@@ -43,6 +43,9 @@ export class Renderer {
     }
 
     public EndRender(): void {
+
+        this._basicShader.use();
+        
         // Set uniforms.
         let projectionPosition = this._basicShader.getUniformLocation( "u_projection" );
         let projection = this._windowViewport.GetProjectionMatrix().toFloat32Array();

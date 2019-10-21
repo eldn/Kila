@@ -17,29 +17,9 @@
 				{
 					"name": "testSprite",
 					"type": "sprite",
-					"materialName": "container",
+					"materialName": "SpriteMaterial",
 					"width": 4,
 					"height": 4
-				}
-			],
-			"behaviors": [
-
-			]
-		},
-		{
-			"name": "testMesh",
-			"transform": {
-				"position": {
-					"x": 0,
-					"y": 0,
-					"z": -1
-				}
-			},
-			"components": [
-				{
-					"name": "box",
-					"type": "mesh",
-					"path": "assets/model/box.obj"
 				}
 			],
 			"behaviors": [
