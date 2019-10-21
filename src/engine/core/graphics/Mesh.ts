@@ -19,6 +19,11 @@ export class Mesh implements IMessageHandler{
     private _indexBuffer : GLBuffer;
     private _isLoaded: boolean = false;
     protected _origin: Vector3 = Vector3.zero;
+    protected _materialName: string;
+    protected _material: Material;
+
+    private _vertex : Array<Vertex> = [];
+    private _indices : Array<number> = [];
 
     constructor(name : string, path : string){
         this._name = name;
@@ -26,11 +31,11 @@ export class Mesh implements IMessageHandler{
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._indexBuffer = new GLBuffer(gl.FLOAT, gl.ELEMENT_ARRAY_BUFFER, gl.TRIANGLES);
         
-        let asset = AssetManager.getAsset(this._name) as MeshAsset;
+        let asset = AssetManager.getAsset(this._path) as MeshAsset;
         if (asset !== undefined) {
             this.loadMeshFromAsset(asset);
         } else {
-            Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name, this);
+            Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._path, this);
         }
     }
 
@@ -42,40 +47,55 @@ export class Mesh implements IMessageHandler{
         return this._isLoaded;
     }
 
-     /** The origin location of this sprite. */
-     public get origin(): Vector3 {
-        return this._origin;
-    }
-
-    /** The name of this sprite. */
-    public set origin(value: Vector3) {
-        this._origin = value;
-        // TODO重新计算坐标
-    }
-
     public onMessage(message: Message): void {
-        if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._name) {
+        if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._path) {
             this.loadMeshFromAsset(message.context as MeshAsset);
         }
     }
 
-    private  loadMeshFromAsset(asset: MeshAsset) :  void{
+    private loadMeshFromAsset(asset: MeshAsset) :  void{
         this._isLoaded = true;
+
+        this._vertex.push(
+            new Vertex(1.000000 1.000000 -1.000000),
+            new Vertex(1.000000 -1.000000 -1.000000),
+            new Vertex(1.000000 1.000000 1.000000),
+            new Vertex(1.000000 -1.000000 1.000000),
+            new Vertex(-1.000000 1.000000 -1.000000),
+            new Vertex(-1.000000 -1.000000 -1.000000),
+            new Vertex(-1.000000 1.000000 1.000000),
+            new Vertex(-1.000000 -1.000000 1.000000),    
+        );
+
+        this._indices = [
+            5,3,1,
+            3,8,4,
+            7,6,8,
+            2,8,6,
+            1,4,2,
+            5,2,6,
+            5,7,3,
+            3,7,8,
+            7,5,6,
+            2,4,8,
+            1,3,4,
+            5,1,2
+        ];
     }
 
 
     public load() :void{
-        // this.addVertices()
+        this.addVertices(this._vertex, this._indices);
     }
 
 
     public addVertices(vertices : Array<Vertex>, indices : Array<number>) : void{
 
         // 处理顶点数据
-        // let positionAttribute = new AttributeInfo();
-        // positionAttribute.location = 0;
-        // positionAttribute.size = 3;
-        // this._vertextBuffer.addAttributeLocation(positionAttribute);
+        let positionAttribute = new AttributeInfo();
+        positionAttribute.location = 0;
+        positionAttribute.size = 3;
+        this._vertextBuffer.addAttributeLocation(positionAttribute);
 
         // let texCoordAttribute = new AttributeInfo();
         // texCoordAttribute.location = 1;
@@ -83,10 +103,10 @@ export class Mesh implements IMessageHandler{
         // this._vertextBuffer.addAttributeLocation(texCoordAttribute);
 
 
-        // for (let v of vertices) {
-        //     let data : Array<number> = v.toArray();
-        //     this._vertextBuffer.pushBackData(data);
-        // }
+        for (let v of vertices) {
+            let data : Array<number> = v.toArray();
+            this._vertextBuffer.pushBackData(data);
+        }
 
         // TODO测试只使用position
         let positionAttribute = new AttributeInfo();
@@ -113,7 +133,7 @@ export class Mesh implements IMessageHandler{
     public draw(shader: Shader, model: Matrix4x4) :void{
 
         shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        // shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
+        shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 
         // if (this._material.diffuseTexture !== undefined) {
         //     this._material.diffuseTexture.activateAndBind(0);

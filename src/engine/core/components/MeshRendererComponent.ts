@@ -9,7 +9,6 @@ import { Vector3 } from "../math/Vector3";
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
     public path : string;
-    public origin: Vector3 = Vector3.zero;
 
     public setFromJson(json: any): void {
         
@@ -17,12 +16,8 @@ export class MeshRendererCoponentData implements IComponentData {
             this.name = String(json.name);
         }
 
-        if (json.mesh !== undefined) {
+        if (json.path !== undefined) {
             this.path = String(json.path);
-        }
-
-        if (json.origin !== undefined) {
-            this.origin.setFromJson(json.origin);
         }
     }
 }
@@ -50,9 +45,6 @@ export class MeshRendererComponent extends BaseComponent {
         super(data);
 
         this._mesh = new Mesh(data.name, data.path);
-        if (!data.origin.equals(Vector3.zero)) {
-            this._mesh.origin.copyFrom(data.origin);
-        }
     }
 
     public load(): void {

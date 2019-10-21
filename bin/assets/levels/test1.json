@@ -37,9 +37,9 @@
 			},
 			"components": [
 				{
-					"name": "testMesh",
+					"name": "box",
 					"type": "mesh",
-					"meshName": "box"
+					"path": "assets/model/box.obj"
 				}
 			],
 			"behaviors": [

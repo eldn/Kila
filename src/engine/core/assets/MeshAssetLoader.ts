@@ -4,14 +4,15 @@ import { AssetManager } from "./AssetManager";
 
 
 export class MeshAsset implements IAsset {
-
-    public readonly name: string;
+    public readonly name : string;
+    public readonly path: string;
     public readonly data: any;
 
 
-    public constructor( name: string, data: any ) {
-        this.name = name;
+    public constructor( path : string, data: any ) {
+        this.path = path;
         this.data = data;
+        this.name = path.split('/').pop().toLowerCase()
     }
 }
 
@@ -22,16 +23,16 @@ export class MeshAssetLoader implements IAssetLoader {
         return ["obj"];
     }
 
-    public loadAsset( assetName: string ): void {
+    public loadAsset( assetPath: string ): void {
         let request: XMLHttpRequest = new XMLHttpRequest();
-        request.open("GET", assetName);
-        request.addEventListener("load", this.onMeshLoaded.bind(this, assetName, request));
+        request.open("GET", assetPath);
+        request.addEventListener("load", this.onMeshLoaded.bind(this, assetPath, request));
         request.send();
     }
 
-    private onMeshLoaded( assetName: string, request: XMLHttpRequest ): void {
+    private onMeshLoaded( assetPath: string, request: XMLHttpRequest ): void {
         if (request.readyState === request.DONE) {
-            let asset = new MeshAsset(assetName, request.responseText);
+            let asset = new MeshAsset(assetPath, request.responseText);
             AssetManager.onAssetLoaded(asset);
         }
     }
