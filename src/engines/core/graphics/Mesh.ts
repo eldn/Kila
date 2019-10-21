@@ -133,8 +133,8 @@ export class Mesh implements IMessageHandler{
 
     public draw(shader: Shader, model: Matrix4x4) :void{
 
-        shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
+        // shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        // shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 
         // if (this._material.diffuseTexture !== undefined) {
         //     this._material.diffuseTexture.activateAndBind(0);
@@ -142,8 +142,8 @@ export class Mesh implements IMessageHandler{
         // }
 
 
-        this._vertextBuffer.bind();
-        this._indexBuffer.bind();
-        this._indexBuffer.draw();
+        // this._vertextBuffer.bind();
+        // this._indexBuffer.bind();
+        // this._indexBuffer.draw();
     }
 }

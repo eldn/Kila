@@ -1,7 +1,8 @@
-import { Engine } from "./Engine/Core/Engine";
 import { IGame } from "./game/IGame";
-import { LevelManager } from "./Engine/Core/world/LevelManager";
-import { Shader } from "./Engine/Core/gl/shaders/Shader";
+import { LevelManager } from "./engines/core/world/LevelManager";
+import { Shader } from "./engines/core/gl/shaders/Shader";
+import { Engine } from "./engines/core/Engine";
+
 
 
 class TestGame implements IGame {
