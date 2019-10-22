@@ -4,6 +4,7 @@ import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
 import { Mesh } from "../graphics/Mesh";
+import { Matrix4x4 } from "../math/Matrix4x4";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
@@ -50,9 +51,9 @@ export class MeshRendererComponent extends BaseComponent {
         this._mesh.load();
     }
 
-    public render(shader: Shader): void {
-        this._mesh.draw(shader, this.owner.worldMatrix);
-        super.render(shader);
+    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
+        this._mesh.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
+        super.render(shader, projection, viewMatrix);
     }
 }
 

@@ -104,9 +104,13 @@ export class Sprite {
      * @param shader The shader to draw with.
      * @param model The model transformation matrix.
      */
-    public draw(shader: Shader, model: Matrix4x4): void {
+    public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
 
         this._material.shader.use();
+
+        this._material.shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
+        this._material.shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
+        
         this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
         this._material.shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 

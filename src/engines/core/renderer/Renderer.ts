@@ -6,6 +6,7 @@ import { Matrix4x4 } from "../math/Matrix4x4";
 import { BasicShader } from "../gl/shaders/BasicShader";
 import { Shader } from "../gl/shaders/Shader";
 import { LevelManager } from "../world/LevelManager";
+import { Level } from "../world/Level";
 
 export class Renderer {
 
@@ -44,22 +45,19 @@ export class Renderer {
 
     public EndRender(): void {
 
-        this._basicShader.use();
-        
         // Set uniforms.
-        let projectionPosition = this._basicShader.getUniformLocation( "u_projection" );
-        let projection = this._windowViewport.GetProjectionMatrix().toFloat32Array();
-        gl.uniformMatrix4fv( projectionPosition, false, projection );
+        // let projectionPosition = this._basicShader.getUniformLocation( "u_projection" );
+        // let projection = this._windowViewport.GetProjectionMatrix().toFloat32Array();
+        // gl.uniformMatrix4fv( projectionPosition, false, projection );
 
         // Use the active camera's matrix as the view
-        let view: Matrix4x4;
-        if ( LevelManager.isLoaded && LevelManager.activeLevelActiveCamera !== undefined ) {
-            view = LevelManager.activeLevelActiveCamera.view;
-        } else {
-            view = Matrix4x4.identity();
-        }
-        let viewPosition = this._basicShader.getUniformLocation( "u_view" );
-        gl.uniformMatrix4fv( viewPosition, false, view.toFloat32Array() );
+        // let view: Matrix4x4 = LevelManager.getViewMatrix();
+        // let viewPosition = this._basicShader.getUniformLocation( "u_view" );
+        // gl.uniformMatrix4fv( viewPosition, false, view.toFloat32Array() );
 
+    }
+
+    public getProjection() : Matrix4x4{
+        return this._windowViewport.GetProjectionMatrix();
     }
 }

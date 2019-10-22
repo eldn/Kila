@@ -8,6 +8,7 @@ import { MessageBus } from "./message/MessageBus";
 import { ComponentManager } from "./components/ComponentManager";
 import { BehaviorManager } from "./behaviors/BehaviorManager";
 import { MaterialManager } from "./material/MaterialManager";
+import { Matrix4x4 } from "./math/Matrix4x4";
 
 export class Engine {
 
@@ -144,7 +145,10 @@ export class Engine {
     private render(): void {
         this._renderer.BeginRender();
 
-        LevelManager.render( this._renderer.worldShader );
+        let projection : Matrix4x4 = this._renderer.getProjection();
+        let viewMatrix : Matrix4x4 = LevelManager.getViewMatrix();
+
+        LevelManager.render( this._renderer.worldShader, projection, viewMatrix);
 
         this._game.render( this._renderer.worldShader );
 

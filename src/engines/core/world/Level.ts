@@ -6,6 +6,7 @@ import { BehaviorManager } from "../behaviors/BehaviorManager";
 import { BaseCamera } from "./cameras/BaseCamera";
 import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
 import { Dictionary } from "../Types";
+import { Matrix4x4 } from "../math/Matrix4x4";
 
 export enum LevelState {
 
@@ -139,9 +140,9 @@ export class Level {
      * Renders this level.
      * @param shader The shader to use when rendering.
      */
-    public render(shader: Shader): void {
+    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
         if (this._state === LevelState.UPDATING) {
-            this._sceneGraph.render(shader);
+            this._sceneGraph.render(shader, projection, viewMatrix);
         }
     }
 

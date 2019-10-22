@@ -5,6 +5,7 @@ import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
 import { Sprite } from "../graphics/Sprite";
+import { Matrix4x4 } from "../math/Matrix4x4";
 
 export class SpriteComponentData implements IComponentData {
     public name: string;
@@ -74,10 +75,10 @@ export class SpriteComponent extends BaseComponent {
     }
 
 
-    public render(shader: Shader): void {
-        this._sprite.draw(shader, this.owner.worldMatrix);
+    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
+        this._sprite.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
 
-        super.render(shader);
+        super.render(shader, projection, viewMatrix);
     }
 }
 

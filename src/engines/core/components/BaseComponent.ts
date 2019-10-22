@@ -2,6 +2,7 @@ import { IComponent } from "./IComponent";
 import { TEntity } from "../world/Entity";
 import { IComponentData } from "./IComponentData";
 import { Shader } from "../gl/shaders/Shader";
+import { Matrix4x4 } from "../math/Matrix4x4";
 
 
 export abstract class BaseComponent implements IComponent {
@@ -33,6 +34,6 @@ export abstract class BaseComponent implements IComponent {
     public update(time: number): void {
     }
 
-    public render(shader: Shader): void {
+    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
     }
 }
