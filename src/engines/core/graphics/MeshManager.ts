@@ -34,8 +34,8 @@ export class MeshManager {
      */
     public static getMesh(meshName: string): Mesh {
         if (MeshManager._meshes[meshName] === undefined) {
-            let mesh = new Mesh(meshName);
-            MeshManager._meshes[meshName] = new MeshReferenceNode(mesh);
+            // let mesh = new Mesh(meshName);
+            // MeshManager._meshes[meshName] = new MeshReferenceNode(mesh);
         } else {
             MeshManager._meshes[meshName].referenceCount++;
         }

@@ -10,7 +10,7 @@
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": -2
+					"z": -200
 				}
 			},
 			"components": [
@@ -20,6 +20,27 @@
 					"materialName": "SpriteMaterial",
 					"width": 4,
 					"height": 4
+				}
+			],
+			"behaviors": [
+
+			]
+		},
+		{
+			"name": "testMesh",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": -3
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"path":"assets/model/box.obj"
 				}
 			],
 			"behaviors": [

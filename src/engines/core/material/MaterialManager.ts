@@ -4,8 +4,8 @@ import { JsonAsset } from "../assets/JsonAssetLoader";
 import { MaterialReferenceNode } from "./MaterialReferenceNode";
 import { MaterialConfigBase } from "./MaterialConfigBase";
 import { MaterialBase } from "./MaterialBase";
-import { SpriteMaterial } from "./SpriteMaterial";
-import { SpriteMaterialConfig } from "./SpriteMaterialConfig";
+import { SpriteMaterial, SpriteMaterialConfig } from "./SpriteMaterial";
+import { MeshMaterial, MeshMaterialConfig } from "./MeshMaterial";
 
 
 
@@ -71,6 +71,9 @@ export class MaterialManager {
                     case 'SpriteMaterial':
                         mat = SpriteMaterial.FromConfig(MaterialManager._materialConfigs[materialName] as SpriteMaterialConfig);
                         break;
+                    case 'MeshMaterial':
+                        mat = MeshMaterial.FromConfig(MaterialManager._materialConfigs[materialName] as MeshMaterialConfig);
+                        break;
                 }
                 
                 MaterialManager._materials[materialName] = new MaterialReferenceNode(mat);
@@ -109,6 +112,9 @@ export class MaterialManager {
                 switch(material.name){
                     case 'SpriteMaterial':
                         c = SpriteMaterialConfig.fromJson(material);
+                        break;
+                    case 'MeshMaterial':
+                        c = MeshMaterialConfig.fromJson(material);
                         break;
                 }
             

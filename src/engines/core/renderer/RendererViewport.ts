@@ -77,13 +77,13 @@ export class RendererViewport {
         gl.clearColor( 0, 0, 0, 1 );
 
         // 顺时针表示正面、 剔除后面
-        gl.frontFace(gl.CW);
-        gl.cullFace(gl.BACK);
-        gl.enable(gl.CULL_FACE);
+        // gl.frontFace(gl.CW);
+        // gl.cullFace(gl.BACK);
+        // gl.enable(gl.CULL_FACE);
 
         // 深度测试
         gl.enable(gl.DEPTH_TEST);
-        gl.depthFunc(gl.LESS);
+        // gl.depthFunc(gl.LESS);
 
         gl.enable( gl.BLEND );
         gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );

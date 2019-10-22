@@ -9,6 +9,7 @@ import { Matrix4x4 } from "../math/Matrix4x4";
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
     public path : string;
+    public materialName : string;
 
     public setFromJson(json: any): void {
         
@@ -18,6 +19,10 @@ export class MeshRendererCoponentData implements IComponentData {
 
         if (json.path !== undefined) {
             this.path = String(json.path);
+        }
+
+        if (json.materialName !== undefined) {
+            this.materialName = String(json.materialName);
         }
     }
 }
@@ -44,7 +49,7 @@ export class MeshRendererComponent extends BaseComponent {
     public constructor(data: MeshRendererCoponentData) {
         super(data);
 
-        this._mesh = new Mesh(data.name, data.path);
+        this._mesh = new Mesh(data.name, data.path, data.materialName);
     }
 
     public load(): void {

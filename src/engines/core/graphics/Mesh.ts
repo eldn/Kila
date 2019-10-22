@@ -9,6 +9,8 @@ import { IMessageHandler } from "../message/IMessageHandler";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { Vector3 } from "../math/Vector3";
+import { MeshMaterial } from "../material/MeshMaterial";
+import { MaterialManager } from "../material/MaterialManager";
 
 
 export class Mesh implements IMessageHandler{
@@ -20,16 +22,17 @@ export class Mesh implements IMessageHandler{
     private _isLoaded: boolean = false;
     protected _origin: Vector3 = Vector3.zero;
     protected _materialName: string;
-    // protected _material: MaterialBase;
+    protected _material: MeshMaterial;
 
     private _vertex : Array<Vertex> = [];
     private _indices : Array<number> = [];
 
-    constructor(name : string, path : string){
+    constructor(name : string, path : string, materialName: string){
         this._name = name;
         this._path = path;
+        this._materialName = materialName;
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
-        this._indexBuffer = new GLBuffer(gl.FLOAT, gl.ELEMENT_ARRAY_BUFFER, gl.TRIANGLES);
+        this._indexBuffer = new GLBuffer(gl.UNSIGNED_BYTE, gl.ELEMENT_ARRAY_BUFFER, gl.TRIANGLES);
         
         let asset = AssetManager.getAsset(this._path) as MeshAsset;
         if (asset !== undefined) {
@@ -37,6 +40,7 @@ export class Mesh implements IMessageHandler{
         } else {
             Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._path, this);
         }
+        this._material = MaterialManager.getMaterial(this._materialName) as MeshMaterial;
     }
 
     public get name(): string {
@@ -55,71 +59,49 @@ export class Mesh implements IMessageHandler{
 
     private loadMeshFromAsset(asset: MeshAsset) :  void{
         this._isLoaded = true;
-
-        this._vertex.push(
-            new Vertex(1.000000,1.000000,-1.000000),
-            new Vertex(1.000000,-1.000000,-1.000000),
-            new Vertex(1.000000,1.000000,1.000000),
-            new Vertex(1.000000,-1.000000,1.000000),
-            new Vertex(-1.000000,1.000000,-1.000000),
-            new Vertex(-1.000000,-1.000000,-1.000000),
-            new Vertex(-1.000000,1.000000,1.000000),
-            new Vertex(-1.000000,-1.000000,1.000000),    
-        );
-
-        this._indices = [
-            5,3,1,
-            3,8,4,
-            7,6,8,
-            2,8,6,
-            1,4,2,
-            5,2,6,
-            5,7,3,
-            3,7,8,
-            7,5,6,
-            2,4,8,
-            1,3,4,
-            5,1,2
-        ];
     }
 
 
     public load() :void{
-        this.addVertices(this._vertex, this._indices);
+
+        // TODO 测试数据
+
+        let verticesColors = [
+            1.0,  1.0,  1.0,     1.0,  1.0,  1.0,  // v0 White
+            -1.0,  1.0,  1.0,     1.0,  0.0,  1.0,  // v1 Magenta
+            -1.0, -1.0,  1.0,     1.0,  0.0,  0.0,  // v2 Red
+            1.0, -1.0,  1.0,     1.0,  1.0,  0.0,  // v3 Yellow
+            1.0, -1.0, -1.0,     0.0,  1.0,  0.0,  // v4 Green
+            1.0,  1.0, -1.0,     0.0,  1.0,  1.0,  // v5 Cyan
+            -1.0,  1.0, -1.0,     0.0,  0.0,  1.0,  // v6 Blue
+            -1.0, -1.0, -1.0,     0.0,  0.0,  0.0   // v7 Black  
+        ];
+
+        let indices = [
+            0, 1, 2,   0, 2, 3,    // 前
+            0, 3, 4,   0, 4, 5,    // 右
+            0, 5, 6,   0, 6, 1,    // 上
+            1, 6, 7,   1, 7, 2,    // 左
+            7, 4, 3,   7, 3, 2,    // 下
+            4, 7, 6,   4, 6, 5     // 后
+        ];
+
+        this.addVertices(verticesColors, indices);
     }
 
 
-    public addVertices(vertices : Array<Vertex>, indices : Array<number>) : void{
-
-        // 处理顶点数据
-        // let positionAttribute = new AttributeInfo();
-        // positionAttribute.location = 0;
-        // positionAttribute.size = 3;
-        // this._vertextBuffer.addAttributeLocation(positionAttribute);
-
-        // let texCoordAttribute = new AttributeInfo();
-        // texCoordAttribute.location = 1;
-        // texCoordAttribute.size = 2;
-        // this._vertextBuffer.addAttributeLocation(texCoordAttribute);
-
-
-        // for (let v of vertices) {
-        //     let data : Array<number> = v.toArray();
-        //     this._vertextBuffer.pushBackData(data);
-        // }
-
-        // TODO测试只使用position
+    public addVertices(vertices : Array<number>, indices : Array<number>) : void{
         let positionAttribute = new AttributeInfo();
         positionAttribute.location = 0;
         positionAttribute.size = 3;
         this._vertextBuffer.addAttributeLocation(positionAttribute);
 
+        let colorAttribute = new AttributeInfo();
+        colorAttribute.location = 1;
+        colorAttribute.size = 3;
+        this._vertextBuffer.addAttributeLocation(colorAttribute);
 
-        for (let v of vertices) {
-            let data : Array<number> = v.position.toArray();
-            this._vertextBuffer.pushBackData(data);
-        }
-
+        this._vertextBuffer.setData(vertices);
         this._vertextBuffer.upload();
         this._vertextBuffer.unbind();
 
@@ -132,17 +114,16 @@ export class Mesh implements IMessageHandler{
 
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
 
-        // this._material.shader.use();
+        this._material.shader.use();
 
-        // this._material.shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
-        // this._material.shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
+        this._material.shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
+        this._material.shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
 
-        // shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        // shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
+        this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
 
 
-        // this._vertextBuffer.bind();
-        // this._indexBuffer.bind();
-        // this._indexBuffer.draw();
+        this._vertextBuffer.bind();
+        this._indexBuffer.bind();
+        this._indexBuffer.draw();
     }
 }

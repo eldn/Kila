@@ -4,6 +4,9 @@
             "name": "SpriteMaterial",
             "diffuse": "assets/textures/hay.png",
             "specular": "assets/textures/container_spec.png"
+        },
+        {
+            "name": "MeshMaterial"
         }
     ]
 }
