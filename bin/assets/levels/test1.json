@@ -32,7 +32,12 @@
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": -3
+					"z": -5
+				},
+				"rotation": {
+					"x":0.5,
+					"y":0.75,
+					"z":0
 				}
 			},
 			"components": [
@@ -52,10 +57,14 @@
 			"type": "perspectiveCamera",
 			"transform": {
 				"position": {
-					"z": -2
+					"x":0,
+					"y":0,
+					"z":0
 				},
 				"rotation": {
-					"y": 0.71
+					"x":0,
+					"y":0,
+					"z":0
 				}
 			}
 		}
