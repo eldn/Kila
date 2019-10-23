@@ -3,24 +3,22 @@ import { IAssetLoader } from "./IAssetLoader";
 import { AssetManager } from "./AssetManager";
 
 
-export class MeshAsset implements IAsset {
+export class ModelAsset implements IAsset {
     public readonly name : string;
-    public readonly path: string;
     public readonly data: any;
 
 
-    public constructor( path : string, data: any ) {
-        this.path = path;
+    public constructor( name : string, data: any ) {
+        this.name = name;
         this.data = data;
-        this.name = path.split('/').pop().toLowerCase()
     }
 }
 
 
-export class MeshAssetLoader implements IAssetLoader {
+export class ModelAssetLoader implements IAssetLoader {
 
     public get supportedExtensions(): string[] {
-        return ["obj"];
+        return ["obj","mtl"];
     }
 
     public loadAsset( assetPath: string ): void {
@@ -32,7 +30,7 @@ export class MeshAssetLoader implements IAssetLoader {
 
     private onMeshLoaded( assetPath: string, request: XMLHttpRequest ): void {
         if (request.readyState === request.DONE) {
-            let asset = new MeshAsset(assetPath, request.responseText);
+            let asset = new ModelAsset(assetPath, request.responseText);
             AssetManager.onAssetLoaded(asset);
         }
     }

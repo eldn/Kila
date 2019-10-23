@@ -3,7 +3,7 @@ import { IAsset } from "./IAsset";
 import { ImageAssetLoader } from "./ImageAssetLoader";
 import { JsonAssetLoader } from "./JsonAssetLoader";
 import { TextAssetLoader } from "./TextAssetLoader";
-import { MeshAssetLoader } from "./MeshAssetLoader";
+import { ModelAssetLoader } from "./ModelAssetLoader";
 import { Message } from "../message/Message";
 
 export const MESSAGE_ASSET_LOADER_ASSET_LOADED = "MESSAGE_ASSET_LOADER_ASSET_LOADED::";
@@ -21,7 +21,7 @@ export class AssetManager {
         AssetManager._loaders.push(new ImageAssetLoader());
         AssetManager._loaders.push(new JsonAssetLoader());
         AssetManager._loaders.push(new TextAssetLoader());
-        AssetManager._loaders.push(new MeshAssetLoader());
+        AssetManager._loaders.push(new ModelAssetLoader());
     }
 
  

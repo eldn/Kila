@@ -8,7 +8,22 @@ import { Matrix4x4 } from "../math/Matrix4x4";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
-    public path : string;
+
+    /**
+     * 模型路径
+     */
+    public modelPath : string;
+
+
+    /**
+     * 材质路径
+     */
+    public mtlPath : string;
+
+    /**
+     * 材质名
+     * TODO: 材质应该读取模型文件数据中的
+     */
     public materialName : string;
 
     public setFromJson(json: any): void {
@@ -17,8 +32,12 @@ export class MeshRendererCoponentData implements IComponentData {
             this.name = String(json.name);
         }
 
-        if (json.path !== undefined) {
-            this.path = String(json.path);
+        if (json.modelPath !== undefined) {
+            this.modelPath = String(json.modelPath);
+        }
+
+        if (json.mtlPath !== undefined) {
+            this.mtlPath = String(json.mtlPath);
         }
 
         if (json.materialName !== undefined) {
@@ -49,7 +68,7 @@ export class MeshRendererComponent extends BaseComponent {
     public constructor(data: MeshRendererCoponentData) {
         super(data);
 
-        this._mesh = new Mesh(data.name, data.path, data.materialName);
+        this._mesh = new Mesh(data.name, data.modelPath, data.mtlPath, data.materialName);
     }
 
     public load(): void {

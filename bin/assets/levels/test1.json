@@ -45,7 +45,8 @@
 					"name": "testMesh",
 					"type": "mesh",
 					"materialName": "MeshMaterial",
-					"path":"assets/model/box.obj"
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
 				}
 			],
 			"behaviors": [
