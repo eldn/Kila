@@ -379,7 +379,7 @@ export class OBJDoc {
         for (; ;) {
             let word : string = sp.getWord();
             if (word == null) break;
-            let subWords : Array<string> = word.split('/');
+            let subWords : Array<string> = word.split('//');
             if (subWords.length >= 1) {
                 let vi : number = parseInt(subWords[0]) - 1;
                 face.vIndices.push(vi);
