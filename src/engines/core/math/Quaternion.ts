@@ -1,4 +1,5 @@
 import { Vector3 } from "./Vector3";
+import { Matrix3x3 } from "./Matrix3x3";
 
 
 export class Quaternion{
@@ -35,6 +36,9 @@ export class Quaternion{
     }
 
     constructor(x : number, y : number, z : number, w : number){
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.w = w;
     }
 
@@ -69,5 +73,66 @@ export class Quaternion{
 
     public conjugate() : Quaternion{
         return new Quaternion(-this.x, -this.y, -this.z, -this.w);
+    }
+
+    /**
+     * @zh 根据视口的前方向和上方向计算四元数
+     * @param view 视口面向的前方向，必须归一化
+     * @param up 视口的上方向，必须归一化，默认为 (0, 1, 0)
+     */
+    public static fromViewUp (view: Vector3, up : Vector3 = new Vector3(0, 1, 0)) {
+        let m3_1 : Matrix3x3 = new Matrix3x3();
+        Matrix3x3.fromViewUp(m3_1, view, up);
+        let quat : Quaternion = new Quaternion(1,1,1,1);
+        Quaternion.fromMat3(quat, m3_1);
+        return quat.normalize();
+    }
+
+     /**
+     * @zh 根据三维矩阵信息计算四元数，默认输入矩阵不含有缩放信息
+     */
+    public static fromMat3 (out: Quaternion, m: Matrix3x3) {
+        const {
+            m00: m00, m03: m01, m06: m02,
+            m01: m10, m04: m11, m07: m12,
+            m02: m20, m05: m21, m08: m22,
+        } = m;
+
+        const trace = m00 + m11 + m22;
+
+        if (trace > 0) {
+            const s = 0.5 / Math.sqrt(trace + 1.0);
+
+            out.w = 0.25 / s;
+            out.x = (m21 - m12) * s;
+            out.y = (m02 - m20) * s;
+            out.z = (m10 - m01) * s;
+
+        } else if ((m00 > m11) && (m00 > m22)) {
+            const s = 2.0 * Math.sqrt(1.0 + m00 - m11 - m22);
+
+            out.w = (m21 - m12) / s;
+            out.x = 0.25 * s;
+            out.y = (m01 + m10) / s;
+            out.z = (m02 + m20) / s;
+
+        } else if (m11 > m22) {
+            const s = 2.0 * Math.sqrt(1.0 + m11 - m00 - m22);
+
+            out.w = (m02 - m20) / s;
+            out.x = (m01 + m10) / s;
+            out.y = 0.25 * s;
+            out.z = (m12 + m21) / s;
+
+        } else {
+            const s = 2.0 * Math.sqrt(1.0 + m22 - m00 - m11);
+
+            out.w = (m10 - m01) / s;
+            out.x = (m02 + m20) / s;
+            out.y = (m12 + m21) / s;
+            out.z = 0.25 * s;
+        }
+
+        return out;
     }
 }

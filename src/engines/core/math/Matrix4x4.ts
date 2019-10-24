@@ -44,16 +44,16 @@ export class Matrix4x4 {
 
   
     public static perspective( fov: number, aspect: number, nearClip: number, farClip: number ): Matrix4x4 {
-        let f = 1.0 / Math.tan( fov / 2.0 );
-        let rangeInv = 1.0 / ( nearClip - farClip );
+        let f = 1.0 / Math.tan( fov / 2 );
+        let nf = 1 / ( nearClip - farClip );
 
         // data
         let m = new Matrix4x4();
         m._data = [
             f / aspect, 0, 0, 0,
             0, f, 0, 0,
-            0, 0, ( nearClip + farClip ) * rangeInv, -1.0,
-            0, 0, nearClip * farClip * rangeInv * 2.0, 0.0
+            0, 0, ( nearClip + farClip ) * nf, -1,
+            0, 0, nearClip * farClip * nf * 2, 0
         ];
         return m;
     }
@@ -193,23 +193,107 @@ export class Matrix4x4 {
     }
 
 
-    public toFloat32Array(): Float32Array {
-        return new Float32Array( this._data );
+    public static setLookAt(eye: Vector3, center: Vector3, up: Vector3): Matrix4x4 {
+        let fx: number = center.x - eye.x;
+        let fy: number = center.y - eye.y;
+        let fz: number = center.x - eye.z;
+
+        let rlf: number = 1 / Math.sqrt(fx * fx + fy * fy + fz * fz);
+        fx *= rlf;
+        fy *= rlf;
+        fz *= rlf;
+
+
+        let sx: number = fy * up.z - fz * up.y;
+        let sy: number = fz * up.x - fx * up.z;
+        let sz: number = fx * up.y - fy * up.x;
+
+
+        let rls: number = 1 / Math.sqrt(sx * sx + sy * sy + sz * sz);
+        sx *= rls;
+        sy *= rls;
+        sz *= rls;
+
+
+        let ux: number = sy * fz - sz * fy;
+        let uy: number = sz * fx - sx * fz;
+        let uz: number = sx * fy - sy * fx;
+
+
+        let m: Matrix4x4 = new Matrix4x4();
+        let e = m.data;
+        e[0] = sx;
+        e[1] = ux;
+        e[2] = -fx;
+        e[3] = 0;
+
+        e[4] = sy;
+        e[5] = uy;
+        e[6] = -fy;
+        e[7] = 0;
+
+        e[8] = sz;
+        e[9] = uz;
+        e[10] = -fz;
+        e[11] = 0;
+
+        e[12] = 0;
+        e[13] = 0;
+        e[14] = 0;
+        e[15] = 1;
+
+        return Matrix4x4.translation(new Vector3(-eye.x, -eye.y, -eye.z));
     }
 
-    
-    public copyFrom( m: Matrix4x4 ): void {
-        for ( let i = 0; i < 16; ++i ) {
+    // public static setLookAt(from: Vector3, to: Vector3, tmp: Vector3 = new Vector3(0, 1, 0)): Matrix4x4 {
+
+    //     let forward : Vector3 = from.subtract(to).normalize();
+    //     let right : Vector3  =   tmp.normalize().cross(forward);
+    //     let up : Vector3 = forward.cross(right);
+
+    //     let m : Matrix4x4 = new Matrix4x4();
+    //     let camToWorld = m.data;
+
+    //     camToWorld[0] = right.x;
+    //     camToWorld[1] = right.y;
+    //     camToWorld[2] = right.z;
+    //     camToWorld[4] = up.x;
+    //     camToWorld[5] = up.y;
+    //     camToWorld[6] = up.z;
+    //     camToWorld[8] = forward.x;
+    //     camToWorld[9] = forward.y;
+    //     camToWorld[10] = forward.z;
+
+    //     camToWorld[11] = from.x;
+    //     camToWorld[12] = from.y;
+    //     camToWorld[13] = from.z;
+
+    //     return m;
+    // }
+
+
+    public lookAt(eye: Vector3, center: Vector3, up: Vector3) {
+        return Matrix4x4.multiply(this, Matrix4x4.setLookAt(eye, center, up));
+    }
+
+
+    public toFloat32Array(): Float32Array {
+        return new Float32Array(this._data);
+    }
+
+
+    public copyFrom(m: Matrix4x4): void {
+        for (let i = 0; i < 16; ++i) {
             this._data[i] = m._data[i];
         }
     }
 
-    public set(x : number, y : number, v : number) : Matrix4x4{
+    public set(x: number, y: number, v: number): Matrix4x4 {
         this._data[x][y] = v;
         return this;
     }
 
-    public get(x : number, y : number) : number{
+    public get(x: number, y: number): number {
         return this._data[x][y];
     }
 }

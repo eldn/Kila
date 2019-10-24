@@ -6,6 +6,7 @@ import { Vector3 } from "../math/Vector3";
 import { SceneGraph } from "./SceneGraph";
 import { IComponent } from "../components/IComponent";
 import { IBehavior } from "../behaviors/IBehavior";
+import { Quaternion } from "../math/Quaternion";
 
 
 export class TEntity extends TObject {
@@ -231,6 +232,50 @@ export class TEntity extends TObject {
         for (let c of this._children) {
             c.render(shader, projection, viewMatrix);
         }
+    }
+
+    /**
+     * 设置当前节点旋转为面向目标位置
+     * @param pos 目标位置
+     * @param up 坐标系的上方向
+     */
+    public lookAt (pos: Vector3, up : Vector3 = new Vector3(0, 1, 0)): void {
+        let v3_a : Vector3 = this.getWorldPosition();
+        // we use -z for view-dir
+        v3_a = v3_a.subtract(pos).normalize(); 
+        let q_a : Quaternion = Quaternion.fromViewUp(v3_a, up);
+        this.setWorldRotation(q_a);
+    }
+
+    /**
+     * @zh
+     * 设置世界旋转
+     * @param rotation 目标世界旋转
+     */
+    public setWorldRotation (val: Quaternion) {
+        
+        // TODO transform 里得rotation 改为Quaternion类型而不是vector3
+        // if (this._parent !== undefined) {
+
+        //     // TODO 强制转换成Quaternion类型
+        //     let parentRotation : Vector3 = this.parent.transform.rotation;
+        //     let parentQuatRotation : Quaternion = new Quaternion(parentRotation.x, parentRotation.y,parentRotation.z, 1);
+
+        //     let b : Quaternion = parentQuatRotation.conjugate();
+        //     let a : Quaternion = b.mul(val)
+
+        //     this.transform.rotation.x = a.x;
+        //     this.transform.rotation.y = a.y;
+        //     this.transform.rotation.z = a.z;
+        // } else {
+        //     this.transform.rotation.x = val.x;
+        //     this.transform.rotation.y = val.y;
+        //     this.transform.rotation.z = val.z;
+        // }
+
+        this.transform.rotation.x = val.x;
+        this.transform.rotation.y = val.y;
+        this.transform.rotation.z = val.z;
     }
 
     /** Returns the world position of this entity. */

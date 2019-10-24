@@ -1,7 +1,16 @@
 import { Vector2 } from "./Vector2";
+import { EPSILON } from "./Utils";
+import { Matrix4x4 } from "./Matrix4x4";
 
 
  export class Vector3 {
+
+    public static UNIT_X : Vector3 = Object.freeze(new Vector3(1, 0, 0)) as Vector3;
+    public static UNIT_Y : Vector3  = Object.freeze(new Vector3(0, 1, 0)) as Vector3;
+    public static UNIT_Z : Vector3  = Object.freeze(new Vector3(0, 0, 1)) as Vector3;
+    public static ZERO : Vector3  = Object.freeze(new Vector3(0, 0, 0)) as Vector3;
+    public static ONE : Vector3  = Object.freeze(new Vector3(1, 1, 1)) as Vector3;
+    public static NEG_ONE : Vector3  = Object.freeze(new Vector3(-1, -1, -1)) as Vector3;
 
     private _x: number;
     private _y: number;
@@ -193,8 +202,15 @@ import { Vector2 } from "./Vector2";
         return new Vector3( this._x, this._y, this._z );
     }
 
+     /**
+     * @zh 求向量长度平方
+     */
+    public lengthSqr() : number {
+        return this.x * this.x + this.y * this.y + this.z * this.z;
+    }
+
     public length() : number{
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        return Math.sqrt(this.lengthSqr());
     }
 
     public dot(v : Vector3) : number{
@@ -209,6 +225,11 @@ import { Vector2 } from "./Vector2";
     }
 
     public normalize() : Vector3{
+
+        if(this.lengthSqr() < EPSILON * EPSILON){
+            return Vector3.ZERO;
+        }
+
         let len : number = this.length();
         this.x /= len;
         this.y /= len;
