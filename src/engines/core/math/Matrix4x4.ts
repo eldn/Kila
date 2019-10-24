@@ -192,91 +192,6 @@ export class Matrix4x4 {
         return m;
     }
 
-
-    public static setLookAt(eye: Vector3, center: Vector3, up: Vector3): Matrix4x4 {
-        let fx: number = center.x - eye.x;
-        let fy: number = center.y - eye.y;
-        let fz: number = center.x - eye.z;
-
-        let rlf: number = 1 / Math.sqrt(fx * fx + fy * fy + fz * fz);
-        fx *= rlf;
-        fy *= rlf;
-        fz *= rlf;
-
-
-        let sx: number = fy * up.z - fz * up.y;
-        let sy: number = fz * up.x - fx * up.z;
-        let sz: number = fx * up.y - fy * up.x;
-
-
-        let rls: number = 1 / Math.sqrt(sx * sx + sy * sy + sz * sz);
-        sx *= rls;
-        sy *= rls;
-        sz *= rls;
-
-
-        let ux: number = sy * fz - sz * fy;
-        let uy: number = sz * fx - sx * fz;
-        let uz: number = sx * fy - sy * fx;
-
-
-        let m: Matrix4x4 = new Matrix4x4();
-        let e = m.data;
-        e[0] = sx;
-        e[1] = ux;
-        e[2] = -fx;
-        e[3] = 0;
-
-        e[4] = sy;
-        e[5] = uy;
-        e[6] = -fy;
-        e[7] = 0;
-
-        e[8] = sz;
-        e[9] = uz;
-        e[10] = -fz;
-        e[11] = 0;
-
-        e[12] = 0;
-        e[13] = 0;
-        e[14] = 0;
-        e[15] = 1;
-
-        return Matrix4x4.translation(new Vector3(-eye.x, -eye.y, -eye.z));
-    }
-
-    // public static setLookAt(from: Vector3, to: Vector3, tmp: Vector3 = new Vector3(0, 1, 0)): Matrix4x4 {
-
-    //     let forward : Vector3 = from.subtract(to).normalize();
-    //     let right : Vector3  =   tmp.normalize().cross(forward);
-    //     let up : Vector3 = forward.cross(right);
-
-    //     let m : Matrix4x4 = new Matrix4x4();
-    //     let camToWorld = m.data;
-
-    //     camToWorld[0] = right.x;
-    //     camToWorld[1] = right.y;
-    //     camToWorld[2] = right.z;
-    //     camToWorld[4] = up.x;
-    //     camToWorld[5] = up.y;
-    //     camToWorld[6] = up.z;
-    //     camToWorld[8] = forward.x;
-    //     camToWorld[9] = forward.y;
-    //     camToWorld[10] = forward.z;
-
-    //     camToWorld[11] = from.x;
-    //     camToWorld[12] = from.y;
-    //     camToWorld[13] = from.z;
-
-    //     return m;
-    // }
-
-
-    public lookAt(eye: Vector3, center: Vector3, up: Vector3) {
-        return Matrix4x4.multiply(this, Matrix4x4.setLookAt(eye, center, up));
-    }
-
-
     public toFloat32Array(): Float32Array {
         return new Float32Array(this._data);
     }
@@ -295,5 +210,63 @@ export class Matrix4x4 {
 
     public get(x: number, y: number): number {
         return this._data[x][y];
+    }
+
+    /**
+     * @zh 根据视点计算矩阵，注意 `eye - center` 不能为零向量或与 `up` 向量平行
+     * @param eye 当前位置
+     * @param center 目标视点
+     * @param up 视口上方向
+     */
+    public static lookAt <Out extends Matrix4x4, VecLike extends Vector3> (out: Out, eye: VecLike, center: VecLike, up: VecLike) {
+        const eyex = eye.x;
+        const eyey = eye.y;
+        const eyez = eye.z;
+        const upx = up.x;
+        const upy = up.y;
+        const upz = up.z;
+        const centerx = center.x;
+        const centery = center.y;
+        const centerz = center.z;
+
+        let z0 = eyex - centerx;
+        let z1 = eyey - centery;
+        let z2 = eyez - centerz;
+
+        let len = 1 / Math.sqrt(z0 * z0 + z1 * z1 + z2 * z2);
+        z0 *= len;
+        z1 *= len;
+        z2 *= len;
+
+        let x0 = upy * z2 - upz * z1;
+        let x1 = upz * z0 - upx * z2;
+        let x2 = upx * z1 - upy * z0;
+        len = 1 / Math.sqrt(x0 * x0 + x1 * x1 + x2 * x2);
+        x0 *= len;
+        x1 *= len;
+        x2 *= len;
+
+        const y0 = z1 * x2 - z2 * x1;
+        const y1 = z2 * x0 - z0 * x2;
+        const y2 = z0 * x1 - z1 * x0;
+
+        out[0] = x0;
+        out[1] = y0;
+        out[2] = z0;
+        out[3] = 0;
+        out[4] = x1;
+        out[5] = y1;
+        out[6] = z1;
+        out[7] = 0;
+        out[8] = x2;
+        out[9] = y2;
+        out[10] = z2;
+        out[11] = 0;
+        out[12] = -(x0 * eyex + x1 * eyey + x2 * eyez);
+        out[13] = -(y0 * eyex + y1 * eyey + y2 * eyez);
+        out[14] = -(z0 * eyex + z1 * eyey + z2 * eyez);
+        out[15] = 1;
+
+        return out;
     }
 }
