@@ -2,6 +2,7 @@ import { Vector3 } from "./Vector3";
 import { Matrix3x3 } from "./Matrix3x3";
 
 
+
 export class Quaternion{
 
     private _x: number;
@@ -135,4 +136,100 @@ export class Quaternion{
 
         return out;
     }
+
+     /**
+     * @zh 根据 xyz 分量计算 w 分量，默认已归一化
+     */
+    public static fromVector3 (out: Quaternion, b: Vector3)  : Quaternion{
+        let a : Vector3 = new Vector3(b.x, b.y, b.z);
+        a.normalize();
+        out.x = a.x;
+        out.y = a.y;
+        out.z = a.z;
+        out.w = Math.sqrt(Math.abs(1.0 - a.x * a.x - a.y * a.y - a.z * a.z));
+        return out;
+    }
+
+     /**
+     * @zh 根据欧拉角信息计算四元数，旋转顺序为 YZX
+     */
+    public static fromEuler <Out extends Quaternion> (out: Out, x: number, y: number, z: number) {
+        x *= halfToRad;
+        y *= halfToRad;
+        z *= halfToRad;
+
+        const sx = Math.sin(x);
+        const cx = Math.cos(x);
+        const sy = Math.sin(y);
+        const cy = Math.cos(y);
+        const sz = Math.sin(z);
+        const cz = Math.cos(z);
+
+        out.x = sx * cy * cz + cx * sy * sz;
+        out.y = cx * sy * cz + sx * cy * sz;
+        out.z = cx * cy * sz - sx * sy * cz;
+        out.w = cx * cy * cz - sx * sy * sz;
+
+        return out;
+    }
+
+     /**
+     * @zh 四元数球面插值
+     */
+    public static slerp <Out extends Quaternion, QuatLike_1 extends Quaternion, QuatLike_2 extends Quaternion>
+     (out: Out, a: QuatLike_1, b: QuatLike_2, t: number) {
+        // benchmarks:
+        //    http://jsperf.com/quaternion-slerp-implementations
+
+        let scale0 = 0;
+        let scale1 = 0;
+
+        // calc cosine
+        let cosom = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+        // adjust signs (if necessary)
+        if (cosom < 0.0) {
+            cosom = -cosom;
+            b.x = -b.x;
+            b.y = -b.y;
+            b.z = -b.z;
+            b.w = -b.w;
+        }
+        // calculate coefficients
+        if ((1.0 - cosom) > 0.000001) {
+            // standard case (slerp)
+            const omega = Math.acos(cosom);
+            const sinom = Math.sin(omega);
+            scale0 = Math.sin((1.0 - t) * omega) / sinom;
+            scale1 = Math.sin(t * omega) / sinom;
+        } else {
+            // "from" and "to" quaternions are very close
+            //  ... so we can do a linear interpolation
+            scale0 = 1.0 - t;
+            scale1 = t;
+        }
+        // calculate final values
+        out.x = scale0 * a.x + scale1 * b.x;
+        out.y = scale0 * a.y + scale1 * b.y;
+        out.z = scale0 * a.z + scale1 * b.z;
+        out.w = scale0 * a.w + scale1 * b.w;
+
+        return out;
+    }
+
+    /**
+     * @zh 带两个控制点的四元数球面插值
+     */
+    public static sqlerp <Out extends Quaternion> (out: Out, a: Out, b: Out, c: Out, d: Out, t: number) {
+        Quaternion.slerp(qt_1, a, d, t);
+        Quaternion.slerp(qt_2, b, c, t);
+        Quaternion.slerp(out, qt_1, qt_2, 2 * t * (1 - t));
+        return out;
+    }
 }
+
+
+const qt_1 = new Quaternion(1,1,1,1);
+const qt_2 = new Quaternion(1,1,1,1);
+const v3_1 = new Quaternion(1,1,1,1);
+const m3_1 = new Matrix3x3();
+const halfToRad = 0.5 * Math.PI / 180.0;

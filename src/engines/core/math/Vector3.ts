@@ -1,6 +1,7 @@
 import { Vector2 } from "./Vector2";
 import { EPSILON } from "./Utils";
 import { Matrix4x4 } from "./Matrix4x4";
+import { Quaternion } from "./Quaternion";
 
 
  export class Vector3 {
@@ -244,5 +245,45 @@ import { Matrix4x4 } from "./Matrix4x4";
         this.x = this.x * cos - this.y * sin;
         this.y = this.x * sin + this.y * cos;
         return this;
+    }
+
+    /**
+     * @zh 向量四元数乘法
+     */
+    public static transformQuat (out: Vector3, a: Vector3, q: Quaternion) {
+        // benchmarks: http://jsperf.com/quaternion-transform-Vec3-implementations
+
+        // calculate quat * vec
+        const ix = q.w * a.x + q.y * a.z - q.z * a.y;
+        const iy = q.w * a.y + q.z * a.x - q.x * a.z;
+        const iz = q.w * a.z + q.x * a.y - q.y * a.x;
+        const iw = -q.x * a.x - q.y * a.y - q.z * a.z;
+
+        // calculate result * inverse quat
+        out.x = ix * q.w + iw * -q.x + iy * -q.z - iz * -q.y;
+        out.y = iy * q.w + iw * -q.y + iz * -q.x - ix * -q.z;
+        out.z = iz * q.w + iw * -q.z + ix * -q.y - iy * -q.x;
+        return out;
+    }
+
+    /**
+     * @zh 逐元素向量乘加: A + B * scale
+     */
+    public static scaleAndAdd (out: Vector3, a: Vector3, b: Vector3, scale: number) {
+        out.x = a.x + b.x * scale;
+        out.y = a.y + b.y * scale;
+        out.z = a.z + b.z * scale;
+        return out;
+    }
+
+
+    /**
+     * @zh 逐元素向量线性插值： A + t * (B - A)
+     */
+    public static lerp<Out extends Vector3> (out: Out, a: Out, b: Out, t: number) {
+        out.x = a.x + t * (b.x - a.x);
+        out.y = a.y + t * (b.y - a.y);
+        out.z = a.z + t * (b.z - a.z);
+        return out;
     }
 }
