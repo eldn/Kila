@@ -30,6 +30,13 @@ export class LevelManager {
         return undefined;
     }
 
+    public static get activeLevel() : Level{
+        if (LevelManager._activeLevel !== undefined && LevelManager._activeLevel.isLoaded) {
+            return LevelManager._activeLevel;
+        }
+        return undefined;
+    }
+
     /** Loads this manager. */
     public static load(): void {
 
