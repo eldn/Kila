@@ -3,6 +3,7 @@ import { Message } from "../message/Message";
 
 
  export const MESSAGE_MOUSE_DOWN: string = "MOUSE_DOWN";
+ export const MESSAGE_MOUSE_MOVE: string = "MOUSE_MOVE";
  export const MESSAGE_MOUSE_UP: string = "MOUSE_UP";
  export const MESSAGE_KEY_DOWN: string = "KEY_DOWN";
  export const MESSAGE_KEY_UP: string = "KEY_UP";
@@ -85,6 +86,8 @@ import { Message } from "../message/Message";
          let rect = ( event.target as HTMLElement ).getBoundingClientRect();
          InputManager._mouseX = ( event.clientX - Math.round( rect.left ) ) * ( 1 / InputManager._resolutionScale.x );
          InputManager._mouseY = ( event.clientY - Math.round( rect.top ) ) * ( 1 / InputManager._resolutionScale.y );
+
+         Message.send( MESSAGE_MOUSE_MOVE, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition() ) );
      }
 
      private static onMouseDown( event: MouseEvent ): void {
