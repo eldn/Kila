@@ -1,9 +1,6 @@
 import { IBehaviorBuilder } from "./IBehaviorBuilder";
 import { IBehavior } from "./IBehavior";
-import { KeyboardMovementBehaviorBuilder } from "./KeyboardMovementBehavior";
-import { MouseClickBehaviorBuilder } from "./MouseClickBehavior";
-import { RotationBehaviorBuilder } from "./RotationBehavior";
-import { VisibilityOnMessageBehaviorBuilder } from "./VisibilityOnMessageBehavior";
+import { FirstPersonCameraBehaviorBuilder } from "./FirstPersonCameraBehavior";
 import { KeyboardMovementBehaviorBuilder } from "./KeyboardMovementBehavior";
 import { MouseClickBehaviorBuilder } from "./MouseClickBehavior";
 import { RotationBehaviorBuilder } from "./RotationBehavior";
@@ -37,5 +34,6 @@ export class BehaviorManager {
         BehaviorManager.registerBuilder(new RotationBehaviorBuilder());
 
         BehaviorManager.registerBuilder(new VisibilityOnMessageBehaviorBuilder());
+        BehaviorManager.registerBuilder(new FirstPersonCameraBehaviorBuilder());
     }
 }
