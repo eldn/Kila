@@ -145,7 +145,7 @@ export class Engine {
     private render(): void {
         this._renderer.BeginRender();
 
-        let projection : Matrix4x4 = this._renderer.getProjection();
+        let projection : Matrix4x4 = Renderer.getProjection();
         let viewMatrix : Matrix4x4 = LevelManager.getViewMatrix();
 
         LevelManager.render( this._renderer.worldShader, projection, viewMatrix);

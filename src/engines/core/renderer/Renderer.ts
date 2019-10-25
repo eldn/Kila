@@ -10,17 +10,17 @@ import { Level } from "../world/Level";
 
 export class Renderer {
 
-    private _windowViewport: RendererViewport;
+    public static windowViewport: RendererViewport;
 
     private _basicShader: BasicShader;
 
     public constructor( createInfo: RendererViewportCreateInfo ) {
-        this._windowViewport = new RendererViewport( createInfo );
+        Renderer.windowViewport = new RendererViewport( createInfo );
 
     }
 
     public get windowViewportCanvas(): HTMLCanvasElement {
-        return this._windowViewport.canvas;
+        return Renderer.windowViewport.canvas;
     }
 
     public get worldShader(): Shader {
@@ -34,8 +34,8 @@ export class Renderer {
     }
 
     public Resize(): void {
-        if ( this._windowViewport ) {
-            this._windowViewport.OnResize( window.innerWidth, window.innerHeight );
+        if ( Renderer.windowViewport ) {
+            Renderer.windowViewport.OnResize( window.innerWidth, window.innerHeight );
         }
     }
 
@@ -57,7 +57,12 @@ export class Renderer {
 
     }
 
-    public getProjection() : Matrix4x4{
-        return this._windowViewport.GetProjectionMatrix();
+    public static getProjection() : Matrix4x4{
+        if(Renderer.windowViewport){
+            return Renderer.windowViewport.GetProjectionMatrix();
+        } else {
+            console.error("windowViewport not initliazed!");
+            return null;
+        }
     }
 }
