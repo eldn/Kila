@@ -3,6 +3,9 @@ import { EPSILON } from "./Utils";
 import { Matrix4x4 } from "./Matrix4x4";
 import { Quaternion } from "./Quaternion";
 
+let _x: number = 0.0;
+let _y: number = 0.0;
+let _z: number = 0.0;
 
  export class Vector3 {
 
@@ -290,5 +293,33 @@ import { Quaternion } from "./Quaternion";
 
     public static add( a : Vector3, b: Vector3 ): Vector3 {
         return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+    }
+
+    /**
+     * @zh 逐元素向量减法
+     */
+    public static subtract<Out extends Vector3> (out: Out, a: Out, b: Out) {
+        out.x = a.x - b.x;
+        out.y = a.y - b.y;
+        out.z = a.z - b.z;
+        return out;
+    }
+
+      /**
+     * @zh 归一化向量
+     */
+    public static normalize<Out extends Vector3, Vec3Like extends Vector3> (out: Out, a: Vec3Like) {
+        _x = a.x;
+        _y = a.y;
+        _z = a.z;
+
+        let len = _x * _x + _y * _y + _z * _z;
+        if (len > 0) {
+            len = 1 / Math.sqrt(len);
+            out.x = _x * len;
+            out.y = _y * len;
+            out.z = _z * len;
+        }
+        return out;
     }
 }

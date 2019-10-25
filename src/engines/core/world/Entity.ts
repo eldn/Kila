@@ -8,6 +8,8 @@ import { IComponent } from "../components/IComponent";
 import { IBehavior } from "../behaviors/IBehavior";
 import { Quaternion } from "../math/Quaternion";
 
+const v3_a = new Vector3();
+const q_a = new Quaternion();
 
 export class TEntity extends TObject {
 
@@ -234,50 +236,6 @@ export class TEntity extends TObject {
         }
     }
 
-    /**
-     * 设置当前节点旋转为面向目标位置
-     * @param pos 目标位置
-     * @param up 坐标系的上方向
-     */
-    public lookAt (pos: Vector3, up : Vector3 = new Vector3(0, 1, 0)): void {
-        let v3_a : Vector3 = this.getWorldPosition();
-        // we use -z for view-dir
-        v3_a = v3_a.subtract(pos).normalize(); 
-        let q_a : Quaternion = Quaternion.fromViewUp(v3_a, up);
-        this.setWorldRotation(q_a);
-    }
-
-    /**
-     * @zh
-     * 设置世界旋转
-     * @param rotation 目标世界旋转
-     */
-    public setWorldRotation (val: Quaternion) {
-        
-        // TODO transform 里得rotation 改为Quaternion类型而不是vector3
-        // if (this._parent !== undefined) {
-
-        //     // TODO 强制转换成Quaternion类型
-        //     let parentRotation : Vector3 = this.parent.transform.rotation;
-        //     let parentQuatRotation : Quaternion = new Quaternion(parentRotation.x, parentRotation.y,parentRotation.z, 1);
-
-        //     let b : Quaternion = parentQuatRotation.conjugate();
-        //     let a : Quaternion = b.mul(val)
-
-        //     this.transform.rotation.x = a.x;
-        //     this.transform.rotation.y = a.y;
-        //     this.transform.rotation.z = a.z;
-        // } else {
-        //     this.transform.rotation.x = val.x;
-        //     this.transform.rotation.y = val.y;
-        //     this.transform.rotation.z = val.z;
-        // }
-
-        this.transform.rotation.x = val.x;
-        this.transform.rotation.y = val.y;
-        this.transform.rotation.z = val.z;
-    }
-
     /** Returns the world position of this entity. */
     public getWorldPosition(): Vector3 {
         return new Vector3(this._worldMatrix.data[12], this._worldMatrix.data[13], this._worldMatrix.data[14]);
@@ -297,5 +255,36 @@ export class TEntity extends TObject {
         } else {
             this._worldMatrix.copyFrom(this._localMatrix);
         }
+    }
+
+     /**
+     * @zh
+     * 设置当前节点旋转为面向目标位置
+     * @param pos 目标位置
+     * @param up 坐标系的上方向
+     */
+    public lookAt (pos: Vector3, up?: Vector3): void {
+        v3_a.copyFrom(this.getWorldPosition());
+        Vector3.subtract(v3_a, v3_a, pos); // we use -z for view-dir
+        Vector3.normalize(v3_a, v3_a);
+        Quaternion.fromViewUp(q_a, v3_a, up);
+        this.setWorldRotation(q_a);
+    }
+
+        /**
+     * @zh
+     * 设置世界旋转
+     * @param rotation 目标世界旋转
+     */
+    public setWorldRotation (rotation: Quaternion): void{
+       
+        // Quaternion.copy(this._rot, rotation);
+        
+        // if (this._parent) {
+        //     Quaternion.multiply(this._lrot, Quaternion.conjugate(this._lrot, this._parent._rot), this._rot);
+        // } else {
+        //     Quaternion.copy(this._lrot, this._rot);
+        // }
+      
     }
 }

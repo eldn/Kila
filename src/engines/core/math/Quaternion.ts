@@ -1,7 +1,10 @@
 import { Vector3 } from "./Vector3";
 import { Matrix3x3 } from "./Matrix3x3";
 
-
+let _x: number = 0.0;
+let _y: number = 0.0;
+let _z: number = 0.0;
+let _w: number = 0.0;
 
 export class Quaternion{
 
@@ -36,7 +39,7 @@ export class Quaternion{
         this._w = value;
     }
 
-    constructor(x : number, y : number, z : number, w : number){
+    constructor(x : number = 0, y : number = 0, z : number = 0, w : number = 1){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -76,17 +79,14 @@ export class Quaternion{
         return new Quaternion(-this.x, -this.y, -this.z, -this.w);
     }
 
-    /**
+      /**
      * @zh 根据视口的前方向和上方向计算四元数
      * @param view 视口面向的前方向，必须归一化
      * @param up 视口的上方向，必须归一化，默认为 (0, 1, 0)
      */
-    public static fromViewUp (view: Vector3, up : Vector3 = new Vector3(0, 1, 0)) {
-        let m3_1 : Matrix3x3 = new Matrix3x3();
+    public static fromViewUp <Out extends Quaternion, VecLike extends Vector3> (out: Out, view: VecLike, up?: Vector3) {
         Matrix3x3.fromViewUp(m3_1, view, up);
-        let quat : Quaternion = new Quaternion(1,1,1,1);
-        Quaternion.fromMat3(quat, m3_1);
-        return quat.normalize();
+        return Quaternion.normalize(out, Quaternion.fromMat3(out, m3_1));
     }
 
      /**
@@ -225,11 +225,63 @@ export class Quaternion{
         Quaternion.slerp(out, qt_1, qt_2, 2 * t * (1 - t));
         return out;
     }
+
+    /**
+     * @zh 归一化四元数
+     */
+    public static normalize <Out extends Quaternion> (out: Out, a: Out) {
+        let len = a.x * a.x + a.y * a.y + a.z * a.z + a.w * a.w;
+        if (len > 0) {
+            len = 1 / Math.sqrt(len);
+            out.x = a.x * len;
+            out.y = a.y * len;
+            out.z = a.z * len;
+            out.w = a.w * len;
+        }
+        return out;
+    }
+
+    /**
+     * @zh 复制目标四元数
+     */
+    public static copy <Out extends Quaternion, QuatLike extends Quaternion> (out: Out, a: QuatLike) {
+        out.x = a.x;
+        out.y = a.y;
+        out.z = a.z;
+        out.w = a.w;
+        return out;
+    }
+
+     /**
+     * @zh 四元数乘法
+     */
+    public static multiply <Out extends Quaternion, QuatLike_1 extends Quaternion, QuatLike_2 extends Quaternion> (out: Out, a: QuatLike_1, b: QuatLike_2) {
+        _x = a.x * b.w + a.w * b.x + a.y * b.z - a.z * b.y;
+        _y = a.y * b.w + a.w * b.y + a.z * b.x - a.x * b.z;
+        _z = a.z * b.w + a.w * b.z + a.x * b.y - a.y * b.x;
+        _w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z;
+        out.x = _x;
+        out.y = _y;
+        out.z = _z;
+        out.w = _w;
+        return out;
+    }
+
+     /**
+     * @zh 求共轭四元数，对单位四元数与求逆等价，但更高效
+     */
+    public static conjugate <Out extends Quaternion> (out: Out, a: Out) {
+        out.x = -a.x;
+        out.y = -a.y;
+        out.z = -a.z;
+        out.w = a.w;
+        return out;
+    }
 }
 
 
-const qt_1 = new Quaternion(1,1,1,1);
-const qt_2 = new Quaternion(1,1,1,1);
-const v3_1 = new Quaternion(1,1,1,1);
+const qt_1 = new Quaternion();
+const qt_2 = new Quaternion();
+const v3_1 = new Quaternion();
 const m3_1 = new Matrix3x3();
 const halfToRad = 0.5 * Math.PI / 180.0;
