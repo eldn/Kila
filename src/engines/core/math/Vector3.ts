@@ -322,4 +322,17 @@ let _z: number = 0.0;
         }
         return out;
     }
+
+
+      /**
+     * @zh 向量叉积（向量积）
+     */
+    public static cross<Out extends Vector3, Vec3Like_1 extends Vector3, Vec3Like_2 extends Vector3 > (out: Out, a: Vec3Like_1, b: Vec3Like_2) {
+        const { x: ax, y: ay, z: az } = a;
+        const { x: bx, y: by, z: bz } = b;
+        out.x = ay * bz - az * by;
+        out.y = az * bx - ax * bz;
+        out.z = ax * by - ay * bx;
+        return out;
+    }
 }
