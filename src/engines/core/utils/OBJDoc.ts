@@ -28,6 +28,18 @@ class Vertex {
     }
 }
 
+//------------------------------------------------------------------------------
+// UV Object
+//------------------------------------------------------------------------------
+class UV {
+    public x : number;
+    public y : number;
+    constructor(x : number, y : number) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
 
 //------------------------------------------------------------------------------
 // Normal Object
@@ -87,9 +99,10 @@ class OBJObject {
 // Face Object
 //------------------------------------------------------------------------------
 class Face {
-    public materialName;
-    public vIndices;
-    public nIndices;
+    public materialName : string;
+    public vIndices : Array<any>;
+    public nIndices : Array<any>;
+    public uvIndices : Array<any>;
     public normal;
     public numIndices;
     constructor(materialName) {
@@ -97,6 +110,7 @@ class Face {
         if (materialName == null) this.materialName = "";
         this.vIndices = new Array(0);
         this.nIndices = new Array(0);
+        this.uvIndices = new Array(0);
     }
 }
 
@@ -108,11 +122,13 @@ export class DrawingInfo {
     public normals : Array<number>;
     public colors : Array<number>;
     public indices : Array<number>;
-    constructor(vertices : Array<number>, normals : Array<number>, colors : Array<number>, indices : Array<number>) {
+    public uvs : Array<number>;
+    constructor(vertices : Array<number>, normals : Array<number>, colors : Array<number>, indices : Array<number>, uvs : Array<number>) {
         this.vertices = vertices;
         this.normals = normals;
         this.colors = colors;
         this.indices = indices;
+        this.uvs = uvs;
     }
 }
 
@@ -225,6 +241,7 @@ export class OBJDoc {
     public objects: Array<OBJObject>;
     public vertices: Array<Vertex>;
     public normals: Array<Normal>;
+    public uvs : Array<UV>;
 
     
     constructor(objFileString : string, mtlFileString ?: string) {
@@ -234,6 +251,7 @@ export class OBJDoc {
         this.objects = new Array(0);   // Initialize the property for Object
         this.vertices = new Array(0);  // Initialize the property for Vertex
         this.normals = new Array(0);   // Initialize the property for Normal
+        this.uvs = new Array(0);
     }
 
     // Parsing the OBJ file
@@ -270,6 +288,10 @@ export class OBJDoc {
                 case 'v':   // Read vertex
                     let vertex : Vertex = this.parseVertex(sp, scale);
                     this.vertices.push(vertex);
+                    continue; // Go to the next line
+                case 'vt':   // Read UV
+                    let uv : UV = this.parseUV(sp, scale);
+                    this.uvs.push(uv);
                     continue; // Go to the next line
                 case 'vn':   // Read normal
                     let normal = this.parseNormal(sp);
@@ -341,6 +363,12 @@ export class OBJDoc {
         return (new Vertex(x, y, z));
     }
 
+    parseUV(sp, scale) : UV{
+        let x : number = sp.getFloat() * scale;
+        let y : number = sp.getFloat() * scale;
+        return (new UV(x, y));
+    }
+
     parseNormal(sp) : Normal {
         let x = sp.getFloat();
         let y = sp.getFloat();
@@ -379,14 +407,23 @@ export class OBJDoc {
         for (; ;) {
             let word : string = sp.getWord();
             if (word == null) break;
-            let subWords : Array<string> = word.split('//');
+            let subWords : Array<string> = word.split('/');
             if (subWords.length >= 1) {
                 let vi : number = parseInt(subWords[0]) - 1;
                 face.vIndices.push(vi);
             }
             if (subWords.length >= 3) {
-                let ni = parseInt(subWords[2]) - 1;
+
+                // uv
+                if(subWords[1] != ""){
+                    let uvi : number = parseInt(subWords[1]) - 1;
+                    face.uvIndices.push(uvi);
+                }
+
+                // normal
+                let ni : number = parseInt(subWords[2]) - 1;
                 face.nIndices.push(ni);
+
             } else {
                 face.nIndices.push(-1);
             }
@@ -483,11 +520,17 @@ export class OBJDoc {
         let normals = new Array<number>(numVertices * 3);
         let colors = new Array<number>(numVertices * 4);
         let indices = new Array<number>(numIndices);
+        let uvs : Array<number> = new Array<number>(this.uvs.length * 2);
+
+        // set uvs
+        for(let i : number = 0; i < this.uvs.length; ++i){
+            uvs.push(this.uvs[i].x, this.uvs[i].x);
+        }
 
         // Set vertex, normal and color
         let index_indices = 0;
         for (let i = 0; i < this.objects.length; i++) {
-            let object = this.objects[i];
+            let object : OBJObject = this.objects[i];
             for (let j = 0; j < object.faces.length; j++) {
                 let face = object.faces[j];
                 let color = this.findColor(face.materialName);
@@ -523,7 +566,7 @@ export class OBJDoc {
             }
         }
 
-        return new DrawingInfo(vertices, normals, colors, indices);
+        return new DrawingInfo(vertices, normals, colors, indices, uvs);
     }
 
 }
