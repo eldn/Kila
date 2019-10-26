@@ -45,20 +45,10 @@ class TestGame implements IGame, IMessageHandler {
 
   onMessage(message: Message): void {
     if (message.code == MESSAGE_MOUSE_WHEEL) {
-      let event: MouseContext = message.context;
-      let angel: number = Renderer.windowViewport.fov / (Math.PI / 180);
-      let sensitivity: number = 0.1;
-
-      if (angel >= 1.0 && angel <= 45.0)
-        angel -= event.wheelDelta * sensitivity;
-
-      if (angel <= 1.0)
-        angel = 1.0;
-
-      if (angel >= 45.0)
-        angel = 45.0;
-
-      Renderer.windowViewport.fov = angel * (Math.PI / 180);
+      if(this.camera){
+        let event: MouseContext = message.context;
+        this.camera.processMouseScroll(event.wheelDelta);
+      }
     }
   }
 
@@ -90,11 +80,6 @@ class TestGame implements IGame, IMessageHandler {
     }
     //# region end 初始化摄像机
 
-    let cameraPos: Vector3 = this.camera.getWorldPosition();
-    let cameraSpeed: number = 2.5 * dt / 1000;
-    let cameraFront: Vector3 = new Vector3(0, 0, -1);
-    let cameraUp: Vector3 = new Vector3(0, 1, 0);
-
 
     // #region start 俯仰角度计算
     let mousePos: Vector2 = InputManager.getMousePosition();
@@ -112,54 +97,28 @@ class TestGame implements IGame, IMessageHandler {
     this.lastX = xpos;
     this.lastY = ypos;
 
-    let sensitivity: number = 0.1;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    this.yaw += xoffset;
-    this.pitch += yoffset;
-
-    if (this.pitch > 89.0)
-      this.pitch = 89.0;
-    if (this.pitch < -89.0)
-      this.pitch = -89.0;
-
-    let front: Vector3 = new Vector3();
-    front.x = Math.cos(this.radians(this.yaw)) * Math.cos(this.radians(this.pitch));
-    front.y = Math.sin(this.radians(this.pitch));
-    front.z = Math.sin(this.radians(this.yaw)) * Math.cos(this.radians(this.pitch));
-    cameraFront = front.normalize();
-
-
-    // 更新摄像机看向的目标点
-    // 保证摄像机永远看向的目标位置是相机z轴相反方向（永远指向屏幕中心（0,0,0））
-    this.camera.forward = Vector3.add(cameraPos, cameraFront);
-
-
+    this.camera.processMouseMovement(xoffset, yoffset, true);
     // #region end 俯仰角度计算
+
+    
     try {
-      console.log(`cameraSpeed:${cameraSpeed},cameraPos:`, cameraPos, ',cameraFront:', cameraFront)
+
       if (InputManager.isKeyDown(KEY_CODE_MACRO.w)) {
-        cameraPos = cameraPos.add(cameraFront.multiplyValue(cameraSpeed));
+          this.camera.processKeyboard(KEY_CODE_MACRO.w, dt);
       }
 
       if (InputManager.isKeyDown(KEY_CODE_MACRO.s)) {
-        cameraPos = cameraPos.subtract(cameraFront.multiplyValue(cameraSpeed));
+        this.camera.processKeyboard(KEY_CODE_MACRO.s, dt);
       }
 
       if (InputManager.isKeyDown(KEY_CODE_MACRO.a)) {
-        cameraPos = cameraPos.subtract(cameraFront.cross(cameraUp).normalize().multiplyValue(cameraSpeed));
+        this.camera.processKeyboard(KEY_CODE_MACRO.a, dt);
       }
 
       if (InputManager.isKeyDown(KEY_CODE_MACRO.d)) {
-        cameraPos = cameraPos.add(cameraFront.cross(cameraUp).normalize().multiplyValue(cameraSpeed));
+        this.camera.processKeyboard(KEY_CODE_MACRO.d, dt);
       }
-
-      let curPos: Vector3 = this.camera.getWorldPosition();
-      if (!curPos.equals(cameraPos)) {
-        let newPos: Vector3 = this.camera.transform.position.add(cameraPos.subtract(curPos));
-        console.log(`new cameraPos:  [${newPos.x},${newPos.y},${newPos.z}]`);
-      }
+      
     }
     catch (e) {
       console.error(e);

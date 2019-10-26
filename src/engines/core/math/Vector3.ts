@@ -337,8 +337,9 @@ let _z: number = 0.0;
         return out;
     }
 
-    public static multiplyValue( a : Vector3, v: number ): Vector3 {
-        let n : Vector3 = new Vector3();
-        return n.multiplyValue(v);
+    public static multiplyValue(out : Vector3, a : Vector3, v: number ): Vector3 {
+        out.copyFrom(a);
+        out.multiplyValue(v);
+        return out;
     }
 }
