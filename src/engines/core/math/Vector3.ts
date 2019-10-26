@@ -104,10 +104,11 @@ let _z: number = 0.0;
     }
 
  
-    public copyFrom( vector: Vector3 ): void {
+    public copyFrom( vector: Vector3 ): Vector3 {
         this._x = vector._x;
         this._y = vector._y;
         this._z = vector._z;
+        return this;
     }
 
   
