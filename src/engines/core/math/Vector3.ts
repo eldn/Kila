@@ -335,4 +335,9 @@ let _z: number = 0.0;
         out.z = ax * by - ay * bx;
         return out;
     }
+
+    public static multiplyValue( a : Vector3, v: number ): Vector3 {
+        let n : Vector3 = new Vector3();
+        return n.multiplyValue(v);
+    }
 }

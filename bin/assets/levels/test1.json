@@ -32,11 +32,11 @@
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": -5
+					"z": 0
 				},
 				"rotation": {
-					"x":0.5,
-					"y":0.75,
+					"x":0,
+					"y":0,
 					"z":0
 				}
 			},
@@ -50,15 +50,6 @@
 				}
 			],
 			"behaviors": [
-				{
-					"name": "testRotation",
-					"type": "rotation",
-					"rotation":{
-						"x":0,
-						"y":0.05,
-						"z":0
-					}
-				}
 			]
 		},
 		{
@@ -68,7 +59,7 @@
 				"position": {
 					"x":0,
 					"y":0,
-					"z":0
+					"z":4
 				},
 				"rotation": {
 					"x":0,
