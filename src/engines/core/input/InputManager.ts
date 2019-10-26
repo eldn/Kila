@@ -7,6 +7,7 @@ import { Message } from "../message/Message";
  export const MESSAGE_MOUSE_UP: string = "MOUSE_UP";
  export const MESSAGE_KEY_DOWN: string = "KEY_DOWN";
  export const MESSAGE_KEY_UP: string = "KEY_UP";
+ export const MESSAGE_MOUSE_WHEEL: string = "MOUSE_WHEEL";
 
  export class MouseContext {
 
@@ -16,10 +17,13 @@ import { Message } from "../message/Message";
 
      public position: Vector2;
 
-     public constructor( leftDown: boolean = false, rightDown: boolean = false, position: Vector2 ) {
+     public wheelDelta : number;
+
+     public constructor( leftDown: boolean = false, rightDown: boolean = false, position: Vector2, wheelDelta : number = 0) {
          this.leftDown = leftDown;
          this.rightDown = rightDown;
          this.position = position;
+         this.wheelDelta = wheelDelta;
      }
  }
 
@@ -50,6 +54,8 @@ import { Message } from "../message/Message";
          viewport.addEventListener( "mousemove", InputManager.onMouseMove );
          viewport.addEventListener( "mousedown", InputManager.onMouseDown );
          viewport.addEventListener( "mouseup", InputManager.onMouseUp );
+
+         viewport.addEventListener( "mousewheel", InputManager.onMouseWheel );
      }
 
     
@@ -109,4 +115,11 @@ import { Message } from "../message/Message";
 
          Message.send( MESSAGE_MOUSE_UP, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition() ) );
      }
+
+     private static onMouseWheel( event: MouseEvent ): void {
+        
+        let delta = Math.max(-1, Math.min(1, event.detail));
+
+        Message.send( MESSAGE_MOUSE_WHEEL, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition(), delta) );
+    }
  }
