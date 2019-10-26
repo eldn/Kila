@@ -118,7 +118,7 @@ import { Message } from "../message/Message";
 
      private static onMouseWheel( event: MouseEvent ): void {
         
-        let delta = Math.max(-1, Math.min(1, event.detail));
+        let delta = event['wheelDelta'] || event['wheelDeltaY'];
 
         Message.send( MESSAGE_MOUSE_WHEEL, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition(), delta) );
     }
