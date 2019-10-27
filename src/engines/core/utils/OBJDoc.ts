@@ -121,14 +121,14 @@ export class DrawingInfo {
     public vertices : Array<number>;
     public normals : Array<number>;
     public colors : Array<number>;
-    public indices : Array<number>;
     public uvs : Array<number>;
-    constructor(vertices : Array<number>, normals : Array<number>, colors : Array<number>, indices : Array<number>, uvs : Array<number>) {
+    public indices : Array<number>;
+    constructor(vertices : Array<number>, normals : Array<number>, colors : Array<number>, uvs : Array<number>, indices : Array<number>) {
         this.vertices = vertices;
         this.normals = normals;
         this.colors = colors;
-        this.indices = indices;
         this.uvs = uvs;
+        this.indices = indices;
     }
 }
 
@@ -408,16 +408,20 @@ export class OBJDoc {
             let word : string = sp.getWord();
             if (word == null) break;
             let subWords : Array<string> = word.split('/');
+
             if (subWords.length >= 1) {
                 let vi : number = parseInt(subWords[0]) - 1;
                 face.vIndices.push(vi);
             }
+
             if (subWords.length >= 3) {
 
                 // uv
                 if(subWords[1] != ""){
                     let uvi : number = parseInt(subWords[1]) - 1;
                     face.uvIndices.push(uvi);
+                } else {
+                    face.uvIndices.push(-1);
                 }
 
                 // normal
@@ -465,21 +469,29 @@ export class OBJDoc {
         }
         face.normal = new Normal(normal[0], normal[1], normal[2]);
 
+
         // Devide to triangles if face contains over 3 points.
         if (face.vIndices.length > 3) {
             let n = face.vIndices.length - 2;
             let newVIndices = new Array(n * 3);
             let newNIndices = new Array(n * 3);
+            let newUVIndices = new Array(n * 3);
             for (let i = 0; i < n; i++) {
                 newVIndices[i * 3 + 0] = face.vIndices[0];
                 newVIndices[i * 3 + 1] = face.vIndices[i + 1];
                 newVIndices[i * 3 + 2] = face.vIndices[i + 2];
+
                 newNIndices[i * 3 + 0] = face.nIndices[0];
                 newNIndices[i * 3 + 1] = face.nIndices[i + 1];
                 newNIndices[i * 3 + 2] = face.nIndices[i + 2];
+
+                newUVIndices[i * 3 + 0] = face.uvIndices[0];
+                newUVIndices[i * 3 + 1] = face.uvIndices[i + 1];
+                newUVIndices[i * 3 + 2] = face.uvIndices[i + 2];
             }
             face.vIndices = newVIndices;
             face.nIndices = newNIndices;
+            face.uvIndices = newUVIndices;
         }
         face.numIndices = face.vIndices.length;
 
@@ -520,35 +532,44 @@ export class OBJDoc {
         let normals = new Array<number>(numVertices * 3);
         let colors = new Array<number>(numVertices * 4);
         let indices = new Array<number>(numIndices);
-        let uvs : Array<number> = new Array<number>(this.uvs.length * 2);
-
-        // set uvs
-        for(let i : number = 0; i < this.uvs.length; ++i){
-            uvs.push(this.uvs[i].x, this.uvs[i].x);
-        }
+        let uvs : Array<number> = new Array<number>(numIndices * 2);
 
         // Set vertex, normal and color
         let index_indices = 0;
         for (let i = 0; i < this.objects.length; i++) {
             let object : OBJObject = this.objects[i];
             for (let j = 0; j < object.faces.length; j++) {
-                let face = object.faces[j];
-                let color = this.findColor(face.materialName);
-                let faceNormal = face.normal;
-                for (let k = 0; k < face.vIndices.length; k++) {
+
+                let face : Face = object.faces[j];
+                let color : Color = this.findColor(face.materialName);
+                let faceNormal : Normal = face.normal;
+               
+                for (let k : number = 0; k < face.vIndices.length; k++) {
+
                     // Set index
                     indices[index_indices] = index_indices;
+
                     // Copy vertex
                     let vIdx = face.vIndices[k];
                     let vertex = this.vertices[vIdx];
                     vertices[index_indices * 3 + 0] = vertex.x;
                     vertices[index_indices * 3 + 1] = vertex.y;
                     vertices[index_indices * 3 + 2] = vertex.z;
+
                     // Copy color
                     colors[index_indices * 4 + 0] = color.r;
                     colors[index_indices * 4 + 1] = color.g;
                     colors[index_indices * 4 + 2] = color.b;
                     colors[index_indices * 4 + 3] = color.a;
+
+                    // Copy uv
+                    let uvIdx : number = face.uvIndices[k];
+                    if(uvIdx != -1){
+                        let uv : UV = this.uvs[uvIdx];
+                        uvs[index_indices * 2 + 0] = uv.x;
+                        uvs[index_indices * 2 + 1] = uv.y;
+                    }
+
                     // Copy normal
                     let nIdx = face.nIndices[k];
                     if (nIdx >= 0) {
@@ -566,7 +587,7 @@ export class OBJDoc {
             }
         }
 
-        return new DrawingInfo(vertices, normals, colors, indices, uvs);
+        return new DrawingInfo(vertices, normals, colors, uvs, indices);
     }
 
 }
