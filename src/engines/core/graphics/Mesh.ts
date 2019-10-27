@@ -84,7 +84,6 @@ export class Mesh implements IMessageHandler{
         objDoc.parse(1, true);
         let drawInfo : DrawingInfo = objDoc.getDrawingInfo();
 
-        let faceIndicesCount : number = drawInfo.faceIndicesCount;
         let vertices : Array<number> = drawInfo.vertices;
         let indices : Array<number> = drawInfo.indices;
 
@@ -173,6 +172,12 @@ export class Mesh implements IMessageHandler{
         this._material.shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
 
         this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        this._material.shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
+
+        if (this._material.diffuseTexture !== undefined) {
+            this._material.diffuseTexture.activateAndBind(0);
+            this._material.shader.setUniform1i("u_diffuse", 0);
+        }
 
 
         this._vertextBuffer.bind();

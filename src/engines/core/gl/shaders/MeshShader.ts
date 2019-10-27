@@ -33,11 +33,13 @@ void main() {
     private getFragmentSource(): string {
         return `
 precision mediump float;
+uniform vec4 u_tint;
+uniform sampler2D u_diffuse;
 varying vec4 v_color;
 varying vec2 v_textcoord;
 varying vec3 v_normal;
 void main() {
-    gl_FragColor = v_color;
+    gl_FragColor = u_tint * texture2D(u_diffuse, v_textcoord);
 }
 `;
     }
