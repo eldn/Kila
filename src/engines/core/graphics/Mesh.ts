@@ -84,18 +84,73 @@ export class Mesh implements IMessageHandler{
         objDoc.parse(1, true);
         let drawInfo : DrawingInfo = objDoc.getDrawingInfo();
 
+        let faceIndicesCount : number = drawInfo.faceIndicesCount;
+        let vertices : Array<number> = drawInfo.vertices;
+        let indices : Array<number> = drawInfo.indices;
+
+        let uvs : Array<number> = drawInfo.uvs;
+        let normals : Array<number> = drawInfo.normals;
+        let colors : Array<number> = drawInfo.colors;
+        
+
+        // 合并color,uv,normal 到定点数据
+        let uvP : number = 0;
+        let colorP : number = 0;
+        let normalP : number = 0;
+        let i : number = 3;
+        while(i < vertices.length){
+
+            // uv
+            vertices.splice(i, 0, uvs[uvP], uvs[uvP + 1]);
+            uvP += 2;
+            i += 2;
+
+            // color
+            vertices.splice(i, 0, colors[colorP], colors[colorP + 1], colors[colorP + 2], colors[colorP + 3]);
+            colorP += 4;
+            i += 4;
+
+            // normal
+            vertices.splice(i, 0, normals[normalP], normals[normalP + 1], normals[normalP + 2]);
+            normalP += 3;
+            i += 3;
+
+            // skip follow vertex
+            i += 3;
+        }
+
+        
+
         // 顶点数据
         let positionAttribute = new AttributeInfo();
         positionAttribute.location = 0;
         positionAttribute.size = 3;
         this._vertextBuffer.addAttributeLocation(positionAttribute);
 
-        this._vertextBuffer.setData(drawInfo.vertices);
+        // UV数据
+        let textCoordAttribute = new AttributeInfo();
+        textCoordAttribute.location = 1;
+        textCoordAttribute.size = 2;
+        this._vertextBuffer.addAttributeLocation(textCoordAttribute);
+
+        // color数据
+        let colorAttribute = new AttributeInfo();
+        colorAttribute.location = 2;
+        colorAttribute.size = 4;
+        this._vertextBuffer.addAttributeLocation(colorAttribute);
+
+        // 法线数据
+        let normalAttribute = new AttributeInfo();
+        normalAttribute.location = 3;
+        normalAttribute.size = 3;
+        this._vertextBuffer.addAttributeLocation(normalAttribute);
+
+        this._vertextBuffer.setData(vertices);
         this._vertextBuffer.upload();
         this._vertextBuffer.unbind();
 
         // 顶点索引数据
-        this._indexBuffer.setData(drawInfo.indices);
+        this._indexBuffer.setData(indices);
         this._indexBuffer.upload();
         this._indexBuffer.unbind();
 

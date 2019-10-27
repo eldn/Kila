@@ -13,13 +13,20 @@ export class MeshShader extends Shader {
 
         return `
 attribute vec3 a_position;
+attribute vec2 a_textcoord;
+attribute vec4 a_color;
+attribute vec3 a_normal;
 uniform mat4 u_view;
 uniform mat4 u_model;
 uniform mat4 u_projection;
 varying vec4 v_color;
+varying vec2 v_textcoord;
+varying vec3 v_normal;
 void main() {
     gl_Position = u_projection * u_view * u_model * vec4(a_position, 1.0);
-    v_color = vec4(1.0,1.0,1.0,1.0);
+    v_color = a_color;
+    v_textcoord = a_textcoord;
+    v_normal = a_normal;
 }`;
     }
 
@@ -27,6 +34,8 @@ void main() {
         return `
 precision mediump float;
 varying vec4 v_color;
+varying vec2 v_textcoord;
+varying vec3 v_normal;
 void main() {
     gl_FragColor = v_color;
 }
