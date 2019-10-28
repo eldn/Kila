@@ -7,6 +7,10 @@ import { DirectionLight } from "../../world/lights/DirectionLight";
 import { Shader } from "../../gl/shaders/Shader";
 import { Matrix4x4 } from "../../math/Matrix4x4";
 import { Cube } from "../../graphics/geometry/Cube";
+import { Level } from "../../world/Level";
+import { TEntity } from "../../world/Entity";
+import { LevelManager } from "../../world/LevelManager";
+import { Vector3 } from "../../math/Vector3";
 
 export class CubeRendererCoponentData implements IComponentData {
     public name: string;
@@ -54,6 +58,9 @@ export class CubeRendererComponent extends BaseComponent {
     }
 
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
+
+       
+        
         this._cube.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
         super.render(shader, projection, viewMatrix);
     }
