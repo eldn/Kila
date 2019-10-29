@@ -3,14 +3,9 @@ import { Color } from "../../graphics/Color";
 import { IComponentBuilder } from "../IComponentBuilder";
 import { IComponent } from "../IComponent";
 import { BaseComponent } from "../BaseComponent";
-import { DirectionLight } from "../../world/lights/DirectionLight";
 import { Shader } from "../../gl/shaders/Shader";
 import { Matrix4x4 } from "../../math/Matrix4x4";
 import { Cube } from "../../graphics/geometry/Cube";
-import { Level } from "../../world/Level";
-import { TEntity } from "../../world/Entity";
-import { LevelManager } from "../../world/LevelManager";
-import { Vector3 } from "../../math/Vector3";
 
 export class CubeRendererCoponentData implements IComponentData {
     public name: string;

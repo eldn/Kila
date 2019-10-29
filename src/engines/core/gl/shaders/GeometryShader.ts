@@ -32,30 +32,37 @@ void main() {
     private getFragmentSource(): string {
         return `
 precision mediump float;
-uniform vec3 u_objectColor;
+struct Material{
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+};
 uniform vec3 u_lightPos;
-uniform vec3 u_lightColor;
 uniform vec3 u_viewPos;
+uniform vec3 u_lightColor;
+uniform Material u_material;
 varying vec3 v_normal;
 varying vec3 v_fragPosition;
 void main() {
 
-    float ambientStrength = 0.1;
-    vec3 ambient = ambientStrength * u_lightColor;
+    // 环境光
+    vec3 ambient = u_lightColor * u_material.ambient;
 
+    // 漫反射
     vec3 norm = normalize(v_normal);
     vec3 lightDir = normalize(u_lightPos - v_fragPosition);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * u_lightColor;
+    vec3 diffuse = u_lightColor * (diff * u_material.ambient);
 
-    float specularStrength = 0.5;
+    // 镜面光
     vec3 viewDir = normalize(u_viewPos - v_fragPosition);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-    vec3 specular = specularStrength * spec * u_lightColor;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
+    vec3 specular = u_lightColor * (spec * u_material.specular);
 
-
-    vec3 result = (ambient + diffuse + specular) * u_objectColor;
+    // 叠加
+    vec3 result = ambient + diffuse + specular;
     gl_FragColor = vec4(result, 1.0);
 }
 `;

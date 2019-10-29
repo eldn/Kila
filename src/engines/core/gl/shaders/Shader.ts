@@ -53,6 +53,11 @@ export abstract class Shader {
         gl.uniform1i(location, value);
     }
 
+    public setUniform1f(name : string, value : number) : void{
+        let location = this.getUniformLocation(name);
+        gl.uniform1f(location, value);
+    }
+
     public setUniform3f(name : string, x : number, y : number, z : number) : void{
         let location = this.getUniformLocation(name);
         gl.uniform3f(location, x, y, z);

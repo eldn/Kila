@@ -126,7 +126,12 @@ export class Cube{
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        this._shader.setUniform3f("u_objectColor", 1.0, 0.5, 0.31);
+
+        // 设置材质
+        this._shader.setUniform3f("u_material.ambient", 1.0, 0.5, 0.31);
+        this._shader.setUniform3f("u_material.diffuse", 1.0, 0.5, 0.31);
+        this._shader.setUniform3f("u_material.specular", 0.5, 0.5, 0.5);
+        this._shader.setUniform1f("u_material.shininess", 32.0);
 
 
         this._vertextBuffer.bind();
