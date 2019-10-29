@@ -7,7 +7,7 @@
         },
         {
             "name": "MeshMaterial",
-            "diffuse": "assets/textures/container.jpg"
+            "diffuse": "assets/textures/container2.png"
         }
     ]
 }
