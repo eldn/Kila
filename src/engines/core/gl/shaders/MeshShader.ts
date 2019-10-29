@@ -35,7 +35,7 @@ void main() {
 precision mediump float;
 struct Material{
     sampler2D diffuse;
-    vec3 specular;
+    sampler2D specular;
     float shininess;
 };
 struct Light{
@@ -65,7 +65,7 @@ void main() {
     vec3 viewDir = normalize(u_viewPos - v_fragPosition);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
-    vec3 specular = u_light.specular * (spec * u_material.specular);
+    vec3 specular = u_light.specular * spec * vec3(texture2D(u_material.specular, v_textcoord));
 
     // 叠加
     vec3 result = ambient + diffuse + specular;

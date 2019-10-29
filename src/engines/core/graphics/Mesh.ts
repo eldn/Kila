@@ -220,11 +220,14 @@ export class Mesh implements IMessageHandler{
         this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
 
         // 设置材质
-        this._material.shader.setUniform3f("u_material.specular", 0.5, 0.5, 0.5);
         this._material.shader.setUniform1f("u_material.shininess", 64.0);
         if (this._material.diffuseTexture !== undefined) {
             this._material.diffuseTexture.activateAndBind(0);
             this._material.shader.setUniform1i("u_material.diffuse", 0);
+        }
+        if (this._material.specularTexture !== undefined) {
+            this._material.specularTexture.activateAndBind(1);
+            this._material.shader.setUniform1i("u_material.specular", 1);
         }
 
 
