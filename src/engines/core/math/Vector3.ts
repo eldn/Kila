@@ -342,4 +342,16 @@ let _z: number = 0.0;
         out.multiplyValue(v);
         return out;
     }
+
+    /**
+     * 向量乘法。将当前向量乘以与指定向量的结果赋值给当前向量。
+     * @param other 指定的向量。
+     */
+    public static multiply (out : Vector3, a : Vector3, other: Vector3) : Vector3{
+        if (typeof other !== 'object') { console.warn('should use Vec3.scale for vector * scalar operation'); }
+        out.x = a.x * other.x;
+        out.y = a.y * other.y;
+        out.z = a.z * other.z;
+        return out;
+    }
 }
