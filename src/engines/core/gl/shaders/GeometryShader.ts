@@ -38,28 +38,33 @@ struct Material{
     vec3 specular;
     float shininess;
 };
-uniform vec3 u_lightPos;
+struct Light{
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+uniform Light u_light;
 uniform vec3 u_viewPos;
-uniform vec3 u_lightColor;
 uniform Material u_material;
 varying vec3 v_normal;
 varying vec3 v_fragPosition;
 void main() {
 
     // 环境光
-    vec3 ambient = u_lightColor * u_material.ambient;
+    vec3 ambient = u_light.ambient * u_material.ambient;
 
     // 漫反射
     vec3 norm = normalize(v_normal);
-    vec3 lightDir = normalize(u_lightPos - v_fragPosition);
+    vec3 lightDir = normalize(u_light.position - v_fragPosition);
     float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = u_lightColor * (diff * u_material.ambient);
+    vec3 diffuse = u_light.diffuse * (diff * u_material.ambient);
 
     // 镜面光
     vec3 viewDir = normalize(u_viewPos - v_fragPosition);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
-    vec3 specular = u_lightColor * (spec * u_material.specular);
+    vec3 specular = u_light.specular * (spec * u_material.specular);
 
     // 叠加
     vec3 result = ambient + diffuse + specular;

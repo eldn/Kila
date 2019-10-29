@@ -52,6 +52,13 @@ export class CubeRendererComponent extends BaseComponent {
         this._cube.load();
     }
 
+    public update(time: number): void {
+        super.update(time);
+
+        this._cube.update(time);
+    }
+
+
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
 
        

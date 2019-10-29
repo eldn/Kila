@@ -112,15 +112,21 @@ export class Cube{
           let light : TEntity = curLevel.sceneGraph.getEntityByName('testLight');
           if (light) {
             let lightWorldPos : Vector3 = light.getWorldPosition();
-            this._shader.setUniform3f("u_lightPos", lightWorldPos.x, lightWorldPos.y, lightWorldPos.z);
-            this._shader.setUniform3f("u_lightColor", 1.0, 1.0, 1.0);
+
+            // 设置光的位置和属性
+            this._shader.setUniform3f("u_light.position", lightWorldPos.x, lightWorldPos.y, lightWorldPos.z);
+            this._shader.setUniform3f("u_light.ambient", 0.2, 0.2, 0.2);
+
+            // 将光照调暗了一些以搭配场景
+            this._shader.setUniform3f("u_light.diffuse", 0.5, 0.5, 0.5);
+            this._shader.setUniform3f("u_light.specular", 1.0, 1.0, 1.0);
           }
         }
 
        let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
        if (activeCamera) {
-            let vewPos : Vector3 = activeCamera.getWorldPosition();
-            this._shader.setUniform3f("u_viewPos", vewPos.x, vewPos.y, vewPos.z);
+            let viewPos : Vector3 = activeCamera.getWorldPosition();
+            this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
        }
 
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
@@ -134,7 +140,12 @@ export class Cube{
         this._shader.setUniform1f("u_material.shininess", 32.0);
 
 
+
         this._vertextBuffer.bind();
         this._vertextBuffer.draw();
+    }
+
+    update(dt : number) : void{
+
     }
 }
