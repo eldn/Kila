@@ -6,7 +6,7 @@ import { LightShader } from "../../gl/shaders/LightShader";
 import { AttributeInfo } from "../../gl/AttributeInfo";
 import { Color } from "../../graphics/Color";
 
-export class DirectionLight{
+export class PointLight{
 
     private _name : string;;
     private _vertextBuffer : GLBuffer;

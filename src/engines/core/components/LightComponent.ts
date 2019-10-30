@@ -2,10 +2,9 @@ import { IComponentData } from "./IComponentData";
 import { IComponentBuilder } from "./IComponentBuilder";
 import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
-import { Mesh } from "../graphics/Mesh";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
-import { DirectionLight } from "../world/lights/DirectionLight";
+import { PointLight } from "../world/lights/PointLight";
 import { Color } from "../graphics/Color";
 
 export class LightRendererCoponentData implements IComponentData {
@@ -41,12 +40,12 @@ export class LightRendererComponentBuilder implements IComponentBuilder {
 
 export class LightRendererComponent extends BaseComponent {
 
-    private _light: DirectionLight;
+    private _light: PointLight;
 
     public constructor(data: LightRendererCoponentData) {
         super(data);
 
-        this._light = new DirectionLight(data.name, data.color);
+        this._light = new PointLight(data.name, data.color);
     }
 
     public load(): void {
