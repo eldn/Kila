@@ -4,7 +4,6 @@ import { MaterialConfigBase } from "./MaterialConfigBase";
 export class MaterialBase {
 
     private _name: string;
-    private _shader : Shader;
 
     /**
      * Creates a new material.
@@ -14,14 +13,6 @@ export class MaterialBase {
      */
     public constructor(name: string) {
         this._name = name;
-    }
-
-    public get shader() : Shader{
-        return this._shader;
-    }
-
-    public set shader(shader : Shader){
-        this._shader = shader;
     }
 
     /**

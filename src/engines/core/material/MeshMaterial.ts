@@ -64,8 +64,6 @@ export class MeshMaterial extends MaterialBase {
         if (this._specularTextureName !== undefined) {
             this._specularTexture = TextureManager.getTexture(this._specularTextureName);
         }
-
-        this.shader = new MeshShader();
     }
 
     /**

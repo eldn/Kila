@@ -56,8 +56,6 @@ export class SpriteMaterial extends MaterialBase {
         if (this._diffuseTextureName !== undefined) {
             this._diffuseTexture = TextureManager.getTexture(this._diffuseTextureName);
         }
-
-        this.shader = new SpriteShader();
     }
 
     /**

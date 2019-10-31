@@ -40,6 +40,7 @@ struct Material{
 };
 struct Light{
     vec3 position;
+    // vec3 direction;
 
     vec3 ambient;
     vec3 diffuse;
@@ -63,6 +64,7 @@ void main() {
     // 漫反射
     vec3 norm = normalize(v_normal);
     vec3 lightDir = normalize(u_light.position - v_fragPosition);
+    // vec3 lightDir = normalize(-u_light.direction);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = u_light.diffuse * diff * vec3(texture2D(u_material.diffuse, v_textcoord));
 
@@ -75,6 +77,7 @@ void main() {
     // 衰减
     float distance = length(u_light.position - v_fragPosition);
     float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
+
 
     // 叠加
     vec3 result = (ambient + diffuse + specular) * attenuation;

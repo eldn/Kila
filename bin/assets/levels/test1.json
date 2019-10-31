@@ -10,7 +10,7 @@
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": -200
+					"z": -10
 				}
 			},
 			"components": [
@@ -27,7 +27,29 @@
 			]
 		},
 		{
-			"name": "testMesh",
+			"name": "testSprite2",
+			"transform": {
+				"position": {
+					"x": 8,
+					"y": 0,
+					"z": -10
+				}
+			},
+			"components": [
+				{
+					"name": "testSprite2",
+					"type": "sprite",
+					"materialName": "SpriteMaterial",
+					"width": 4,
+					"height": 4
+				}
+			],
+			"behaviors": [
+
+			]
+		},
+		{
+			"name": "testMesh1",
 			"transform": {
 				"position": {
 					"x": 0,
@@ -42,7 +64,85 @@
 			},
 			"components": [
 				{
-					"name": "testMesh",
+					"name": "testMesh1",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh2",
+			"transform": {
+				"position": {
+					"x": 3,
+					"y": -2,
+					"z": 0
+				},
+				"rotation": {
+					"x":0,
+					"y":-1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh2",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh3",
+			"transform": {
+				"position": {
+					"x": -3,
+					"y": -2,
+					"z": 0
+				},
+				"rotation": {
+					"x":0,
+					"y":-1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh3",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh4",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": -2,
+					"z": 4
+				},
+				"rotation": {
+					"x":0,
+					"y":-1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh4",
 					"type": "mesh",
 					"materialName": "MeshMaterial",
 					"modelPath":"assets/model/box.obj",
@@ -73,7 +173,7 @@
 			"transform": {
 				"position": {
 					"x": 0,
-					"y": 1.1,
+					"y": 1.3,
 					"z": 3
 				},
 				"rotation": {

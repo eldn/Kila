@@ -6,6 +6,7 @@ import { GLBuffer } from "../gl/GLBuffer";
 import { AttributeInfo } from "../gl/AttributeInfo";
 import { SpriteMaterial } from "../material/SpriteMaterial";
 import { MaterialManager } from "../material/MaterialManager";
+import { SpriteShader } from "../gl/shaders/SpriteShader";
 
 export class Sprite {
 
@@ -18,6 +19,7 @@ export class Sprite {
     protected _materialName: string;
     protected _material: SpriteMaterial;
     protected _vertices: Vertex[] = [];
+    private _shader : SpriteShader;
 
     /**
      * Creates a new sprite.
@@ -32,6 +34,7 @@ export class Sprite {
         this._height = height;
         this._materialName = materialName;
         this._material = MaterialManager.getMaterial(this._materialName) as SpriteMaterial;
+        this._shader = new SpriteShader();
     }
 
     /** The name of this sprite. */
@@ -106,17 +109,17 @@ export class Sprite {
      */
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
 
-        this._material.shader.use();
+        this._shader.use();
 
-        this._material.shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
-        this._material.shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
+        this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
+        this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
         
-        this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-        this._material.shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
+        this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        this._shader.setUniform4fv("u_tint", this._material.tint.toFloat32Array());
 
         if (this._material.diffuseTexture !== undefined) {
             this._material.diffuseTexture.activateAndBind(0);
-            this._material.shader.setUniform1i("u_diffuse", 0);
+            this._shader.setUniform1i("u_diffuse", 0);
         }
 
         this._buffer.bind();
