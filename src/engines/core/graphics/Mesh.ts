@@ -15,22 +15,12 @@ import { Level } from "../world/Level";
 import { LevelManager } from "../world/LevelManager";
 import { TEntity } from "../world/Entity";
 import { PerspectiveCamera } from "../world/cameras/PerspectiveCamera";
+import { PointLightProperty, PointLight } from "../world/lights/PointLight";
+import { LightRendererComponent } from "../components/LightComponent";
+import { Light, LightType } from "../world/lights/Light";
+import { DirectionLight } from "../world/lights/DirectionLight";
 
-const v3_a: Vector3 = new Vector3();
-
-class iLightProperty {
-    position: Vector3 = new Vector3()
-    ambient: Vector3 = new Vector3();
-    diffuse: Vector3 = new Vector3();
-    specular: Vector3 = new Vector3();
-
-    constructor(position: Vector3, ambient: Vector3, diffuse: Vector3, specular: Vector3) {
-        this.position.copyFrom(position);
-        this.ambient.copyFrom(ambient);
-        this.diffuse.copyFrom(diffuse);
-        this.specular.copyFrom(specular);
-    }
-}
+let v3_a: Vector3 = new Vector3();
 
 export class Mesh implements IMessageHandler{
 
@@ -45,7 +35,6 @@ export class Mesh implements IMessageHandler{
     protected _material: MeshMaterial;
     private _meshAsset : ModelAsset;
     private _mtlAsset : ModelAsset;
-    private _lightProperty: iLightProperty;
 
     constructor(name : string, modelPath : string, mtlPath : string, materialName: string){
         this._name = name;
@@ -190,21 +179,46 @@ export class Mesh implements IMessageHandler{
 
         let curLevel: Level = LevelManager.activeLevel;
         if (curLevel) {
-            let light: TEntity = curLevel.sceneGraph.getEntityByName('testLight');
-            if (light) {
-                let lightWorldPos: Vector3 = light.getWorldPosition();
+            let lightE: TEntity = curLevel.sceneGraph.getEntityByName('testLight');
+            if (lightE) {
 
-                if (!this._lightProperty) {
-                    this._lightProperty = new iLightProperty(lightWorldPos, new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0));
+                let lightComponet : LightRendererComponent = lightE.getComponentByName('light') as LightRendererComponent;
+                if(lightComponet){
+
+                    let light : PointLight = lightComponet.light as PointLight;
+
+                    switch(light.type){
+                        case LightType.DirectionLight:
+                            break;
+                        case LightType.PointLight:
+                            break;
+                        case LightType.SpotLight:
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // 设置光的位置和属性
+                    let position : Vector3 = v3_a.copyFrom(lightE.getWorldPosition());
+                    this._material.shader.setUniform3f("u_light.position", position.x, position.y, position.z);
+
+                    let ambient : Vector3 = light.getAmbient(v3_a);
+                    this._material.shader.setUniform3f("u_light.ambient", ambient.x, ambient.y, ambient.z);
+    
+                    // 将光照调暗了一些以搭配场景
+                    let diffuse : Vector3 = light.getDiffuse(v3_a);
+                    this._material.shader.setUniform3f("u_light.diffuse", diffuse.x, diffuse.y, diffuse.z);
+
+                    let specular : Vector3 = light.getSpecular(v3_a);
+                    this._material.shader.setUniform3f("u_light.specular", specular.x, specular.y, specular.z);
+
+
+                    // 设置衰减属性
+                    this._material.shader.setUniform1f("u_light.constant", light.getContant());
+                    this._material.shader.setUniform1f("u_light.linear", light.getLinear());
+                    this._material.shader.setUniform1f("u_light.quadratic", light.getQuadratic());
                 }
-
-                // 设置光的位置和属性
-                this._material.shader.setUniform3f("u_light.position", this._lightProperty.position.x, this._lightProperty.position.y, this._lightProperty.position.z);
-                this._material.shader.setUniform3f("u_light.ambient", this._lightProperty.ambient.x, this._lightProperty.ambient.y, this._lightProperty.ambient.z);
-
-                // 将光照调暗了一些以搭配场景
-                this._material.shader.setUniform3f("u_light.diffuse", this._lightProperty.diffuse.x, this._lightProperty.diffuse.y, this._lightProperty.diffuse.z);
-                this._material.shader.setUniform3f("u_light.specular", this._lightProperty.specular.x, this._lightProperty.specular.y, this._lightProperty.specular.z);
+               
             }
         }
 
@@ -220,7 +234,7 @@ export class Mesh implements IMessageHandler{
         this._material.shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
 
         // 设置材质
-        this._material.shader.setUniform1f("u_material.shininess", 64.0);
+        this._material.shader.setUniform1f("u_material.shininess", 32.0);
         if (this._material.diffuseTexture !== undefined) {
             this._material.diffuseTexture.activateAndBind(0);
             this._material.shader.setUniform1i("u_material.diffuse", 0);

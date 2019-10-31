@@ -5,23 +5,78 @@ import { Matrix4x4 } from "../../math/Matrix4x4";
 import { LightShader } from "../../gl/shaders/LightShader";
 import { AttributeInfo } from "../../gl/AttributeInfo";
 import { Color } from "../../graphics/Color";
+import { Vector3 } from "../../math/Vector3";
+import { Light, LightType } from "./Light";
+import { TEntity } from "../Entity";
 
-export class PointLight{
 
-    private _name : string;;
+
+export class PointLightProperty {
+    position: Vector3 = new Vector3()
+    ambient: Vector3 = new Vector3();
+    diffuse: Vector3 = new Vector3();
+    specular: Vector3 = new Vector3();
+    constant : number = 1;
+    linear : number = 1;
+    quadratic : number = 1;
+
+    constructor(position: Vector3, ambient: Vector3, diffuse: Vector3, specular: Vector3,constant : number,  linear:number,quadratic:number) {
+        this.position.copyFrom(position);
+        this.ambient.copyFrom(ambient);
+        this.diffuse.copyFrom(diffuse);
+        this.specular.copyFrom(specular);
+        this.constant = constant;
+        this.linear = linear;
+        this.quadratic = quadratic;
+    }
+}
+
+export class PointLight extends Light{
+
     private _vertextBuffer : GLBuffer;
     private _shader : LightShader;
-    private _color : Color;
+    private _lightProperty: PointLightProperty;
 
-    constructor(name : string, color : Color){
-        this._name = name;
-        this._color = color;
+    constructor(owner : TEntity, type: LightType,name : string, color : Color){
+        super(owner,type, name, color);
+
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._shader = new LightShader();
+
+        // let lightWorldPos : Vector3 = this.owner.getWorldPosition();
+        this._lightProperty = new PointLightProperty(new Vector3(), new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0),1.0,0.09,0.032);
     }
 
-    public get name(): string {
-        return this._name;
+    public getContant() : number{
+        return this._lightProperty.constant;
+    }
+
+    public getLinear() : number{
+        return this._lightProperty.linear;
+    }
+
+    public getQuadratic() : number{
+        return this._lightProperty.quadratic;
+    }
+
+    public getPosition(out : Vector3) : Vector3{
+        out.copyFrom(this.owner.getWorldPosition());
+        return out;
+    }
+
+    public getAmbient(out : Vector3) : Vector3{
+        out.copyFrom(this._lightProperty.ambient);
+        return out;
+    }
+
+    public getDiffuse(out : Vector3) : Vector3{
+        out.copyFrom(this._lightProperty.diffuse);
+        return out;
+    }
+
+    public getSpecular(out : Vector3) : Vector3{
+        out.copyFrom(this._lightProperty.specular);
+        return out;
     }
 
 

@@ -40,9 +40,14 @@ struct Material{
 };
 struct Light{
     vec3 position;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
 };
 uniform Light u_light;
 uniform vec3 u_viewPos;
@@ -67,8 +72,12 @@ void main() {
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
     vec3 specular = u_light.specular * spec * vec3(texture2D(u_material.specular, v_textcoord));
 
+    // 衰减
+    float distance = length(u_light.position - v_fragPosition);
+    float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
+
     // 叠加
-    vec3 result = ambient + diffuse + specular;
+    vec3 result = (ambient + diffuse + specular) * attenuation;
     gl_FragColor = vec4(result, 1.0);
 }
 `;

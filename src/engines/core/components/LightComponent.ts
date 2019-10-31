@@ -6,10 +6,15 @@ import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { PointLight } from "../world/lights/PointLight";
 import { Color } from "../graphics/Color";
+import { DirectionLight } from "../world/lights/DirectionLight";
+import { LightType, Light } from "../world/lights/Light";
+
+
 
 export class LightRendererCoponentData implements IComponentData {
     public name: string;
     public color: Color;
+    public lightType : LightType;
 
     public setFromJson(json: any): void {
         
@@ -19,6 +24,10 @@ export class LightRendererCoponentData implements IComponentData {
 
         if (json.color !== undefined) {
             this.color = Color.fromJson(json.color);
+        }
+
+        if (json.lightType !== undefined) {
+            this.lightType = json.lightType;
         }
     }
 }
@@ -40,12 +49,32 @@ export class LightRendererComponentBuilder implements IComponentBuilder {
 
 export class LightRendererComponent extends BaseComponent {
 
-    private _light: PointLight;
+    private _light: Light;
 
     public constructor(data: LightRendererCoponentData) {
         super(data);
 
-        this._light = new PointLight(data.name, data.color);
+        switch(data.lightType){
+            case LightType.DirectionLight:
+                this._light = new DirectionLight(this._owner, LightType.DirectionLight, data.name, data.color);
+                break;
+            case LightType.PointLight:
+                this._light = new PointLight(this._owner, LightType.PointLight, data.name, data.color);
+                break;
+            case LightType.SpotLight:
+                break;
+            default:
+                console.error("unkown light type!");
+                break;
+        }
+
+        if(this._light){
+            this._light.owner = this.owner;
+        }
+    }
+
+    public get light() : Light{
+        return this._light;
     }
 
     public load(): void {
