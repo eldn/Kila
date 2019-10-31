@@ -20,8 +20,7 @@ export class PointLightProperty {
     linear : number = 1;
     quadratic : number = 1;
 
-    constructor(position: Vector3, ambient: Vector3, diffuse: Vector3, specular: Vector3,constant : number,  linear:number,quadratic:number) {
-        this.position.copyFrom(position);
+    constructor( ambient: Vector3, diffuse: Vector3, specular: Vector3,constant : number,  linear:number,quadratic:number) {
         this.ambient.copyFrom(ambient);
         this.diffuse.copyFrom(diffuse);
         this.specular.copyFrom(specular);
@@ -43,8 +42,7 @@ export class PointLight extends Light{
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._shader = new LightShader();
 
-        // let lightWorldPos : Vector3 = this.owner.getWorldPosition();
-        this._lightProperty = new PointLightProperty(new Vector3(), new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0),1.0,0.09,0.032);
+        this._lightProperty = new PointLightProperty(new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0),1.0,0.09,0.032);
     }
 
     public getContant() : number{

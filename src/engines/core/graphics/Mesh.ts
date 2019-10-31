@@ -182,7 +182,7 @@ export class Mesh implements IMessageHandler{
             let lightE: TEntity = curLevel.sceneGraph.getEntityByName('testLight');
             if (lightE) {
 
-                let lightComponet : LightRendererComponent = lightE.getComponentByName('light') as LightRendererComponent;
+                let lightComponet : LightRendererComponent = lightE.getComponentByName('testLight') as LightRendererComponent;
                 if(lightComponet){
 
                     let light : PointLight = lightComponet.light as PointLight;
