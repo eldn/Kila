@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "${workspaceFolder}/bin/index.html",
+            "file": "${workspaceFolder}/bin/index.html",
             "webRoot": "${workspaceFolder}",
             "runtimeArgs": ["--disable-web-security"],
             "preLaunchTask": "compile"
