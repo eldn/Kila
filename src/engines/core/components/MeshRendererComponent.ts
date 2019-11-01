@@ -76,8 +76,10 @@ export class MeshRendererComponent extends BaseComponent {
     }
 
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
-        this._mesh.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
-        super.render(shader, projection, viewMatrix);
+        if(this._mesh.isLoaded){
+            this._mesh.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
+            super.render(shader, projection, viewMatrix);
+        }
     }
 }
 

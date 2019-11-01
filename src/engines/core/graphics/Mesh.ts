@@ -109,12 +109,20 @@ export class Mesh implements IMessageHandler{
         let uvs : Array<number> = drawInfo.uvs;
         let normals : Array<number> = drawInfo.normals;
         
+        // 校验数据
+        let verticeCnt : number = vertices.length / 3;
+        let normalCnt : number = normals.length / 3;
+        let uvCnt : number = uvs.length / 2;
+        if(!(verticeCnt ==  normalCnt && verticeCnt == uvCnt)){
+            console.error('数据不合法！');
+            return;
+        }
 
         // 合并uv,normal 到定点数据
         let uvP : number = 0;
         let normalP : number = 0;
         let i : number = 3;
-        while(i < vertices.length){
+        while(uvP < uvs.length){
 
             // uv
             vertices.splice(i, 0, uvs[uvP], uvs[uvP + 1]);
@@ -169,7 +177,7 @@ export class Mesh implements IMessageHandler{
 
     }
 
-    private static counter : number = 0;
+   
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
 
         this._shader.use();
