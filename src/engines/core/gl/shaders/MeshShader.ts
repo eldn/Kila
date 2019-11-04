@@ -42,6 +42,7 @@ struct Light{
     vec3 position;
     vec3 direction;
     float cutOff;
+    float outerCutOff;
 
     vec3 ambient;
     vec3 diffuse;
@@ -64,46 +65,35 @@ void main() {
     // 点光源
     vec3 lightDir = normalize(u_light.position - v_fragPosition);
     float theta = dot(lightDir, normalize(-u_light.direction));
+    float epsilon = u_light.cutOff - u_light.outerCutOff;
+    float intensity = clamp((theta - u_light.outerCutOff) / epsilon, 0.0, 1.0); 
 
-    if(theta > u_light.cutOff) 
-    {       
-        // 执行光照计算
+       
+    // 执行光照计算
 
-        // 环境光
-        vec3 ambient = u_light.ambient * vec3(texture2D(u_material.diffuse, v_textcoord));
+    // 环境光
+    vec3 ambient = u_light.ambient * vec3(texture2D(u_material.diffuse, v_textcoord));
 
-        // 漫反射
-        vec3 norm = normalize(v_normal);
-        float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = u_light.diffuse * diff * vec3(texture2D(u_material.diffuse, v_textcoord));
+    // 漫反射
+    vec3 norm = normalize(v_normal);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = u_light.diffuse * diff * vec3(texture2D(u_material.diffuse, v_textcoord));
 
-        // 镜面光
-        vec3 viewDir = normalize(u_viewPos - v_fragPosition);
-        vec3 reflectDir = reflect(-lightDir, norm);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
-        vec3 specular = u_light.specular * spec * vec3(texture2D(u_material.specular, v_textcoord));
+    // 镜面光
+    vec3 viewDir = normalize(u_viewPos - v_fragPosition);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
+    vec3 specular = u_light.specular * spec * vec3(texture2D(u_material.specular, v_textcoord));
 
-        // 衰减
-        //float distance = length(u_light.position - v_fragPosition);
-        //float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
-    
-    
-        // 叠加
-        // vec3 result = (ambient + diffuse + specular) * attenuation;
-        vec3 result = ambient + diffuse + specular;
-        gl_FragColor = vec4(result, 1.0);
-    }
-    else 
-    {
-        // 否则，使用环境光，让场景在聚光之外时不至于完全黑暗
-        gl_FragColor = vec4(u_light.ambient * vec3(texture2D(u_material.diffuse, v_textcoord)), 1.0);
-    }
+    // 衰减
+    //float distance = length(u_light.position - v_fragPosition);
+    //float attenuation = 1.0 / (u_light.constant + u_light.linear * distance + u_light.quadratic * (distance * distance));
 
-    
 
-   
+    // 叠加
+    vec3 result = (ambient + diffuse + specular) * intensity;
+    gl_FragColor = vec4(result, 1.0);
 
-  
 }
 `;
     }

@@ -210,6 +210,9 @@ export class Mesh implements IMessageHandler{
                     let cutOff : number = this.radians(12.5);
                     this._shader.setUniform1f("u_light.cutOff", Math.cos(cutOff));
 
+                    let outerCutOff : number = this.radians(17.5);
+                    this._shader.setUniform1f("u_light.outerCutOff", Math.cos(outerCutOff));
+
                     // ===================>
 
                     let ambient : Vector3 = light.getAmbient(v3_a);
