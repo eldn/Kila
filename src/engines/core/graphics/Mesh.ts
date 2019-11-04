@@ -20,6 +20,7 @@ import { LightRendererComponent } from "../components/LightComponent";
 import { Light, LightType } from "../world/lights/Light";
 import { DirectionLight } from "../world/lights/DirectionLight";
 import { MeshShader } from "../gl/shaders/MeshShader";
+import { SpotLight } from "../world/lights/Spotlight";
 
 let v3_a: Vector3 = new Vector3();
 
@@ -182,6 +183,13 @@ export class Mesh implements IMessageHandler{
 
         this._shader.use();
 
+
+         // 设置观察点（摄像机）的位置，用于计算镜面反射 
+         let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
+         if (!activeCamera) {
+             return;
+         }
+
         let curLevel: Level = LevelManager.activeLevel;
         if (curLevel) {
             let lightE: TEntity = curLevel.sceneGraph.getEntityByName('testLight');
@@ -190,11 +198,19 @@ export class Mesh implements IMessageHandler{
                 let lightComponet : LightRendererComponent = lightE.getComponentByName('testLight') as LightRendererComponent;
                 if(lightComponet){
 
-                    let light : PointLight = lightComponet.light as PointLight;
+                    let light : SpotLight = lightComponet.light as SpotLight;
 
                     // 设置光的位置和属性
-                    let position : Vector3 = lightE.getWorldPosition();
+                    let position : Vector3 = activeCamera.getWorldPosition();
                     this._shader.setUniform3f("u_light.position", position.x, position.y, position.z);
+
+                    let direction : Vector3 = activeCamera.front;
+                    this._shader.setUniform3f("u_light.direction", direction.x, direction.y, direction.z);
+
+                    let cutOff : number = this.radians(12.5);
+                    this._shader.setUniform1f("u_light.cutOff", Math.cos(cutOff));
+
+                    // ===================>
 
                     let ambient : Vector3 = light.getAmbient(v3_a);
                     this._shader.setUniform3f("u_light.ambient", ambient.x, ambient.y, ambient.z);
@@ -208,20 +224,18 @@ export class Mesh implements IMessageHandler{
 
 
                     // 设置衰减属性
-                    this._shader.setUniform1f("u_light.constant", light.getContant());
-                    this._shader.setUniform1f("u_light.linear", light.getLinear());
-                    this._shader.setUniform1f("u_light.quadratic", light.getQuadratic());
+                    // this._shader.setUniform1f("u_light.constant", light.getContant());
+                    // this._shader.setUniform1f("u_light.linear", light.getLinear());
+                    // this._shader.setUniform1f("u_light.quadratic", light.getQuadratic());
                 }
                
             }
         }
 
         // 设置观察点（摄像机）的位置，用于计算镜面反射 
-        let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
-        if (activeCamera) {
-            let viewPos: Vector3 = activeCamera.getWorldPosition();
-            this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
-        }
+        let viewPos: Vector3 = activeCamera.getWorldPosition();
+        this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
+        
 
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
@@ -242,5 +256,9 @@ export class Mesh implements IMessageHandler{
         this._vertextBuffer.bind();
         this._indexBuffer.bind();
         this._indexBuffer.draw();
+    }
+
+    public radians(degrees: number): number {
+        return degrees * (Math.PI / 180.0);
     }
 }

@@ -186,7 +186,7 @@
 				{
 					"name": "testLight",
 					"type": "light",
-					"lightType" : 1,
+					"lightType" : 2,
 					"color":{
 						"r":1,
 						"g":1,

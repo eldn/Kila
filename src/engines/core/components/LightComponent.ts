@@ -8,6 +8,7 @@ import { PointLight } from "../world/lights/PointLight";
 import { Color } from "../graphics/Color";
 import { DirectionLight } from "../world/lights/DirectionLight";
 import { LightType, Light } from "../world/lights/Light";
+import { SpotLight } from "../world/lights/Spotlight";
 
 
 
@@ -62,6 +63,7 @@ export class LightRendererComponent extends BaseComponent {
                 this._light = new PointLight(this._owner, LightType.PointLight, data.name, data.color);
                 break;
             case LightType.SpotLight:
+                this._light = new SpotLight(this._owner, LightType.SpotLight, data.name, data.color);
                 break;
             default:
                 console.error("unkown light type!");
