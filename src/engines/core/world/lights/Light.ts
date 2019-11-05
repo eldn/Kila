@@ -2,6 +2,7 @@ import { Color } from "../../graphics/Color";
 import { Shader } from "../../gl/shaders/Shader";
 import { Matrix4x4 } from "../../math/Matrix4x4";
 import { TEntity } from "../Entity";
+import { LightRendererComponent } from "../../components/LightComponent";
 
 export enum LightType{
     DirectionLight  = 0,
@@ -15,9 +16,10 @@ export class Light{
     private _color : Color;
     private _owner : TEntity;
     private _type : LightType;
+    private _renderComponent : LightRendererComponent;
 
-    constructor(owner : TEntity, type : LightType, name : string, color : Color){
-        this.owner = owner;
+    constructor(renderComponent : LightRendererComponent, type : LightType, name : string, color : Color){
+        this._renderComponent = renderComponent;
         this._type = type;
         this._name = name;
         this._color = new Color(color.r, color.g, color.b, color.a);
@@ -47,9 +49,17 @@ export class Light{
      
     }
 
+    public radians(degrees: number): number {
+        return degrees * (Math.PI / 180.0);
+    }
 
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
+        if(!shader){
+            console.error('DirectionLight draw failed, shader null!');
+        }
+    }
 
-     
+    public setShaderProperty(shader: Shader) : void{
+
     }
 }

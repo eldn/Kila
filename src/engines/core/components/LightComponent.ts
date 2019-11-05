@@ -9,6 +9,7 @@ import { Color } from "../graphics/Color";
 import { DirectionLight } from "../world/lights/DirectionLight";
 import { LightType, Light } from "../world/lights/Light";
 import { SpotLight } from "../world/lights/Spotlight";
+import { TEntity } from "../world/Entity";
 
 
 
@@ -57,13 +58,13 @@ export class LightRendererComponent extends BaseComponent {
 
         switch(data.lightType){
             case LightType.DirectionLight:
-                this._light = new DirectionLight(this._owner, LightType.DirectionLight, data.name, data.color);
+                this._light = new DirectionLight( this, LightType.DirectionLight, data.name, data.color);
                 break;
             case LightType.PointLight:
-                this._light = new PointLight(this._owner, LightType.PointLight, data.name, data.color);
+                this._light = new PointLight( this, LightType.PointLight, data.name, data.color);
                 break;
             case LightType.SpotLight:
-                this._light = new SpotLight(this._owner, LightType.SpotLight, data.name, data.color);
+                this._light = new SpotLight(this, LightType.SpotLight, data.name, data.color);
                 break;
             default:
                 console.error("unkown light type!");
@@ -81,6 +82,10 @@ export class LightRendererComponent extends BaseComponent {
 
     public load(): void {
         this._light.load();
+    }
+
+    public setOwner(owner: TEntity): void {
+        super.setOwner(owner);
     }
 
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {

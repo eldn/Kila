@@ -26,6 +26,11 @@ export class PerspectiveCamera extends BaseCamera {
         return (new Vector3()).copyFrom(this._front);
     }
 
+    public getFront(out : Vector3) : Vector3{
+        out.copyFrom(this._front);
+        return out;
+    }
+
     private _worldUp: Vector3 = new Vector3(0, 1, 0);
     public get worldUp(): Vector3 {
         return this._worldUp;

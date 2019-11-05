@@ -183,62 +183,27 @@ export class Mesh implements IMessageHandler{
 
         this._shader.use();
 
-
          // 设置观察点（摄像机）的位置，用于计算镜面反射 
          let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
          if (!activeCamera) {
              return;
          }
 
-        let curLevel: Level = LevelManager.activeLevel;
-        if (curLevel) {
-            let lightE: TEntity = curLevel.sceneGraph.getEntityByName('testLight');
-            if (lightE) {
+         let activeLevel : Level = LevelManager.activeLevel;
+         if(!activeLevel){
+             return;
+         }
 
-                let lightComponet : LightRendererComponent = lightE.getComponentByName('testLight') as LightRendererComponent;
-                if(lightComponet){
+         let lights : LightRendererComponent[]  = activeLevel.getLights();
+         for(let i : number = 0; i < lights.length; ++i){
+             let light : LightRendererComponent = lights[i];
+             light.light.setShaderProperty(this._shader);
+         }
 
-                    let light : SpotLight = lightComponet.light as SpotLight;
-
-                    // 设置光的位置和属性
-                    let position : Vector3 = activeCamera.getWorldPosition();
-                    this._shader.setUniform3f("u_light.position", position.x, position.y, position.z);
-
-                    let direction : Vector3 = activeCamera.front;
-                    this._shader.setUniform3f("u_light.direction", direction.x, direction.y, direction.z);
-
-                    let cutOff : number = this.radians(12.5);
-                    this._shader.setUniform1f("u_light.cutOff", Math.cos(cutOff));
-
-                    let outerCutOff : number = this.radians(17.5);
-                    this._shader.setUniform1f("u_light.outerCutOff", Math.cos(outerCutOff));
-
-                    // ===================>
-
-                    let ambient : Vector3 = light.getAmbient(v3_a);
-                    this._shader.setUniform3f("u_light.ambient", ambient.x, ambient.y, ambient.z);
-    
-                    // 将光照调暗了一些以搭配场景
-                    let diffuse : Vector3 = light.getDiffuse(v3_a);
-                    this._shader.setUniform3f("u_light.diffuse", diffuse.x, diffuse.y, diffuse.z);
-
-                    let specular : Vector3 = light.getSpecular(v3_a);
-                    this._shader.setUniform3f("u_light.specular", specular.x, specular.y, specular.z);
-
-
-                    // 设置衰减属性
-                    // this._shader.setUniform1f("u_light.constant", light.getContant());
-                    // this._shader.setUniform1f("u_light.linear", light.getLinear());
-                    // this._shader.setUniform1f("u_light.quadratic", light.getQuadratic());
-                }
-               
-            }
-        }
 
         // 设置观察点（摄像机）的位置，用于计算镜面反射 
         let viewPos: Vector3 = activeCamera.getWorldPosition();
         this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
-        
 
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
