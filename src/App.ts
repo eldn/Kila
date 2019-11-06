@@ -45,7 +45,7 @@ class TestGame implements IGame, IMessageHandler {
 
   onMessage(message: Message): void {
     if (message.code == MESSAGE_MOUSE_WHEEL) {
-      if(this.camera){
+      if (this.camera) {
         let event: MouseContext = message.context;
         this.camera.processMouseScroll(event.wheelDelta);
       }
@@ -60,20 +60,9 @@ class TestGame implements IGame, IMessageHandler {
     if (!this.camera) {
       let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
       if (activeCamera) {
-
         this.camera = activeCamera;
-        let curLevel: Level = LevelManager.activeLevel;
-
-        if (curLevel) {
-          let box: TEntity = curLevel.sceneGraph.getEntityByName('testMesh');
-          if (box) {
-            //  this.camera.forward = box.getWorldPosition();
-          }
-        }
-
         this.lastX = Renderer.windowViewport.width / 2;
         this.lastY = Renderer.windowViewport.height / 2;
-
         Message.subscribe(MESSAGE_MOUSE_WHEEL, this);
       }
       return;
@@ -100,11 +89,11 @@ class TestGame implements IGame, IMessageHandler {
     this.camera.processMouseMovement(xoffset, yoffset, true);
     // #region end 俯仰角度计算
 
-    
+
     try {
 
       if (InputManager.isKeyDown(KEY_CODE_MACRO.w)) {
-          this.camera.processKeyboard(KEY_CODE_MACRO.w, dt);
+        this.camera.processKeyboard(KEY_CODE_MACRO.w, dt);
       }
 
       if (InputManager.isKeyDown(KEY_CODE_MACRO.s)) {
@@ -118,7 +107,7 @@ class TestGame implements IGame, IMessageHandler {
       if (InputManager.isKeyDown(KEY_CODE_MACRO.d)) {
         this.camera.processKeyboard(KEY_CODE_MACRO.d, dt);
       }
-      
+
     }
     catch (e) {
       console.error(e);

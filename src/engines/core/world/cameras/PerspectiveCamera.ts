@@ -177,7 +177,8 @@ export class PerspectiveCamera extends BaseCamera {
         if (keyCode == KEY_CODE_MACRO.d)
             this.transform.position.add(Vector3.multiplyValue(v3_a, this._right, velocity));
 
-        this._isDirty = true;
+        // this._isDirty = true;
+        this.updateCameraVectors();
     }
 
     public processMouseScroll(yoffset : number) : void{
