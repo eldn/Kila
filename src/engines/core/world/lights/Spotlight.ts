@@ -6,6 +6,8 @@ import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
 import { LevelManager } from "../LevelManager";
 import { LightRendererComponent } from "../../components/LightComponent";
 
+let v3_a : Vector3 = new Vector3();
+
 class SpotLightProperty {
     position : Vector3 = new Vector3();
     direction: Vector3 = new Vector3();
@@ -65,10 +67,10 @@ export class SpotLight extends Light{
         }
      
         // 设置光的位置和属性
-        let position : Vector3 = activeCamera.getWorldPosition();
+        let position : Vector3 = activeCamera.getWorldPosition(v3_a);
         shader.setUniform3f("u_spotLight.position", position.x, position.y, position.z);
 
-        let direction : Vector3 = activeCamera.front;
+        let direction : Vector3 = activeCamera.getFront(v3_a);
         shader.setUniform3f("u_spotLight.direction", direction.x, direction.y, direction.z);
 
         shader.setUniform1f("u_spotLight.cutOff", this._lightProperty.cutOff);
