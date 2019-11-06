@@ -49,6 +49,10 @@ export class Light{
      
     }
 
+    public getRenderComponent() : LightRendererComponent{
+        return this._renderComponent;
+    }
+
     public radians(degrees: number): number {
         return degrees * (Math.PI / 180.0);
     }

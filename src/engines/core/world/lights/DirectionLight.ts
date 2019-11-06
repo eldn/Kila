@@ -28,7 +28,7 @@ export class DirectionLight extends Light{
 
     constructor(renderComponent : LightRendererComponent, type: LightType,name : string, color : Color){
         super(renderComponent, type, name, color);
-        this._lightProperty = new DirectionLightProperty(new Vector3(-0.2, -1.0, -0.3), new Vector3(0.3, 0.24, 0.14), new Vector3(0.7, 0.42, 0.26), new Vector3(0.5, 0.5, 0.5));
+        this._lightProperty = new DirectionLightProperty(new Vector3(-0.2, -1.0, -0.3), new Vector3(0.05, 0.05, 0.05), new Vector3(0.4, 0.4, 0.4), new Vector3(0.5, 0.5, 0.5));
     }
 
     public getDirection(out : Vector3) : Vector3{

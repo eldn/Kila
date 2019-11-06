@@ -26,6 +26,8 @@ export class LightRendererCoponentData implements IComponentData {
 
         if (json.color !== undefined) {
             this.color = Color.fromJson(json.color);
+        } else {
+            this.color= Color.white();
         }
 
         if (json.lightType !== undefined) {

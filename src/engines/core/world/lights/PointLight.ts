@@ -10,11 +10,9 @@ import { Light, LightType } from "./Light";
 import { TEntity } from "../Entity";
 import { LightRendererComponent } from "../../components/LightComponent";
 
-
+let v3_a : Vector3 = new Vector3();
 
 export class PointLightProperty {
-    position: Vector3 = new Vector3()
-
     ambient: Vector3 = new Vector3();
     diffuse: Vector3 = new Vector3();
     specular: Vector3 = new Vector3();
@@ -48,7 +46,7 @@ export class PointLight extends Light{
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._shader = new LightShader();
         this._index = PointLight.LightIndex++;
-        this._lightProperty = new PointLightProperty(new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0),1.0,0.09,0.032);
+        this._lightProperty = new PointLightProperty(new Vector3(0.05, 0.05, 0.05), new Vector3(0.8, 0.8, 0.8), new Vector3(1.0, 1.0, 1.0), 1.0, 0.09, 0.032);
     }
 
     public getContant() : number{
@@ -156,15 +154,26 @@ export class PointLight extends Light{
     }
 
     public setShaderProperty(shader: Shader) : void{
+        
+        let renderComponent : LightRendererComponent = this.getRenderComponent();
+        if(!renderComponent){
+            return;
+        }
+
+        if(!renderComponent.owner){
+            return;
+        }
+
+        let position : Vector3 = renderComponent.owner.getWorldPosition(v3_a);
         // set shader's light uniform.
-        this._shader.setUniform3f(`u_pointLights[${this._index}].position`, this._lightProperty.position.x, this._lightProperty.position.y, this._lightProperty.position.z);
+        shader.setUniform3f(`u_pointLights[${this._index}].position`, position.x, position.y, position.z);
         shader.setUniform3f(`u_pointLights[${this._index}].ambient`, this._lightProperty.ambient.x, this._lightProperty.ambient.y, this._lightProperty.ambient.z);
         shader.setUniform3f(`u_pointLights[${this._index}].diffuse`, this._lightProperty.diffuse.x, this._lightProperty.diffuse.y, this._lightProperty.diffuse.z);
         shader.setUniform3f(`u_pointLights[${this._index}].specular`, this._lightProperty.specular.x, this._lightProperty.specular.y, this._lightProperty.specular.z);
 
          // 设置衰减属性
-         this._shader.setUniform1f(`u_pointLights[${this._index}].constant`, this._lightProperty.constant);
-         this._shader.setUniform1f(`u_pointLights[${this._index}].linear`, this._lightProperty.linear);
-         this._shader.setUniform1f(`u_pointLights[${this._index}].quadratic`, this._lightProperty.quadratic);
+         shader.setUniform1f(`u_pointLights[${this._index}].constant`, this._lightProperty.constant);
+         shader.setUniform1f(`u_pointLights[${this._index}].linear`, this._lightProperty.linear);
+         shader.setUniform1f(`u_pointLights[${this._index}].quadratic`, this._lightProperty.quadratic);
     }
 }

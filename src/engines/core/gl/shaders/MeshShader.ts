@@ -74,8 +74,7 @@ struct SpotLight {
     float cutOff;
     float outerCutOff;
 };
-#define NR_SPOT_LIGHTS 4
-uniform SpotLight u_spotLighs[NR_SPOT_LIGHTS];
+uniform SpotLight u_spotLight;
 
 struct Material{
     sampler2D diffuse;
@@ -138,22 +137,23 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
-
-    // 漫反射着色
-    float diff = max(dot(normal, lightDir), 0.0);
-
-    // 镜面光着色
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
-
     float theta     = dot(lightDir, normalize(-light.direction));
     float epsilon   = light.cutOff - light.outerCutOff;
     float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0); 
 
-    // 合并结果
+    // 环境光
     vec3 ambient  = light.ambient  * vec3(texture2D(u_material.diffuse, v_textcoord));
+
+    // 漫反射
+    float diff = max(dot(normal, lightDir), 0.0);
     vec3 diffuse  = light.diffuse  * diff * vec3(texture2D(u_material.diffuse, v_textcoord));
+
+    // 镜面光
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_material.shininess);
     vec3 specular = light.specular * spec * vec3(texture2D(u_material.specular, v_textcoord));
+
+    // 合并结果
     return (ambient + diffuse + specular) * intensity;
 }
 
@@ -172,9 +172,7 @@ void main() {
     }
 
     // 第三阶段：聚光
-    for(int i = 0; i < NR_SPOT_LIGHTS; i++){
-        result += CalcSpotLight(u_spotLighs[i], norm, v_fragPosition, viewDir);
-    }
+    result += CalcSpotLight(u_spotLight, norm, v_fragPosition, viewDir);
 
     gl_FragColor = vec4(result, 1.0);
 }
