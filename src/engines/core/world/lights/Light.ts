@@ -14,7 +14,6 @@ export class Light{
 
     private _name : string;
     private _color : Color;
-    private _owner : TEntity;
     private _type : LightType;
     private _renderComponent : LightRendererComponent;
 
@@ -27,14 +26,6 @@ export class Light{
 
     public get type() : LightType{
         return this._type;
-    }
-
-    public set owner(owner : TEntity){
-        this._owner = owner;
-    }
-
-    public get owner() : TEntity{
-        return this._owner;
     }
 
     public get name(): string {

@@ -61,11 +61,6 @@ export class PointLight extends Light{
         return this._lightProperty.quadratic;
     }
 
-    public getPosition(out : Vector3) : Vector3{
-        out.copyFrom(this.owner.getWorldPosition());
-        return out;
-    }
-
     public getAmbient(out : Vector3) : Vector3{
         out.copyFrom(this._lightProperty.ambient);
         return out;

@@ -72,10 +72,6 @@ export class LightRendererComponent extends BaseComponent {
                 console.error("unkown light type!");
                 break;
         }
-
-        if(this._light){
-            this._light.owner = this.owner;
-        }
     }
 
     public get light() : Light{
