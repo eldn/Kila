@@ -7,6 +7,7 @@ import { BaseCamera } from "./cameras/BaseCamera";
 import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
 import { Dictionary } from "../Types";
 import { Matrix4x4 } from "../math/Matrix4x4";
+import { LightRendererComponent } from "../components/LightComponent";
 
 export enum LevelState {
 
@@ -30,6 +31,7 @@ export class Level {
     private _registeredCameras: Dictionary<BaseCamera> = {};
     private _activeCamera: BaseCamera;
     private _defaultCameraName: string;
+    private _lights : LightRendererComponent[] = [];
 
     /**
      * Creates a new level.
@@ -223,6 +225,11 @@ export class Level {
                 let data = dataSection.components[c];
                 let component = ComponentManager.extractComponent(data);
                 entity.addComponent(component);
+                
+                // 保存灯光组件
+                if(data.type == 'light'){
+                    this._lights.push(component as LightRendererComponent);
+                }
             }
         }
 
@@ -244,5 +251,9 @@ export class Level {
         if (parent !== undefined) {
             parent.addChild(entity);
         }
+    }
+    
+    public getLights() : LightRendererComponent[]{
+        return this._lights;
     }
 }

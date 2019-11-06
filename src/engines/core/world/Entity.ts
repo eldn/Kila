@@ -237,8 +237,15 @@ export class TEntity extends TObject {
     }
 
     /** Returns the world position of this entity. */
-    public getWorldPosition(): Vector3 {
-        return new Vector3(this._worldMatrix.data[12], this._worldMatrix.data[13], this._worldMatrix.data[14]);
+    public getWorldPosition(out ?: Vector3): Vector3 {
+        if(out){
+            out.x = this._worldMatrix.data[12];
+            out.y = this._worldMatrix.data[13];
+            out.z = this._worldMatrix.data[14];
+            return out;
+        } else {
+            return new Vector3(this._worldMatrix.data[12], this._worldMatrix.data[13], this._worldMatrix.data[14]);
+        }
     }
 
     /**

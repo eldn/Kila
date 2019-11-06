@@ -25,6 +25,8 @@ export class LightRendererCoponentData implements IComponentData {
 
         if (json.color !== undefined) {
             this.color = Color.fromJson(json.color);
+        } else {
+            this.color= Color.white();
         }
 
         if (json.lightType !== undefined) {
@@ -57,21 +59,17 @@ export class LightRendererComponent extends BaseComponent {
 
         switch(data.lightType){
             case LightType.DirectionLight:
-                this._light = new DirectionLight(this._owner, LightType.DirectionLight, data.name, data.color);
+                this._light = new DirectionLight(this, LightType.DirectionLight, data.name, data.color);
                 break;
             case LightType.PointLight:
-                this._light = new PointLight(this._owner, LightType.PointLight, data.name, data.color);
+                this._light = new PointLight(this, LightType.PointLight, data.name, data.color);
                 break;
             case LightType.SpotLight:
-                this._light = new SpotLight(this._owner, LightType.SpotLight, data.name, data.color);
+                this._light = new SpotLight(this, LightType.SpotLight, data.name, data.color);
                 break;
             default:
                 console.error("unkown light type!");
                 break;
-        }
-
-        if(this._light){
-            this._light.owner = this.owner;
         }
     }
 
