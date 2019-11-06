@@ -1,7 +1,20 @@
 import { Vector2 } from "./Vector2";
+import { EPSILON } from "./Utils";
+import { Matrix4x4 } from "./Matrix4x4";
+import { Quaternion } from "./Quaternion";
 
+let _x: number = 0.0;
+let _y: number = 0.0;
+let _z: number = 0.0;
 
  export class Vector3 {
+
+    public static UNIT_X : Vector3 = Object.freeze(new Vector3(1, 0, 0)) as Vector3;
+    public static UNIT_Y : Vector3  = Object.freeze(new Vector3(0, 1, 0)) as Vector3;
+    public static UNIT_Z : Vector3  = Object.freeze(new Vector3(0, 0, 1)) as Vector3;
+    public static ZERO : Vector3  = Object.freeze(new Vector3(0, 0, 0)) as Vector3;
+    public static ONE : Vector3  = Object.freeze(new Vector3(1, 1, 1)) as Vector3;
+    public static NEG_ONE : Vector3  = Object.freeze(new Vector3(-1, -1, -1)) as Vector3;
 
     private _x: number;
     private _y: number;
@@ -91,10 +104,11 @@ import { Vector2 } from "./Vector2";
     }
 
  
-    public copyFrom( vector: Vector3 ): void {
+    public copyFrom( vector: Vector3 ): Vector3 {
         this._x = vector._x;
         this._y = vector._y;
         this._z = vector._z;
+        return this;
     }
 
   
@@ -193,8 +207,15 @@ import { Vector2 } from "./Vector2";
         return new Vector3( this._x, this._y, this._z );
     }
 
+     /**
+     * @zh 求向量长度平方
+     */
+    public lengthSqr() : number {
+        return this.x * this.x + this.y * this.y + this.z * this.z;
+    }
+
     public length() : number{
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+        return Math.sqrt(this.lengthSqr());
     }
 
     public dot(v : Vector3) : number{
@@ -209,6 +230,11 @@ import { Vector2 } from "./Vector2";
     }
 
     public normalize() : Vector3{
+
+        if(this.lengthSqr() < EPSILON * EPSILON){
+            return Vector3.ZERO;
+        }
+
         let len : number = this.length();
         this.x /= len;
         this.y /= len;
@@ -223,5 +249,109 @@ import { Vector2 } from "./Vector2";
         this.x = this.x * cos - this.y * sin;
         this.y = this.x * sin + this.y * cos;
         return this;
+    }
+
+    /**
+     * @zh 向量四元数乘法
+     */
+    public static transformQuat (out: Vector3, a: Vector3, q: Quaternion) {
+        // benchmarks: http://jsperf.com/quaternion-transform-Vec3-implementations
+
+        // calculate quat * vec
+        const ix = q.w * a.x + q.y * a.z - q.z * a.y;
+        const iy = q.w * a.y + q.z * a.x - q.x * a.z;
+        const iz = q.w * a.z + q.x * a.y - q.y * a.x;
+        const iw = -q.x * a.x - q.y * a.y - q.z * a.z;
+
+        // calculate result * inverse quat
+        out.x = ix * q.w + iw * -q.x + iy * -q.z - iz * -q.y;
+        out.y = iy * q.w + iw * -q.y + iz * -q.x - ix * -q.z;
+        out.z = iz * q.w + iw * -q.z + ix * -q.y - iy * -q.x;
+        return out;
+    }
+
+    /**
+     * @zh 逐元素向量乘加: A + B * scale
+     */
+    public static scaleAndAdd (out: Vector3, a: Vector3, b: Vector3, scale: number) {
+        out.x = a.x + b.x * scale;
+        out.y = a.y + b.y * scale;
+        out.z = a.z + b.z * scale;
+        return out;
+    }
+
+
+    /**
+     * @zh 逐元素向量线性插值： A + t * (B - A)
+     */
+    public static lerp<Out extends Vector3> (out: Out, a: Out, b: Out, t: number) {
+        out.x = a.x + t * (b.x - a.x);
+        out.y = a.y + t * (b.y - a.y);
+        out.z = a.z + t * (b.z - a.z);
+        return out;
+    }
+
+
+    public static add( a : Vector3, b: Vector3 ): Vector3 {
+        return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+    }
+
+    /**
+     * @zh 逐元素向量减法
+     */
+    public static subtract<Out extends Vector3> (out: Out, a: Out, b: Out) {
+        out.x = a.x - b.x;
+        out.y = a.y - b.y;
+        out.z = a.z - b.z;
+        return out;
+    }
+
+      /**
+     * @zh 归一化向量
+     */
+    public static normalize<Out extends Vector3, Vec3Like extends Vector3> (out: Out, a: Vec3Like) {
+        _x = a.x;
+        _y = a.y;
+        _z = a.z;
+
+        let len = _x * _x + _y * _y + _z * _z;
+        if (len > 0) {
+            len = 1 / Math.sqrt(len);
+            out.x = _x * len;
+            out.y = _y * len;
+            out.z = _z * len;
+        }
+        return out;
+    }
+
+
+      /**
+     * @zh 向量叉积（向量积）
+     */
+    public static cross<Out extends Vector3, Vec3Like_1 extends Vector3, Vec3Like_2 extends Vector3 > (out: Out, a: Vec3Like_1, b: Vec3Like_2) {
+        const { x: ax, y: ay, z: az } = a;
+        const { x: bx, y: by, z: bz } = b;
+        out.x = ay * bz - az * by;
+        out.y = az * bx - ax * bz;
+        out.z = ax * by - ay * bx;
+        return out;
+    }
+
+    public static multiplyValue(out : Vector3, a : Vector3, v: number ): Vector3 {
+        out.copyFrom(a);
+        out.multiplyValue(v);
+        return out;
+    }
+
+    /**
+     * 向量乘法。将当前向量乘以与指定向量的结果赋值给当前向量。
+     * @param other 指定的向量。
+     */
+    public static multiply (out : Vector3, a : Vector3, other: Vector3) : Vector3{
+        if (typeof other !== 'object') { console.warn('should use Vec3.scale for vector * scalar operation'); }
+        out.x = a.x * other.x;
+        out.y = a.y * other.y;
+        out.z = a.z * other.z;
+        return out;
     }
 }

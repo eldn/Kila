@@ -1,61 +1,20 @@
-import { Material } from "./Material";
-import { Color } from "./Color";
 import { Message } from "../message/Message";
 import { MESSAGE_ASSET_LOADER_ASSET_LOADED, AssetManager } from "../assets/AssetManager";
 import { JsonAsset } from "../assets/JsonAssetLoader";
+import { MaterialReferenceNode } from "./MaterialReferenceNode";
+import { MaterialConfigBase } from "./MaterialConfigBase";
+import { MaterialBase } from "./MaterialBase";
+import { SpriteMaterial, SpriteMaterialConfig } from "./SpriteMaterial";
+import { MeshMaterial, MeshMaterialConfig } from "./MeshMaterial";
 
 
-class MaterialReferenceNode {
-
-    public material: Material;
-
-    public referenceCount: number = 1;
-
-    public constructor(material: Material) {
-        this.material = material;
-    }
-}
-
-export class MaterialConfig {
-
-    public name: string;
-
-    public diffuse: string;
-
-    public specular: string;
-
-    public tint: Color;
-
-    public static fromJson(json: any): MaterialConfig {
-        let config = new MaterialConfig();
-        if (json.name !== undefined) {
-            config.name = String(json.name);
-        }
-
-        if (json.diffuse !== undefined) {
-            config.diffuse = String(json.diffuse);
-        }
-
-        if (json.specular !== undefined) {
-            config.specular = String(json.specular);
-        }
-
-        if (json.tint !== undefined) {
-            config.tint = Color.fromJson(json.tint);
-        } else {
-            config.tint = Color.white();
-        }
-
-        return config;
-    }
-}
 
 
 export class MaterialManager {
 
     private static _configLoaded: boolean = false;
     private static _materials: { [name: string]: MaterialReferenceNode } = {};
-    private static _materialConfigs: { [name: string]: MaterialConfig } = {};
+    private static _materialConfigs: { [name: string]: MaterialConfigBase } = {};
 
 
     private constructor() {
@@ -92,19 +51,31 @@ export class MaterialManager {
     }
 
 
-    public static registerMaterial(materialConfig: MaterialConfig): void {
+    public static registerMaterial(materialConfig: MaterialConfigBase): void {
         if (MaterialManager._materialConfigs[materialConfig.name] === undefined) {
             MaterialManager._materialConfigs[materialConfig.name] = materialConfig;
         }
     }
 
  
-    public static getMaterial(materialName: string): Material {
+    public static getMaterial(materialName: string): MaterialBase {
         if (MaterialManager._materials[materialName] === undefined) {
 
             // Check if a config is registered.
             if (MaterialManager._materialConfigs[materialName] !== undefined) {
-                let mat = Material.FromConfig(MaterialManager._materialConfigs[materialName]);
+
+                let mat : MaterialBase;
+
+                // TODO 可自动扩展的material 的创建方式
+                switch(materialName){
+                    case 'SpriteMaterial':
+                        mat = SpriteMaterial.FromConfig(MaterialManager._materialConfigs[materialName] as SpriteMaterialConfig);
+                        break;
+                    case 'MeshMaterial':
+                        mat = MeshMaterial.FromConfig(MaterialManager._materialConfigs[materialName] as MeshMaterialConfig);
+                        break;
+                }
+                
                 MaterialManager._materials[materialName] = new MaterialReferenceNode(mat);
                 return MaterialManager._materials[materialName].material;
             }
@@ -134,7 +105,19 @@ export class MaterialManager {
         let materials = asset.data.materials;
         if (materials) {
             for (let material of materials) {
-                let c = MaterialConfig.fromJson(material);
+
+                let c : MaterialConfigBase;
+
+                // TODO 可自动扩展的material 的创建方式
+                switch(material.name){
+                    case 'SpriteMaterial':
+                        c = SpriteMaterialConfig.fromJson(material);
+                        break;
+                    case 'MeshMaterial':
+                        c = MeshMaterialConfig.fromJson(material);
+                        break;
+                }
+            
                 MaterialManager.registerMaterial(c);
             }
         }

@@ -3,6 +3,7 @@ import { gl } from "../gl/GLUtilities";
 import { AssetManager, MESSAGE_ASSET_LOADER_ASSET_LOADED } from "../assets/AssetManager";
 import { ImageAsset } from "../assets/ImageAssetLoader";
 import { Message } from "../message/Message";
+import { createCipher } from "crypto";
 
 const LEVEL: number = 0;
 const BORDER: number = 0;
@@ -16,6 +17,7 @@ export class Texture implements IMessageHandler {
     private _isLoaded: boolean = false;
     private _width: number;
     private _height: number;
+    private _glFormat : number;
 
 
     public constructor(name: string, width: number = 1, height: number = 1) {
@@ -26,8 +28,20 @@ export class Texture implements IMessageHandler {
         this._handle = gl.createTexture();
 
         this.bind();
-
-        gl.texImage2D(gl.TEXTURE_2D, LEVEL, gl.RGBA, 1, 1, BORDER, gl.RGBA, gl.UNSIGNED_BYTE, TEMP_IMAGE_DATA);
+        
+        let extra : string = name.split(".").pop();
+        switch(extra){
+            case "jpg":
+                this._glFormat = gl.RGB;
+                break;
+            case "png":
+                this._glFormat = gl.RGBA;
+                break;
+            default:
+                console.error("unsupport texure format!");
+                return;
+        }
+        gl.texImage2D(gl.TEXTURE_2D, LEVEL, this._glFormat, 1, 1, BORDER, this._glFormat, gl.UNSIGNED_BYTE, TEMP_IMAGE_DATA);
 
         let asset = AssetManager.getAsset(this.name) as ImageAsset;
         if (asset !== undefined) {
@@ -87,12 +101,11 @@ export class Texture implements IMessageHandler {
 
         this.bind();
 
-        gl.texImage2D(gl.TEXTURE_2D, LEVEL, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, asset.data);
+        gl.texImage2D(gl.TEXTURE_2D, LEVEL, this._glFormat, this._glFormat, gl.UNSIGNED_BYTE, asset.data);
 
         if (this.isPowerof2()) {
             gl.generateMipmap(gl.TEXTURE_2D);
         } else {
-
             // Do not generate a mip map and clamp wrapping to edge.
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -100,7 +113,7 @@ export class Texture implements IMessageHandler {
 
         // TODO:  Set text ure filte r ing based on configuration.
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
         this._isLoaded = true;
     }

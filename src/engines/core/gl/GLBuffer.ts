@@ -1,4 +1,5 @@
 import { gl } from "./GLUtilities";
+import { AttributeInfo } from "./AttributeInfo";
 
 /**
  * Represents a WebGL buffer.

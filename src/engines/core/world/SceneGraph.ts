@@ -1,5 +1,6 @@
 import { TEntity } from "./Entity";
 import { Shader } from "../gl/shaders/Shader";
+import { Matrix4x4 } from "../math/Matrix4x4";
 
 export class SceneGraph {
 
@@ -53,7 +54,7 @@ export class SceneGraph {
      * Renders this scene graph using the provided shader.
      * @param shader The shader to use when rendering.
      */
-    public render(shader: Shader): void {
-        this._root.render(shader);
+    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
+        this._root.render(shader, projection, viewMatrix);
     }
 }

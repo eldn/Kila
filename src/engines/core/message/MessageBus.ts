@@ -62,7 +62,7 @@ import { MessageSubscriptionNode, MessageQueueNode, MessageCallback } from "./Me
 
     
     public static post( message: Message ): void {
-        console.log( "Message posted:", message );
+        // console.log( "Message posted:", message );
         let handlers = MessageBus._subscriptions[message.code];
         if ( handlers === undefined ) {
             return;

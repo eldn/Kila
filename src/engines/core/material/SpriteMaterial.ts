@@ -1,13 +1,44 @@
-import { Texture } from "./Texture";
-import { Color } from "./Color";
-import { TextureManager } from "./TextureManager";
-import { MaterialConfig } from "./MaterialManager";
+import { MaterialBase } from "./MaterialBase";
+import { Texture } from "../graphics/Texture";
+import { Color } from "../graphics/Color";
+import { TextureManager } from "../graphics/TextureManager";
+import { SpriteShader } from "../gl/shaders/SpriteShader";
+import { MaterialConfigBase } from "./MaterialConfigBase";
 
-export class Material {
 
-    private _name: string;
+ export class SpriteMaterialConfig extends MaterialConfigBase{
+
+    public diffuse: string;
+    public specular: string;
+    public tint: Color;
+
+    public static fromJson(json: any): SpriteMaterialConfig {
+        let config = new SpriteMaterialConfig();
+        if (json.name !== undefined) {
+            config.name = String(json.name);
+        }
+
+        if (json.diffuse !== undefined) {
+            config.diffuse = String(json.diffuse);
+        }
+
+        if (json.specular !== undefined) {
+            config.specular = String(json.specular);
+        }
+
+        if (json.tint !== undefined) {
+            config.tint = Color.fromJson(json.tint);
+        } else {
+            config.tint = Color.white();
+        }
+
+        return config;
+    }
+}
+
+export class SpriteMaterial extends MaterialBase {
+
     private _diffuseTextureName: string;
-
     private _diffuseTexture: Texture;
     private _tint: Color;
 
@@ -18,7 +49,7 @@ export class Material {
      * @param tint The color value of the tint to apply to the material.
      */
     public constructor(name: string, diffuseTextureName: string, tint: Color) {
-        this._name = name;
+        super(name);
         this._diffuseTextureName = diffuseTextureName;
         this._tint = tint;
 
@@ -31,16 +62,11 @@ export class Material {
      * Creates a material from the provided configuration.
      * @param config The configuration to create a material from.
      */
-    public static FromConfig(config: MaterialConfig): Material {
-        let m = new Material(config.name, config.diffuse, config.tint);
-
+    public static FromConfig(config: SpriteMaterialConfig): SpriteMaterial {
+        let m = new SpriteMaterial(config.name, config.diffuse, config.tint);
         return m;
     }
 
-    /** The name of this material. */
-    public get name(): string {
-        return this._name;
-    }
 
     /** The name of the diffuse texture. */
     public get diffuseTextureName(): string {
@@ -72,6 +98,7 @@ export class Material {
 
     /** Destroys this material. */
     public destroy(): void {
+        super.destroy();
         TextureManager.releaseTexture(this._diffuseTextureName);
         this._diffuseTexture = undefined;
     }

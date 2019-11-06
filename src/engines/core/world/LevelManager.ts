@@ -4,6 +4,7 @@ import { JsonAsset } from "../assets/JsonAssetLoader";
 import { Message } from "../message/Message";
 import { Shader } from "../gl/shaders/Shader";
 import { BaseCamera } from "./cameras/BaseCamera";
+import { Matrix4x4 } from "../math/Matrix4x4";
 
 export class LevelManager {
 
@@ -26,6 +27,13 @@ export class LevelManager {
             return LevelManager._activeLevel.activeCamera;
         }
 
+        return undefined;
+    }
+
+    public static get activeLevel() : Level{
+        if (LevelManager._activeLevel !== undefined && LevelManager._activeLevel.isLoaded) {
+            return LevelManager._activeLevel;
+        }
         return undefined;
     }
 
@@ -84,9 +92,9 @@ export class LevelManager {
      * Renders the level with the provided shader.
      * @param shader The shader to render with.
      */
-    public static render(shader: Shader): void {
+    public static render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
         if (LevelManager._activeLevel !== undefined) {
-            LevelManager._activeLevel.render(shader);
+            LevelManager._activeLevel.render(shader, projection, viewMatrix);
         }
     }
 
@@ -157,5 +165,15 @@ export class LevelManager {
 
         // TODO: Should only set this if ALL queued assets have loaded.
         LevelManager._configLoaded = true;
+    }
+
+    public static getViewMatrix() : Matrix4x4{
+        let view: Matrix4x4;
+        if ( LevelManager.isLoaded && LevelManager.activeLevelActiveCamera !== undefined ) {
+            view = LevelManager.activeLevelActiveCamera.view;
+        } else {
+            view = Matrix4x4.identity();
+        }
+        return view;
     }
 }

@@ -6,7 +6,11 @@ import { Vector3 } from "../math/Vector3";
 import { SceneGraph } from "./SceneGraph";
 import { IComponent } from "../components/IComponent";
 import { IBehavior } from "../behaviors/IBehavior";
+import { Quaternion } from "../math/Quaternion";
+import { JsonAsset } from "../assets/JsonAssetLoader";
 
+const v3_a = new Vector3();
+const q_a = new Quaternion();
 
 export class TEntity extends TObject {
 
@@ -105,6 +109,118 @@ export class TEntity extends TObject {
 
         return undefined;
     }
+
+    protected static _findComponent (node: TEntity, constructor: Function) {
+        // const cls = constructor as any;
+        const comps = node._components;
+        // if (cls._sealed) {
+        //     for (let i = 0; i < comps.length; ++i) {
+        //         const comp = comps[i];
+        //         if (comp.constructor === constructor) {
+        //             return comp;
+        //         }
+        //     }
+        // } else {
+            for (let i = 0; i < comps.length; ++i) {
+                const comp = comps[i];
+                if (comp instanceof constructor) {
+                    return comp;
+                }
+            }
+        // }
+        return null;
+    }
+
+    protected static _findComponents ( node: TEntity, constructor: Function, components: IComponent[]) {
+        // const cls = constructor as any;
+        const comps = node._components;
+        // if (cls._sealed) {
+        //     for (let i = 0; i < comps.length; ++i) {
+        //         const comp = comps[i];
+        //         if (comp.constructor === constructor) {
+        //             components.push(comp);
+        //         }
+        //     }
+        // } else {
+            for (let i = 0; i < comps.length; ++i) {
+                const comp = comps[i];
+                if (comp instanceof constructor) {
+                    components.push(comp);
+                }
+            }
+        // }
+    }
+
+
+    protected static _findChildComponent (children: TEntity[], constructor) {
+        for (let i = 0; i < children.length; ++i) {
+            const node = children[i];
+            let comp = TEntity._findComponent(node, constructor);
+            if (comp) {
+                return comp;
+            } else if (node._children.length > 0) {
+                comp = TEntity._findChildComponent(node._children, constructor);
+                if (comp) {
+                    return comp;
+                }
+            }
+        }
+        return null;
+    }
+
+    protected static _findChildComponents (children: TEntity[], constructor, components) {
+        for (let i = 0; i < children.length; ++i) {
+            const node = children[i];
+            TEntity._findComponents(node, constructor, components);
+            if (node._children.length > 0) {
+                TEntity._findChildComponents(node._children, constructor, components);
+            }
+        }
+    }
+
+    public getComponent<T extends IComponent> (classConstructor: Constructor<T>): T | null;
+    public getComponent (typeOrClassName: Function) {
+        const constructor = typeOrClassName;
+        if (constructor) {
+            return TEntity._findComponent(this, constructor);
+        }
+        return null;
+    }
+
+
+    public getComponents<T extends IComponent> (classConstructor: Constructor<T>): T[];
+    public getComponents(typeOrClassName : Function) : IComponent[]{
+        const constructor = typeOrClassName;
+        const components: IComponent[] = [];
+        if (constructor) {
+            TEntity._findComponents(this, constructor, components);
+        }
+        return components;
+    }
+
+
+    public getComponentInChildren<T extends IComponent> (classConstructor: Constructor<T>): T | null;
+    public getComponentInChildren (typeOrClassName: Function) {
+        const constructor = typeOrClassName;
+        if (constructor) {
+            return TEntity._findChildComponent(this._children, constructor);
+        }
+        return null;
+    }
+
+
+    public getComponentsInChildren<T extends IComponent> (classConstructor: Constructor<T>): T[];
+    
+    public getComponentsInChildren (typeOrClassName: Function) {
+        const constructor = typeOrClassName;
+        const components: IComponent[] = [];
+        if (constructor) {
+            TEntity._findComponents(this, constructor, components);
+            TEntity._findChildComponents(this._children, constructor, components);
+        }
+        return components;
+    }
+
 
     /**
     * Recursively attempts to retrieve a behavior with the given name from this entity or its children.
@@ -219,23 +335,30 @@ export class TEntity extends TObject {
      * Renders this entity and its children.
      * @param shader The shader to use when rendering/
      */
-    public render(shader: Shader): void {
+    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
         if (!this._isVisible) {
             return;
         }
 
         for (let c of this._components) {
-            c.render(shader);
+            c.render(shader, projection, viewMatrix);
         }
 
         for (let c of this._children) {
-            c.render(shader);
+            c.render(shader, projection, viewMatrix);
         }
     }
 
     /** Returns the world position of this entity. */
-    public getWorldPosition(): Vector3 {
-        return new Vector3(this._worldMatrix.data[12], this._worldMatrix.data[13], this._worldMatrix.data[14]);
+    public getWorldPosition(out ?: Vector3): Vector3 {
+        if(out){
+            out.x = this._worldMatrix.data[12];
+            out.y = this._worldMatrix.data[13];
+            out.z = this._worldMatrix.data[14];
+            return out;
+        } else {
+            return new Vector3(this._worldMatrix.data[12], this._worldMatrix.data[13], this._worldMatrix.data[14]);
+        }
     }
 
     /**
@@ -252,5 +375,36 @@ export class TEntity extends TObject {
         } else {
             this._worldMatrix.copyFrom(this._localMatrix);
         }
+    }
+
+     /**
+     * @zh
+     * 设置当前节点旋转为面向目标位置
+     * @param pos 目标位置
+     * @param up 坐标系的上方向
+     */
+    public lookAt (pos: Vector3, up?: Vector3): void {
+        v3_a.copyFrom(this.getWorldPosition());
+        Vector3.subtract(v3_a, v3_a, pos); // we use -z for view-dir
+        Vector3.normalize(v3_a, v3_a);
+        Quaternion.fromViewUp(q_a, v3_a, up);
+        this.setWorldRotation(q_a);
+    }
+
+        /**
+     * @zh
+     * 设置世界旋转
+     * @param rotation 目标世界旋转
+     */
+    public setWorldRotation (rotation: Quaternion): void{
+       
+        // Quaternion.copy(this._rot, rotation);
+        
+        // if (this._parent) {
+        //     Quaternion.multiply(this._lrot, Quaternion.conjugate(this._lrot, this._parent._rot), this._rot);
+        // } else {
+        //     Quaternion.copy(this._lrot, this._rot);
+        // }
+      
     }
 }

@@ -10,14 +10,14 @@
 				"position": {
 					"x": 0,
 					"y": 0,
-					"z": -2
+					"z": -10
 				}
 			},
 			"components": [
 				{
 					"name": "testSprite",
 					"type": "sprite",
-					"materialName": "container",
+					"materialName": "SpriteMaterial",
 					"width": 4,
 					"height": 4
 				}
@@ -27,19 +27,21 @@
 			]
 		},
 		{
-			"name": "testMesh",
+			"name": "testSprite2",
 			"transform": {
 				"position": {
-					"x": 0,
+					"x": 8,
 					"y": 0,
-					"z": -1
+					"z": -10
 				}
 			},
 			"components": [
 				{
-					"name": "box",
-					"type": "mesh",
-					"path": "assets/model/box.obj"
+					"name": "testSprite2",
+					"type": "sprite",
+					"materialName": "SpriteMaterial",
+					"width": 4,
+					"height": 4
 				}
 			],
 			"behaviors": [
@@ -47,16 +49,351 @@
 			]
 		},
 		{
+			"name": "testMesh1",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": 0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh1",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh2",
+			"transform": {
+				"position": {
+					"x": 2.0,
+					"y": 5.0,
+					"z": -15
+				},
+				"rotation": {
+					"x":0,
+					"y":-1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh2",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh3",
+			"transform": {
+				"position": {
+					"x": -1.5,
+					"y": -2.2,
+					"z": -2.5
+				},
+				"rotation": {
+					"x":0,
+					"y":-1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh3",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh4",
+			"transform": {
+				"position": {
+					"x": -3.8,
+					"y": -2.0,
+					"z": -12.3
+				},
+				"rotation": {
+					"x":0,
+					"y":-1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh4",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh5",
+			"transform": {
+				"position": {
+					"x": 2.4,
+					"y": -0.4,
+					"z": -3.5
+				},
+				"rotation": {
+					"x":0,
+					"y":0,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh5",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh6",
+			"transform": {
+				"position": {
+					"x": -1.7,
+					"y": 3.0,
+					"z": -7.5
+				},
+				"rotation": {
+					"x":0,
+					"y":1,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh6",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testMesh7",
+			"transform": {
+				"position": {
+					"x": 1.3,
+					"y": -2.0,
+					"z": -2.5
+				},
+				"rotation": {
+					"x":0,
+					"y":0,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testMesh7",
+					"type": "mesh",
+					"materialName": "MeshMaterial",
+					"modelPath":"assets/model/box.obj",
+					"mtlPath":"assets/model/box.mtl"
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
 			"name": "defaultCamera",
 			"type": "perspectiveCamera",
 			"transform": {
 				"position": {
-					"z": -2
+					"x":0,
+					"y":0,
+					"z":4
 				},
 				"rotation": {
-					"y": 0.71
+					"x":0,
+					"y":0,
+					"z":0
 				}
 			}
+		},
+		{
+			"name": "dirLight",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": 1.3,
+					"z": 3
+				},
+				"rotation": {
+					"x":0,
+					"y":0,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "dirLight",
+					"type": "light",
+					"lightType" : 0,
+					"color":{
+						"r":1,
+						"g":1,
+						"b":1,
+						"a":1
+					}
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "pointLight1",
+			"transform": {
+				"position": {
+					"x": 0.7,
+					"y": 0.2,
+					"z": 2.0
+				}
+			},
+			"components": [
+				{
+					"name": "pointLight1",
+					"type": "light",
+					"lightType" : 1
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "pointLight2",
+			"transform": {
+				"position": {
+					"x": 2.3,
+					"y": -3.3,
+					"z": -4.0
+				}
+			},
+			"components": [
+				{
+					"name": "pointLight2",
+					"type": "light",
+					"lightType" : 1
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "pointLight3",
+			"transform": {
+				"position": {
+					"x": -4.0,
+					"y": 2.0,
+					"z": 12.0
+				}
+			},
+			"components": [
+				{
+					"name": "pointLight3",
+					"type": "light",
+					"lightType" : 1
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "pointLight4",
+			"transform": {
+				"position": {
+					"x": 0.0,
+					"y": 0.0,
+					"z": -3.0
+				}
+			},
+			"components": [
+				{
+					"name": "pointLight4",
+					"type": "light",
+					"lightType" : 1
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "spotLight",
+			"transform": {
+				"position": {
+					"x": 0.0,
+					"y": 0.0,
+					"z": 7.0
+				}
+			},
+			"components": [
+				{
+					"name": "spotLight",
+					"type": "light",
+					"lightType" : 2
+				}
+			],
+			"behaviors": [
+			]
+		},
+		{
+			"name": "testCube",
+			"transform": {
+				"position": {
+					"x": 0,
+					"y": 0,
+					"z": -3
+				},
+				"rotation": {
+					"x":0,
+					"y":0,
+					"z":0
+				}
+			},
+			"components": [
+				{
+					"name": "testcube",
+					"type": "cube",
+					"color":{
+						"r":1,
+						"g":0.5,
+						"b":0.31,
+						"a":1
+					}
+				}
+			],
+			"behaviors": [
+			]
 		}
 	]
 }

@@ -1,4 +1,5 @@
 import { Vector3 } from "./Vector3";
+import { Vector2 } from "./Vector2";
 
 export class Matrix4x4 {
 
@@ -44,16 +45,16 @@ export class Matrix4x4 {
 
   
     public static perspective( fov: number, aspect: number, nearClip: number, farClip: number ): Matrix4x4 {
-        let f = 1.0 / Math.tan( fov / 2.0 );
-        let rangeInv = 1.0 / ( nearClip - farClip );
+        let f = 1.0 / Math.tan( fov / 2 );
+        let nf = 1 / ( nearClip - farClip );
 
         // data
         let m = new Matrix4x4();
         m._data = [
             f / aspect, 0, 0, 0,
             0, f, 0, 0,
-            0, 0, ( nearClip + farClip ) * rangeInv, -1.0,
-            0, 0, nearClip * farClip * rangeInv * 2.0, 0.0
+            0, 0, ( nearClip + farClip ) * nf, -1,
+            0, 0, nearClip * farClip * nf * 2, 0
         ];
         return m;
     }
@@ -192,24 +193,81 @@ export class Matrix4x4 {
         return m;
     }
 
-
     public toFloat32Array(): Float32Array {
-        return new Float32Array( this._data );
+        return new Float32Array(this._data);
     }
 
-    
-    public copyFrom( m: Matrix4x4 ): void {
-        for ( let i = 0; i < 16; ++i ) {
+
+    public copyFrom(m: Matrix4x4): void {
+        for (let i = 0; i < 16; ++i) {
             this._data[i] = m._data[i];
         }
     }
 
-    public set(x : number, y : number, v : number) : Matrix4x4{
+    public set(x: number, y: number, v: number): Matrix4x4 {
         this._data[x][y] = v;
         return this;
     }
 
-    public get(x : number, y : number) : number{
+    public get(x: number, y: number): number {
         return this._data[x][y];
+    }
+
+     /**
+     * @zh 根据视点计算矩阵，注意 `eye - center` 不能为零向量或与 `up` 向量平行
+     * @param eye 当前位置
+     * @param center 目标视点
+     * @param up 视口上方向
+     */
+    public static lookAt (out: Matrix4x4, eye: Vector3, center: Vector3, up: Vector3) {
+        const eyex = eye.x;
+        const eyey = eye.y;
+        const eyez = eye.z;
+        const upx = up.x;
+        const upy = up.y;
+        const upz = up.z;
+        const centerx = center.x;
+        const centery = center.y;
+        const centerz = center.z;
+
+        let z0 = eyex - centerx;
+        let z1 = eyey - centery;
+        let z2 = eyez - centerz;
+
+        let len = 1 / Math.sqrt(z0 * z0 + z1 * z1 + z2 * z2);
+        z0 *= len;
+        z1 *= len;
+        z2 *= len;
+
+        let x0 = upy * z2 - upz * z1;
+        let x1 = upz * z0 - upx * z2;
+        let x2 = upx * z1 - upy * z0;
+        len = 1 / Math.sqrt(x0 * x0 + x1 * x1 + x2 * x2);
+        x0 *= len;
+        x1 *= len;
+        x2 *= len;
+
+        const y0 = z1 * x2 - z2 * x1;
+        const y1 = z2 * x0 - z0 * x2;
+        const y2 = z0 * x1 - z1 * x0;
+
+        out._data[0] = x0;
+        out._data[1] = y0;
+        out._data[2] = z0;
+        out._data[3] = 0;
+        out._data[4] = x1;
+        out._data[5] = y1;
+        out._data[6] = z1;
+        out._data[7] = 0;
+        out._data[8] = x2;
+        out._data[9] = y2;
+        out._data[10] = z2;
+        out._data[11] = 0;
+        out._data[12] = -(x0 * eyex + x1 * eyey + x2 * eyez);
+        out._data[13] = -(y0 * eyex + y1 * eyey + y2 * eyez);
+        out._data[14] = -(z0 * eyex + z1 * eyey + z2 * eyez);
+        out._data[15] = 1;
+
+        return out;
     }
 }

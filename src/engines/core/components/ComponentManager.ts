@@ -2,6 +2,8 @@ import { IComponentBuilder } from "./IComponentBuilder";
 import { IComponent } from "./IComponent";
 import { SpriteComponentBuilder } from "./SpriteComponent";
 import { MeshRendererComponentBuilder } from "./MeshRendererComponent";
+import { LightRendererComponentBuilder } from "./LightComponent";
+import { CubeRendererComponentBuilder } from "./geometry/CubeComponent";
 
 export class ComponentManager {
 
@@ -25,5 +27,7 @@ export class ComponentManager {
     public static initialize() : void{
         ComponentManager.registerBuilder(new SpriteComponentBuilder());
         ComponentManager.registerBuilder(new MeshRendererComponentBuilder());
+        ComponentManager.registerBuilder(new LightRendererComponentBuilder());
+        ComponentManager.registerBuilder(new CubeRendererComponentBuilder());
     }
 }
