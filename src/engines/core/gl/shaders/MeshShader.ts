@@ -33,6 +33,12 @@ void main() {
     private getFragmentSource(): string {
         return `
 precision mediump float;
+struct Material{
+    sampler2D diffuse;
+    sampler2D specular;
+    float shininess;
+};
+
 
 // 平行光
 struct DirLight {
@@ -43,6 +49,21 @@ struct DirLight {
     vec3 specular;
 }; 
 uniform DirLight u_dirLight;
+
+// 聚光灯
+struct SpotLight{
+    vec3 position;
+    vec3 direction;
+    float cutOff;
+    float outerCutOff;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+uniform SpotLight u_spotLight;
+
+
 
 // 点光源
 struct PointLight {
@@ -59,28 +80,6 @@ struct PointLight {
 #define NR_POINT_LIGHTS 4
 uniform PointLight u_pointLights[NR_POINT_LIGHTS];
 
-// 聚光灯
-struct SpotLight {
-    vec3 position;
-    vec3 direction;
-
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-
-    float constant;
-    float linear;
-    float quadratic;
-    float cutOff;
-    float outerCutOff;
-};
-uniform SpotLight u_spotLight;
-
-struct Material{
-    sampler2D diffuse;
-    sampler2D specular;
-    float shininess;
-};
 
 uniform vec3 u_viewPos;
 uniform Material u_material;
@@ -159,22 +158,22 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 
 void main() {
 
-    // 属性
-    vec3 norm = normalize(v_normal);
     vec3 viewDir = normalize(u_viewPos - v_fragPosition);
+    vec3 norm = normalize(v_normal);
 
-    // 第一阶段：定向光照
+    // 平行光
     vec3 result = CalcDirLight(u_dirLight, norm, viewDir);
 
-    // 第二阶段：点光源
+    // 点光源
     for(int i = 0; i < NR_POINT_LIGHTS; i++){
         result += CalcPointLight(u_pointLights[i], norm, v_fragPosition, viewDir); 
     }
 
-    // 第三阶段：聚光
+    // 聚光灯
     result += CalcSpotLight(u_spotLight, norm, v_fragPosition, viewDir);
 
     gl_FragColor = vec4(result, 1.0);
+
 }
 `;
     }

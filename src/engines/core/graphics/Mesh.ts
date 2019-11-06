@@ -183,6 +183,7 @@ export class Mesh implements IMessageHandler{
 
         this._shader.use();
 
+
          // 设置观察点（摄像机）的位置，用于计算镜面反射 
          let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
          if (!activeCamera) {
@@ -200,10 +201,10 @@ export class Mesh implements IMessageHandler{
              light.light.setShaderProperty(this._shader);
          }
 
-
         // 设置观察点（摄像机）的位置，用于计算镜面反射 
         let viewPos: Vector3 = activeCamera.getWorldPosition();
         this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
+        
 
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());

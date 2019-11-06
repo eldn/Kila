@@ -28,6 +28,10 @@ export class Light{
         return this._type;
     }
 
+    public getRenderComponent() : LightRendererComponent{
+        return this._renderComponent;
+    }
+
     public get name(): string {
         return this._name;
     }
@@ -40,21 +44,16 @@ export class Light{
      
     }
 
-    public getRenderComponent() : LightRendererComponent{
-        return this._renderComponent;
-    }
-
     public radians(degrees: number): number {
         return degrees * (Math.PI / 180.0);
     }
 
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
-        if(!shader){
-            console.error('DirectionLight draw failed, shader null!');
-        }
+
+     
     }
 
     public setShaderProperty(shader: Shader) : void{
-
+        
     }
 }

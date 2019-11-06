@@ -7,16 +7,15 @@ import { AttributeInfo } from "../../gl/AttributeInfo";
 import { Color } from "../../graphics/Color";
 import { Vector3 } from "../../math/Vector3";
 import { Light, LightType } from "./Light";
-import { TEntity } from "../Entity";
 import { LightRendererComponent } from "../../components/LightComponent";
 
 let v3_a : Vector3 = new Vector3();
 
 export class PointLightProperty {
+    position: Vector3 = new Vector3()
     ambient: Vector3 = new Vector3();
     diffuse: Vector3 = new Vector3();
     specular: Vector3 = new Vector3();
-
     constant : number = 1;
     linear : number = 1;
     quadratic : number = 1;
@@ -32,21 +31,19 @@ export class PointLightProperty {
 }
 
 export class PointLight extends Light{
-
     private static LightIndex : number = 0;
-
     private _vertextBuffer : GLBuffer;
     private _shader : LightShader;
     private _lightProperty: PointLightProperty;
     private _index : number = 0;
 
     constructor(renderComponent : LightRendererComponent, type: LightType,name : string, color : Color){
-        super(renderComponent, type, name, color);
+        super(renderComponent,type, name, color);
 
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._shader = new LightShader();
         this._index = PointLight.LightIndex++;
-        this._lightProperty = new PointLightProperty(new Vector3(0.05, 0.05, 0.05), new Vector3(0.8, 0.8, 0.8), new Vector3(1.0, 1.0, 1.0), 1.0, 0.09, 0.032);
+        this._lightProperty = new PointLightProperty(new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0),1.0,0.09,0.032);
     }
 
     public getContant() : number{
@@ -78,6 +75,8 @@ export class PointLight extends Light{
 
 
     public load() :void{
+
+         
 
          let vertices : Array<number> = [
             -0.5, -0.5, -0.5,
@@ -137,16 +136,19 @@ export class PointLight extends Light{
 
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
 
-        // draw a light cube .
         this._shader.use();
+
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
+
         this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+        // this._shader.setUniform4fv("u_tint", this._color.toFloat32Array());
+
+
         this._vertextBuffer.bind();
         this._vertextBuffer.draw();
-
-        
     }
+
 
     public setShaderProperty(shader: Shader) : void{
         
