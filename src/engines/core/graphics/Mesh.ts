@@ -21,6 +21,7 @@ import { Light, LightType } from "../world/lights/Light";
 import { DirectionLight } from "../world/lights/DirectionLight";
 import { MeshShader } from "../gl/shaders/MeshShader";
 import { SpotLight } from "../world/lights/Spotlight";
+import { NoLightShader } from "../gl/shaders/NoLightShader";
 
 let v3_a: Vector3 = new Vector3();
 
@@ -37,7 +38,8 @@ export class Mesh implements IMessageHandler{
     protected _material: MeshMaterial;
     private _meshAsset : ModelAsset;
     private _mtlAsset : ModelAsset;
-    private _shader : MeshShader;
+    // private _shader : MeshShader;
+    private _shader : NoLightShader;
 
     constructor(name : string, modelPath : string, mtlPath : string, materialName: string){
         this._name = name;
@@ -69,7 +71,8 @@ export class Mesh implements IMessageHandler{
 
 
         this._material = MaterialManager.getMaterial(this._materialName) as MeshMaterial;
-        this._shader = new MeshShader();
+        // this._shader = new MeshShader();
+        this._shader = new NoLightShader();
     }
 
     public get name(): string {
@@ -229,7 +232,7 @@ export class Mesh implements IMessageHandler{
     public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
 
         this._shader.use();
-
+        /*
 
          // 设置观察点（摄像机）的位置，用于计算镜面反射 
          let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
@@ -252,11 +255,7 @@ export class Mesh implements IMessageHandler{
         let viewPos: Vector3 = activeCamera.getWorldPosition();
         this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
         
-
-        this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
-        this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
-        this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-
+        
         // ===> 设置材质
         this._shader.setUniform1f("u_material.shininess", 32.0);
         if (this._material.diffuseTexture !== undefined) {
@@ -267,6 +266,18 @@ export class Mesh implements IMessageHandler{
         if (this._material.specularTexture !== undefined) {
             this._material.specularTexture.activateAndBind(1);
             this._shader.setUniform1i("u_material.specular", 1);
+        }
+        
+        */
+        
+
+        this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
+        this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
+        this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
+
+        if (this._material.diffuseTexture !== undefined) {
+            this._material.diffuseTexture.activateAndBind(0);
+            this._shader.setUniform1i("uSampler", 0);
         }
 
 
