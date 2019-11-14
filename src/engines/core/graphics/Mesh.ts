@@ -100,6 +100,7 @@ export class Mesh implements IMessageHandler{
 
     private loadMeshFromAsset(meshAsset: ModelAsset, mtlAsset : ModelAsset) :  void{
 
+        /*
         let objDoc : OBJDoc = new OBJDoc(meshAsset.data, mtlAsset.data);
         objDoc.parse(1, true);
         let drawInfo : DrawingInfo = objDoc.getDrawingInfo();
@@ -138,6 +139,52 @@ export class Mesh implements IMessageHandler{
             // skip follow vertex
             i += 3;
         }
+        */
+
+
+       const vertices = [
+        // Front face, 
+     -1.0, -1.0,  1.0, 0.0,  0.0, 0.0, 0.0, 1.0,
+      1.0, -1.0,  1.0, 1.0,  0.0, 0.0, 0.0, 1.0,
+      1.0,  1.0,  1.0, 1.0,  1.0, 0.0, 0.0, 1.0,
+     -1.0,  1.0,  1.0, 0.0,  1.0, 0.0, 0.0, 1.0,
+     // Back face 
+     -1.0, -1.0, -1.0, 0.0,  0.0, 0.0, 0.0, -1.0,
+     -1.0,  1.0, -1.0, 1.0,  0.0, 0.0, 0.0, -1.0,
+      1.0,  1.0, -1.0, 1.0,  1.0, 0.0, 0.0, -1.0,
+      1.0, -1.0, -1.0, 0.0,  1.0, 0.0, 0.0, -1.0,
+     // Top face 
+     -1.0,  1.0, -1.0, 0.0,  0.0, 0.0, 1.0, 0.0,
+     -1.0,  1.0,  1.0, 1.0,  0.0, 0.0, 1.0, 0.0,
+      1.0,  1.0,  1.0, 1.0,  1.0, 0.0, 1.0, 0.0,
+      1.0,  1.0, -1.0, 0.0,  1.0, 0.0, 1.0, 0.0,
+     // Bottom face 
+     -1.0, -1.0, -1.0, 0.0,  0.0, 0.0, -1.0, 0.0,
+      1.0, -1.0, -1.0, 1.0,  0.0, 0.0, -1.0, 0.0,
+      1.0, -1.0,  1.0, 1.0,  1.0, 0.0, -1.0, 0.0,
+     -1.0, -1.0,  1.0, 0.0,  1.0, 0.0, -1.0, 0.0,
+     // Right face 
+      1.0, -1.0, -1.0, 0.0,  0.0, 1.0, 0.0, 0.0,
+      1.0,  1.0, -1.0, 1.0,  0.0, 1.0, 0.0, 0.0,
+      1.0,  1.0,  1.0, 1.0,  1.0, 1.0, 0.0, 0.0,
+      1.0, -1.0,  1.0, 0.0,  1.0, 1.0, 0.0, 0.0,
+     // Left face 
+     -1.0, -1.0, -1.0, 0.0,  0.0, -1.0, 0.0, 0.0,
+     -1.0, -1.0,  1.0, 1.0,  0.0, -1.0, 0.0, 0.0,
+     -1.0,  1.0,  1.0, 1.0,  1.0, -1.0, 0.0, 0.0,
+     -1.0,  1.0, -1.0, 0.0,  1.0, -1.0, 0.0, 0.0,
+   ];
+
+
+
+   const indices = [
+    0,  1,  2,      0,  2,  3,    // front
+    4,  5,  6,      4,  6,  7,    // back
+    8,  9,  10,     8,  10, 11,   // top
+    12, 13, 14,     12, 14, 15,   // bottom
+    16, 17, 18,     16, 18, 19,   // right
+    20, 21, 22,     20, 22, 23,   // left
+  ];
 
         
 
@@ -216,6 +263,7 @@ export class Mesh implements IMessageHandler{
             this._material.diffuseTexture.activateAndBind(0);
             this._shader.setUniform1i("u_material.diffuse", 0);
         }
+        
         if (this._material.specularTexture !== undefined) {
             this._material.specularTexture.activateAndBind(1);
             this._shader.setUniform1i("u_material.specular", 1);
