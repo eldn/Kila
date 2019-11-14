@@ -14,7 +14,6 @@ export class MeshShader extends Shader {
         return `
 attribute vec3 a_position;
 attribute vec2 a_textcoord;
-attribute vec4 a_color;
 attribute vec3 a_normal;
 uniform mat4 u_view;
 uniform mat4 u_model;
