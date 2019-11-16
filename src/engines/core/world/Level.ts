@@ -8,6 +8,7 @@ import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
 import { Dictionary } from "../Types";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { LightRendererComponent } from "../components/LightComponent";
+import { SkyBox } from "./Skybox";
 
 export enum LevelState {
 
@@ -32,6 +33,8 @@ export class Level {
     private _activeCamera: BaseCamera;
     private _defaultCameraName: string;
     private _lights : LightRendererComponent[] = [];
+
+    private _skyBox : SkyBox;
 
     /**
      * Creates a new level.
@@ -144,6 +147,12 @@ export class Level {
      */
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
         if (this._state === LevelState.UPDATING) {
+
+            // 先绘制天空盒
+            if(this._skyBox){
+                this._skyBox.renderSkyBox(shader, projection, viewMatrix);
+            }
+
             this._sceneGraph.render(shader, projection, viewMatrix);
         }
     }
@@ -205,10 +214,24 @@ export class Level {
 
         // TODO: Use factories
         if (dataSection.type !== undefined) {
-            if (dataSection.type = "perspectiveCamera") {
+            if (dataSection.type == "perspectiveCamera") {
                 entity = new PerspectiveCamera(name, this._sceneGraph);
                 this.registerCamera(entity as BaseCamera);
-            } else {
+            } else if(dataSection.type == "skybox"){
+                if(!this._skyBox){
+                    this._skyBox = new SkyBox(dataSection.name, this._sceneGraph,[
+                        dataSection.positive_X_texture,
+                        dataSection.negative_X_texture,
+                        dataSection.positive_Y_texture,
+                        dataSection.negative_Y_texture,
+                        dataSection.positive_z_texture,
+                        dataSection.negatice_z_texture,
+                    ])
+                    entity = this._skyBox;
+                } else {
+                    console.error("One level can only have one skybox!");
+                }
+            }else {
                 throw new Error("Unsupported type " + dataSection.type);
             }
         } else {

@@ -5,6 +5,16 @@
 	"defaultCamera": "defaultCamera",
 	"objects": [
 		{
+			"name": "testSkyBox",
+			"type":"skybox",
+			"positive_X_texture" : "assets/textures/skybox2/skyposx1.png",
+			"negative_X_texture" : "assets/textures/skybox2/skynegx1.png",
+			"positive_Y_texture" : "assets/textures/skybox2/skyposy1.png",
+			"negative_Y_texture" : "assets/textures/skybox2/skynegy1.png",
+			"positive_z_texture" : "assets/textures/skybox2/skyposz1.png",
+			"negatice_z_texture" : "assets/textures/skybox2/skynegz1.png"
+		},
+		{
 			"name": "testSprite",
 			"transform": {
 				"position": {
