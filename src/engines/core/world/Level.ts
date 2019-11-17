@@ -149,9 +149,9 @@ export class Level {
         if (this._state === LevelState.UPDATING) {
 
             // 先绘制天空盒
-            if(this._skyBox){
-                this._skyBox.renderSkyBox(shader, projection, viewMatrix);
-            }
+            // if(this._skyBox){
+            //     this._skyBox.renderSkyBox(shader, projection, viewMatrix);
+            // }
 
             this._sceneGraph.render(shader, projection, viewMatrix);
         }

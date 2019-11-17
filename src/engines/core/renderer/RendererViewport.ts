@@ -84,6 +84,7 @@ export class RendererViewport {
         // 深度测试
         gl.enable(gl.DEPTH_TEST);
         // gl.depthFunc(gl.LESS);
+        gl.depthFunc(gl.LEQUAL);
 
         gl.enable( gl.BLEND );
         gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );

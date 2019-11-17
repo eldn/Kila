@@ -159,7 +159,7 @@ export class SkyBox extends TEntity implements IMessageHandler {
     }
 
 
-    public renderSkyBox(shader: Shader, projection: Matrix4x4, viewMatrix: Matrix4x4): void {
+    public render(shader: Shader, projection: Matrix4x4, viewMatrix: Matrix4x4): void {
 
         if(!this._isLoad){
             return;
