@@ -1,6 +1,12 @@
 import { Vector3 } from "./Vector3";
 import { Vector2 } from "./Vector2";
 
+
+let _a00: number = 0; let _a01: number = 0; let _a02: number = 0; let _a03: number = 0;
+let _a10: number = 0; let _a11: number = 0; let _a12: number = 0; let _a13: number = 0;
+let _a20: number = 0; let _a21: number = 0; let _a22: number = 0; let _a23: number = 0;
+let _a30: number = 0; let _a31: number = 0; let _a32: number = 0; let _a33: number = 0;
+
 export class Matrix4x4 {
 
     private _data: number[] = [];
@@ -266,6 +272,61 @@ export class Matrix4x4 {
         out._data[12] = -(x0 * eyex + x1 * eyey + x2 * eyez);
         out._data[13] = -(y0 * eyex + y1 * eyey + y2 * eyez);
         out._data[14] = -(z0 * eyex + z1 * eyey + z2 * eyez);
+        out._data[15] = 1;
+
+        return out;
+    }
+
+
+    /**
+     * @zh 计算逆转置矩阵
+     */
+    public static inverseTranspose <Out extends Matrix4x4> (out: Out, a: Out) {
+
+        _a00 = a._data[0]; _a01 = a._data[1]; _a02 = a._data[2]; _a03 = a._data[3];
+        _a10 = a._data[4]; _a11 = a._data[5]; _a12 = a._data[6]; _a13 = a._data[7];
+        _a20 = a._data[8]; _a21 = a._data[9]; _a22 = a._data[10]; _a23 = a._data[11];
+        _a30 = a._data[12]; _a31 = a._data[13]; _a32 = a._data[14]; _a33 = a._data[15];
+
+        const b00 = _a00 * _a11 - _a01 * _a10;
+        const b01 = _a00 * _a12 - _a02 * _a10;
+        const b02 = _a00 * _a13 - _a03 * _a10;
+        const b03 = _a01 * _a12 - _a02 * _a11;
+        const b04 = _a01 * _a13 - _a03 * _a11;
+        const b05 = _a02 * _a13 - _a03 * _a12;
+        const b06 = _a20 * _a31 - _a21 * _a30;
+        const b07 = _a20 * _a32 - _a22 * _a30;
+        const b08 = _a20 * _a33 - _a23 * _a30;
+        const b09 = _a21 * _a32 - _a22 * _a31;
+        const b10 = _a21 * _a33 - _a23 * _a31;
+        const b11 = _a22 * _a33 - _a23 * _a32;
+
+        // Calculate the determinant
+        let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
+
+        if (!det) {
+            return null;
+        }
+        det = 1.0 / det;
+
+        out._data[0] = (_a11 * b11 - _a12 * b10 + _a13 * b09) * det;
+        out._data[1] = (_a12 * b08 - _a10 * b11 - _a13 * b07) * det;
+        out._data[2] = (_a10 * b10 - _a11 * b08 + _a13 * b06) * det;
+        out._data[3] = 0;
+
+        out._data[4] = (_a02 * b10 - _a01 * b11 - _a03 * b09) * det;
+        out._data[5] = (_a00 * b11 - _a02 * b08 + _a03 * b07) * det;
+        out._data[6] = (_a01 * b08 - _a00 * b10 - _a03 * b06) * det;
+        out._data[7] = 0;
+
+        out._data[8] = (_a31 * b05 - _a32 * b04 + _a33 * b03) * det;
+        out._data[9] = (_a32 * b02 - _a30 * b05 - _a33 * b01) * det;
+        out._data[10] = (_a30 * b04 - _a31 * b02 + _a33 * b00) * det;
+        out._data[11] = 0;
+
+        out._data[12] = 0;
+        out._data[13] = 0;
+        out._data[14] = 0;
         out._data[15] = 1;
 
         return out;
