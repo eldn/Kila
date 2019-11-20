@@ -44,8 +44,10 @@ uniform vec3 u_viewPos;
 uniform samplerCube uSkyBox;
 
 void main() {
+    float ratio = 1.00 / 1.52;
     vec3 I = normalize(vPosition - u_viewPos);
-    vec3 R = reflect(I, normalize(vNormal));
+    // vec3 R = reflect(I, normalize(vNormal));
+    vec3 R = refract(I, normalize(vNormal), ratio);
     gl_FragColor = textureCube(uSkyBox, R);
 }
 `;
