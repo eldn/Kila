@@ -279,4 +279,8 @@ export class Level {
     public getLights() : LightRendererComponent[]{
         return this._lights;
     }
+
+    public getSkybox() : SkyBox{
+        return this._skyBox;
+    }
 }

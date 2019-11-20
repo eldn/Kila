@@ -140,7 +140,7 @@ export class SkyBox extends TEntity implements IMessageHandler {
 
             this._skyboxVerticesBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
 
-              // 顶点数据
+            // 顶点数据
             let positionAttribute = new AttributeInfo();
             positionAttribute.location = 0;
             positionAttribute.size = 3;
@@ -192,6 +192,9 @@ export class SkyBox extends TEntity implements IMessageHandler {
         gl.depthMask(true);
     }
 
+    public getCubeTexture() : WebGLTexture{
+        return this._cubTexture;
+    }
 
 
 
