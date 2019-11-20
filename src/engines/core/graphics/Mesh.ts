@@ -22,33 +22,39 @@ import { DirectionLight } from "../world/lights/DirectionLight";
 import { MeshShader } from "../gl/shaders/MeshShader";
 import { SpotLight } from "../world/lights/Spotlight";
 import { NoLightShader } from "../gl/shaders/NoLightShader";
+import { EvnMapShader } from "../gl/shaders/EnvMapShader";
 
 let v3_a: Vector3 = new Vector3();
 
-export class Mesh implements IMessageHandler{
+export class Mesh implements IMessageHandler {
 
-    private _name : string;
-    private _modelPath : string;
-    private _mtlPath : string;
-    private _vertextBuffer : GLBuffer;
-    private _indexBuffer : GLBuffer;
+    private _name: string;
+    private _modelPath: string;
+    private _mtlPath: string;
+    private _vertextBuffer: GLBuffer;
+    private _uvBuffer: GLBuffer;
+    private _normalBuffer: GLBuffer;
+    private _indexBuffer: GLBuffer;
     private _isLoaded: boolean = false;
     protected _origin: Vector3 = Vector3.zero;
     protected _materialName: string;
     protected _material: MeshMaterial;
-    private _meshAsset : ModelAsset;
-    private _mtlAsset : ModelAsset;
-    private _shader : MeshShader;
+    private _meshAsset: ModelAsset;
+    private _mtlAsset: ModelAsset;
+    // private _shader : EvnMapShader;
+    private _shader: MeshShader;
     // private _shader : NoLightShader;
 
-    constructor(name : string, modelPath : string, mtlPath : string, materialName: string){
+    constructor(name: string, modelPath: string, mtlPath: string, materialName: string) {
         this._name = name;
         this._modelPath = modelPath;
         this._mtlPath = mtlPath;
         this._materialName = materialName;
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
+        this._uvBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
+        this._normalBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._indexBuffer = new GLBuffer(gl.UNSIGNED_SHORT, gl.ELEMENT_ARRAY_BUFFER, gl.TRIANGLES);
-        
+
 
         let meshAsset = AssetManager.getAsset(this._modelPath) as ModelAsset;
         if (meshAsset === undefined) {
@@ -64,15 +70,16 @@ export class Mesh implements IMessageHandler{
             this._mtlAsset = mtlAsset;
         }
 
-        if(this._meshAsset && this._mtlAsset){
+        if (this._meshAsset && this._mtlAsset) {
             this.loadMeshFromAsset(this._meshAsset, this._mtlAsset);
         }
-        
+
 
 
         this._material = MaterialManager.getMaterial(this._materialName) as MeshMaterial;
         this._shader = new MeshShader();
         // this._shader = new NoLightShader();
+        // this._shader = new EvnMapShader();
     }
 
     public get name(): string {
@@ -85,23 +92,23 @@ export class Mesh implements IMessageHandler{
 
     public onMessage(message: Message): void {
 
-        if(this._isLoaded){
+        if (this._isLoaded) {
             return;
         }
 
         if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._modelPath) {
             this._meshAsset = message.context;
-            
+
         } else if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._mtlPath) {
             this._mtlAsset = message.context;
         }
 
-        if(this._meshAsset && this._mtlAsset){
+        if (this._meshAsset && this._mtlAsset) {
             this.loadMeshFromAsset(this._meshAsset, this._mtlAsset);
         }
     }
 
-    private loadMeshFromAsset(meshAsset: ModelAsset, mtlAsset : ModelAsset) :  void{
+    private loadMeshFromAsset(meshAsset: ModelAsset, mtlAsset: ModelAsset): void {
 
         /*
         let objDoc : OBJDoc = new OBJDoc(meshAsset.data, mtlAsset.data);
@@ -145,51 +152,40 @@ export class Mesh implements IMessageHandler{
         */
 
 
-       const vertices = [
-        // Front face, 
-     -1.0, -1.0,  1.0, 0.0,  0.0, 0.0, 0.0, 1.0,
-      1.0, -1.0,  1.0, 1.0,  0.0, 0.0, 0.0, 1.0,
-      1.0,  1.0,  1.0, 1.0,  1.0, 0.0, 0.0, 1.0,
-     -1.0,  1.0,  1.0, 0.0,  1.0, 0.0, 0.0, 1.0,
-     // Back face 
-     -1.0, -1.0, -1.0, 0.0,  0.0, 0.0, 0.0, -1.0,
-     -1.0,  1.0, -1.0, 1.0,  0.0, 0.0, 0.0, -1.0,
-      1.0,  1.0, -1.0, 1.0,  1.0, 0.0, 0.0, -1.0,
-      1.0, -1.0, -1.0, 0.0,  1.0, 0.0, 0.0, -1.0,
-     // Top face 
-     -1.0,  1.0, -1.0, 0.0,  0.0, 0.0, 1.0, 0.0,
-     -1.0,  1.0,  1.0, 1.0,  0.0, 0.0, 1.0, 0.0,
-      1.0,  1.0,  1.0, 1.0,  1.0, 0.0, 1.0, 0.0,
-      1.0,  1.0, -1.0, 0.0,  1.0, 0.0, 1.0, 0.0,
-     // Bottom face 
-     -1.0, -1.0, -1.0, 0.0,  0.0, 0.0, -1.0, 0.0,
-      1.0, -1.0, -1.0, 1.0,  0.0, 0.0, -1.0, 0.0,
-      1.0, -1.0,  1.0, 1.0,  1.0, 0.0, -1.0, 0.0,
-     -1.0, -1.0,  1.0, 0.0,  1.0, 0.0, -1.0, 0.0,
-     // Right face 
-      1.0, -1.0, -1.0, 0.0,  0.0, 1.0, 0.0, 0.0,
-      1.0,  1.0, -1.0, 1.0,  0.0, 1.0, 0.0, 0.0,
-      1.0,  1.0,  1.0, 1.0,  1.0, 1.0, 0.0, 0.0,
-      1.0, -1.0,  1.0, 0.0,  1.0, 1.0, 0.0, 0.0,
-     // Left face 
-     -1.0, -1.0, -1.0, 0.0,  0.0, -1.0, 0.0, 0.0,
-     -1.0, -1.0,  1.0, 1.0,  0.0, -1.0, 0.0, 0.0,
-     -1.0,  1.0,  1.0, 1.0,  1.0, -1.0, 0.0, 0.0,
-     -1.0,  1.0, -1.0, 0.0,  1.0, -1.0, 0.0, 0.0,
-   ];
+        const vertices = [
+            // Front face, 
+            -1.0, -1.0, 1.0,
+            1.0, -1.0, 1.0,
+            1.0, 1.0, 1.0,
+            -1.0, 1.0, 1.0,
+            // Back face 
+            -1.0, -1.0, -1.0,
+            -1.0, 1.0, -1.0,
+            1.0, 1.0, -1.0,
+            1.0, -1.0, -1.0,
+            // Top face 
+            -1.0, 1.0, -1.0,
+            -1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0,
+            1.0, 1.0, -1.0,
+            // Bottom face 
+            -1.0, -1.0, -1.0,
+            1.0, -1.0, -1.0,
+            1.0, -1.0, 1.0,
+            -1.0, -1.0, 1.0,
+            // Right face 
+            1.0, -1.0, -1.0,
+            1.0, 1.0, -1.0,
+            1.0, 1.0, 1.0,
+            1.0, -1.0, 1.0,
+            // Left face 
+            -1.0, -1.0, -1.0,
+            -1.0, -1.0, 1.0,
+            -1.0, 1.0, 1.0,
+            -1.0, 1.0, -1.0,
+        ];
 
 
-
-   const indices = [
-    0,  1,  2,      0,  2,  3,    // front
-    4,  5,  6,      4,  6,  7,    // back
-    8,  9,  10,     8,  10, 11,   // top
-    12, 13, 14,     12, 14, 15,   // bottom
-    16, 17, 18,     16, 18, 19,   // right
-    20, 21, 22,     20, 22, 23,   // left
-  ];
-
-        
 
         // 顶点数据
         let positionAttribute = new AttributeInfo();
@@ -197,21 +193,110 @@ export class Mesh implements IMessageHandler{
         positionAttribute.size = 3;
         this._vertextBuffer.addAttributeLocation(positionAttribute);
 
+
+        this._vertextBuffer.setData(vertices);
+        this._vertextBuffer.upload();
+        this._vertextBuffer.unbind();
+
+
+
+        const textCoord = [
+
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+            0.0, 0.0,
+            1.0, 0.0,
+            1.0, 1.0,
+            0.0, 1.0,
+
+        ];
+
+
         // UV数据
         let textCoordAttribute = new AttributeInfo();
         textCoordAttribute.location = 1;
         textCoordAttribute.size = 2;
-        this._vertextBuffer.addAttributeLocation(textCoordAttribute);
+        this._uvBuffer.addAttributeLocation(textCoordAttribute);
+
+        this._uvBuffer.setData(textCoord);
+        this._uvBuffer.upload();
+        this._uvBuffer.unbind();
+
+
+
+        const normals = [
+
+            0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0,
+            0.0, 0.0, 1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 1.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, -1.0, 0.0,
+            0.0, -1.0, 0.0,
+            0.0, -1.0, 0.0,
+            0.0, -1.0, 0.0,
+            1.0, 0.0, 0.0,
+            1.0, 0.0, 0.0,
+            1.0, 0.0, 0.0,
+            1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+            -1.0, 0.0, 0.0,
+
+
+        ]
+
+
 
         // 法线数据
         let normalAttribute = new AttributeInfo();
         normalAttribute.location = 2;
         normalAttribute.size = 3;
-        this._vertextBuffer.addAttributeLocation(normalAttribute);
+        this._normalBuffer.addAttributeLocation(normalAttribute);
 
-        this._vertextBuffer.setData(vertices);
-        this._vertextBuffer.upload();
-        this._vertextBuffer.unbind();
+
+
+        this._normalBuffer.setData(normals);
+        this._normalBuffer.upload();
+        this._normalBuffer.unbind();
+
+
+        const indices = [
+            0, 1, 2, 0, 2, 3,    // front
+            4, 5, 6, 4, 6, 7,    // back
+            8, 9, 10, 8, 10, 11,   // top
+            12, 13, 14, 12, 14, 15,   // bottom
+            16, 17, 18, 16, 18, 19,   // right
+            20, 21, 22, 20, 22, 23,   // left
+        ];
+
+
 
         // 顶点索引数据
         this._indexBuffer.setData(indices);
@@ -223,65 +308,60 @@ export class Mesh implements IMessageHandler{
     }
 
 
-    public load() :void{
+    public load(): void {
 
 
     }
 
-   
-    public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
+
+    public draw(shader: Shader, model: Matrix4x4, projection: Matrix4x4, viewMatrix: Matrix4x4): void {
 
         this._shader.use();
-        
 
-         // 设置观察点（摄像机）的位置，用于计算镜面反射 
-         let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
-         if (!activeCamera) {
-             return;
-         }
 
-         let activeLevel : Level = LevelManager.activeLevel;
-         if(!activeLevel){
-             return;
-         }
+        // 设置观察点（摄像机）的位置，用于计算镜面反射 
+        let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
+        if (!activeCamera) {
+            return;
+        }
 
-         let lights : LightRendererComponent[]  = activeLevel.getLights();
-         for(let i : number = 0; i < lights.length; ++i){
-             let light : LightRendererComponent = lights[i];
-             light.light.setShaderProperty(this._shader);
-         }
+        let activeLevel: Level = LevelManager.activeLevel;
+        if (!activeLevel) {
+            return;
+        }
+
+        let lights: LightRendererComponent[] = activeLevel.getLights();
+        for (let i: number = 0; i < lights.length; ++i) {
+            let light: LightRendererComponent = lights[i];
+            light.light.setShaderProperty(this._shader);
+        }
 
         // 设置观察点（摄像机）的位置，用于计算镜面反射 
         let viewPos: Vector3 = activeCamera.getWorldPosition();
         this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
-        
-        
+
+
         // ===> 设置材质
         this._shader.setUniform1f("u_material.shininess", 32.0);
         if (this._material.diffuseTexture !== undefined) {
             this._material.diffuseTexture.activateAndBind(0);
             this._shader.setUniform1i("u_material.diffuse", 0);
         }
-        
+
         if (this._material.specularTexture !== undefined) {
             this._material.specularTexture.activateAndBind(1);
             this._shader.setUniform1i("u_material.specular", 1);
         }
-        
-        
-        
+
 
         this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
         this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
 
-        // if (this._material.diffuseTexture !== undefined) {
-        //     this._material.diffuseTexture.activateAndBind(0);
-        //     this._shader.setUniform1i("uSampler", 0);
-        // }
-
 
         this._vertextBuffer.bind();
+        this._uvBuffer.bind();
+        this._normalBuffer.bind();
         this._indexBuffer.bind();
         this._indexBuffer.draw();
     }
