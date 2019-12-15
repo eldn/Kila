@@ -1,18 +1,18 @@
-import { IGame } from "./game/IGame";
-import { LevelManager } from "./engines/core/world/LevelManager";
-import { Shader } from "./engines/core/gl/shaders/Shader";
-import { Engine } from "./engines/core/Engine";
-import { PerspectiveCamera } from "./engines/core/world/cameras/PerspectiveCamera";
-import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext } from "./engines/core/input/InputManager";
-import { KEY_CODE_MACRO } from "./engines/core/define/Macro";
-import { Vector3 } from "./engines/core/math/Vector3";
-import { TEntity } from "./engines/core/world/Entity";
-import { Level } from "./engines/core/world/Level";
-import { Vector2 } from "./engines/core/math/Vector2";
-import { Renderer } from "./engines/core/renderer/Renderer";
-import { Message } from "./engines/core/message/Message";
-import { MessageBus } from "./engines/core/message/MessageBus";
-import { IMessageHandler } from "./engines/core/message/IMessageHandler";
+import { IGame } from "./IGame";
+import { LevelManager } from "../engines/core/world/LevelManager";
+import { Shader } from "../engines/core/gl/shaders/Shader";
+import { Engine } from "../engines/core/Engine";
+import { PerspectiveCamera } from "../engines/core/world/cameras/PerspectiveCamera";
+import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext } from "../engines/core/input/InputManager";
+import { KEY_CODE_MACRO } from "../engines/core/define/Macro";
+import { Vector3 } from "../engines/core/math/Vector3";
+import { TEntity } from "../engines/core/world/Entity";
+import { Level } from "../engines/core/world/Level";
+import { Vector2 } from "../engines/core/math/Vector2";
+import { Renderer } from "../engines/core/renderering/Renderer";
+import { Message } from "../engines/core/message/Message";
+import { MessageBus } from "../engines/core/message/MessageBus";
+import { IMessageHandler } from "../engines/core/message/IMessageHandler";
 
 
 
@@ -29,7 +29,12 @@ class TestGame implements IGame, IMessageHandler {
 
   updateReady(): void {
     // Load the test level. This should be configurable.
-    LevelManager.changeLevel("test 1");
+    // LevelManager.changeLevel("test 1");
+
+
+
+
+    
   }
 
   update(time: number): void {
@@ -113,16 +118,6 @@ class TestGame implements IGame, IMessageHandler {
       console.error(e);
       // TODO 错误处理
     }
-
-
-
-
-    // 绕（0,0,0）旋转
-    // let radius : number = 10.0;
-    // let t : number = Date.now() / 1000;
-    // let camX : number = Math.sin(t) * radius;
-    // let camZ : number = Math.cos(t) * radius;
-    // this.camera.transform.position.set(camX, 0.0, camZ);
 
 
   }

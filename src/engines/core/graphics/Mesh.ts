@@ -41,9 +41,6 @@ export class Mesh implements IMessageHandler {
     protected _material: MeshMaterial;
     private _meshAsset: ModelAsset;
     private _mtlAsset: ModelAsset;
-    // private _shader : EvnMapShader;
-    private _shader: MeshShader;
-    // private _shader : NoLightShader;
 
     constructor(name: string, modelPath: string, mtlPath: string, materialName: string) {
         this._name = name;
@@ -77,9 +74,6 @@ export class Mesh implements IMessageHandler {
 
 
         this._material = MaterialManager.getMaterial(this._materialName) as MeshMaterial;
-        this._shader = new MeshShader();
-        // this._shader = new NoLightShader();
-        // this._shader = new EvnMapShader();
     }
 
     public get name(): string {
@@ -109,48 +103,6 @@ export class Mesh implements IMessageHandler {
     }
 
     private loadMeshFromAsset(meshAsset: ModelAsset, mtlAsset: ModelAsset): void {
-
-        /*
-        let objDoc : OBJDoc = new OBJDoc(meshAsset.data, mtlAsset.data);
-        objDoc.parse(1, true);
-        let drawInfo : DrawingInfo = objDoc.getDrawingInfo();
-
-        let vertices : Array<number> = drawInfo.vertices;
-        let indices : Array<number> = drawInfo.indices;
-
-        let uvs : Array<number> = drawInfo.uvs;
-        let normals : Array<number> = drawInfo.normals;
-        
-        // 校验数据
-        let verticeCnt : number = vertices.length / 3;
-        let normalCnt : number = normals.length / 3;
-        let uvCnt : number = uvs.length / 2;
-        if(!(verticeCnt ==  normalCnt && verticeCnt == uvCnt)){
-            console.error('数据不合法！');
-            return;
-        }
-
-        // 合并uv,normal 到定点数据
-        let uvP : number = 0;
-        let normalP : number = 0;
-        let i : number = 3;
-        while(uvP < uvs.length){
-
-            // uv
-            vertices.splice(i, 0, uvs[uvP], uvs[uvP + 1]);
-            uvP += 2;
-            i += 2;
-
-            // normal
-            vertices.splice(i, 0, normals[normalP], normals[normalP + 1], normals[normalP + 2]);
-            normalP += 3;
-            i += 3;
-
-            // skip follow vertex
-            i += 3;
-        }
-        */
-
 
         const vertices = [
             // Front face, 
@@ -315,49 +267,6 @@ export class Mesh implements IMessageHandler {
 
 
     public draw(shader: Shader, model: Matrix4x4, projection: Matrix4x4, viewMatrix: Matrix4x4): void {
-
-        this._shader.use();
-
-
-        // 设置观察点（摄像机）的位置，用于计算镜面反射 
-        let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
-        if (!activeCamera) {
-            return;
-        }
-
-        let activeLevel: Level = LevelManager.activeLevel;
-        if (!activeLevel) {
-            return;
-        }
-
-        let lights: LightRendererComponent[] = activeLevel.getLights();
-        for (let i: number = 0; i < lights.length; ++i) {
-            let light: LightRendererComponent = lights[i];
-            light.light.setShaderProperty(this._shader);
-        }
-
-        // 设置观察点（摄像机）的位置，用于计算镜面反射 
-        let viewPos: Vector3 = activeCamera.getWorldPosition();
-        this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);
-
-
-        // ===> 设置材质
-        this._shader.setUniform1f("u_material.shininess", 32.0);
-        if (this._material.diffuseTexture !== undefined) {
-            this._material.diffuseTexture.activateAndBind(0);
-            this._shader.setUniform1i("u_material.diffuse", 0);
-        }
-
-        if (this._material.specularTexture !== undefined) {
-            this._material.specularTexture.activateAndBind(1);
-            this._shader.setUniform1i("u_material.specular", 1);
-        }
-
-
-        this._shader.setUniformMatrix4fv("u_projection", false, projection.toFloat32Array());
-        this._shader.setUniformMatrix4fv("u_view", false, viewMatrix.toFloat32Array());
-        this._shader.setUniformMatrix4fv("u_model", false, model.toFloat32Array());
-
 
         this._vertextBuffer.bind();
         this._uvBuffer.bind();

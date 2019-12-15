@@ -5,7 +5,7 @@ import { Matrix4x4 } from "../../math/Matrix4x4";
 import { Vector3 } from "../../math/Vector3";
 import { Vector2 } from "../../math/Vector2";
 import { KEY_CODE_MACRO } from "../../define/Macro";
-import { Renderer } from "../../renderer/Renderer";
+import { Renderer } from "../../renderering/Renderer";
 
 let v3_a : Vector3 = new Vector3();
 let m4_a : Matrix4x4 = Matrix4x4.identity();
