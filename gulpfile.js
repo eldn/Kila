@@ -22,7 +22,7 @@ const glsl = require('rollup-plugin-glsl');
 
 gulp.task('compile', ()=>{
     return rollup.rollup({
-		input: './src/App.ts',
+		input: './src/game/TestGame.ts',
 		treeshake: true,//建议忽略
 		plugins: [
 			typescript({

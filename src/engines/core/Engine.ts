@@ -1,5 +1,5 @@
 import { Renderer } from "./renderering/Renderer";
-import { IGame } from "../../game/IGame";
+import { IGame } from "../game/IGame";
 import { RendererViewportCreateInfo, ViewportProjectionType } from "./renderering/RendererViewport";
 import { AssetManager } from "./assets/AssetManager";
 import { InputManager } from "./input/InputManager";
@@ -65,10 +65,10 @@ export class Engine {
         // BitmapFontManager.load();
 
         // Load level config
-        // LevelManager.load();
+        LevelManager.load();
 
         // Load material configs
-        // MaterialManager.load();
+        MaterialManager.load();
 
         // Load audio. Note that this does not hold up the engine from being ready.
         // AudioManager.load();
@@ -113,15 +113,15 @@ export class Engine {
         //     return;
         // }
 
-        // if ( !MaterialManager.isLoaded ) {
-        //     requestAnimationFrame( this.preloading.bind( this ) );
-        //     return;
-        // }
+        if ( !MaterialManager.isLoaded ) {
+            requestAnimationFrame( this.preloading.bind( this ) );
+            return;
+        }
 
-        // if ( !LevelManager.isLoaded ) {
-        //     requestAnimationFrame( this.preloading.bind( this ) );
-        //     return;
-        // }
+        if ( !LevelManager.isLoaded ) {
+            requestAnimationFrame( this.preloading.bind( this ) );
+            return;
+        }
 
         // Perform items such as loading the first/initial level, etc.
         this._game.updateReady();

@@ -1,4 +1,4 @@
-import { Shader } from "../engines/core/gl/shaders/Shader";
+import { Shader } from "../core/gl/shaders/Shader";
 
 export interface IGame {
 

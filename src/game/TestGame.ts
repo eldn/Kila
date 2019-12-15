@@ -1,4 +1,4 @@
-import { IGame } from "./IGame";
+import { IGame } from "../engines/game/IGame";
 import { LevelManager } from "../engines/core/world/LevelManager";
 import { Shader } from "../engines/core/gl/shaders/Shader";
 import { Engine } from "../engines/core/Engine";
@@ -29,12 +29,7 @@ class TestGame implements IGame, IMessageHandler {
 
   updateReady(): void {
     // Load the test level. This should be configurable.
-    // LevelManager.changeLevel("test 1");
-
-
-
-
-    
+    LevelManager.changeLevel("test 1");
   }
 
   update(time: number): void {
@@ -125,8 +120,6 @@ class TestGame implements IGame, IMessageHandler {
   public radians(degrees: number): number {
     return degrees * (Math.PI / 180.0);
   }
-
-
 
 }
 
