@@ -67,20 +67,13 @@ export class SkyBox extends TEntity implements IMessageHandler {
             gl.bindTexture(gl.TEXTURE_CUBE_MAP, this._cubTexture);
 
 
-            let targets : number[] = [
-                gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, 
-                gl.TEXTURE_CUBE_MAP_POSITIVE_Y, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, 
-                gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z 
-            ];
-
             for(let i : number = 0; i < this.cubeTextures.length; ++i){
 
                 
-                // gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGB, 2048, 2048, 0, gl.RGB, gl.UNSIGNED_BYTE, null);
                 let textureName : string = this.cubeTextures[i];
                 let asset = AssetManager.getAsset(textureName) as ImageAsset;
 
-                gl.texImage2D(targets[i], 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, asset.data);
+                gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, asset.data);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
             
@@ -89,6 +82,8 @@ export class SkyBox extends TEntity implements IMessageHandler {
                     console.error("texture not load yet");
                 }
             }
+
+
             gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 
 

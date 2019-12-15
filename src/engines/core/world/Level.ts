@@ -147,12 +147,6 @@ export class Level {
      */
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
         if (this._state === LevelState.UPDATING) {
-
-            // 先绘制天空盒
-            // if(this._skyBox){
-            //     this._skyBox.renderSkyBox(shader, projection, viewMatrix);
-            // }
-
             this._sceneGraph.render(shader, projection, viewMatrix);
         }
     }
@@ -219,14 +213,7 @@ export class Level {
                 this.registerCamera(entity as BaseCamera);
             } else if(dataSection.type == "skybox"){
                 if(!this._skyBox){
-                    this._skyBox = new SkyBox(dataSection.name, this._sceneGraph,[
-                        dataSection.positive_X_texture,
-                        dataSection.negative_X_texture,
-                        dataSection.positive_Y_texture,
-                        dataSection.negative_Y_texture,
-                        dataSection.positive_z_texture,
-                        dataSection.negatice_z_texture,
-                    ])
+                    this._skyBox = new SkyBox(dataSection.name, this._sceneGraph,dataSection.cubeTextures);
                     entity = this._skyBox;
                 } else {
                     console.error("One level can only have one skybox!");
