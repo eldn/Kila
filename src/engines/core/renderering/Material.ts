@@ -1,13 +1,17 @@
 import { Texture } from './../graphics/Texture';
 import { MappedValues } from "./MappedValues";
 
-export class Material extends MappedValues
-{
+export class Material extends MappedValues{
+
 	private  m_textureHashMap : Map<string, Texture>;
 
-	constructor(diffuse : Texture, specularIntensity : number,  specularPower : number, normal : Texture,
-	             dispMap : Texture, dispMapScale : number, dispMapOffset : number)
-	{
+	constructor(diffuse : Texture,
+				specularIntensity : number,
+				specularPower : number,
+				normal : Texture,
+				dispMap : Texture,
+				dispMapScale : number,
+				dispMapOffset : number){
 		super();
 		this.m_textureHashMap = new Map<string, Texture>();
 		this.AddTexture("diffuse", diffuse);

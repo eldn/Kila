@@ -13,6 +13,7 @@ import { MaterialConfigBase } from "./MaterialConfigBase";
     public tint: Color;
 
     public static fromJson(json: any): SpriteMaterialConfig {
+
         let config = new SpriteMaterialConfig();
         if (json.name !== undefined) {
             config.name = String(json.name);
@@ -46,12 +47,10 @@ export class SpriteMaterial extends MaterialBase {
      * Creates a new material.
      * @param name The name of this material.
      * @param diffuseTextureName The name of the diffuse texture.
-     * @param tint The color value of the tint to apply to the material.
      */
-    public constructor(name: string, diffuseTextureName: string, tint: Color) {
+    public constructor(name: string, diffuseTextureName: string) {
         super(name);
         this._diffuseTextureName = diffuseTextureName;
-        this._tint = tint;
 
         if (this._diffuseTextureName !== undefined) {
             this._diffuseTexture = TextureManager.getTexture(this._diffuseTextureName);
@@ -63,7 +62,7 @@ export class SpriteMaterial extends MaterialBase {
      * @param config The configuration to create a material from.
      */
     public static FromConfig(config: SpriteMaterialConfig): SpriteMaterial {
-        let m = new SpriteMaterial(config.name, config.diffuse, config.tint);
+        let m = new SpriteMaterial(config.name, config.diffuse);
         return m;
     }
 
@@ -76,11 +75,6 @@ export class SpriteMaterial extends MaterialBase {
     /** The diffuse texture. */
     public get diffuseTexture(): Texture {
         return this._diffuseTexture;
-    }
-
-    /** The color value of the tint to apply to the material. */
-    public get tint(): Color {
-        return this._tint;
     }
 
     /** Sets the diffuse texture name, which triggers a texture load if need be. */
