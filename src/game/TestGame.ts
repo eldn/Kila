@@ -24,9 +24,6 @@ class TestGame implements IGame, IMessageHandler {
   private lastX: number;
   private lastY: number;
 
-  private yaw: number = -90;
-  private pitch: number = 0;
-
   updateReady(): void {
     // Load the test level. This should be configurable.
     LevelManager.changeLevel("test 1");
@@ -57,7 +54,7 @@ class TestGame implements IGame, IMessageHandler {
        this._touchStart.set(event.position.x, event.position.y);
     } else if(message.code == MESSAGE_TOUCH_MOVE){
        let event: TouchContext = message.context;
-       this.camera.processMouseMovement(event.position.x - this._touchStart.x, event.position.y - this._touchStart.y, true);
+       this.camera.processMouseMovement(-(event.position.x - this._touchStart.x) / 2, -(event.position.y - this._touchStart.y) / 2, true);
     }
   }
 
@@ -73,6 +70,8 @@ class TestGame implements IGame, IMessageHandler {
         this.lastX = Renderer.windowViewport.width / 2;
         this.lastY = Renderer.windowViewport.height / 2;
         Message.subscribe(MESSAGE_MOUSE_WHEEL, this);
+        Message.subscribe(MESSAGE_TOUCH_START, this);
+        Message.subscribe(MESSAGE_TOUCH_MOVE, this);
       }
       return;
     }

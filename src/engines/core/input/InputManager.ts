@@ -145,8 +145,7 @@ import { Renderer } from "../renderering/Renderer";
 
     private static onTouchStart(event: any) : void{
         event.preventDefault();
-        console.log("onTouchStart");
-        console.log(event);
+        // console.log("onTouchStart");
         
         let touch : Touch = event.touches[0];
         let startX : number = touch.clientX ;
@@ -157,8 +156,8 @@ import { Renderer } from "../renderering/Renderer";
 
     private static onTouchMove(event: any) : void{
         event.preventDefault();
-        console.log("onTouchMove");
-        console.log(event);
+        // console.log("onTouchMove");
+
         let touch : Touch = event.touches[0];
         let startX : number = touch.clientX ;
         let startY : number = touch.clientY ;
@@ -167,11 +166,10 @@ import { Renderer } from "../renderering/Renderer";
 
     private static onTouchEnd(event: any) : void{
         event.preventDefault();
-        console.log("onTouchEnd");
-        console.log(event);
-        let touch : Touch = event.touches[0];
-        let startX : number = touch.clientX ;
-        let startY : number = touch.clientY ;
-        Message.send( MESSAGE_TOUCH_END, this, new TouchContext( new Vector2(startX, startY)));
+        // console.log("onTouchEnd"); 
+        // let touch : Touch = event.touches[0];
+        // let startX : number = touch.clientX ;
+        // let startY : number = touch.clientY ;
+        // Message.send( MESSAGE_TOUCH_END, this, new TouchContext( new Vector2(startX, startY)));
     }
  }
