@@ -72,6 +72,22 @@ class TestGame implements IGame, IMessageHandler {
         Message.subscribe(MESSAGE_MOUSE_WHEEL, this);
         Message.subscribe(MESSAGE_TOUCH_START, this);
         Message.subscribe(MESSAGE_TOUCH_MOVE, this);
+
+
+        let canvas : HTMLCanvasElement = Renderer.windowViewport.canvas;
+        let delta : number = 10000;
+        canvas.addEventListener("up", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.w, delta);
+        }, false);
+        canvas.addEventListener("down", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.s, delta);
+        }, false);
+        canvas.addEventListener("left", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.a, delta);
+        }, false);
+        canvas.addEventListener("right", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.d, delta);
+        }, false);
       }
       return;
     }
