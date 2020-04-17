@@ -1,13 +1,13 @@
 import { IGame } from "../engine/game/IGame";
-import { LevelManager } from "../engine/core/world/LevelManager";
+import { SceneManager } from "../engine/core/world/SceneManager";
 import { Shader } from "../engine/core/gl/shaders/Shader";
-import { Engine } from "../engine/core/Engine";
+import { CoreEngine } from "../engine/core/CoreEngine";
 import { PerspectiveCamera } from "../engine/core/world/cameras/PerspectiveCamera";
 import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext, MESSAGE_TOUCH_START, TouchContext, MESSAGE_TOUCH_MOVE } from "../engine/core/input/InputManager";
 import { KEY_CODE_MACRO } from "../engine/core/define/Macro";
 import { Vector3 } from "../engine/core/math/Vector3";
-import { TEntity } from "../engine/core/world/Entity";
-import { Level } from "../engine/core/world/Level";
+import { GameObject } from "../engine/core/world/GameObject";
+import { Scene } from "../engine/core/world/Scene";
 import { Vector2 } from "../engine/core/math/Vector2";
 import { Renderer } from "../engine/core/renderering/Renderer";
 import { Message } from "../engine/core/message/Message";
@@ -26,11 +26,13 @@ class TestGame implements IGame, IMessageHandler {
 
   updateReady(): void {
     // Load the test level. This should be configurable.
-    LevelManager.changeLevel("test 1");
+    // SceneManager.runScene("test 1");
+
+
+    
   }
 
   update(time: number): void {
-
 
     this.processInput(time);
 
@@ -64,7 +66,7 @@ class TestGame implements IGame, IMessageHandler {
 
     //# region start 初始化摄像机
     if (!this.camera) {
-      let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
+      let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
       if (activeCamera) {
         this.camera = activeCamera;
         this.lastX = Renderer.windowViewport.width / 2;
@@ -142,10 +144,10 @@ class TestGame implements IGame, IMessageHandler {
 }
 
 
-let engine: Engine;
+let engine: CoreEngine;
 
 window.onload = function () {
-  engine = new Engine(600, 600);
+  engine = new CoreEngine(600, 600);
   engine.start(new TestGame(), "viewport");
 }
 

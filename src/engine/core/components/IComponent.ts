@@ -1,12 +1,12 @@
-import { TEntity } from "../world/Entity";
+import { GameObject } from "../world/GameObject";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 
 
 export interface IComponent {
     name: string;
-    readonly owner: TEntity;
-    setOwner(owner: TEntity): void;
+    readonly owner: GameObject;
+    setOwner(owner: GameObject): void;
     updateReady(): void;
     load(): void;
     update(time: number): void;

@@ -1,11 +1,11 @@
-import { TEntity } from "../world/Entity";
+import { GameObject } from "../world/GameObject";
 
 export interface IBehavior {
 
     name: string;
 
   
-    setOwner(owner: TEntity): void;
+    setOwner(owner: GameObject): void;
 
     updateReady(): void;
 

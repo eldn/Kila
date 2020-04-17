@@ -1,18 +1,18 @@
-import { TEntity } from "./Entity";
+import { GameObject } from "./GameObject";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 
 export class SceneGraph {
 
-    private _root: TEntity;
+    private _root: GameObject;
 
     /** Creates a new SceneGraph */
     public constructor() {
-        this._root = new TEntity("__ROOT__", this);
+        this._root = new GameObject("__ROOT__", this);
     }
 
     /** Returns the root object. */
-    public get root(): TEntity {
+    public get root(): GameObject {
         return this._root;
     }
 
@@ -25,7 +25,7 @@ export class SceneGraph {
      * Adds an entity to the root entity of this scene graph.
      * @param entity The entity to be added.
      */
-    public addObject(entity: TEntity): void {
+    public addObject(entity: GameObject): void {
         this._root.addChild(entity);
     }
 
@@ -33,7 +33,7 @@ export class SceneGraph {
      * Recursively searches this scene graph for an entity with the provided name.
      * @param name The name of the entity to retrieve.
      */
-    public getEntityByName(name: string): TEntity {
+    public getEntityByName(name: string): GameObject {
         return this._root.getEntityByName(name);
     }
 

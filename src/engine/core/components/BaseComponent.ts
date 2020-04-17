@@ -1,5 +1,5 @@
 import { IComponent } from "./IComponent";
-import { TEntity } from "../world/Entity";
+import { GameObject } from "../world/GameObject";
 import { IComponentData } from "./IComponentData";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
@@ -8,7 +8,7 @@ import { Matrix4x4 } from "../math/Matrix4x4";
 export abstract class BaseComponent implements IComponent {
 
     /** The owning entity. */
-    protected _owner: TEntity;
+    protected _owner: GameObject;
     protected _data: IComponentData;
     public name: string;
 
@@ -17,11 +17,11 @@ export abstract class BaseComponent implements IComponent {
         this.name = data.name;
     }
 
-    public get owner(): TEntity {
+    public get owner(): GameObject {
         return this._owner;
     }
 
-    public setOwner(owner: TEntity): void {
+    public setOwner(owner: GameObject): void {
         this._owner = owner;
     }
 

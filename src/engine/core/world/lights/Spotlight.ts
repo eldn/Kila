@@ -3,7 +3,7 @@ import { Light, LightType } from "./Light";
 import { Color } from "../../graphics/Color";
 import { Shader } from "../../gl/shaders/Shader";
 import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
-import { LevelManager } from "../LevelManager";
+import { SceneManager } from "../SceneManager";
 import { LightRendererComponent } from "../../components/LightComponent";
 
 let v3_a : Vector3 = new Vector3();
@@ -61,7 +61,7 @@ export class SpotLight extends Light{
 
     public setShaderProperty(shader: Shader) : void{
 
-        let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
+        let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
         if (!activeCamera) {
             return;
         }

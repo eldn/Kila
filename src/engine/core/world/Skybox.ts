@@ -1,6 +1,6 @@
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
-import { TEntity } from "./Entity";
+import { GameObject } from "./GameObject";
 import { SceneGraph } from "./SceneGraph";
 import { AssetManager, MESSAGE_ASSET_LOADER_ASSET_LOADED } from "../assets/AssetManager";
 import { ImageAsset } from "../assets/ImageAssetLoader";
@@ -11,7 +11,7 @@ import { GLBuffer } from "../gl/GLBuffer";
 import { AttributeInfo } from "../gl/AttributeInfo";
 import { SkyBoxShader } from "../gl/shaders/SkyBoxShader";
 
-export class SkyBox extends TEntity implements IMessageHandler {
+export class SkyBox extends GameObject implements IMessageHandler {
 
 
     private _isLoad: boolean = false;

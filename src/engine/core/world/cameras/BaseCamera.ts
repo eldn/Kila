@@ -1,8 +1,8 @@
-import { TEntity } from "../Entity";
+import { GameObject } from "../GameObject";
 import { SceneGraph } from "../SceneGraph";
 import { Matrix4x4 } from "../../math/Matrix4x4";
 
-export abstract class BaseCamera extends TEntity {
+export abstract class BaseCamera extends GameObject {
 
     /**
      * Creates a new camera.

@@ -5,9 +5,9 @@ import { gl } from "../../gl/GLUtilities";
 import { AttributeInfo } from "../../gl/AttributeInfo";
 import { Shader } from "../../gl/shaders/Shader";
 import { Matrix4x4 } from "../../math/Matrix4x4";
-import { Level } from "../../world/Level";
-import { LevelManager } from "../../world/LevelManager";
-import { TEntity } from "../../world/Entity";
+import { Scene } from "../../world/Scene";
+import { SceneManager } from "../../world/SceneManager";
+import { GameObject } from "../../world/GameObject";
 import { Vector3 } from "../../math/Vector3";
 import { PerspectiveCamera } from "../../world/cameras/PerspectiveCamera";
 import { EvnMapShader } from "../../gl/shaders/EnvMapShader";
@@ -123,7 +123,7 @@ export class Cube {
 
         this._shader.use();
 
-        let curLevel: Level = LevelManager.activeLevel;
+        let curLevel: Scene = SceneManager.activeLevel;
 
         // if (curLevel) {
         //     let light: TEntity = curLevel.sceneGraph.getEntityByName('testLight');
@@ -155,7 +155,7 @@ export class Cube {
             }
         }
 
-        let activeCamera: PerspectiveCamera = LevelManager.activeLevelActiveCamera as PerspectiveCamera;
+        let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
         if (activeCamera) {
             let viewPos: Vector3 = activeCamera.getWorldPosition();
             this._shader.setUniform3f("u_viewPos", viewPos.x, viewPos.y, viewPos.z);

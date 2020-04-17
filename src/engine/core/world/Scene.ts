@@ -1,6 +1,6 @@
 import { SceneGraph } from "./SceneGraph";
 import { Shader } from "../gl/shaders/Shader";
-import { TEntity } from "./Entity";
+import { GameObject } from "./GameObject";
 import { ComponentManager } from "../components/ComponentManager";
 import { BehaviorManager } from "../behaviors/BehaviorManager";
 import { BaseCamera } from "./cameras/BaseCamera";
@@ -23,7 +23,7 @@ export enum LevelState {
 }
 
 
-export class Level {
+export class Scene {
 
     private _name: string;
     private _description: string;
@@ -73,25 +73,6 @@ export class Level {
         return this._state === LevelState.UPDATING;
     }
 
-    /**
-     * Performs initialization routines on this level.
-     * @param jsonData The JSON-formatted data to initialize this level with.
-     */
-    public initialize(jsonData: any): void {
-        if (jsonData.objects === undefined) {
-            throw new Error("Zone initialization error: objects not present.");
-        }
-
-        if (jsonData.defaultCamera !== undefined) {
-            this._defaultCameraName = String(jsonData.defaultCamera);
-        }
-
-        for (let o in jsonData.objects) {
-            let obj = jsonData.objects[o];
-
-            this.loadEntity(obj, this._sceneGraph.root);
-        }
-    }
 
     /** Loads this level. */
     public load(): void {
@@ -147,22 +128,18 @@ export class Level {
      */
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
         if (this._state === LevelState.UPDATING) {
-
-            // 先绘制天空盒
-            // if(this._skyBox){
-            //     this._skyBox.renderSkyBox(shader, projection, viewMatrix);
-            // }
-
             this._sceneGraph.render(shader, projection, viewMatrix);
         }
     }
 
     /** Called when this level is activated. */
     public onActivated(): void {
+
     }
 
     /** Called when this level is deactivated. */
     public onDeactivated(): void {
+        
     }
 
     /**
@@ -195,84 +172,6 @@ export class Level {
             }
         } else {
             console.warn("No camera named '" + camera.name + "' hsd been registered. Camera not unregistered.");
-        }
-    }
-
-    /**
-     * Loads an ertity using the data section provided. Attaches to the provided parent.
-     * @param dataSection The data section to load from.
-     * @param parent The parent object to attach to.
-     */
-    private loadEntity(dataSection: any, parent: TEntity): void {
-
-        let name: string;
-        if (dataSection.name !== undefined) {
-            name = String(dataSection.name);
-        }
-
-        let entity: TEntity;
-
-        // TODO: Use factories
-        if (dataSection.type !== undefined) {
-            if (dataSection.type == "perspectiveCamera") {
-                entity = new PerspectiveCamera(name, this._sceneGraph);
-                this.registerCamera(entity as BaseCamera);
-            } else if(dataSection.type == "skybox"){
-                if(!this._skyBox){
-                    this._skyBox = new SkyBox(dataSection.name, this._sceneGraph,[
-                        dataSection.positive_X_texture,
-                        dataSection.negative_X_texture,
-                        dataSection.positive_Y_texture,
-                        dataSection.negative_Y_texture,
-                        dataSection.positive_z_texture,
-                        dataSection.negatice_z_texture,
-                    ])
-                    entity = this._skyBox;
-                } else {
-                    console.error("One level can only have one skybox!");
-                }
-            }else {
-                throw new Error("Unsupported type " + dataSection.type);
-            }
-        } else {
-            entity = new TEntity(name, this._sceneGraph);
-        }
-
-
-        if (dataSection.transform !== undefined) {
-            entity.transform.setFromJson(dataSection.transform);
-        }
-
-        if (dataSection.components !== undefined) {
-            for (let c in dataSection.components) {
-                let data = dataSection.components[c];
-                let component = ComponentManager.extractComponent(data);
-                entity.addComponent(component);
-                
-                // 保存灯光组件
-                if(data.type == 'light'){
-                    this._lights.push(component as LightRendererComponent);
-                }
-            }
-        }
-
-        if (dataSection.behaviors !== undefined) {
-            for (let b in dataSection.behaviors) {
-                let data = dataSection.behaviors[b];
-                let behavior = BehaviorManager.extractBehavior(data);
-                entity.addBehavior(behavior);
-            }
-        }
-
-        if (dataSection.children !== undefined) {
-            for (let o in dataSection.children) {
-                let obj = dataSection.children[o];
-                this.loadEntity(obj, entity);
-            }
-        }
-
-        if (parent !== undefined) {
-            parent.addChild(entity);
         }
     }
     

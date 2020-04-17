@@ -1,5 +1,5 @@
 import { IBehavior } from "./IBehavior";
-import { TEntity } from "../world/Entity";
+import { GameObject } from "../world/GameObject";
 import { IBehaviorData } from "./IBehaviorData";
 
 export abstract class BaseBehavior implements IBehavior {
@@ -9,14 +9,14 @@ export abstract class BaseBehavior implements IBehavior {
     protected _data: IBehaviorData;
 
 
-    protected _owner: TEntity;
+    protected _owner: GameObject;
 
     public constructor(data: IBehaviorData) {
         this._data = data;
         this.name = this._data.name;
     }
 
-    public setOwner(owner: TEntity): void {
+    public setOwner(owner: GameObject): void {
         this._owner = owner;
     }
 

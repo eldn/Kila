@@ -1,7 +1,7 @@
 import { Color } from "../../graphics/Color";
 import { Shader } from "../../gl/shaders/Shader";
 import { Matrix4x4 } from "../../math/Matrix4x4";
-import { TEntity } from "../Entity";
+import { GameObject } from "../GameObject";
 import { LightRendererComponent } from "../../components/LightComponent";
 
 export enum LightType{

@@ -12,10 +12,10 @@ import { JsonAsset } from "../assets/JsonAssetLoader";
 const v3_a = new Vector3();
 const q_a = new Quaternion();
 
-export class TEntity extends TObject {
+export class GameObject extends TObject {
 
-    private _children: TEntity[] = [];
-    private _parent: TEntity;
+    private _children: GameObject[] = [];
+    private _parent: GameObject;
     private _isLoaded: boolean = false;
     private _sceneGraph: SceneGraph;
     private _components: IComponent[] = [];
@@ -42,7 +42,7 @@ export class TEntity extends TObject {
     }
 
     /** Returns the parent of this entity. */
-    public get parent(): TEntity {
+    public get parent(): GameObject {
         return this._parent;
     }
 
@@ -70,7 +70,7 @@ export class TEntity extends TObject {
      * Adds the provided entity as a child of this one.
      * @param child The child to be added.
      */
-    public addChild(child: TEntity): void {
+    public addChild(child: GameObject): void {
         child._parent = this;
         this._children.push(child);
         child.onAdded(this._sceneGraph);
@@ -81,7 +81,7 @@ export class TEntity extends TObject {
      * a child of this entity. Otherwise, nothing happens.
      * @param child The child to be added.
      */
-    public removeChild(child: TEntity): void {
+    public removeChild(child: GameObject): void {
         let index = this._children.indexOf(child);
         if (index !== -1) {
             child._parent = undefined;
@@ -110,7 +110,7 @@ export class TEntity extends TObject {
         return undefined;
     }
 
-    protected static _findComponent (node: TEntity, constructor: Function) {
+    protected static _findComponent (node: GameObject, constructor: Function) {
         // const cls = constructor as any;
         const comps = node._components;
         // if (cls._sealed) {
@@ -131,7 +131,7 @@ export class TEntity extends TObject {
         return null;
     }
 
-    protected static _findComponents ( node: TEntity, constructor: Function, components: IComponent[]) {
+    protected static _findComponents ( node: GameObject, constructor: Function, components: IComponent[]) {
         // const cls = constructor as any;
         const comps = node._components;
         // if (cls._sealed) {
@@ -152,14 +152,14 @@ export class TEntity extends TObject {
     }
 
 
-    protected static _findChildComponent (children: TEntity[], constructor) {
+    protected static _findChildComponent (children: GameObject[], constructor) {
         for (let i = 0; i < children.length; ++i) {
             const node = children[i];
-            let comp = TEntity._findComponent(node, constructor);
+            let comp = GameObject._findComponent(node, constructor);
             if (comp) {
                 return comp;
             } else if (node._children.length > 0) {
-                comp = TEntity._findChildComponent(node._children, constructor);
+                comp = GameObject._findChildComponent(node._children, constructor);
                 if (comp) {
                     return comp;
                 }
@@ -168,12 +168,12 @@ export class TEntity extends TObject {
         return null;
     }
 
-    protected static _findChildComponents (children: TEntity[], constructor, components) {
+    protected static _findChildComponents (children: GameObject[], constructor, components) {
         for (let i = 0; i < children.length; ++i) {
             const node = children[i];
-            TEntity._findComponents(node, constructor, components);
+            GameObject._findComponents(node, constructor, components);
             if (node._children.length > 0) {
-                TEntity._findChildComponents(node._children, constructor, components);
+                GameObject._findChildComponents(node._children, constructor, components);
             }
         }
     }
@@ -182,7 +182,7 @@ export class TEntity extends TObject {
     public getComponent (typeOrClassName: Function) {
         const constructor = typeOrClassName;
         if (constructor) {
-            return TEntity._findComponent(this, constructor);
+            return GameObject._findComponent(this, constructor);
         }
         return null;
     }
@@ -193,7 +193,7 @@ export class TEntity extends TObject {
         const constructor = typeOrClassName;
         const components: IComponent[] = [];
         if (constructor) {
-            TEntity._findComponents(this, constructor, components);
+            GameObject._findComponents(this, constructor, components);
         }
         return components;
     }
@@ -203,7 +203,7 @@ export class TEntity extends TObject {
     public getComponentInChildren (typeOrClassName: Function) {
         const constructor = typeOrClassName;
         if (constructor) {
-            return TEntity._findChildComponent(this._children, constructor);
+            return GameObject._findChildComponent(this._children, constructor);
         }
         return null;
     }
@@ -215,8 +215,8 @@ export class TEntity extends TObject {
         const constructor = typeOrClassName;
         const components: IComponent[] = [];
         if (constructor) {
-            TEntity._findComponents(this, constructor, components);
-            TEntity._findChildComponents(this._children, constructor, components);
+            GameObject._findComponents(this, constructor, components);
+            GameObject._findChildComponents(this._children, constructor, components);
         }
         return components;
     }
@@ -247,7 +247,7 @@ export class TEntity extends TObject {
     * Recursively attempts to retrieve a child entity with the given name from this entity or its children.
     * @param name The name of the entity to retrieve.
     */
-    public getEntityByName(name: string): TEntity {
+    public getEntityByName(name: string): GameObject {
         if (this.name === name) {
             return this;
         }
