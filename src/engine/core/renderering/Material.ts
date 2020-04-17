@@ -1,4 +1,4 @@
-import { Texture } from './../graphics/Texture';
+import { Texture } from '../graphics/Texture';
 import { MappedValues } from "./MappedValues";
 
 export class Material extends MappedValues{

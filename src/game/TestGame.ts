@@ -1,18 +1,18 @@
-import { IGame } from "../engines/game/IGame";
-import { LevelManager } from "../engines/core/world/LevelManager";
-import { Shader } from "../engines/core/gl/shaders/Shader";
-import { Engine } from "../engines/core/Engine";
-import { PerspectiveCamera } from "../engines/core/world/cameras/PerspectiveCamera";
-import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext, MESSAGE_TOUCH_START, TouchContext, MESSAGE_TOUCH_MOVE } from "../engines/core/input/InputManager";
-import { KEY_CODE_MACRO } from "../engines/core/define/Macro";
-import { Vector3 } from "../engines/core/math/Vector3";
-import { TEntity } from "../engines/core/world/Entity";
-import { Level } from "../engines/core/world/Level";
-import { Vector2 } from "../engines/core/math/Vector2";
-import { Renderer } from "../engines/core/renderering/Renderer";
-import { Message } from "../engines/core/message/Message";
-import { MessageBus } from "../engines/core/message/MessageBus";
-import { IMessageHandler } from "../engines/core/message/IMessageHandler";
+import { IGame } from "../engine/game/IGame";
+import { LevelManager } from "../engine/core/world/LevelManager";
+import { Shader } from "../engine/core/gl/shaders/Shader";
+import { Engine } from "../engine/core/Engine";
+import { PerspectiveCamera } from "../engine/core/world/cameras/PerspectiveCamera";
+import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext, MESSAGE_TOUCH_START, TouchContext, MESSAGE_TOUCH_MOVE } from "../engine/core/input/InputManager";
+import { KEY_CODE_MACRO } from "../engine/core/define/Macro";
+import { Vector3 } from "../engine/core/math/Vector3";
+import { TEntity } from "../engine/core/world/Entity";
+import { Level } from "../engine/core/world/Level";
+import { Vector2 } from "../engine/core/math/Vector2";
+import { Renderer } from "../engine/core/renderering/Renderer";
+import { Message } from "../engine/core/message/Message";
+import { MessageBus } from "../engine/core/message/MessageBus";
+import { IMessageHandler } from "../engine/core/message/IMessageHandler";
 
 
 

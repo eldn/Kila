@@ -10,7 +10,7 @@ import { BehaviorManager } from "./behaviors/BehaviorManager";
 import { MaterialManager } from "./material/MaterialManager";
 import { Matrix4x4 } from "./math/Matrix4x4";
 
-export class Engine {
+export class CoreEngine {
 
     private _previousTime: number = 0;
     private _gameWidth: number;
@@ -61,17 +61,6 @@ export class Engine {
 
         // Initialize the renderer.
         this._renderer.Initialize();
-        // Load fonts
-        // BitmapFontManager.load();
-
-        // Load level config
-        LevelManager.load();
-
-        // Load material configs
-        MaterialManager.load();
-
-        // Load audio. Note that this does not hold up the engine from being ready.
-        // AudioManager.load();
 
         // Trigger a resize to make sure the viewport is corrent.
         this.resize();
@@ -108,21 +97,6 @@ export class Engine {
         // Make sure to always update the message bus.
         MessageBus.update( 0 );
 
-        // if ( !BitmapFontManager.isLoaded ) {
-        //     requestAnimationFrame( this.preloading.bind( this ) );
-        //     return;
-        // }
-
-        if ( !MaterialManager.isLoaded ) {
-            requestAnimationFrame( this.preloading.bind( this ) );
-            return;
-        }
-
-        if ( !LevelManager.isLoaded ) {
-            requestAnimationFrame( this.preloading.bind( this ) );
-            return;
-        }
-
         // Perform items such as loading the first/initial level, etc.
         this._game.updateReady();
 
@@ -135,7 +109,6 @@ export class Engine {
 
         MessageBus.update( delta );
         LevelManager.update( delta );
-        // CollisionManager.update( delta );
 
         this._game.update( delta );
 
