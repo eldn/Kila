@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "system",
+    "strict": true,
+    "inlineSourceMap": true
+  },
+  "files": [
+    "imgui.ts",
+    "imgui_demo.ts",
+    "imgui_memory_editor.ts"
+  ]
+}

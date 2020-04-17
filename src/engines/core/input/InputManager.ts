@@ -1,5 +1,6 @@
 import { Vector2 } from "../math/Vector2";
 import { Message } from "../message/Message";
+import { Renderer } from "../renderering/Renderer";
 
 
  export const MESSAGE_MOUSE_DOWN: string = "MOUSE_DOWN";
@@ -8,6 +9,9 @@ import { Message } from "../message/Message";
  export const MESSAGE_KEY_DOWN: string = "KEY_DOWN";
  export const MESSAGE_KEY_UP: string = "KEY_UP";
  export const MESSAGE_MOUSE_WHEEL: string = "MOUSE_WHEEL";
+ export const MESSAGE_TOUCH_START : string = "TOUCH_START";
+ export const MESSAGE_TOUCH_MOVE : string = "TOUCH_MOVE";
+ export const MESSAGE_TOUCH_END : string = "TOUCH_END";
 
  export class MouseContext {
 
@@ -27,6 +31,16 @@ import { Message } from "../message/Message";
      }
  }
 
+
+ export class TouchContext {
+
+    public position: Vector2;
+
+    public constructor(  position: Vector2) {
+        
+        this.position = position;
+    }
+}
 
 
 
@@ -51,11 +65,16 @@ import { Message } from "../message/Message";
          window.addEventListener( "keydown", InputManager.onKeyDown );
          window.addEventListener( "keyup", InputManager.onKeyUp );
 
-         viewport.addEventListener( "mousemove", InputManager.onMouseMove );
          viewport.addEventListener( "mousedown", InputManager.onMouseDown );
+         viewport.addEventListener( "mousemove", InputManager.onMouseMove );
          viewport.addEventListener( "mouseup", InputManager.onMouseUp );
 
          viewport.addEventListener( "mousewheel", InputManager.onMouseWheel );
+
+         let canvas : HTMLCanvasElement = Renderer.windowViewport.canvas;
+         canvas.addEventListener("touchstart", this.onTouchStart, false);
+         canvas.addEventListener("touchmove", this.onTouchMove, false);
+         canvas.addEventListener("touchend", this.onTouchEnd, false);
      }
 
     
@@ -121,5 +140,36 @@ import { Message } from "../message/Message";
         let delta = event['wheelDelta'] || event['wheelDeltaY'];
 
         Message.send( MESSAGE_MOUSE_WHEEL, this, new MouseContext( InputManager._leftDown, InputManager._rightDown, InputManager.getMousePosition(), delta) );
+    }
+
+
+    private static onTouchStart(event: any) : void{
+        event.preventDefault();
+        // console.log("onTouchStart");
+        
+        let touch : Touch = event.touches[0];
+        let startX : number = touch.clientX ;
+        let startY : number = touch.clientY ;
+        Message.send( MESSAGE_TOUCH_START, this, new TouchContext( new Vector2(startX, startY)));
+    }
+
+
+    private static onTouchMove(event: any) : void{
+        event.preventDefault();
+        // console.log("onTouchMove");
+
+        let touch : Touch = event.touches[0];
+        let startX : number = touch.clientX ;
+        let startY : number = touch.clientY ;
+        Message.send( MESSAGE_TOUCH_MOVE, this, new TouchContext( new Vector2(startX, startY)));
+    }
+
+    private static onTouchEnd(event: any) : void{
+        event.preventDefault();
+        // console.log("onTouchEnd"); 
+        // let touch : Touch = event.touches[0];
+        // let startX : number = touch.clientX ;
+        // let startY : number = touch.clientY ;
+        // Message.send( MESSAGE_TOUCH_END, this, new TouchContext( new Vector2(startX, startY)));
     }
  }

@@ -9,18 +9,11 @@ export class MeshMaterialConfig extends MaterialConfigBase{
 
     public diffuse: string;
     public specular: string;
-    public tint: Color;
 
     public static fromJson(json: any): MeshMaterialConfig {
         let config = new MeshMaterialConfig();
         if (json.name !== undefined) {
             config.name = String(json.name);
-        }
-
-        if (json.tint !== undefined) {
-            config.tint = Color.fromJson(json.tint);
-        } else {
-            config.tint = Color.white();
         }
 
         if (json.diffuse !== undefined) {
@@ -43,19 +36,16 @@ export class MeshMaterial extends MaterialBase {
     private _specularTextureName : string;
     private _specularTexture: Texture;
 
-    private _tint: Color;
-
     /**
      * Creates a new material.
      * @param name The name of this material.
      * @param diffuseTextureName The name of the diffuse texture.
      * @param tint The color value of the tint to apply to the material.
      */
-    public constructor(name: string, diffuseTextureName: string, specularTextureName : string, tint: Color) {
+    public constructor(name: string, diffuseTextureName: string, specularTextureName : string) {
         super(name);
         this._diffuseTextureName = diffuseTextureName;
         this._specularTextureName = specularTextureName;
-        this._tint = tint;
 
         if (this._diffuseTextureName !== undefined) {
             this._diffuseTexture = TextureManager.getTexture(this._diffuseTextureName);
@@ -71,13 +61,8 @@ export class MeshMaterial extends MaterialBase {
      * @param config The configuration to create a material from.
      */
     public static FromConfig(config: MeshMaterialConfig): MeshMaterial {
-        let m = new MeshMaterial(config.name, config.diffuse, config.specular, config.tint);
+        let m = new MeshMaterial(config.name, config.diffuse, config.specular);
         return m;
-    }
-
-    /** The color value of the tint to apply to the material. */
-    public get tint(): Color {
-        return this._tint;
     }
 
       /** The name of the diffuse texture. */

@@ -3,7 +3,7 @@ import { LevelManager } from "../engines/core/world/LevelManager";
 import { Shader } from "../engines/core/gl/shaders/Shader";
 import { Engine } from "../engines/core/Engine";
 import { PerspectiveCamera } from "../engines/core/world/cameras/PerspectiveCamera";
-import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext } from "../engines/core/input/InputManager";
+import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext, MESSAGE_TOUCH_START, TouchContext, MESSAGE_TOUCH_MOVE } from "../engines/core/input/InputManager";
 import { KEY_CODE_MACRO } from "../engines/core/define/Macro";
 import { Vector3 } from "../engines/core/math/Vector3";
 import { TEntity } from "../engines/core/world/Entity";
@@ -24,9 +24,6 @@ class TestGame implements IGame, IMessageHandler {
   private lastX: number;
   private lastY: number;
 
-  private yaw: number = -90;
-  private pitch: number = 0;
-
   updateReady(): void {
     // Load the test level. This should be configurable.
     LevelManager.changeLevel("test 1");
@@ -43,12 +40,21 @@ class TestGame implements IGame, IMessageHandler {
 
   }
 
+  private _touchStart : Vector2 = Vector2.zero;
   onMessage(message: Message): void {
-    if (message.code == MESSAGE_MOUSE_WHEEL) {
-      if (this.camera) {
+    if (!this.camera) {
+      return;
+    }
+
+    if (message.code == MESSAGE_MOUSE_WHEEL) {  
         let event: MouseContext = message.context;
         this.camera.processMouseScroll(event.wheelDelta);
-      }
+    } else if (message.code == MESSAGE_TOUCH_START){
+       let event: TouchContext = message.context;
+       this._touchStart.set(event.position.x, event.position.y);
+    } else if(message.code == MESSAGE_TOUCH_MOVE){
+       let event: TouchContext = message.context;
+       this.camera.processMouseMovement(-(event.position.x - this._touchStart.x) / 2, -(event.position.y - this._touchStart.y) / 2, true);
     }
   }
 
@@ -64,6 +70,24 @@ class TestGame implements IGame, IMessageHandler {
         this.lastX = Renderer.windowViewport.width / 2;
         this.lastY = Renderer.windowViewport.height / 2;
         Message.subscribe(MESSAGE_MOUSE_WHEEL, this);
+        Message.subscribe(MESSAGE_TOUCH_START, this);
+        Message.subscribe(MESSAGE_TOUCH_MOVE, this);
+
+
+        let canvas : HTMLCanvasElement = Renderer.windowViewport.canvas;
+        let delta : number = 10000;
+        canvas.addEventListener("up", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.w, delta);
+        }, false);
+        canvas.addEventListener("down", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.s, delta);
+        }, false);
+        canvas.addEventListener("left", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.a, delta);
+        }, false);
+        canvas.addEventListener("right", ()=>{
+          this.camera.processKeyboard(KEY_CODE_MACRO.d, delta);
+        }, false);
       }
       return;
     }
@@ -113,12 +137,6 @@ class TestGame implements IGame, IMessageHandler {
       console.error(e);
       // TODO 错误处理
     }
-
-
-  }
-
-  public radians(degrees: number): number {
-    return degrees * (Math.PI / 180.0);
   }
 
 }
