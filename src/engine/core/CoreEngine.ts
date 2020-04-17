@@ -3,7 +3,6 @@ import { IGame } from "../game/IGame";
 import { RendererViewportCreateInfo, ViewportProjectionType } from "./renderering/RendererViewport";
 import { AssetManager } from "./assets/AssetManager";
 import { InputManager } from "./input/InputManager";
-import { SceneManager } from "./world/SceneManager";
 import { MessageBus } from "./message/MessageBus";
 import { ComponentManager } from "./components/ComponentManager";
 import { BehaviorManager } from "./behaviors/BehaviorManager";
@@ -108,8 +107,7 @@ export class CoreEngine {
         let delta = performance.now() - this._previousTime;
 
         MessageBus.update( delta );
-        SceneManager.update( delta );
-
+        this._game.getRunningScene().update( delta );
         this._game.update( delta );
 
         this._previousTime = performance.now();
@@ -119,9 +117,9 @@ export class CoreEngine {
         this._renderer.BeginRender();
 
         let projection : Matrix4x4 = Renderer.getProjection();
-        let viewMatrix : Matrix4x4 = SceneManager.getViewMatrix();
+        let viewMatrix : Matrix4x4 = this._game.getRunningScene().getViewMatrix();
 
-        SceneManager.render( this._renderer.worldShader, projection, viewMatrix);
+        this._game.getRunningScene().render( this._renderer.worldShader, projection, viewMatrix);
 
         this._game.render( this._renderer.worldShader );
 

@@ -1,18 +1,15 @@
 import { IGame } from "../engine/game/IGame";
-import { SceneManager } from "../engine/core/world/SceneManager";
 import { Shader } from "../engine/core/gl/shaders/Shader";
 import { CoreEngine } from "../engine/core/CoreEngine";
 import { PerspectiveCamera } from "../engine/core/world/cameras/PerspectiveCamera";
 import { InputManager, MESSAGE_MOUSE_WHEEL, MouseContext, MESSAGE_TOUCH_START, TouchContext, MESSAGE_TOUCH_MOVE } from "../engine/core/input/InputManager";
 import { KEY_CODE_MACRO } from "../engine/core/define/Macro";
-import { Vector3 } from "../engine/core/math/Vector3";
-import { GameObject } from "../engine/core/world/GameObject";
 import { Scene } from "../engine/core/world/Scene";
 import { Vector2 } from "../engine/core/math/Vector2";
 import { Renderer } from "../engine/core/renderering/Renderer";
 import { Message } from "../engine/core/message/Message";
-import { MessageBus } from "../engine/core/message/MessageBus";
 import { IMessageHandler } from "../engine/core/message/IMessageHandler";
+import { Mesh } from "../engine/core/graphics/Mesh";
 
 
 
@@ -23,13 +20,27 @@ class TestGame implements IGame, IMessageHandler {
   private firstMouse: boolean = true;
   private lastX: number;
   private lastY: number;
+  private _scene: Scene;
+
+  constructor(){
+    this._scene = new Scene("testScene", "Test Scene!");
+  }
+
+  public get scene(): Scene {
+    return this._scene;
+  }
+  
+  public set scene(value: Scene) {
+    this._scene = value;
+  }
 
   updateReady(): void {
-    // Load the test level. This should be configurable.
-    // SceneManager.runScene("test 1");
-
-
     
+    
+     let mesh : Mesh = new Mesh();
+      
+
+
   }
 
   update(time: number): void {
@@ -66,7 +77,7 @@ class TestGame implements IGame, IMessageHandler {
 
     //# region start 初始化摄像机
     if (!this.camera) {
-      let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
+      let activeCamera: PerspectiveCamera = this._scene.activeCamera as PerspectiveCamera;
       if (activeCamera) {
         this.camera = activeCamera;
         this.lastX = Renderer.windowViewport.width / 2;
@@ -139,6 +150,10 @@ class TestGame implements IGame, IMessageHandler {
       console.error(e);
       // TODO 错误处理
     }
+  }
+
+  getRunningScene() : Scene{
+    return this._scene;
   }
 
 }

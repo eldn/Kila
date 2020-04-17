@@ -33,7 +33,6 @@ export class Scene {
     private _activeCamera: BaseCamera;
     private _defaultCameraName: string;
     private _lights : LightRendererComponent[] = [];
-
     private _skyBox : SkyBox;
 
     /**
@@ -181,5 +180,9 @@ export class Scene {
 
     public getSkybox() : SkyBox{
         return this._skyBox;
+    }
+
+    public getViewMatrix() : Matrix4x4{
+        return this.activeCamera.view;
     }
 }

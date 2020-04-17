@@ -3,7 +3,6 @@ import { Light, LightType } from "./Light";
 import { Color } from "../../graphics/Color";
 import { Shader } from "../../gl/shaders/Shader";
 import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
-import { SceneManager } from "../SceneManager";
 import { LightRendererComponent } from "../../components/LightComponent";
 
 let v3_a : Vector3 = new Vector3();
@@ -61,26 +60,26 @@ export class SpotLight extends Light{
 
     public setShaderProperty(shader: Shader) : void{
 
-        let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
-        if (!activeCamera) {
-            return;
-        }
+        // let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
+        // if (!activeCamera) {
+        //     return;
+        // }
      
-        // 设置光的位置和属性
-        let position : Vector3 = activeCamera.getWorldPosition(v3_a);
-        shader.setUniform3f("u_spotLight.position", position.x, position.y, position.z);
+        // // 设置光的位置和属性
+        // let position : Vector3 = activeCamera.getWorldPosition(v3_a);
+        // shader.setUniform3f("u_spotLight.position", position.x, position.y, position.z);
 
-        let direction : Vector3 = activeCamera.getFront(v3_a);
-        shader.setUniform3f("u_spotLight.direction", direction.x, direction.y, direction.z);
+        // let direction : Vector3 = activeCamera.getFront(v3_a);
+        // shader.setUniform3f("u_spotLight.direction", direction.x, direction.y, direction.z);
 
-        shader.setUniform1f("u_spotLight.cutOff", this._lightProperty.cutOff);
+        // shader.setUniform1f("u_spotLight.cutOff", this._lightProperty.cutOff);
 
-        shader.setUniform1f("u_spotLight.outerCutOff", this._lightProperty.outerCutOff);
+        // shader.setUniform1f("u_spotLight.outerCutOff", this._lightProperty.outerCutOff);
 
-        // set shader's light uniform.
-        shader.setUniform3f(`u_spotLight.ambient`, this._lightProperty.ambient.x, this._lightProperty.ambient.y, this._lightProperty.ambient.z);
-        shader.setUniform3f(`u_spotLight.diffuse`, this._lightProperty.diffuse.x, this._lightProperty.diffuse.y, this._lightProperty.diffuse.z);
-        shader.setUniform3f(`u_spotLight.specular`, this._lightProperty.specular.x, this._lightProperty.specular.y, this._lightProperty.specular.z);
+        // // set shader's light uniform.
+        // shader.setUniform3f(`u_spotLight.ambient`, this._lightProperty.ambient.x, this._lightProperty.ambient.y, this._lightProperty.ambient.z);
+        // shader.setUniform3f(`u_spotLight.diffuse`, this._lightProperty.diffuse.x, this._lightProperty.diffuse.y, this._lightProperty.diffuse.z);
+        // shader.setUniform3f(`u_spotLight.specular`, this._lightProperty.specular.x, this._lightProperty.specular.y, this._lightProperty.specular.z);
     }
 
     

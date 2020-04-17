@@ -5,7 +5,6 @@ import { gl } from "../gl/GLUtilities";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { BasicShader } from "../gl/shaders/BasicShader";
 import { Shader } from "../gl/shaders/Shader";
-import { SceneManager } from "../world/SceneManager";
 import { Scene } from "../world/Scene";
 import { FboTestShader } from "../gl/shaders/FBOTestShader";
 import { GLBuffer } from "../gl/GLBuffer";

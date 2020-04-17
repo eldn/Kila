@@ -10,19 +10,6 @@ import { Matrix4x4 } from "../math/Matrix4x4";
 import { Vector3 } from "../math/Vector3";
 import { MeshMaterial } from "../material/MeshMaterial";
 import { MaterialManager } from "../material/MaterialManager";
-import { OBJDoc, DrawingInfo } from "../utils/OBJDoc";
-import { Scene } from "../world/Scene";
-import { SceneManager } from "../world/SceneManager";
-import { GameObject } from "../world/GameObject";
-import { PerspectiveCamera } from "../world/cameras/PerspectiveCamera";
-import { PointLightProperty, PointLight } from "../world/lights/PointLight";
-import { LightRendererComponent } from "../components/LightComponent";
-import { Light, LightType } from "../world/lights/Light";
-import { DirectionLight } from "../world/lights/DirectionLight";
-import { MeshShader } from "../gl/shaders/MeshShader";
-import { SpotLight } from "../world/lights/Spotlight";
-import { NoLightShader } from "../gl/shaders/NoLightShader";
-import { EvnMapShader } from "../gl/shaders/EnvMapShader";
 
 let v3_a: Vector3 = new Vector3();
 
@@ -137,20 +124,15 @@ export class Mesh implements IMessageHandler {
             -1.0, 1.0, -1.0,
         ];
 
-
-
         // 顶点数据
         let positionAttribute = new AttributeInfo();
         positionAttribute.location = 0;
         positionAttribute.size = 3;
         this._vertextBuffer.addAttributeLocation(positionAttribute);
 
-
         this._vertextBuffer.setData(vertices);
         this._vertextBuffer.upload();
         this._vertextBuffer.unbind();
-
-
 
         const textCoord = [
 
@@ -192,8 +174,6 @@ export class Mesh implements IMessageHandler {
         this._uvBuffer.upload();
         this._uvBuffer.unbind();
 
-
-
         const normals = [
 
             0.0, 0.0, 1.0,
@@ -220,10 +200,7 @@ export class Mesh implements IMessageHandler {
             -1.0, 0.0, 0.0,
             -1.0, 0.0, 0.0,
             -1.0, 0.0, 0.0,
-
-
         ]
-
 
 
         // 法线数据
@@ -231,8 +208,6 @@ export class Mesh implements IMessageHandler {
         normalAttribute.location = 2;
         normalAttribute.size = 3;
         this._normalBuffer.addAttributeLocation(normalAttribute);
-
-
 
         this._normalBuffer.setData(normals);
         this._normalBuffer.upload();
@@ -249,12 +224,10 @@ export class Mesh implements IMessageHandler {
         ];
 
 
-
         // 顶点索引数据
         this._indexBuffer.setData(indices);
         this._indexBuffer.upload();
         this._indexBuffer.unbind();
-
 
         this._isLoaded = true;
     }

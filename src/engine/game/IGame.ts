@@ -1,4 +1,5 @@
 import { Shader } from "../core/gl/shaders/Shader";
+import { Scene } from "../core/world/Scene";
 
 export interface IGame {
 
@@ -19,4 +20,7 @@ export interface IGame {
      * @param shader The shader to be used during this render.
      */
     render(shader: Shader): void;
+
+
+    getRunningScene() : Scene;
 }
