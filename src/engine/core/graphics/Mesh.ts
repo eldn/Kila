@@ -8,8 +8,6 @@ import { IMessageHandler } from "../message/IMessageHandler";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4x4 } from "../math/Matrix4x4";
 import { Vector3 } from "../math/Vector3";
-import { MeshMaterial } from "../material/MeshMaterial";
-import { MaterialManager } from "../material/MaterialManager";
 
 let v3_a: Vector3 = new Vector3();
 
@@ -114,7 +112,6 @@ export class Mesh implements IMessageHandler {
         this._vertextBuffer.unbind();
 
         const textCoord = [
-
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
@@ -139,7 +136,6 @@ export class Mesh implements IMessageHandler {
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
-
         ];
 
 
@@ -154,7 +150,6 @@ export class Mesh implements IMessageHandler {
         this._uvBuffer.unbind();
 
         const normals = [
-
             0.0, 0.0, 1.0,
             0.0, 0.0, 1.0,
             0.0, 0.0, 1.0,

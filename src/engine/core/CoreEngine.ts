@@ -8,6 +8,7 @@ import { ComponentManager } from "./components/ComponentManager";
 import { BehaviorManager } from "./behaviors/BehaviorManager";
 import { MaterialManager } from "./material/MaterialManager";
 import { Matrix4x4 } from "./math/Matrix4x4";
+import { gl } from "./gl/GLUtilities";
 
 export class CoreEngine {
 
@@ -118,9 +119,20 @@ export class CoreEngine {
 
         let projection : Matrix4x4 = Renderer.getProjection();
         let viewMatrix : Matrix4x4 = this._game.getRunningScene().getViewMatrix();
+        
+        // Set uniforms.
+        let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
+        gl.uniformMatrix4fv( projectionPosition, false, projection.toFloat32Array() );
+        
+        // Set model uniforms.
+        let model = this._renderer.worldShader.getUniformLocation( "u_model" );
+        gl.uniformMatrix4fv( model, false, Matrix4x4.identity().toFloat32Array());
+
+         // Use the active camera's matrix as the view
+         let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
+         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toFloat32Array() );
 
         this._game.getRunningScene().render( this._renderer.worldShader, projection, viewMatrix);
-
         this._game.render( this._renderer.worldShader );
 
         this._renderer.EndRender();
