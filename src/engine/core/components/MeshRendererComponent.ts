@@ -96,9 +96,6 @@ export class MeshRendererComponent extends BaseComponent {
 
                 let u_diffuse = shader.getUniformLocation("u_diffuse");
                 gl.uniform1i(u_diffuse, 0);
-
-                let u_tint = shader.getUniformLocation("u_tint");
-                gl.uniform4fv(u_tint, new Color(1.0, 1.0, 1.0, 1.0).toFloat32Array());
             }
 
             // mesh
