@@ -104,12 +104,8 @@ export class PerspectiveCamera extends BaseCamera {
         this.updateCameraVectors();
     }
 
-    /**
-     * TODO 先不考虑摄像机的旋转
-     */
+   
     public get view(): Matrix4x4 {
-        // return this.transform.getTransformationMatrix();
-        // return Matrix4x4.lookAt(m4_a, this.getWorldPosition(), this.front, this._up);
         return this._viewMat;
     }
 

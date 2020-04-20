@@ -14,11 +14,12 @@ export class BasicShader extends Shader {
         return `
 attribute vec4 a_position;
 attribute vec2 a_texCoord;
-uniform mat4 u_modelViewMatrix;
+uniform mat4 u_model;
+uniform mat4 u_view;
 uniform mat4 u_projection;
 varying vec2 v_texCoord;
 void main() {
-    gl_Position = u_projection * u_modelViewMatrix * a_position;
+    gl_Position = u_projection * u_model *  u_view * a_position;
     v_texCoord = a_texCoord;
 }`;
     }

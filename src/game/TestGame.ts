@@ -60,7 +60,7 @@ class TestGame implements IGame, IMessageHandler {
 
   update(time: number): void {
 
-    // this.processInput(time);
+    this.processInput(time);
 
   }
 
