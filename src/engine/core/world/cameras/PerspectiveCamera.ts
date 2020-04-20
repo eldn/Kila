@@ -94,8 +94,8 @@ export class PerspectiveCamera extends BaseCamera {
         }
     }
 
-    public constructor(name: string, sceneGraph?: SceneGraph, front : Vector3 = new Vector3(0, 0, -1), worldUp : Vector3 = new Vector3(0, 1, 0), pitch : number = 0, yaw : number = -90) {
-        super(name, sceneGraph);
+    public constructor(name: string, front : Vector3 = new Vector3(0, 0, -1), worldUp : Vector3 = new Vector3(0, 1, 0), pitch : number = 0, yaw : number = -90) {
+        super(name);
 
         this._front = front.normalize();
         this._worldUp = worldUp.normalize();
@@ -120,10 +120,11 @@ export class PerspectiveCamera extends BaseCamera {
         front.x = Math.cos(this.radians(this.yaw)) * Math.cos(this.radians(this.pitch));
         front.y = Math.sin(this.radians(this.pitch));
         front.z = Math.sin(this.radians(this.yaw)) * Math.cos(this.radians(this.pitch));
-        this._front = front.normalize();;
+        this._front = front.normalize();
 
         // Also re-calculate the Right and Up vector
         Vector3.cross(this._right, front, this.worldUp);
+
         // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         this._right.normalize();
 

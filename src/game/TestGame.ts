@@ -39,7 +39,6 @@ class TestGame implements IGame, IMessageHandler {
   }
 
   updateReady(): void {
-    
     let mesh : Mesh = new Mesh("assets/models/plane3.obj");
     let diffuse : Texture = new Texture("assets/textures/bricks2.jpg");
     let normal : Texture = new Texture("assets/textures/bricks2_normal.png");
@@ -49,7 +48,7 @@ class TestGame implements IGame, IMessageHandler {
     
     let planeObject : GameObject = new GameObject("plane");
     planeObject.addComponent(meshRender);
-    planeObject.transform.position.set(0, -1, 5);
+    planeObject.transform.position.set(0, 0, 10);
     this.addObject(planeObject);
   }
 

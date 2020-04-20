@@ -31,7 +31,6 @@ export class Scene {
     private _state: LevelState = LevelState.UNINITIALIZED;
     private _registeredCameras: Dictionary<BaseCamera> = {};
     private _activeCamera: BaseCamera;
-    private _defaultCameraName: string;
     private _lights : LightRendererComponent[] = [];
     private _skyBox : SkyBox;
 
@@ -89,7 +88,7 @@ export class Scene {
         // Get registered cameras. If there aren't any, register one automatically.
         // Otherwise, look for the first one and make it active.
         // TODO: Add active camera to level config, assign by name.
-        let defaultCamera = new PerspectiveCamera("DEFAULT_CAMERA", this._sceneGraph);
+        let defaultCamera = new PerspectiveCamera("DEFAULT_CAMERA");
         this._sceneGraph.addObject(defaultCamera);
         this.registerCamera(defaultCamera);
         this._activeCamera = defaultCamera;

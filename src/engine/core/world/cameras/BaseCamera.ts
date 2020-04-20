@@ -9,8 +9,8 @@ export abstract class BaseCamera extends GameObject {
      * @param name The name of this camera.
      * @param sceneGraph The scene graph to be used with this camera.
      */
-    public constructor(name: string, sceneGraph?: SceneGraph) {
-        super(name, sceneGraph);
+    public constructor(name: string) {
+        super(name);
 
     }
 

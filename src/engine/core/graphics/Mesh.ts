@@ -16,17 +16,15 @@ export class Mesh implements IMessageHandler {
     private _modelPath: string;
     private _vertextBuffer: GLBuffer;
     private _uvBuffer: GLBuffer;
-    private _normalBuffer: GLBuffer;
     private _indexBuffer: GLBuffer;
     private _isLoaded: boolean = false;
     protected _origin: Vector3 = Vector3.zero;
     private _meshAsset: ModelAsset;
 
-    constructor( modelPath: string) {
+    constructor(modelPath: string) {
         this._modelPath = modelPath;
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._uvBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
-        this._normalBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._indexBuffer = new GLBuffer(gl.UNSIGNED_SHORT, gl.ELEMENT_ARRAY_BUFFER, gl.TRIANGLES);
 
 
@@ -37,14 +35,14 @@ export class Mesh implements IMessageHandler {
             this._meshAsset = meshAsset;
         }
 
-     
+
 
         if (this._meshAsset) {
             this.loadMeshFromAsset(this._meshAsset);
         }
     }
 
-    
+
 
     public get isLoaded(): boolean {
         return this._isLoaded;
@@ -68,33 +66,38 @@ export class Mesh implements IMessageHandler {
 
     private loadMeshFromAsset(meshAsset: ModelAsset): void {
 
-        const vertices = [
-            // Front face, 
+        const positions = [
+            // Front face
             -1.0, -1.0, 1.0,
             1.0, -1.0, 1.0,
             1.0, 1.0, 1.0,
             -1.0, 1.0, 1.0,
-            // Back face 
+
+            // Back face
             -1.0, -1.0, -1.0,
             -1.0, 1.0, -1.0,
             1.0, 1.0, -1.0,
             1.0, -1.0, -1.0,
-            // Top face 
+
+            // Top face
             -1.0, 1.0, -1.0,
             -1.0, 1.0, 1.0,
             1.0, 1.0, 1.0,
             1.0, 1.0, -1.0,
-            // Bottom face 
+
+            // Bottom face
             -1.0, -1.0, -1.0,
             1.0, -1.0, -1.0,
             1.0, -1.0, 1.0,
             -1.0, -1.0, 1.0,
-            // Right face 
+
+            // Right face
             1.0, -1.0, -1.0,
             1.0, 1.0, -1.0,
             1.0, 1.0, 1.0,
             1.0, -1.0, 1.0,
-            // Left face 
+
+            // Left face
             -1.0, -1.0, -1.0,
             -1.0, -1.0, 1.0,
             -1.0, 1.0, 1.0,
@@ -106,32 +109,37 @@ export class Mesh implements IMessageHandler {
         positionAttribute.location = 0;
         positionAttribute.size = 3;
         this._vertextBuffer.addAttributeLocation(positionAttribute);
-
-        this._vertextBuffer.setData(vertices);
+        this._vertextBuffer.setData(positions);
         this._vertextBuffer.upload();
         this._vertextBuffer.unbind();
 
-        const textCoord = [
+        const textureCoordinates = [
+            // Front
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
+            // Back
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
+            // Top
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
+            // Bottom
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
+            // Right
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
             0.0, 1.0,
+            // Left
             0.0, 0.0,
             1.0, 0.0,
             1.0, 1.0,
@@ -145,60 +153,20 @@ export class Mesh implements IMessageHandler {
         textCoordAttribute.size = 2;
         this._uvBuffer.addAttributeLocation(textCoordAttribute);
 
-        this._uvBuffer.setData(textCoord);
+        this._uvBuffer.setData(textureCoordinates);
         this._uvBuffer.upload();
         this._uvBuffer.unbind();
 
-        const normals = [
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, 1.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            0.0, 0.0, -1.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            0.0, -1.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-            -1.0, 0.0, 0.0,
-        ]
-
-
-        // 法线数据
-        let normalAttribute = new AttributeInfo();
-        normalAttribute.location = 2;
-        normalAttribute.size = 3;
-        this._normalBuffer.addAttributeLocation(normalAttribute);
-
-        this._normalBuffer.setData(normals);
-        this._normalBuffer.upload();
-        this._normalBuffer.unbind();
-
-
-        const indices = [
-            0, 1, 2, 0, 2, 3,    // front
-            4, 5, 6, 4, 6, 7,    // back
-            8, 9, 10, 8, 10, 11,   // top
-            12, 13, 14, 12, 14, 15,   // bottom
-            16, 17, 18, 16, 18, 19,   // right
-            20, 21, 22, 20, 22, 23,   // left
-        ];
-
-
         // 顶点索引数据
+        const indices = [
+            0,  1,  2,      0,  2,  3,    // front
+            4,  5,  6,      4,  6,  7,    // back
+            8,  9,  10,     8,  10, 11,   // top
+            12, 13, 14,     12, 14, 15,   // bottom
+            16, 17, 18,     16, 18, 19,   // right
+            20, 21, 22,     20, 22, 23,   // left
+        ];
+        
         this._indexBuffer.setData(indices);
         this._indexBuffer.upload();
         this._indexBuffer.unbind();
@@ -216,7 +184,6 @@ export class Mesh implements IMessageHandler {
 
         this._vertextBuffer.bind();
         this._uvBuffer.bind();
-        this._normalBuffer.bind();
         this._indexBuffer.bind();
         this._indexBuffer.draw();
     }
