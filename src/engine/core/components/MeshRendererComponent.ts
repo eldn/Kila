@@ -5,6 +5,7 @@ import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
 import { Mesh } from "../graphics/Mesh";
 import { Matrix4x4 } from "../math/Matrix4x4";
+import { Material } from "../renderering/Material";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
@@ -54,9 +55,10 @@ export class MeshRendererComponentBuilder implements IComponentBuilder {
     }
 
     public buildFromJson(json: any): IComponent {
-        let data = new MeshRendererCoponentData();
-        data.setFromJson(json);
-        return new MeshRendererComponent(data);
+        // let data = new MeshRendererCoponentData();
+        // data.setFromJson(json);
+        // return new MeshRendererComponent(data);
+        return null;
     }
 }
 
@@ -64,19 +66,22 @@ export class MeshRendererComponentBuilder implements IComponentBuilder {
 export class MeshRendererComponent extends BaseComponent {
 
     private _mesh: Mesh;
+    private _material : Material;
 
-    public constructor(data: MeshRendererCoponentData) {
-        super(data);
-
-        this._mesh = new Mesh(data.name, data.modelPath, data.mtlPath, data.materialName);
+    public constructor(mesh : Mesh, material : Material) {
+        super();
+        this._mesh = mesh;
+        this._material = material;
     }
+
 
     public load(): void {
         this._mesh.load();
+        this._material.load();
     }
 
     public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
-        if(this._mesh.isLoaded){
+        if(this._mesh.isLoaded && this._material.isLoaded){
             this._mesh.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
             super.render(shader, projection, viewMatrix);
         }

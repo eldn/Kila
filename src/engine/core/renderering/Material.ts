@@ -5,6 +5,16 @@ export class Material extends MappedValues{
 
 	private  m_textureHashMap : Map<string, Texture>;
 
+	public get isLoaded(): boolean {
+		let texturesName = this.m_textureHashMap.keys;
+		for(let i : number; i < texturesName.length; ++i){
+			if(!this.m_textureHashMap.get(texturesName[i]).isLoaded){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	constructor(diffuse : Texture,
 				specularIntensity : number,
 				specularPower : number,
@@ -14,6 +24,7 @@ export class Material extends MappedValues{
 				dispMapOffset : number){
 		super();
 		this.m_textureHashMap = new Map<string, Texture>();
+		
 		this.AddTexture("diffuse", diffuse);
 		this.AddFloat("specularIntensity", specularIntensity);
 		this.AddFloat("specularPower", specularPower);
@@ -35,5 +46,11 @@ export class Material extends MappedValues{
 			return result;
 
 		return new Texture("test.png");
+	}
+
+	public load(){
+
+		
+
 	}
 }

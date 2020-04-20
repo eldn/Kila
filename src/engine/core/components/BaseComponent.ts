@@ -9,13 +9,6 @@ export abstract class BaseComponent implements IComponent {
 
     /** The owning entity. */
     protected _owner: GameObject;
-    protected _data: IComponentData;
-    public name: string;
-
-    public constructor(data: IComponentData) {
-        this._data = data;
-        this.name = data.name;
-    }
 
     public get owner(): GameObject {
         return this._owner;

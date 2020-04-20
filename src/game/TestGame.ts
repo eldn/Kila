@@ -10,7 +10,10 @@ import { Renderer } from "../engine/core/renderering/Renderer";
 import { Message } from "../engine/core/message/Message";
 import { IMessageHandler } from "../engine/core/message/IMessageHandler";
 import { Mesh } from "../engine/core/graphics/Mesh";
-
+import { MeshRendererComponent } from "../engine/core/components/MeshRendererComponent";
+import { Material } from "../engine/core/renderering/Material";
+import { GameObject } from "../engine/core/world/GameObject";
+import { Texture } from "../engine/core/graphics/Texture";
 
 
 class TestGame implements IGame, IMessageHandler {
@@ -24,6 +27,7 @@ class TestGame implements IGame, IMessageHandler {
 
   constructor(){
     this._scene = new Scene("testScene", "Test Scene!");
+    this._scene.load();
   }
 
   public get scene(): Scene {
@@ -36,16 +40,28 @@ class TestGame implements IGame, IMessageHandler {
 
   updateReady(): void {
     
+    let mesh : Mesh = new Mesh("assets/models/plane3.obj");
+    let diffuse : Texture = new Texture("assets/textures/bricks2.jpg");
+    let normal : Texture = new Texture("assets/textures/bricks2_normal.png");
+    let dispMap : Texture = new Texture("assets/textures/bricks2_disp.jpg");
+    let material : Material = new Material(diffuse, 1, 8, normal, dispMap, 0.04, -1.0);
+    let meshRender : MeshRendererComponent = new MeshRendererComponent(mesh, material);
     
-     let mesh : Mesh = new Mesh();
-      
+    let planeObject : GameObject = new GameObject("plane");
+    planeObject.addComponent(meshRender);
+    planeObject.transform.position.set(0, -1, 5);
+    this.addObject(planeObject);
+  }
 
-
+  addObject(obj : GameObject) : void {
+    if(this._scene && obj){
+      this._scene.addObject(obj);  
+    }
   }
 
   update(time: number): void {
 
-    this.processInput(time);
+    // this.processInput(time);
 
   }
 

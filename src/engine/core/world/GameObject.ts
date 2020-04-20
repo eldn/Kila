@@ -33,12 +33,10 @@ export class GameObject extends TObject {
     /**
      * Creates a new entity.
      * @param name The name of this entity.
-     * @param sceneGraph The scenegraph to which this entity belongs.
      */
-    public constructor(name: string, sceneGraph?: SceneGraph) {
+    public constructor(name: string) {
         super();
         this.name = name;
-        this._sceneGraph = sceneGraph;
     }
 
     /** Returns the parent of this entity. */
@@ -87,27 +85,6 @@ export class GameObject extends TObject {
             child._parent = undefined;
             this._children.splice(index, 1);
         }
-    }
-
-    /**
-     * Recursively attempts to retrieve a component with the given name from this entity or its children.
-     * @param name The name of the component to retrieve.
-     */
-    public getComponentByName(name: string): IComponent {
-        for (let component of this._components) {
-            if (component.name === name) {
-                return component;
-            }
-        }
-
-        for (let child of this._children) {
-            let component = child.getComponentByName(name);
-            if (component !== undefined) {
-                return component;
-            }
-        }
-
-        return undefined;
     }
 
     protected static _findComponent (node: GameObject, constructor: Function) {
@@ -269,6 +246,8 @@ export class GameObject extends TObject {
     public addComponent(component: IComponent): void {
         this._components.push(component);
         component.setOwner(this);
+
+        
     }
 
     /**

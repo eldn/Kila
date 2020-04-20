@@ -8,7 +8,7 @@ export class SceneGraph {
 
     /** Creates a new SceneGraph */
     public constructor() {
-        this._root = new GameObject("__ROOT__", this);
+        this._root = new GameObject("__ROOT__");
     }
 
     /** Returns the root object. */
@@ -33,7 +33,7 @@ export class SceneGraph {
      * Recursively searches this scene graph for an entity with the provided name.
      * @param name The name of the entity to retrieve.
      */
-    public getEntityByName(name: string): GameObject {
+    public getObject(name: string): GameObject {
         return this._root.getEntityByName(name);
     }
 

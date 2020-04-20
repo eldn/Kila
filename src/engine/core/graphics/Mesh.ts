@@ -15,25 +15,17 @@ let v3_a: Vector3 = new Vector3();
 
 export class Mesh implements IMessageHandler {
 
-    private _name: string;
     private _modelPath: string;
-    private _mtlPath: string;
     private _vertextBuffer: GLBuffer;
     private _uvBuffer: GLBuffer;
     private _normalBuffer: GLBuffer;
     private _indexBuffer: GLBuffer;
     private _isLoaded: boolean = false;
     protected _origin: Vector3 = Vector3.zero;
-    protected _materialName: string;
-    protected _material: MeshMaterial;
     private _meshAsset: ModelAsset;
-    private _mtlAsset: ModelAsset;
 
-    constructor(name: string, modelPath: string, mtlPath: string, materialName: string) {
-        this._name = name;
+    constructor( modelPath: string) {
         this._modelPath = modelPath;
-        this._mtlPath = mtlPath;
-        this._materialName = materialName;
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._uvBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._normalBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
@@ -47,25 +39,14 @@ export class Mesh implements IMessageHandler {
             this._meshAsset = meshAsset;
         }
 
-        let mtlAsset = AssetManager.getAsset(this._mtlPath) as ModelAsset;
-        if (mtlAsset === undefined) {
-            Message.subscribe(MESSAGE_ASSET_LOADER_ASSET_LOADED + this._mtlPath, this);
-        } else {
-            this._mtlAsset = mtlAsset;
+     
+
+        if (this._meshAsset) {
+            this.loadMeshFromAsset(this._meshAsset);
         }
-
-        if (this._meshAsset && this._mtlAsset) {
-            this.loadMeshFromAsset(this._meshAsset, this._mtlAsset);
-        }
-
-
-
-        this._material = MaterialManager.getMaterial(this._materialName) as MeshMaterial;
     }
 
-    public get name(): string {
-        return this._name;
-    }
+    
 
     public get isLoaded(): boolean {
         return this._isLoaded;
@@ -80,16 +61,14 @@ export class Mesh implements IMessageHandler {
         if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._modelPath) {
             this._meshAsset = message.context;
 
-        } else if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._mtlPath) {
-            this._mtlAsset = message.context;
         }
 
-        if (this._meshAsset && this._mtlAsset) {
-            this.loadMeshFromAsset(this._meshAsset, this._mtlAsset);
+        if (this._meshAsset) {
+            this.loadMeshFromAsset(this._meshAsset);
         }
     }
 
-    private loadMeshFromAsset(meshAsset: ModelAsset, mtlAsset: ModelAsset): void {
+    private loadMeshFromAsset(meshAsset: ModelAsset): void {
 
         const vertices = [
             // Front face, 
@@ -234,7 +213,6 @@ export class Mesh implements IMessageHandler {
 
 
     public load(): void {
-
 
     }
 

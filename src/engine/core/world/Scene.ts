@@ -72,6 +72,12 @@ export class Scene {
         return this._state === LevelState.UPDATING;
     }
 
+    addObject(obj : GameObject) : void {
+        if(this._sceneGraph && obj){
+          this.sceneGraph.addObject(obj);  
+        }
+      }
+
 
     /** Loads this level. */
     public load(): void {
@@ -83,24 +89,11 @@ export class Scene {
         // Get registered cameras. If there aren't any, register one automatically.
         // Otherwise, look for the first one and make it active.
         // TODO: Add active camera to level config, assign by name.
-        if (this._defaultCameraName !== undefined) {
-            let obj = this._sceneGraph.getEntityByName(this._defaultCameraName);
-            if (obj === undefined) {
-                throw new Error("Default camera not found:" + this._defaultCameraName);
-            } else {
-                // NOTE: If detected, the camera should already be registered at this point.
-            }
-        } else {
-            let cameraKeys = Object.keys(this._registeredCameras);
-            if (cameraKeys.length > 0) {
-                this._activeCamera = this._registeredCameras[cameraKeys[0]];
-            } else {
-                let defaultCamera = new PerspectiveCamera("DEFAULT_CAMERA", this._sceneGraph);
-                this._sceneGraph.addObject(defaultCamera);
-                this.registerCamera(defaultCamera);
-                this._activeCamera = defaultCamera;
-            }
-        }
+        let defaultCamera = new PerspectiveCamera("DEFAULT_CAMERA", this._sceneGraph);
+        this._sceneGraph.addObject(defaultCamera);
+        this.registerCamera(defaultCamera);
+        this._activeCamera = defaultCamera;
+        
 
         this._state = LevelState.UPDATING;
 
