@@ -122,27 +122,7 @@ export class CoreEngine {
         
         // Set view uniforms.
         let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
-        // gl.uniformMatrix4fv( projectionPosition, false, projection.toFloat32Array() );
-
-        let projectionA = [
-                1.8107,
-                0,
-                0,
-                0,
-                0,
-                2.4142,
-                0,
-                0,
-                0,
-                0,
-                -1.0020,
-                -1,
-                0,
-                0,
-                -0.2002,
-                0,
-        ];
-        gl.uniformMatrix4fv( projectionPosition, false, projectionA );
+        gl.uniformMatrix4fv( projectionPosition, false, projection.toFloat32Array() );
 
         
         let modelViewA = [
