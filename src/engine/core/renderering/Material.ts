@@ -1,9 +1,9 @@
 import { Texture } from '../graphics/Texture';
 import { MappedValues } from "./MappedValues";
 import { gl } from '../gl/GLUtilities';
+import { TObject } from '../objects/Object';
 
-export class Material extends MappedValues {
-
+export class Material extends TObject {
 
 	/**
 	 * 光照类型
@@ -564,59 +564,212 @@ export class Material extends MappedValues {
 	public get needBasicAttributes(): boolean {
 		return this._needBasicAttributes;
 	}
-	
+
 	public set needBasicAttributes(value: boolean) {
 		this._needBasicAttributes = value;
 	}
 
-	private m_textureHashMap: Map<string, Texture>;
 
 	public get isLoaded(): boolean {
-		let texturesName = this.m_textureHashMap.keys;
-		for (let i: number; i < texturesName.length; ++i) {
-			if (!this.m_textureHashMap.get(texturesName[i]).isLoaded) {
-				return false;
-			}
-		}
 		return true;
 	}
 
-	constructor(diffuse: Texture,
-		specularIntensity: number,
-		specularPower: number,
-		normal: Texture,
-		dispMap: Texture,
-		dispMapScale: number,
-		dispMapOffset: number) {
-		super();
-		this.m_textureHashMap = new Map<string, Texture>();
+	/**
+	 *可以通过指定，semantic来指定值的获取方式，或者自定义get方法
+	 *
+	 * @private
+	 * @type {Object}
+	 * @memberof Material
+	 */
+	private _uniforms: Object = {};
 
-		this.AddTexture("diffuse", diffuse);
-		this.AddFloat("specularIntensity", specularIntensity);
-		this.AddFloat("specularPower", specularPower);
-		this.AddTexture("normalMap", normal);
-		this.AddTexture("dispMap", dispMap);
-
-		let baseBias: number = dispMapScale / 2.0;
-		this.AddFloat("dispMapScale", dispMapScale);
-		this.AddFloat("dispMapBias", -baseBias + baseBias * dispMapOffset);
+	public get uniforms(): Object {
+		return this._uniforms;
 	}
 
-	public AddTexture(name: string, texture: Texture): void {
-		this.m_textureHashMap.set(name, texture);
+	public set uniforms(value: Object) {
+		this._uniforms = value;
 	}
 
-	public GetTexture(name: string): Texture {
-		let result: Texture = this.m_textureHashMap.get(name);
-		if (result != null)
-			return result;
+	/**
+	 * 可以通过指定，semantic来指定值的获取方式，或者自定义get方法
+	 *
+	 * @private
+	 * @type {Object}
+	 * @memberof Material
+	 */
+	private _attributes: Object = {};
 
-		return new Texture("test.png");
+	public get attributes(): Object {
+		return this._attributes;
 	}
+
+	public set attributes(value: Object) {
+		this._attributes = value;
+	}
+
+
+	constructor() {
+		super()
+
+
+		if (this.needBasicAttributes) {
+            this.addBasicAttributes();
+        }
+
+        if (this.needBasicUnifroms) {
+            this.addBasicUniforms();
+        }
+	
+	}
+
+	/**
+     * 增加基础 attributes
+     */
+    addBasicAttributes() {
+        let attributes : Object = this.attributes;
+        this._copyProps(attributes, {
+            a_position: 'POSITION',
+            a_normal: 'NORMAL',
+            a_tangent: 'TANGENT',
+            a_texcoord0: 'TEXCOORD_0',
+            a_texcoord1: 'TEXCOORD_1',
+            a_color: 'COLOR_0',
+            a_skinIndices: 'SKININDICES',
+            a_skinWeights: 'SKINWEIGHTS'
+        });
+
+        ['POSITION', 'NORMAL', 'TANGENT'].forEach((name : string) : void => {
+            let camelName : string = name.slice(0, 1) + name.slice(1).toLowerCase();
+            for (let i = 0; i < 8; i++) {
+                const morphAttributeName = 'a_morph' + camelName + i;
+                if (attributes[morphAttributeName] === undefined) {
+                    attributes[morphAttributeName] = 'MORPH' + name + i;
+                }
+            }
+        });
+	}
+	
+
+	 /**
+     * 增加基础 uniforms
+     */
+    addBasicUniforms() {
+        this._copyProps(this.uniforms, {
+            u_modelMatrix: 'MODEL',
+            u_viewMatrix: 'VIEW',
+            u_projectionMatrix: 'PROJECTION',
+            u_modelViewMatrix: 'MODELVIEW',
+            u_modelViewProjectionMatrix: 'MODELVIEWPROJECTION',
+            u_viewInverseNormalMatrix: 'VIEWINVERSEINVERSETRANSPOSE',
+            u_normalMatrix: 'MODELVIEWINVERSETRANSPOSE',
+            u_normalWorldMatrix: 'MODELINVERSETRANSPOSE',
+            u_cameraPosition: 'CAMERAPOSITION',
+            u_rendererSize: 'RENDERERSIZE',
+            u_logDepth: 'LOGDEPTH',
+
+            // light
+            u_ambientLightsColor: 'AMBIENTLIGHTSCOLOR',
+            u_directionalLightsColor: 'DIRECTIONALLIGHTSCOLOR',
+            u_directionalLightsInfo: 'DIRECTIONALLIGHTSINFO',
+            u_directionalLightsShadowMap: 'DIRECTIONALLIGHTSSHADOWMAP',
+            u_directionalLightsShadowMapSize: 'DIRECTIONALLIGHTSSHADOWMAPSIZE',
+            u_directionalLightsShadowBias: 'DIRECTIONALLIGHTSSHADOWBIAS',
+            u_directionalLightSpaceMatrix: 'DIRECTIONALLIGHTSPACEMATRIX',
+            u_pointLightsPos: 'POINTLIGHTSPOS',
+            u_pointLightsColor: 'POINTLIGHTSCOLOR',
+            u_pointLightsInfo: 'POINTLIGHTSINFO',
+            u_pointLightsRange: 'POINTLIGHTSRANGE',
+            u_pointLightsShadowBias: 'POINTLIGHTSSHADOWBIAS',
+            u_pointLightsShadowMap: 'POINTLIGHTSSHADOWMAP',
+            u_pointLightSpaceMatrix: 'POINTLIGHTSPACEMATRIX',
+            u_pointLightCamera: 'POINTLIGHTCAMERA',
+            u_spotLightsPos: 'SPOTLIGHTSPOS',
+            u_spotLightsDir: 'SPOTLIGHTSDIR',
+            u_spotLightsColor: 'SPOTLIGHTSCOLOR',
+            u_spotLightsCutoffs: 'SPOTLIGHTSCUTOFFS',
+            u_spotLightsInfo: 'SPOTLIGHTSINFO',
+            u_spotLightsRange: 'SPOTLIGHTSRANGE',
+            u_spotLightsShadowMap: 'SPOTLIGHTSSHADOWMAP',
+            u_spotLightsShadowMapSize: 'SPOTLIGHTSSHADOWMAPSIZE',
+            u_spotLightsShadowBias: 'SPOTLIGHTSSHADOWBIAS',
+            u_spotLightSpaceMatrix: 'SPOTLIGHTSPACEMATRIX',
+            u_areaLightsPos: 'AREALIGHTSPOS',
+            u_areaLightsColor: 'AREALIGHTSCOLOR',
+            u_areaLightsWidth: 'AREALIGHTSWIDTH',
+            u_areaLightsHeight: 'AREALIGHTSHEIGHT',
+            u_areaLightsLtcTexture1: 'AREALIGHTSLTCTEXTURE1',
+            u_areaLightsLtcTexture2: 'AREALIGHTSLTCTEXTURE2',
+
+            // joint
+            u_jointMat: 'JOINTMATRIX',
+            u_jointMatTexture: 'JOINTMATRIXTEXTURE',
+            u_jointMatTextureSize: 'JOINTMATRIXTEXTURESIZE',
+
+            // quantization
+            u_positionDecodeMat: 'POSITIONDECODEMAT',
+            u_normalDecodeMat: 'NORMALDECODEMAT',
+            u_uvDecodeMat: 'UVDECODEMAT',
+            u_uv1DecodeMat: 'UV1DECODEMAT',
+
+            // morph
+            u_morphWeights: 'MORPHWEIGHTS',
+            u_normalMapScale: 'NORMALMAPSCALE',
+            u_emission: 'EMISSION',
+            u_transparency: 'TRANSPARENCY',
+
+            // uv matrix
+            u_uvMatrix: 'UVMATRIX_0',
+            u_uvMatrix1: 'UVMATRIX_1',
+
+            // other info
+            u_fogColor: 'FOGCOLOR',
+            u_fogInfo: 'FOGINFO',
+            u_alphaCutoff: 'ALPHACUTOFF',
+            u_exposure: 'EXPOSURE',
+            u_gammaFactor: 'GAMMAFACTOR',
+        });
+
+        this.addTextureUniforms({
+            u_normalMap: 'NORMALMAP',
+            u_parallaxMap: 'PARALLAXMAP',
+            u_emission: 'EMISSION',
+            u_transparency: 'TRANSPARENCY'
+        });
+	}
+	
+	/**
+     * 增加贴图 uniforms
+     * @param {Object} textureUniforms textureName:semanticName 键值对
+     */
+    addTextureUniforms(textureUniforms : Object) {
+        const uniforms = {};
+
+        for (const uniformName in textureUniforms) {
+            let semanticName : string = textureUniforms[uniformName];
+            uniforms[uniformName] = semanticName;
+            uniforms[`${uniformName}.texture`] = semanticName;
+            uniforms[`${uniformName}.uv`] = `${semanticName}UV`;
+        }
+        this._copyProps(this.uniforms, uniforms);
+    }
+
 
 	public load() {
 
-
-
 	}
+
+	 /**
+     * 复制属性，只有没属性时才会覆盖
+     * @private
+     * @param  {Object} dest
+     * @param  {Object} src
+     */
+    private _copyProps(dest : Object, src : Object) {
+        for (const key in src) {
+            if (dest[key] === undefined) {
+                dest[key] = src[key];
+            }
+        }
+    }
 }

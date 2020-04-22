@@ -43,7 +43,7 @@ class TestGame implements IGame, IMessageHandler {
     let diffuse : Texture = new Texture("assets/textures/bricks2.jpg");
     let normal : Texture = new Texture("assets/textures/bricks2_normal.png");
     let dispMap : Texture = new Texture("assets/textures/bricks2_disp.jpg");
-    let material : Material = new Material(diffuse, 1, 8, normal, dispMap, 0.04, -1.0);
+    let material : Material = new Material();
     let meshRender : MeshRendererComponent = new MeshRendererComponent(mesh, material);
     
     let planeObject : GameObject = new GameObject("plane");
