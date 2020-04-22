@@ -2,6 +2,18 @@ import { Texture } from '../graphics/Texture';
 import { MappedValues } from "./MappedValues";
 import { gl } from '../gl/GLUtilities';
 import { TObject } from '../objects/Object';
+import { RenderOptions } from './RenderOptions';
+import { TextureOptions } from './TextureOptions';
+import { Mesh } from '../graphics/Mesh';
+import { log } from '../utils/Log';
+
+
+const blankInfo = {
+    isBlankInfo: true,
+    get() {
+        return undefined;
+    }
+};
 
 export class Material extends TObject {
 
@@ -347,7 +359,7 @@ export class Material extends TObject {
 		this._parallaxMap = value;
 	}
 
-	
+
 	/**
 	 * 是否忽略透明度
 	 *
@@ -360,7 +372,7 @@ export class Material extends TObject {
 	public get ignoreTranparent(): boolean {
 		return this._ignoreTranparent;
 	}
-	
+
 	public set ignoreTranparent(value: boolean) {
 		this._ignoreTranparent = value;
 	}
@@ -469,20 +481,20 @@ export class Material extends TObject {
 	}
 
 	setDefaultTransparentBlend() {
-        this.blend = true;
-        this.depthMask = false;
-        if (this.premultiplyAlpha) {
-            this.blendSrc = gl.ONE;
-            this.blendDst = gl.ONE_MINUS_SRC_ALPHA;
-            this.blendSrcAlpha = gl.ONE;
-            this.blendDstAlpha = gl.ONE_MINUS_SRC_ALPHA;
-        } else {
-            this.blendSrc = gl.SRC_ALPHA;
-            this.blendDst = gl.ONE_MINUS_SRC_ALPHA;
-            this.blendSrcAlpha = gl.SRC_ALPHA;
-            this.blendDstAlpha = gl.ONE_MINUS_SRC_ALPHA;
-        }
-    }
+		this.blend = true;
+		this.depthMask = false;
+		if (this.premultiplyAlpha) {
+			this.blendSrc = gl.ONE;
+			this.blendDst = gl.ONE_MINUS_SRC_ALPHA;
+			this.blendSrcAlpha = gl.ONE;
+			this.blendDstAlpha = gl.ONE_MINUS_SRC_ALPHA;
+		} else {
+			this.blendSrc = gl.SRC_ALPHA;
+			this.blendDst = gl.ONE_MINUS_SRC_ALPHA;
+			this.blendSrcAlpha = gl.SRC_ALPHA;
+			this.blendDstAlpha = gl.ONE_MINUS_SRC_ALPHA;
+		}
+	}
 
 	/**
 	 * 透明度剪裁，如果渲染的颜色透明度大于等于这个值的话渲染为完全不透明，否则渲染为完全透明
@@ -614,150 +626,255 @@ export class Material extends TObject {
 
 
 		if (this.needBasicAttributes) {
-            this.addBasicAttributes();
-        }
+			this.addBasicAttributes();
+		}
 
-        if (this.needBasicUnifroms) {
-            this.addBasicUniforms();
-        }
-	
+		if (this.needBasicUnifroms) {
+			this.addBasicUniforms();
+		}
+
 	}
 
 	/**
      * 增加基础 attributes
      */
-    addBasicAttributes() {
-        let attributes : Object = this.attributes;
-        this._copyProps(attributes, {
-            a_position: 'POSITION',
-            a_normal: 'NORMAL',
-            a_tangent: 'TANGENT',
-            a_texcoord0: 'TEXCOORD_0',
-            a_texcoord1: 'TEXCOORD_1',
-            a_color: 'COLOR_0',
-            a_skinIndices: 'SKININDICES',
-            a_skinWeights: 'SKINWEIGHTS'
-        });
+	addBasicAttributes() {
+		let attributes: Object = this.attributes;
+		this._copyProps(attributes, {
+			a_position: 'POSITION',
+			a_normal: 'NORMAL',
+			a_tangent: 'TANGENT',
+			a_texcoord0: 'TEXCOORD_0',
+			a_texcoord1: 'TEXCOORD_1',
+			a_color: 'COLOR_0',
+			a_skinIndices: 'SKININDICES',
+			a_skinWeights: 'SKINWEIGHTS'
+		});
 
-        ['POSITION', 'NORMAL', 'TANGENT'].forEach((name : string) : void => {
-            let camelName : string = name.slice(0, 1) + name.slice(1).toLowerCase();
-            for (let i = 0; i < 8; i++) {
-                const morphAttributeName = 'a_morph' + camelName + i;
-                if (attributes[morphAttributeName] === undefined) {
-                    attributes[morphAttributeName] = 'MORPH' + name + i;
-                }
-            }
-        });
+		['POSITION', 'NORMAL', 'TANGENT'].forEach((name: string): void => {
+			let camelName: string = name.slice(0, 1) + name.slice(1).toLowerCase();
+			for (let i = 0; i < 8; i++) {
+				const morphAttributeName = 'a_morph' + camelName + i;
+				if (attributes[morphAttributeName] === undefined) {
+					attributes[morphAttributeName] = 'MORPH' + name + i;
+				}
+			}
+		});
 	}
-	
 
-	 /**
-     * 增加基础 uniforms
-     */
-    addBasicUniforms() {
-        this._copyProps(this.uniforms, {
-            u_modelMatrix: 'MODEL',
-            u_viewMatrix: 'VIEW',
-            u_projectionMatrix: 'PROJECTION',
-            u_modelViewMatrix: 'MODELVIEW',
-            u_modelViewProjectionMatrix: 'MODELVIEWPROJECTION',
-            u_viewInverseNormalMatrix: 'VIEWINVERSEINVERSETRANSPOSE',
-            u_normalMatrix: 'MODELVIEWINVERSETRANSPOSE',
-            u_normalWorldMatrix: 'MODELINVERSETRANSPOSE',
-            u_cameraPosition: 'CAMERAPOSITION',
-            u_rendererSize: 'RENDERERSIZE',
-            u_logDepth: 'LOGDEPTH',
 
-            // light
-            u_ambientLightsColor: 'AMBIENTLIGHTSCOLOR',
-            u_directionalLightsColor: 'DIRECTIONALLIGHTSCOLOR',
-            u_directionalLightsInfo: 'DIRECTIONALLIGHTSINFO',
-            u_directionalLightsShadowMap: 'DIRECTIONALLIGHTSSHADOWMAP',
-            u_directionalLightsShadowMapSize: 'DIRECTIONALLIGHTSSHADOWMAPSIZE',
-            u_directionalLightsShadowBias: 'DIRECTIONALLIGHTSSHADOWBIAS',
-            u_directionalLightSpaceMatrix: 'DIRECTIONALLIGHTSPACEMATRIX',
-            u_pointLightsPos: 'POINTLIGHTSPOS',
-            u_pointLightsColor: 'POINTLIGHTSCOLOR',
-            u_pointLightsInfo: 'POINTLIGHTSINFO',
-            u_pointLightsRange: 'POINTLIGHTSRANGE',
-            u_pointLightsShadowBias: 'POINTLIGHTSSHADOWBIAS',
-            u_pointLightsShadowMap: 'POINTLIGHTSSHADOWMAP',
-            u_pointLightSpaceMatrix: 'POINTLIGHTSPACEMATRIX',
-            u_pointLightCamera: 'POINTLIGHTCAMERA',
-            u_spotLightsPos: 'SPOTLIGHTSPOS',
-            u_spotLightsDir: 'SPOTLIGHTSDIR',
-            u_spotLightsColor: 'SPOTLIGHTSCOLOR',
-            u_spotLightsCutoffs: 'SPOTLIGHTSCUTOFFS',
-            u_spotLightsInfo: 'SPOTLIGHTSINFO',
-            u_spotLightsRange: 'SPOTLIGHTSRANGE',
-            u_spotLightsShadowMap: 'SPOTLIGHTSSHADOWMAP',
-            u_spotLightsShadowMapSize: 'SPOTLIGHTSSHADOWMAPSIZE',
-            u_spotLightsShadowBias: 'SPOTLIGHTSSHADOWBIAS',
-            u_spotLightSpaceMatrix: 'SPOTLIGHTSPACEMATRIX',
-            u_areaLightsPos: 'AREALIGHTSPOS',
-            u_areaLightsColor: 'AREALIGHTSCOLOR',
-            u_areaLightsWidth: 'AREALIGHTSWIDTH',
-            u_areaLightsHeight: 'AREALIGHTSHEIGHT',
-            u_areaLightsLtcTexture1: 'AREALIGHTSLTCTEXTURE1',
-            u_areaLightsLtcTexture2: 'AREALIGHTSLTCTEXTURE2',
+	/**
+	* 增加基础 uniforms
+	*/
+	addBasicUniforms() {
+		this._copyProps(this.uniforms, {
+			u_modelMatrix: 'MODEL',
+			u_viewMatrix: 'VIEW',
+			u_projectionMatrix: 'PROJECTION',
+			u_modelViewMatrix: 'MODELVIEW',
+			u_modelViewProjectionMatrix: 'MODELVIEWPROJECTION',
+			u_viewInverseNormalMatrix: 'VIEWINVERSEINVERSETRANSPOSE',
+			u_normalMatrix: 'MODELVIEWINVERSETRANSPOSE',
+			u_normalWorldMatrix: 'MODELINVERSETRANSPOSE',
+			u_cameraPosition: 'CAMERAPOSITION',
+			u_rendererSize: 'RENDERERSIZE',
+			u_logDepth: 'LOGDEPTH',
 
-            // joint
-            u_jointMat: 'JOINTMATRIX',
-            u_jointMatTexture: 'JOINTMATRIXTEXTURE',
-            u_jointMatTextureSize: 'JOINTMATRIXTEXTURESIZE',
+			// light
+			u_ambientLightsColor: 'AMBIENTLIGHTSCOLOR',
+			u_directionalLightsColor: 'DIRECTIONALLIGHTSCOLOR',
+			u_directionalLightsInfo: 'DIRECTIONALLIGHTSINFO',
+			u_directionalLightsShadowMap: 'DIRECTIONALLIGHTSSHADOWMAP',
+			u_directionalLightsShadowMapSize: 'DIRECTIONALLIGHTSSHADOWMAPSIZE',
+			u_directionalLightsShadowBias: 'DIRECTIONALLIGHTSSHADOWBIAS',
+			u_directionalLightSpaceMatrix: 'DIRECTIONALLIGHTSPACEMATRIX',
+			u_pointLightsPos: 'POINTLIGHTSPOS',
+			u_pointLightsColor: 'POINTLIGHTSCOLOR',
+			u_pointLightsInfo: 'POINTLIGHTSINFO',
+			u_pointLightsRange: 'POINTLIGHTSRANGE',
+			u_pointLightsShadowBias: 'POINTLIGHTSSHADOWBIAS',
+			u_pointLightsShadowMap: 'POINTLIGHTSSHADOWMAP',
+			u_pointLightSpaceMatrix: 'POINTLIGHTSPACEMATRIX',
+			u_pointLightCamera: 'POINTLIGHTCAMERA',
+			u_spotLightsPos: 'SPOTLIGHTSPOS',
+			u_spotLightsDir: 'SPOTLIGHTSDIR',
+			u_spotLightsColor: 'SPOTLIGHTSCOLOR',
+			u_spotLightsCutoffs: 'SPOTLIGHTSCUTOFFS',
+			u_spotLightsInfo: 'SPOTLIGHTSINFO',
+			u_spotLightsRange: 'SPOTLIGHTSRANGE',
+			u_spotLightsShadowMap: 'SPOTLIGHTSSHADOWMAP',
+			u_spotLightsShadowMapSize: 'SPOTLIGHTSSHADOWMAPSIZE',
+			u_spotLightsShadowBias: 'SPOTLIGHTSSHADOWBIAS',
+			u_spotLightSpaceMatrix: 'SPOTLIGHTSPACEMATRIX',
+			u_areaLightsPos: 'AREALIGHTSPOS',
+			u_areaLightsColor: 'AREALIGHTSCOLOR',
+			u_areaLightsWidth: 'AREALIGHTSWIDTH',
+			u_areaLightsHeight: 'AREALIGHTSHEIGHT',
+			u_areaLightsLtcTexture1: 'AREALIGHTSLTCTEXTURE1',
+			u_areaLightsLtcTexture2: 'AREALIGHTSLTCTEXTURE2',
 
-            // quantization
-            u_positionDecodeMat: 'POSITIONDECODEMAT',
-            u_normalDecodeMat: 'NORMALDECODEMAT',
-            u_uvDecodeMat: 'UVDECODEMAT',
-            u_uv1DecodeMat: 'UV1DECODEMAT',
+			// joint
+			u_jointMat: 'JOINTMATRIX',
+			u_jointMatTexture: 'JOINTMATRIXTEXTURE',
+			u_jointMatTextureSize: 'JOINTMATRIXTEXTURESIZE',
 
-            // morph
-            u_morphWeights: 'MORPHWEIGHTS',
-            u_normalMapScale: 'NORMALMAPSCALE',
-            u_emission: 'EMISSION',
-            u_transparency: 'TRANSPARENCY',
+			// quantization
+			u_positionDecodeMat: 'POSITIONDECODEMAT',
+			u_normalDecodeMat: 'NORMALDECODEMAT',
+			u_uvDecodeMat: 'UVDECODEMAT',
+			u_uv1DecodeMat: 'UV1DECODEMAT',
 
-            // uv matrix
-            u_uvMatrix: 'UVMATRIX_0',
-            u_uvMatrix1: 'UVMATRIX_1',
+			// morph
+			u_morphWeights: 'MORPHWEIGHTS',
+			u_normalMapScale: 'NORMALMAPSCALE',
+			u_emission: 'EMISSION',
+			u_transparency: 'TRANSPARENCY',
 
-            // other info
-            u_fogColor: 'FOGCOLOR',
-            u_fogInfo: 'FOGINFO',
-            u_alphaCutoff: 'ALPHACUTOFF',
-            u_exposure: 'EXPOSURE',
-            u_gammaFactor: 'GAMMAFACTOR',
-        });
+			// uv matrix
+			u_uvMatrix: 'UVMATRIX_0',
+			u_uvMatrix1: 'UVMATRIX_1',
 
-        this.addTextureUniforms({
-            u_normalMap: 'NORMALMAP',
-            u_parallaxMap: 'PARALLAXMAP',
-            u_emission: 'EMISSION',
-            u_transparency: 'TRANSPARENCY'
-        });
+			// other info
+			u_fogColor: 'FOGCOLOR',
+			u_fogInfo: 'FOGINFO',
+			u_alphaCutoff: 'ALPHACUTOFF',
+			u_exposure: 'EXPOSURE',
+			u_gammaFactor: 'GAMMAFACTOR',
+		});
+
+		this.addTextureUniforms({
+			u_normalMap: 'NORMALMAP',
+			u_parallaxMap: 'PARALLAXMAP',
+			u_emission: 'EMISSION',
+			u_transparency: 'TRANSPARENCY'
+		});
 	}
-	
+
 	/**
      * 增加贴图 uniforms
      * @param {Object} textureUniforms textureName:semanticName 键值对
      */
-    addTextureUniforms(textureUniforms : Object) {
-        const uniforms = {};
+	addTextureUniforms(textureUniforms: Object) {
+		const uniforms = {};
 
-        for (const uniformName in textureUniforms) {
-            let semanticName : string = textureUniforms[uniformName];
-            uniforms[uniformName] = semanticName;
-            uniforms[`${uniformName}.texture`] = semanticName;
-            uniforms[`${uniformName}.uv`] = `${semanticName}UV`;
-        }
-        this._copyProps(this.uniforms, uniforms);
-    }
+		for (const uniformName in textureUniforms) {
+			let semanticName: string = textureUniforms[uniformName];
+			uniforms[uniformName] = semanticName;
+			uniforms[`${uniformName}.texture`] = semanticName;
+			uniforms[`${uniformName}.uv`] = `${semanticName}UV`;
+		}
+		this._copyProps(this.uniforms, uniforms);
+	}
+
+	_textureOption: TextureOptions = new TextureOptions();
+
+
+	 /**
+     * 获取渲染选项值
+     * @param  {Object} [option={}] 渲染选项值
+     * @return {Object} 渲染选项值
+     */
+    getRenderOption(option: RenderOptions) {
+			const lightType = this.lightType;
+			option[`LIGHT_TYPE_${lightType}`] = 1;
+			option.SIDE = this.side;
+
+			if (lightType !== 'NONE') {
+				option.HAS_LIGHT = 1;
+			}
+
+			if (this.premultiplyAlpha) {
+				option.PREMULTIPLY_ALPHA = 1;
+			}
+
+			let textureOption : TextureOptions = this._textureOption.reset(option);
+
+			if (option.HAS_LIGHT) {
+				option.HAS_NORMAL = 1;
+				textureOption.add(this.normalMap, 'NORMAL_MAP', () => {
+					if (this.normalMapScale !== 1) {
+						option.NORMAL_MAP_SCALE = 1;
+					}
+				});
+			}
+
+			textureOption.add(this.parallaxMap, 'PARALLAX_MAP');
+			// textureOption.add(this.emission, 'EMISSION_MAP');
+			// textureOption.add(this.transparency, 'TRANSPARENCY_MAP');
+
+			if (this.ignoreTranparent) {
+				option.IGNORE_TRANSPARENT = 1;
+			}
+
+			if (this.alphaCutoff > 0) {
+				option.ALPHA_CUTOFF = 1;
+			}
+
+			if (this.useHDR) {
+				option.USE_HDR = 1;
+			}
+
+			if (this.gammaCorrection) {
+				option.GAMMA_CORRECTION = 1;
+			}
+
+			if (this.receiveShadows) {
+				option.RECEIVE_SHADOWS = 1;
+			}
+
+			if (this.castShadows) {
+				option.CAST_SHADOWS = 1;
+			}
+
+			if (this.usePhysicsLight) {
+				option.USE_PHYSICS_LIGHT = 1;
+			}
+
+			if (this.isDiffuesEnvAndAmbientLightWorkTogether) {
+				option.IS_DIFFUESENV_AND_AMBIENTLIGHT_WORK_TOGETHER = 1;
+			}
+
+			textureOption.update();
+			return option;
+		}
+
+
+		getUniformData(name : string, mesh : Mesh, programInfo) {
+			return this.getUniformInfo(name).get(mesh, this, programInfo);
+		}
+
+
+		getAttributeData(name :string, mesh : Mesh, programInfo) {
+			return this.getAttributeInfo(name).get(mesh, this, programInfo);
+		}
+
+		getUniformInfo(name :string) {
+			return this.getInfo('uniforms', name);
+		}
+
+		getAttributeInfo(name : string) {
+			return this.getInfo('attributes', name);
+		}
+
+		getInfo(dataType :string, name :string) {
+			const dataDict = this[dataType];
+			let info = dataDict[name];
+			if (typeof info === 'string') {
+				info = semantic[info];
+			}
+	
+			if (!info || !info.get) {
+				log.warnOnce('material.getInfo-' + name, 'Material.getInfo: no this semantic:' + name);
+				info = blankInfo;
+			}
+	
+			return info;
+		}
 
 
 	public load() {
 
-	}
+		}
 
 	 /**
      * 复制属性，只有没属性时才会覆盖
@@ -765,11 +882,11 @@ export class Material extends TObject {
      * @param  {Object} dest
      * @param  {Object} src
      */
-    private _copyProps(dest : Object, src : Object) {
-        for (const key in src) {
-            if (dest[key] === undefined) {
-                dest[key] = src[key];
-            }
-        }
-    }
-}
+    private _copyProps(dest: Object, src: Object) {
+			for (const key in src) {
+				if (dest[key] === undefined) {
+					dest[key] = src[key];
+				}
+			}
+		}
+	}
