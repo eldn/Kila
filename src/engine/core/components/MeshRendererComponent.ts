@@ -4,11 +4,11 @@ import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
 import { Mesh } from "../graphics/Mesh";
-import { Matrix4x4 } from "../math/Matrix4x4";
 import { Material } from "../renderering/Material";
 import { Texture } from "../graphics/Texture";
 import { gl } from "../gl/GLUtilities";
 import { Color } from "../graphics/Color";
+import { Matrix4 } from "../math/Matrix4";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
@@ -83,12 +83,11 @@ export class MeshRendererComponent extends BaseComponent {
 
 
     public load(): void {
-        this._mesh.load();
         this._material.load();
     }
 
-    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
-        if(this._mesh.isLoaded && this._material.isLoaded){
+    public render(shader: Shader, projection : Matrix4, viewMatrix : Matrix4): void {
+        if(this._material.isLoaded){
 
             // material
             if(this._testTexture.isLoaded){

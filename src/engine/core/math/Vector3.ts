@@ -446,42 +446,38 @@ import { vec3 } from "gl-matrix";
         }
         return vec3.equals(a.elements, b.elements);
     }
-    /**
-     * X component
-     * @type {Number}
-     */
-    x: Object = {
-        get() {
-            return this.elements[0];
-        },
-        set(value) {
-            this.elements[0] = value;
-        }
-    }
+
+     public get x(): number {
+        return this.elements[0];
+     }
+
+     public set x(value: number) {
+        this.elements[0] = value;
+     }
+
     /**
      * Y component
      * @type {Number}
      */
-    y: Object =  {
-        get() {
-            return this.elements[1];
-        },
-        set(value) {
-            this.elements[1] = value;
-        }
-    }
+     public get y(): number {
+        return this.elements[1];
+     }
+
+     public set y(value: number) {
+        this.elements[1] = value;
+     }
+
     /**
      * Z component
      * @type {Number}
      */
-    z: Object = {
-        get() {
-            return this.elements[2];
-        },
-        set(value) {
-            this.elements[2] = value;
-        }
-    }
+     public get z(): number {
+        return this.elements[2];
+     }
+
+     public set z(value: number) {
+        this.elements[2] = value;
+     }
 
     sub(a, b){
         return this.subtract(a, b);

@@ -12,12 +12,10 @@ import { Matrix4 } from "../math/Matrix4";
 let v3_a: Vector3 = new Vector3();
 
 export class Mesh implements IMessageHandler {
-
     private _modelPath: string;
     private _vertextBuffer: GLBuffer;
     private _uvBuffer: GLBuffer;
     private _indexBuffer: GLBuffer;
-    private _isLoaded: boolean = false;
     protected _origin: Vector3 = new Vector3();
     private _meshAsset: ModelAsset;
 
@@ -35,24 +33,14 @@ export class Mesh implements IMessageHandler {
             this._meshAsset = meshAsset;
         }
 
-
-
         if (this._meshAsset) {
             this.loadMeshFromAsset(this._meshAsset);
         }
     }
 
-
-
-    public get isLoaded(): boolean {
-        return this._isLoaded;
-    }
+  
 
     public onMessage(message: Message): void {
-
-        if (this._isLoaded) {
-            return;
-        }
 
         if (message.code === MESSAGE_ASSET_LOADER_ASSET_LOADED + this._modelPath) {
             this._meshAsset = message.context;
@@ -170,13 +158,6 @@ export class Mesh implements IMessageHandler {
         this._indexBuffer.setData(indices);
         this._indexBuffer.upload();
         this._indexBuffer.unbind();
-
-        this._isLoaded = true;
-    }
-
-
-    public load(): void {
-
     }
 
 
