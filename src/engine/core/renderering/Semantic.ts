@@ -37,32 +37,32 @@ export class semantic{
     /**
      * @type {State}
      */
-    state: WebGLState = null;
+    public static state: WebGLState = null;
 
     /**
      * @type {Camera}
      */
-    camera:  Camera = null;
+    public static  camera:  Camera = null;
 
     /**
      * @type {LightManager}
      */
-    lightManager: LightManager = null;
+    public static  lightManager: LightManager = null;
 
     /**
      * @type {Fog}
      */
-    fog: Fog = null;
+    public static  fog: Fog = null;
 
     /**
      * @type {WebGLRenderingContext}
      */
-    gl: WebGLRenderingContext = null;
+    public static  gl: WebGLRenderingContext = null;
     /**
      * WebGLRenderer
      * @type {WebGLRenderer}
      */
-    _renderer: null;
+    private static _renderer: null;
 
     blankInfo;
 
@@ -73,7 +73,7 @@ export class semantic{
      * @param  {LightManager} _lightManager
      * @param  {Fog} _fog
      */
-    init(_renderer, _state, _camera, _lightManager, _fog) {
+    public static init(_renderer, _state, _camera, _lightManager, _fog) {
         renderer = this._renderer = _renderer;
         state = this.state = _state;
         camera = this.camera = _camera;
@@ -86,7 +86,7 @@ export class semantic{
      * 设置相机
      * @param {Camera} _camera
      */
-    setCamera(_camera) {
+    public static setCamera(_camera) {
         camera = this.camera = _camera;
     }
 

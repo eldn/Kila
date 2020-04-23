@@ -5,6 +5,7 @@ import { gl } from "../gl/GLUtilities";
 import { BasicShader } from "../gl/shaders/BasicShader";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4 } from "../math/Matrix4";
+import { WebGLState } from "./WebGlState";
 
 export class Renderer {
 
@@ -12,8 +13,20 @@ export class Renderer {
 
     private _basicShader: BasicShader;
 
+
+    private _state: WebGLState;
+
+    public get state(): WebGLState {
+        return this._state;
+    }
+
+    public set state(value: WebGLState) {
+        this._state = value;
+    }
+
     public constructor(createInfo: RendererViewportCreateInfo) {
         Renderer.windowViewport = new RendererViewport(createInfo);
+        this._state = new WebGLState(gl);
     }
 
     public get windowViewportCanvas(): HTMLCanvasElement {
@@ -47,7 +60,7 @@ export class Renderer {
 
     public static getProjection(): Matrix4 {
         if (Renderer.windowViewport) {
-            return Renderer.windowViewport.GetProjectionMatrix();
+            return Renderer.windowViewport.getProjectionMatrix();
         } else {
             console.error("windowViewport not initliazed!");
             return null;

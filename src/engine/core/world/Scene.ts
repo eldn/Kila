@@ -6,9 +6,9 @@ import { BehaviorManager } from "../behaviors/BehaviorManager";
 import { Camera } from "./cameras/Camera";
 import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
 import { Dictionary } from "../Types";
-import { Matrix4x4 } from "../math/Matrix4x4";
 import { LightRendererComponent } from "../components/LightComponent";
 import { SkyBox } from "./Skybox";
+import { Matrix4 } from "../math/Matrix4";
 
 export enum LevelState {
 
@@ -117,7 +117,7 @@ export class Scene {
      * Renders this level.
      * @param shader The shader to use when rendering.
      */
-    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
+    public render(shader: Shader, projection : Matrix4, viewMatrix : Matrix4): void {
         if (this._state === LevelState.UPDATING) {
             this._sceneGraph.render(shader, projection, viewMatrix);
         }
@@ -174,7 +174,7 @@ export class Scene {
         return this._skyBox;
     }
 
-    public getViewMatrix() : Matrix4x4{
+    public getViewMatrix() : Matrix4{
         return this.activeCamera.view;
     }
 }

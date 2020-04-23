@@ -6,136 +6,107 @@ import { Vector2 } from "../../math/Vector2";
 import { KEY_CODE_MACRO } from "../../define/Macro";
 import { Renderer } from "../../renderering/Renderer";
 import { Matrix4 } from "../../math/Matrix4";
+import math from "../../math/math";
 
 let v3_a : Vector3 = new Vector3();
 let m4_a : Matrix4 = new Matrix4();
 
 export class PerspectiveCamera extends Camera {
     
-    private _isDirty : boolean = false;
-    private _viewMat : Matrix4 = new Matrix4();
     private _mouseSensitivity : number = 0.1;
     private _movementSpeed : number = 2.5;
 
-    /**
-     * 看的方向
-     */
-    private _front: Vector3 = new Vector3(0, 0, 0);
 
-    public get front() : Vector3{
-        return (new Vector3()).copy(this._front);
-    }
-
-    public getFront(out : Vector3) : Vector3{
-        out.copy(this._front);
-        return out;
-    }
-
-    private _worldUp: Vector3 = new Vector3(0, 1, 0);
-    public get worldUp(): Vector3 {
-        return this._worldUp;
-    }
-
-    public set worldUp(value: Vector3) {
-        if(!this.worldUp.equals(value)){
-            this._worldUp = value;
-            this._isDirty = true;
-        }
-    }
-
-    private _up: Vector3 = new Vector3();
-
-    public get up(): Vector3 {
-        return this._up;
-    }
-    public set up(value: Vector3) {
-        if(!this._up.equals(value)){
-            this._up = value;
-            this._isDirty = true;
-        }
-    }
-
-    // Euler Angles
-    private _yaw: number;
-
-    public get yaw(): number {
-        return this._yaw;
-    }
-
-    public set yaw(value: number) {
-        if(this.yaw != value){
-            this._yaw = value;
-            this._isDirty = true;
-        }
-    }
-
-    private _pitch: number;
-
-    public get pitch(): number {
-        return this._pitch;
-    }
-
-    public set pitch(value: number) {
-        if(this._pitch != value){
-            this._pitch = value;
-            this._isDirty = true;
-        }
-    }
-
-    private _right: Vector3 = new Vector3();
-
-    public get right(): Vector3 {
-        return this._right;
-    }
-    public set right(value: Vector3) {
-        if(!this._right.equals(value)){
-            this._right = value;
-            this._isDirty = true;
-        }
-    }
-
-    public constructor(name: string, front : Vector3 = new Vector3(0, 0, -1), worldUp : Vector3 = new Vector3(0, 1, 0), pitch : number = 0, yaw : number = -90) {
+    
+    public constructor(name: string) {
         super(name);
-
-        this._front = front.normalize();
-        this._worldUp = worldUp.normalize();
-        this._pitch = pitch;
-        this._yaw = yaw;
-        this.updateCameraVectors();
+        this.updateProjectionMatrix();
     }
 
-   
-    public get view(): Matrix4 {
-        return this._viewMat;
+
+
+    private _near: number = 0.1;
+
+    public get near(): number {
+        return this._near;
     }
 
-    private updateCameraVectors() : void{
+    public set near(value: number) {
+        this._needUpdateProjectionMatrix = true;
+        this._isGeometryDirty = true;
+        this._near = value;
+    }
 
-        // Calculate the new Front vector
-        let front : Vector3 = v3_a;
-        front.x = Math.cos(this.radians(this.yaw)) * Math.cos(this.radians(this.pitch));
-        front.y = Math.sin(this.radians(this.pitch));
-        front.z = Math.sin(this.radians(this.yaw)) * Math.cos(this.radians(this.pitch));
-        this._front = front.normalize();
+    private _far: number = 1000.0;
 
-        // Also re-calculate the Right and Up vector
-        this._right.cross(front, this.worldUp);
+    public get far(): number {
+        return this._far;
+    }
 
-        // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-        this._right.normalize();
-        this._up.cross(this._right, this._front);
+    public set far(value: number) {
+        this._needUpdateProjectionMatrix = true;
+        this._isGeometryDirty = true;
+        this._far = value;
+    }
 
-        this._viewMat.lookAt(this.getWorldPosition(), this.getWorldPosition().add(this._front), this._up);
+    private _fov: number = 50;
+
+    public get fov(): number {
+        return this._fov;
+    }
+
+    public set fov(value: number) {
+        this._needUpdateProjectionMatrix = true;
+        this._isGeometryDirty = true;
+        this._fov = value;
+    }
+
+
+    private _aspect: number = 1;
+
+    public get aspect(): number {
+        return this._aspect;
+    }
+
+    public set aspect(value: number) {
+        this._aspect = value;
+        this._needUpdateProjectionMatrix = true;
+        this._isGeometryDirty = true;
+        this._aspect = value;
+    }
+
+    /**
+     * 更新投影矩阵
+     */
+    updateProjectionMatrix() {
+
+        const elements = this.projectionMatrix.elements;
+        const {
+            near,
+            far,
+            aspect,
+            fov
+        } = this;
+        const f = 1 / Math.tan(0.5 * math.degToRad(fov));
+
+        elements[0] = f / aspect;
+        elements[5] = f;
+        elements[11] = -1;
+        elements[15] = 0;
+
+        if (far) {
+            const nf = 1 / (near - far);
+            elements[10] = (near + far) * nf;
+            elements[14] = 2 * far * near * nf;
+        } else {
+            elements[10] = -1;
+            elements[14] = -2 * near;
+        }
     }
 
 
     public update(time: number): void {
         super.update(time);
-
-        if(this._isDirty){
-            this.updateCameraVectors();
-            this._isDirty = false;
-        }
     }
 
     public radians(degrees: number): number {
@@ -146,39 +117,25 @@ export class PerspectiveCamera extends Camera {
         xoffset *= this._mouseSensitivity;
         yoffset *= this._mouseSensitivity;
 
-        this._yaw  += xoffset;
-        this._pitch += yoffset;
-
-        // Make sure that when pitch is out of bounds, screen doesn't get flipped
-        if (constrainPitch)
-        {
-            if (this.pitch > 89.0)
-                this.pitch = 89.0;
-
-            if (this.pitch < -89.0)
-                this.pitch = -89.0;
-        }
-
-        this._isDirty = true;
     }
 
     public processKeyboard(keyCode : number, deltaTime : number) : void{
         let velocity : number = this._movementSpeed * deltaTime / 1000;
-        if (keyCode == KEY_CODE_MACRO.w)
-            this.transform.position.add(v3_a.copy(this._front).scale(velocity));
-        if (keyCode == KEY_CODE_MACRO.s)
-            this.transform.position.subtract(v3_a.copy(this._front).scale(velocity));
-        if (keyCode == KEY_CODE_MACRO.a)
-            this.transform.position.subtract(v3_a.copy(this._right).scale(velocity));
-        if (keyCode == KEY_CODE_MACRO.d)
-            this.transform.position.add(v3_a.copy(this._right).scale(velocity));
+        // if (keyCode == KEY_CODE_MACRO.w)
+        //     this.transform.position.add(v3_a.copy(this._front).scale(velocity));
+        // if (keyCode == KEY_CODE_MACRO.s)
+        //     this.transform.position.subtract(v3_a.copy(this._front).scale(velocity));
+        // if (keyCode == KEY_CODE_MACRO.a)
+        //     this.transform.position.subtract(v3_a.copy(this._right).scale(velocity));
+        // if (keyCode == KEY_CODE_MACRO.d)
+        //     this.transform.position.add(v3_a.copy(this._right).scale(velocity)); 
 
-        // this._isDirty = true;
-        this.updateCameraVectors();
+        // // this._isDirty = true;
+        // this.updateCameraVectors();
     }
 
     public processMouseScroll(yoffset : number) : void{
-        let angel: number = Renderer.windowViewport.fov / (Math.PI / 180);
+        let angel: number = this._fov / (Math.PI / 180);
         let sensitivity: number = 0.1;
   
         if (angel >= 1.0 && angel <= 45.0)
@@ -190,7 +147,7 @@ export class PerspectiveCamera extends Camera {
         if (angel >= 45.0)
           angel = 45.0;
   
-        Renderer.windowViewport.fov = angel * (Math.PI / 180);
+        this._fov = angel * (Math.PI / 180);
     }
 
 }

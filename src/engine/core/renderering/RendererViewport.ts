@@ -151,7 +151,7 @@ export class RendererViewport {
         this._isDirty = true;
     }
 
-    public GetProjectionMatrix(): Matrix4 {
+    public getProjectionMatrix(): Matrix4 {
         if ( this._isDirty || this._projection === undefined ) {
             this.regenerateMatrix();
         }

@@ -295,7 +295,7 @@ export class GameObject extends TObject {
     public update(time: number): void {
 
         this._localMatrix = this.transform.getTransformationMatrix();
-        this.updateWorldMatrix((this._parent !== undefined) ? this._parent.worldMatrix : undefined);
+        this.updateWorldMatrix();
 
         for (let c of this._components) {
             c.update(time);
@@ -348,7 +348,9 @@ export class GameObject extends TObject {
         this._sceneGraph = sceneGraph;
     }
 
-    private updateWorldMatrix(parentWorldMatrix: Matrix4): void {
+    protected updateWorldMatrix(): void {
+
+        let parentWorldMatrix : Matrix4 = (this._parent !== undefined) ? this._parent.worldMatrix : undefined
         if (parentWorldMatrix !== undefined) {
             this._worldMatrix = parentWorldMatrix.multiply( this._localMatrix);
         } else {

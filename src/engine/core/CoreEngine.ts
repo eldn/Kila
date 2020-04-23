@@ -8,6 +8,8 @@ import { ComponentManager } from "./components/ComponentManager";
 import { BehaviorManager } from "./behaviors/BehaviorManager";
 import { gl } from "./gl/GLUtilities";
 import { Matrix4 } from "./math/Matrix4";
+import { semantic } from "./renderering/Semantic";
+import { WebGLState } from "./renderering/WebGlState";
 
 export class CoreEngine {
 
@@ -19,6 +21,7 @@ export class CoreEngine {
 
     private _renderer: Renderer;
     private _game: IGame;
+  
 
     /**
      * Creates a new engine.
@@ -116,8 +119,12 @@ export class CoreEngine {
     private render(): void {
         this._renderer.BeginRender();
 
+        semantic.init(this._renderer, this._renderer.state, this._game.getRunningScene().activeCamera, null, null);
+        this._game.getRunningScene().activeCamera.updateViewProjectionMatrix();
+
         let projection : Matrix4 = Renderer.getProjection();
-        let viewMatrix : Matrix4 = this._game.getRunningScene().getViewMatrix();
+        // let viewMatrix : Matrix4 = this._game.getRunningScene().getViewMatrix();
+        let viewMatrix : Matrix4 = this._game.getRunningScene().activeCamera.viewMatrix;
         
         // Set view uniforms.
         let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
