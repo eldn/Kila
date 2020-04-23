@@ -6,6 +6,7 @@ import { RenderOptions } from './RenderOptions';
 import { TextureOptions } from './TextureOptions';
 import { Mesh } from '../graphics/Mesh';
 import { log } from '../utils/Log';
+import { semantic } from './Semantic';
 
 
 const blankInfo = {

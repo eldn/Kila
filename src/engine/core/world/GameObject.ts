@@ -1,5 +1,4 @@
 import { TObject } from "../objects/Object";
-import { Matrix4x4 } from "../math/Matrix4x4";
 import { Transform } from "../math/Transform";
 import { Shader } from "../gl/shaders/Shader";
 import { Vector3 } from "../math/Vector3";
@@ -8,6 +7,7 @@ import { IComponent } from "../components/IComponent";
 import { IBehavior } from "../behaviors/IBehavior";
 import { Quaternion } from "../math/Quaternion";
 import { JsonAsset } from "../assets/JsonAssetLoader";
+import { Matrix4 } from "../math/Matrix4";
 
 const v3_a = new Vector3();
 const q_a = new Quaternion();
@@ -22,8 +22,8 @@ export class GameObject extends TObject {
     private _behaviors: IBehavior[] = [];
     private _isVisible: boolean = true;
 
-    private _localMatrix: Matrix4x4 = Matrix4x4.identity();
-    private _worldMatrix: Matrix4x4 = Matrix4x4.identity();
+    private _localMatrix: Matrix4 = new Matrix4();
+    private _worldMatrix: Matrix4 = new Matrix4();
 
     public name: string;
 
@@ -45,7 +45,7 @@ export class GameObject extends TObject {
     }
 
     /** Returns the world transformation matrix of this entity. */
-    public get worldMatrix(): Matrix4x4 {
+    public get worldMatrix(): Matrix4 {
         return this._worldMatrix;
     }
 
@@ -314,7 +314,7 @@ export class GameObject extends TObject {
      * Renders this entity and its children.
      * @param shader The shader to use when rendering/
      */
-    public render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void {
+    public render(shader: Shader, projection : Matrix4, viewMatrix : Matrix4): void {
         if (!this._isVisible) {
             return;
         }
@@ -331,12 +331,12 @@ export class GameObject extends TObject {
     /** Returns the world position of this entity. */
     public getWorldPosition(out ?: Vector3): Vector3 {
         if(out){
-            out.x = this._worldMatrix.data[12];
-            out.y = this._worldMatrix.data[13];
-            out.z = this._worldMatrix.data[14];
+            out.x = this._worldMatrix.elements[12];
+            out.y = this._worldMatrix.elements[13];
+            out.z = this._worldMatrix.elements[14];
             return out;
         } else {
-            return new Vector3(this._worldMatrix.data[12], this._worldMatrix.data[13], this._worldMatrix.data[14]);
+            return new Vector3(this._worldMatrix.elements[12], this._worldMatrix.elements[13], this._worldMatrix.elements[14]);
         }
     }
 
@@ -348,42 +348,11 @@ export class GameObject extends TObject {
         this._sceneGraph = sceneGraph;
     }
 
-    private updateWorldMatrix(parentWorldMatrix: Matrix4x4): void {
+    private updateWorldMatrix(parentWorldMatrix: Matrix4): void {
         if (parentWorldMatrix !== undefined) {
-            this._worldMatrix = Matrix4x4.multiply(parentWorldMatrix, this._localMatrix);
+            this._worldMatrix = parentWorldMatrix.multiply( this._localMatrix);
         } else {
-            this._worldMatrix.copyFrom(this._localMatrix);
+            this._worldMatrix.copy(this._localMatrix);
         }
-    }
-
-     /**
-     * @zh
-     * 设置当前节点旋转为面向目标位置
-     * @param pos 目标位置
-     * @param up 坐标系的上方向
-     */
-    public lookAt (pos: Vector3, up?: Vector3): void {
-        v3_a.copyFrom(this.getWorldPosition());
-        Vector3.subtract(v3_a, v3_a, pos); // we use -z for view-dir
-        Vector3.normalize(v3_a, v3_a);
-        Quaternion.fromViewUp(q_a, v3_a, up);
-        this.setWorldRotation(q_a);
-    }
-
-        /**
-     * @zh
-     * 设置世界旋转
-     * @param rotation 目标世界旋转
-     */
-    public setWorldRotation (rotation: Quaternion): void{
-       
-        // Quaternion.copy(this._rot, rotation);
-        
-        // if (this._parent) {
-        //     Quaternion.multiply(this._lrot, Quaternion.conjugate(this._lrot, this._parent._rot), this._rot);
-        // } else {
-        //     Quaternion.copy(this._lrot, this._rot);
-        // }
-      
     }
 }

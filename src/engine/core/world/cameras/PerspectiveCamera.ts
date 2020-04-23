@@ -1,19 +1,19 @@
 // https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/camera.h
 import { Camera } from "./Camera";
 import { SceneGraph } from "../SceneGraph";
-import { Matrix4x4 } from "../../math/Matrix4x4";
 import { Vector3 } from "../../math/Vector3";
 import { Vector2 } from "../../math/Vector2";
 import { KEY_CODE_MACRO } from "../../define/Macro";
 import { Renderer } from "../../renderering/Renderer";
+import { Matrix4 } from "../../math/Matrix4";
 
 let v3_a : Vector3 = new Vector3();
-let m4_a : Matrix4x4 = Matrix4x4.identity();
+let m4_a : Matrix4 = new Matrix4();
 
 export class PerspectiveCamera extends Camera {
     
     private _isDirty : boolean = false;
-    private _viewMat : Matrix4x4 = Matrix4x4.identity();
+    private _viewMat : Matrix4 = new Matrix4();
     private _mouseSensitivity : number = 0.1;
     private _movementSpeed : number = 2.5;
 
@@ -23,11 +23,11 @@ export class PerspectiveCamera extends Camera {
     private _front: Vector3 = new Vector3(0, 0, 0);
 
     public get front() : Vector3{
-        return (new Vector3()).copyFrom(this._front);
+        return (new Vector3()).copy(this._front);
     }
 
     public getFront(out : Vector3) : Vector3{
-        out.copyFrom(this._front);
+        out.copy(this._front);
         return out;
     }
 
@@ -105,7 +105,7 @@ export class PerspectiveCamera extends Camera {
     }
 
    
-    public get view(): Matrix4x4 {
+    public get view(): Matrix4 {
         return this._viewMat;
     }
 
@@ -126,7 +126,7 @@ export class PerspectiveCamera extends Camera {
 
         Vector3.cross(this._up, this.right, this._front);
 
-        Matrix4x4.lookAt(this._viewMat, this.getWorldPosition(), Vector3.add(this.getWorldPosition(), this._front), this._up);
+        Matrix4.lookAt(this._viewMat, this.getWorldPosition(), Vector3.add(this.getWorldPosition(), this._front), this._up);
     }
 
 

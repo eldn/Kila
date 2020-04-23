@@ -1,4 +1,4 @@
-import {mat4} from 'gl-matrix';
+import * as mat4 from '../../../../node_modules/gl-matrix/gl-matrix.js';
 import { Vector3 } from './Vector3';
 import { Quaternion } from './Quaternion';
 
@@ -138,7 +138,7 @@ export class Matrix4{
      * @param {Matrix4} [b] 如果不传，计算 this 和 a 的乘积
      * @return {Matrix4} this
      */
-    multiply(a, b) {
+    multiply(a : Matrix4, b ?: Matrix4) {
         if (!b) {
             b = a;
             a = this;

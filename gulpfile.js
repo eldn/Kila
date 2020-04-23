@@ -6,20 +6,6 @@ const typescript = require('rollup-plugin-typescript2');//typescript2 plugin
 const glsl = require('rollup-plugin-glsl');
 
 
-// const ts = require('gulp-typescript');
-// let tsProject = ts.createProject('./tsconfig.json');
-// gulp.task('tsc', () =>{
-//     console.log(tsProject.config.include);
-//     gulp.src(tsProject.config.include)
-//         .pipe(tsProject())
-//         .pipe(gulp.dest(tsProject.config.compilerOptions.outDir));
-// });
-
-// gulp.task('default', ['tsc'], ()=>{
-//     gulp.watch('./src/**/*.ts', ['tsc']);
-// })
-
-
 gulp.task('compile', ()=>{
     return rollup.rollup({
 		input: './src/game/TestGame.ts',

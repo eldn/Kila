@@ -2,9 +2,9 @@ import { RendererViewport, RendererViewportCreateInfo } from "./RendererViewport
 
 import { gl } from "../gl/GLUtilities";
 
-import { Matrix4x4 } from "../math/Matrix4x4";
 import { BasicShader } from "../gl/shaders/BasicShader";
 import { Shader } from "../gl/shaders/Shader";
+import { Matrix4 } from "../math/Matrix4";
 
 export class Renderer {
 
@@ -45,7 +45,7 @@ export class Renderer {
        
     }
 
-    public static getProjection(): Matrix4x4 {
+    public static getProjection(): Matrix4 {
         if (Renderer.windowViewport) {
             return Renderer.windowViewport.GetProjectionMatrix();
         } else {

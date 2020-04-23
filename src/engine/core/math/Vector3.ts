@@ -439,7 +439,7 @@ import { vec3 } from 'gl-matrix';
      * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
      * @return {Boolean} True if the vectors are equal, false otherwise.
      */
-    equals(a, b) {
+    equals(a : Vector3, b ?: Vector3) {
         if (!b) {
             b = a;
             a = this;

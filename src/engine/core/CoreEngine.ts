@@ -6,9 +6,8 @@ import { InputManager } from "./input/InputManager";
 import { MessageBus } from "./message/MessageBus";
 import { ComponentManager } from "./components/ComponentManager";
 import { BehaviorManager } from "./behaviors/BehaviorManager";
-import { MaterialManager } from "./material/MaterialManager";
-import { Matrix4x4 } from "./math/Matrix4x4";
 import { gl } from "./gl/GLUtilities";
+import { Matrix4 } from "./math/Matrix4";
 
 export class CoreEngine {
 
@@ -117,20 +116,20 @@ export class CoreEngine {
     private render(): void {
         this._renderer.BeginRender();
 
-        let projection : Matrix4x4 = Renderer.getProjection();
-        let viewMatrix : Matrix4x4 = this._game.getRunningScene().getViewMatrix();
+        let projection : Matrix4 = Renderer.getProjection();
+        let viewMatrix : Matrix4 = this._game.getRunningScene().getViewMatrix();
         
         // Set view uniforms.
         let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
-        gl.uniformMatrix4fv( projectionPosition, false, projection.toFloat32Array());
+        gl.uniformMatrix4fv( projectionPosition, false, projection.toArray());
         
         // Set model uniforms.
         let model = this._renderer.worldShader.getUniformLocation( "u_model" );
-        gl.uniformMatrix4fv( model, false, Matrix4x4.identity().toFloat32Array());
+        gl.uniformMatrix4fv( model, false, new Matrix4().toArray());
 
         // Use the active camera's matrix as the view
         let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
-         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toFloat32Array() );
+         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray() );
 
         this._game.getRunningScene().render( this._renderer.worldShader, projection, viewMatrix);
         this._game.render( this._renderer.worldShader );
