@@ -1,5 +1,5 @@
 
-import { vec3 } from 'gl-matrix';
+import * as vec3 from '../../../../node_modules/gl-matrix/gl-matrix.js';
 
  export class Vector3 {
 
@@ -79,7 +79,7 @@ import { vec3 } from 'gl-matrix';
      * @param {Vector3} [b] 如果不传，计算 this 和 a 的和
      * @returns {Vector3} this
      */
-    add(a, b) {
+    add(a : Vector3, b ?: Vector3) {
         if (!b) {
             b = a;
             a = this;
@@ -93,7 +93,7 @@ import { vec3 } from 'gl-matrix';
      * @param {Vector3} [b] 如果不传，计算 this 和 a 的差
      * @returns {Vector3} this
      */
-    subtract(a, b) {
+    subtract(a : Vector3, b ?: Vector3) {
         if (!b) {
             b = a;
             a = this;
@@ -292,7 +292,7 @@ import { vec3 } from 'gl-matrix';
      * @param  {Vector2} [b] 如果不传，计算 this 和 a 的结果
      * @return {Number}  cross product of a and b
      */
-    cross(a, b) {
+    cross(a : Vector3, b ?: Vector3) {
         if (!b) {
             b = a;
             a = this;

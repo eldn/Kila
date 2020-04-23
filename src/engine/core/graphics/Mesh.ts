@@ -6,8 +6,8 @@ import { ModelAsset } from "../assets/ModelAssetLoader";
 import { Message } from "../message/Message";
 import { IMessageHandler } from "../message/IMessageHandler";
 import { Shader } from "../gl/shaders/Shader";
-import { Matrix4x4 } from "../math/Matrix4x4";
 import { Vector3 } from "../math/Vector3";
+import { Matrix4 } from "../math/Matrix4";
 
 let v3_a: Vector3 = new Vector3();
 
@@ -18,7 +18,7 @@ export class Mesh implements IMessageHandler {
     private _uvBuffer: GLBuffer;
     private _indexBuffer: GLBuffer;
     private _isLoaded: boolean = false;
-    protected _origin: Vector3 = Vector3.zero;
+    protected _origin: Vector3 = new Vector3();
     private _meshAsset: ModelAsset;
 
     constructor(modelPath: string) {
@@ -180,7 +180,7 @@ export class Mesh implements IMessageHandler {
     }
 
 
-    public draw(shader: Shader, model: Matrix4x4, projection: Matrix4x4, viewMatrix: Matrix4x4): void {
+    public draw(shader: Shader, model: Matrix4, projection: Matrix4, viewMatrix: Matrix4): void {
 
         this._vertextBuffer.bind();
         this._uvBuffer.bind();

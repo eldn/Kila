@@ -119,14 +119,13 @@ export class PerspectiveCamera extends Camera {
         this._front = front.normalize();
 
         // Also re-calculate the Right and Up vector
-        Vector3.cross(this._right, front, this.worldUp);
+        this._right.cross(front, this.worldUp);
 
         // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         this._right.normalize();
+        this._up.cross(this._right, this._front);
 
-        Vector3.cross(this._up, this.right, this._front);
-
-        Matrix4.lookAt(this._viewMat, this.getWorldPosition(), Vector3.add(this.getWorldPosition(), this._front), this._up);
+        this._viewMat.lookAt(this.getWorldPosition(), this.getWorldPosition().add(this._front), this._up);
     }
 
 
@@ -166,13 +165,13 @@ export class PerspectiveCamera extends Camera {
     public processKeyboard(keyCode : number, deltaTime : number) : void{
         let velocity : number = this._movementSpeed * deltaTime / 1000;
         if (keyCode == KEY_CODE_MACRO.w)
-            this.transform.position.add(Vector3.multiplyValue(v3_a, this._front, velocity));
+            this.transform.position.add(v3_a.copy(this._front).scale(velocity));
         if (keyCode == KEY_CODE_MACRO.s)
-            this.transform.position.subtract(Vector3.multiplyValue(v3_a, this._front, velocity));
+            this.transform.position.subtract(v3_a.copy(this._front).scale(velocity));
         if (keyCode == KEY_CODE_MACRO.a)
-            this.transform.position.subtract(Vector3.multiplyValue(v3_a, this._right, velocity));
+            this.transform.position.subtract(v3_a.copy(this._right).scale(velocity));
         if (keyCode == KEY_CODE_MACRO.d)
-            this.transform.position.add(Vector3.multiplyValue(v3_a, this._right, velocity));
+            this.transform.position.add(v3_a.copy(this._right).scale(velocity));
 
         // this._isDirty = true;
         this.updateCameraVectors();

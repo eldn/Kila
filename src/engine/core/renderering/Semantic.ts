@@ -1,18 +1,18 @@
 /* eslint no-unused-vars: "off" */
 
 import { Vector3 } from "../math/Vector3";
-import { Matrix3x3 } from "../math/Matrix3x3";
-import { Matrix4x4 } from "../math/Matrix4x4";
 import { WebGLState } from "./WebGlState";
 import { Camera } from "../world/cameras/Camera";
 import { LightManager } from "./LightManager";
 import { Fog } from "./Fog";
 import { log } from "../utils/Log";
+import { Matrix3 } from "../math/Matrix3";
+import { Matrix4 } from "../math/Matrix4";
 
 
 const tempVector3 = new Vector3();
-const tempMatrix3 = new Matrix3x3();
-const tempMatrix4 = new Matrix4x4();
+const tempMatrix3 = new Matrix3();
+const tempMatrix4 = new Matrix4();
 const tempFloat32Array4 = new Float32Array([0.5, 0.5, 0.5, 1]);
 const tempFloat32Array2 = new Float32Array([0, 0]);
 const blankInfo = {

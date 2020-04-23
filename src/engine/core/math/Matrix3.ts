@@ -1,4 +1,4 @@
-import {mat3} from 'gl-matrix'
+import * as mat3 from '../../../../node_modules/gl-matrix/gl-matrix.js';
 
 
 export class Matrix3{
