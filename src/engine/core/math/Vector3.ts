@@ -1,4 +1,5 @@
 import { vec3 } from "gl-matrix";
+import { Quaternion } from "./Quaternion";
 
 
  export class Vector3 {
@@ -420,6 +421,12 @@ import { vec3 } from "gl-matrix";
         vec3.rotateZ(this.elements, this.elements, origin.elements, rotation);
         return this;
     }
+
+    rotate(rotation : Quaternion) : Vector3{
+		let conjugate : Quaternion = rotation.conjugate();
+		let w : Quaternion = rotation.mulVec3(this).multiply(conjugate);
+		return new Vector3(w.x, w.y, w.z);
+	}
     /**
      * Returns whether or not the vectors have exactly the same elements in the same position (when compared with ===)
      * @param  {Vector3} a

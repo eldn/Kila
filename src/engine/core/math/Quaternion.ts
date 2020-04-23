@@ -3,9 +3,11 @@ import { EventMixin } from '../event/EventMixin';
 import { Matrix3 } from './Matrix3';
 import { quat } from "gl-matrix";
 import { Matrix4 } from './Matrix4';
+import { Vector3 } from './Vector3';
 
 
 const tempMat3 = new Matrix3();
+const tempVec3 = new Vector3();
 
 
 export class Quaternion extends EventMixin{
@@ -196,7 +198,7 @@ export class Quaternion extends EventMixin{
      * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
      * @return {Quaternion} this
      */
-    multiply(q, dontFireEvent) {
+    multiply(q, dontFireEvent ?: boolean) {
         quat.multiply(this.elements, this.elements, q.elements);
         if (!dontFireEvent) {
             this.fire('update');
@@ -353,7 +355,7 @@ export class Quaternion extends EventMixin{
      * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
      * @return {Quaternion} this
      */
-    conjugate(dontFireEvent) {
+    conjugate(dontFireEvent ?: boolean) {
         quat.conjugate(this.elements, this.elements);
         if (!dontFireEvent) {
             this.fire('update');
@@ -548,8 +550,17 @@ export class Quaternion extends EventMixin{
         this.fire('update');
     }
 
-    mul(a, b){
+    mul(a : Quaternion, b : Quaternion){
         return this.multiply(a, b);
+    }
+
+    mulVec3(r : Vector3) : Quaternion{
+        let w_ = -this.x * r.x - this.y * r.y - this.z * r.z;
+		let x_ =  this.w * r.x + this.y * r.z - this.z * r.y;
+		let y_ =  this.w * r.y + this.z * r.x - this.x * r.z;
+		let z_ =  this.w * r.z + this.x * r.y - this.y * r.x;
+		
+		return new Quaternion(x_, y_, z_, w_);
     }
 
     len(){
@@ -559,5 +570,29 @@ export class Quaternion extends EventMixin{
 
     sqrLen(){
         return this.squaredLength();
+    }
+
+    public getForward(): Vector3{
+        return tempVec3.set(0, 0, 1).rotate(this);
+    }
+
+    public getBack() : Vector3{
+        return tempVec3.set(0, 0, -1).rotate(this);
+    }
+
+    public getUp() : Vector3{
+        return tempVec3.set(0, 1, 0).rotate(this);
+    }
+
+    public getDown() : Vector3{
+        return tempVec3.set(0, -1, 0).rotate(this);
+    }
+
+    public getRight() : Vector3{
+        return tempVec3.set(1, 0, 0).rotate(this);
+    }
+
+    public getLeft() : Vector3{
+        return tempVec3.set(-1, 0, 0).rotate(this);
     }
 }

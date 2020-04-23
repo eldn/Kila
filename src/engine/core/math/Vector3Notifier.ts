@@ -86,7 +86,7 @@ export class Vector3Notifier extends EventMixin{
      * @param {Vector3} [b] 如果不传，计算 this 和 a 的和
      * @returns {Vector3Notifier} this
      */
-    add(a, b) {
+    add(a : Vector3Notifier | Vector3, b ?: Vector3Notifier | Vector3) {
         if (!b) {
             b = a;
             a = this;

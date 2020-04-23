@@ -3,6 +3,7 @@ import { Camera } from "./Camera";
 import { Vector3 } from "../../math/Vector3";
 import { Matrix4 } from "../../math/Matrix4";
 import math from "../../math/math";
+import { KEY_CODE_MACRO } from "../../define/Macro";
 
 export class PerspectiveCamera extends Camera {
     
@@ -114,18 +115,27 @@ export class PerspectiveCamera extends Camera {
 
     public processKeyboard(keyCode : number, deltaTime : number) : void{
         let velocity : number = this._movementSpeed * deltaTime / 1000;
-        // if (keyCode == KEY_CODE_MACRO.w)
-        //     this.transform.position.add(v3_a.copy(this._front).scale(velocity));
-        // if (keyCode == KEY_CODE_MACRO.s)
-        //     this.transform.position.subtract(v3_a.copy(this._front).scale(velocity));
-        // if (keyCode == KEY_CODE_MACRO.a)
-        //     this.transform.position.subtract(v3_a.copy(this._right).scale(velocity));
-        // if (keyCode == KEY_CODE_MACRO.d)
-        //     this.transform.position.add(v3_a.copy(this._right).scale(velocity)); 
+        if (keyCode == KEY_CODE_MACRO.w)
+            // this.transform.position.add(v3_a.copy(this._front).scale(velocity));
+            this.move(this.transform.quaternion.getBack(), velocity);
+        if (keyCode == KEY_CODE_MACRO.s)
+            // this.transform.position.subtract(v3_a.copy(this._front).scale(velocity));
+            this.move(this.transform.quaternion.getForward(), velocity);
+        if (keyCode == KEY_CODE_MACRO.a)
+            // this.transform.position.subtract(v3_a.copy(this._right).scale(velocity));
+            this.move(this.transform.quaternion.getLeft(), velocity);
+        if (keyCode == KEY_CODE_MACRO.d)
+            // this.transform.position.add(v3_a.copy(this._right).scale(velocity)); 
+            this.move(this.transform.quaternion.getRight(), velocity);
 
-        // // this._isDirty = true;
-        // this.updateCameraVectors();
+        // this._isDirty = true;
     }
+
+    private move(dir : Vector3, amt : number){
+        this.transform.position.add(dir.scale(amt));
+    }
+
+    
 
     public processMouseScroll(yoffset : number) : void{
         let angel: number = this._fov / (Math.PI / 180);
