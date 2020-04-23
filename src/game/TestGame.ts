@@ -38,6 +38,8 @@ class TestGame implements IGame, IMessageHandler {
     this._scene = value;
   }
 
+
+  private obj :GameObject ;
   updateReady(): void {
     let mesh : Mesh = new Mesh("assets/models/plane3.obj");
     let diffuse : Texture = new Texture("assets/textures/bricks2.jpg");
@@ -48,8 +50,11 @@ class TestGame implements IGame, IMessageHandler {
     
     let planeObject : GameObject = new GameObject("plane");
     planeObject.addComponent(meshRender);
-    planeObject.transform.position.set(0, 0, 10);
+    planeObject.transform.position.set(0, 0, 300);
+    planeObject.transform.rotation.degX = 0.2;
     this.addObject(planeObject);
+
+    this.obj = planeObject;
   }
 
   addObject(obj : GameObject) : void {
@@ -61,6 +66,11 @@ class TestGame implements IGame, IMessageHandler {
   update(time: number): void {
 
     this.processInput(time);
+
+    if(this.obj){
+      this.obj.transform.rotation.degZ += time *0.1;
+    }
+    
 
   }
 

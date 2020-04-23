@@ -111,6 +111,11 @@ export class PerspectiveCamera extends Camera {
         xoffset *= this._mouseSensitivity;
         yoffset *= this._mouseSensitivity;
 
+        // this.transform.rotation.degX += xoffset;
+        // this.transform.rotation.degY += yoffset;
+
+        console.log("xoffset:" +xoffset, ",yoffset:" + yoffset);
+
     }
 
     public processKeyboard(keyCode : number, deltaTime : number) : void{
@@ -146,7 +151,7 @@ export class PerspectiveCamera extends Camera {
         if (angel >= 45.0)
           angel = 45.0;
   
-        this._fov = angel * (Math.PI / 180);
+        this._fov = angel * (Math.PI / 180); 
     }
 
 }

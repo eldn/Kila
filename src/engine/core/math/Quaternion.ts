@@ -33,7 +33,7 @@ export class Quaternion extends EventMixin{
      * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
      * @return {Quaternion} this
      */
-    copy(q, dontFireEvent) {
+    copy(q : Quaternion, dontFireEvent ?: boolean) {
         quat.copy(this.elements, q.elements);
         if (!dontFireEvent) {
             this.fire('update');

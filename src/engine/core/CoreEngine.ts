@@ -123,7 +123,6 @@ export class CoreEngine {
         this._game.getRunningScene().activeCamera.updateViewProjectionMatrix();
 
         let projection : Matrix4 = Renderer.getProjection();
-        // let viewMatrix : Matrix4 = this._game.getRunningScene().getViewMatrix();
         let viewMatrix : Matrix4 = this._game.getRunningScene().activeCamera.viewMatrix;
         
         // Set view uniforms.
@@ -136,7 +135,8 @@ export class CoreEngine {
 
         // Use the active camera's matrix as the view
         let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
-         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray() );
+        gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray() );
+         
 
         this._game.getRunningScene().render( this._renderer.worldShader, projection, viewMatrix);
         this._game.render( this._renderer.worldShader );

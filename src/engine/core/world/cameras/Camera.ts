@@ -95,7 +95,7 @@ export class Camera extends GameObject {
      */
     public updateViewMatrix() {
         this.updateWorldMatrix();
-        this.viewMatrix.invert(this.worldMatrix);
+        this._viewMatrix.invert(this.worldMatrix);
 
         return this;
     }

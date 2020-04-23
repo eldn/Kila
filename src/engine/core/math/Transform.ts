@@ -91,11 +91,12 @@ export class Transform{
     private _quaternion: Quaternion = new Quaternion();
 
     public get quaternion(): Quaternion {
+        this.updateQuaternion();
         return this._quaternion;
     }
 
     public set quaternion(value: Quaternion) {
-        this._quaternion = value;
+        this._quaternion.copy(value);
     }
 
 
@@ -158,6 +159,19 @@ export class Transform{
             this._matrixDirty = false;
             this.matrixVersion++;
             this._matrix.fromRotationTranslationScaleOrigin(this.quaternion, this._position, this._scale, this._pivot, true);
+        }
+
+        return this;
+    }
+
+    /**
+     * 更新四元数
+     * @return {Node} this
+     */
+    updateQuaternion() {
+        if (this._quatDirty) {
+            this._quatDirty = false;
+            this._quaternion.fromEuler(this._rotation, true);
         }
 
         return this;
