@@ -2,7 +2,7 @@ import { GameObject } from "../GameObject";
 import { SceneGraph } from "../SceneGraph";
 import { Matrix4x4 } from "../../math/Matrix4x4";
 
-export abstract class BaseCamera extends GameObject {
+export abstract class Camera extends GameObject {
 
     /**
      * Creates a new camera.

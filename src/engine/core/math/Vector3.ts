@@ -1,357 +1,513 @@
-import { Vector2 } from "./Vector2";
-import { EPSILON } from "./Utils";
-import { Matrix4x4 } from "./Matrix4x4";
-import { Quaternion } from "./Quaternion";
 
-let _x: number = 0.0;
-let _y: number = 0.0;
-let _z: number = 0.0;
+import { vec3 } from 'gl-matrix';
 
  export class Vector3 {
 
-    public static UNIT_X : Vector3 = Object.freeze(new Vector3(1, 0, 0)) as Vector3;
-    public static UNIT_Y : Vector3  = Object.freeze(new Vector3(0, 1, 0)) as Vector3;
-    public static UNIT_Z : Vector3  = Object.freeze(new Vector3(0, 0, 1)) as Vector3;
-    public static ZERO : Vector3  = Object.freeze(new Vector3(0, 0, 0)) as Vector3;
-    public static ONE : Vector3  = Object.freeze(new Vector3(1, 1, 1)) as Vector3;
-    public static NEG_ONE : Vector3  = Object.freeze(new Vector3(-1, -1, -1)) as Vector3;
-
-    private _x: number;
-    private _y: number;
-    private _z: number;
-
-
-    public constructor( x: number = 0, y: number = 0, z: number = 0 ) {
-        this._x = x;
-        this._y = y;
-        this._z = z;
-    }
-
-
-    public get x(): number {
-        return this._x;
-    }
-
-
-    public set x( value: number ) {
-        this._x = value;
-    }
-
-
-    public get y(): number {
-        return this._y;
-    }
-
-
-    public set y( value: number ) {
-        this._y = value;
-    }
-
- 
-    public get z(): number {
-        return this._z;
-    }
-
-
-    public set z( value: number ) {
-        this._z = value;
-    }
-
-    public static get zero(): Vector3 {
-        return new Vector3();
-    }
-
-    public static get one(): Vector3 {
-        return new Vector3( 1, 1, 1 );
-    }
-
-  
-    public static distance( a: Vector3, b: Vector3 ): number {
-        let diff = a.subtract( b );
-        return Math.sqrt( diff.x * diff.x + diff.y * diff.y + diff.z * diff.z );
-    }
-
- 
-    public set( x?: number, y?: number, z?: number ): void {
-        if ( x !== undefined ) {
-            this._x = x;
-        }
-
-        if ( y !== undefined ) {
-            this._y = y;
-        }
-
-        if ( z !== undefined ) {
-            this._z = z;
-        }
-    }
-
-   
-    public equals( v: Vector3 ): boolean {
-        return ( this.x === v.x && this.y === v.y && this.z === v.z );
-    }
-
-    public toArray(): number[] {
-        return [this._x, this._y, this._z];
-    }
-
-    public toFloat32Array(): Float32Array {
-        return new Float32Array( this.toArray() );
-    }
-
-    public toVector2(): Vector2 {
-        return new Vector2( this._x, this._y );
-    }
-
- 
-    public copyFrom( vector: Vector3 ): Vector3 {
-        this._x = vector._x;
-        this._y = vector._y;
-        this._z = vector._z;
-        return this;
-    }
-
-  
-    public setFromJson( json: any ): void {
-        if ( json.x !== undefined ) {
-            this._x = Number( json.x );
-        }
-
-        if ( json.y !== undefined ) {
-            this._y = Number( json.y );
-        }
-
-        if ( json.z !== undefined ) {
-            this._z = Number( json.z );
-        }
-    }
-
-   
-    public add( v: Vector3 ): Vector3 {
-        this._x += v._x;
-        this._y += v._y;
-        this._z += v._z;
-
-        return this;
-    }
-
-    public addValue( v: number ): Vector3 {
-        this._x += v;
-        this._y += v;
-        this._z += v;
-
-        return this;
-    }
-
-   
-    public subtract( v: Vector3 ): Vector3 {
-        this._x -= v._x;
-        this._y -= v._y;
-        this._z -= v._z;
-
-        return this;
-    }
-
-    public subtractValue( v: number ): Vector3 {
-        this._x -= v;
-        this._y -= v;
-        this._z -= v;
-
-        return this;
-    }
-
-   
-    public multiply( v: Vector3 ): Vector3 {
-        this._x *= v._x;
-        this._y *= v._y;
-        this._z *= v._z;
-
-        return this;
-    }
-
-    public multiplyValue( v: number ): Vector3 {
-        this._x *= v;
-        this._y *= v;
-        this._z *= v;
-
-        return this;
-    }
-
-   
-    public divide( v: Vector3 ): Vector3 {
-        this._x /= v._x;
-        this._y /= v._y;
-        this._z /= v._z;
-
-        return this;
-    }
-
-    public divideValue( v: number ): Vector3 {
-        this._x /= v;
-        this._y /= v;
-        this._z /= v;
-
-        return this;
-    }
-
-   
-    public scale( scale: number ): Vector3 {
-        this._x *= scale;
-        this._y *= scale;
-        this._z *= scale;
-
-        return this;
-    }
-
-    public clone(): Vector3 {
-        return new Vector3( this._x, this._y, this._z );
-    }
-
-     /**
-     * @zh 求向量长度平方
-     */
-    public lengthSqr() : number {
-        return this.x * this.x + this.y * this.y + this.z * this.z;
-    }
-
-    public length() : number{
-        return Math.sqrt(this.lengthSqr());
-    }
-
-    public dot(v : Vector3) : number{
-        return this.x * v.x + this.y * v.y + this.z * v.z;
-    }
-
-    public cross(v : Vector3) : Vector3{
-        this.x = this.y * v.z - this.z * v.y;
-        this.y = this.z * v.x - this.x * v.z;
-        this.z = this.x * v.y - this.y * v.x;
-        return this;
-    }
-
-    public normalize() : Vector3{
-
-        if(this.lengthSqr() < EPSILON * EPSILON){
-            return Vector3.ZERO;
-        }
-
-        let len : number = this.length();
-        this.x /= len;
-        this.y /= len;
-        this.z /= len;
-        return this;
-    }
-
-    public rotate(angle : number) : Vector3{
-        let rad : number = angle * (Math.PI / 180);
-        let cos : number = Math.cos(rad);
-        let sin : number = Math.sin(rad);
-        this.x = this.x * cos - this.y * sin;
-        this.y = this.x * sin + this.y * cos;
-        return this;
-    }
+    public elements : vec3;
 
     /**
-     * @zh 向量四元数乘法
+     * Creates a new empty vec3
+     * @param {Number} [x=0] X component
+     * @param {Number} [y=0] Y component
+     * @param {Number} [z=0] Z component
+     * @constructs
      */
-    public static transformQuat (out: Vector3, a: Vector3, q: Quaternion) {
-        // benchmarks: http://jsperf.com/quaternion-transform-Vec3-implementations
-
-        // calculate quat * vec
-        const ix = q.w * a.x + q.y * a.z - q.z * a.y;
-        const iy = q.w * a.y + q.z * a.x - q.x * a.z;
-        const iz = q.w * a.z + q.x * a.y - q.y * a.x;
-        const iw = -q.x * a.x - q.y * a.y - q.z * a.z;
-
-        // calculate result * inverse quat
-        out.x = ix * q.w + iw * -q.x + iy * -q.z - iz * -q.y;
-        out.y = iy * q.w + iw * -q.y + iz * -q.x - ix * -q.z;
-        out.z = iz * q.w + iw * -q.z + ix * -q.y - iy * -q.x;
-        return out;
+    constructor(x = 0, y = 0, z = 0) {
+        /**
+         * 数据
+         * @type {Float32Array}
+         */
+        this.elements = vec3.fromValues(x, y, z);
     }
-
     /**
-     * @zh 逐元素向量乘加: A + B * scale
+     * Copy the values from one vec3 to this
+     * @param  {Vector3} m the source vector
+     * @return {Vector3} this
      */
-    public static scaleAndAdd (out: Vector3, a: Vector3, b: Vector3, scale: number) {
-        out.x = a.x + b.x * scale;
-        out.y = a.y + b.y * scale;
-        out.z = a.z + b.z * scale;
-        return out;
+    copy(v) {
+        vec3.copy(this.elements, v.elements);
+        return this;
     }
-
-
     /**
-     * @zh 逐元素向量线性插值： A + t * (B - A)
+     * Creates a new vec3 initialized with values from this vec3
+     * @return {Vector3} a new Vector3
      */
-    public static lerp<Out extends Vector3> (out: Out, a: Out, b: Out, t: number) {
-        out.x = a.x + t * (b.x - a.x);
-        out.y = a.y + t * (b.y - a.y);
-        out.z = a.z + t * (b.z - a.z);
-        return out;
+    clone() {
+        const elements = this.elements;
+        return new Vector3(elements[0], elements[1], elements[2]);
     }
-
-
-    public static add( a : Vector3, b: Vector3 ): Vector3 {
-        return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
-    }
-
     /**
-     * @zh 逐元素向量减法
+     * 转换到数组
+     * @param  {Array}  [array=[]] 数组
+     * @param  {Number} [offset=0] 数组偏移值
+     * @return {Array}
      */
-    public static subtract<Out extends Vector3> (out: Out, a: Out, b: Out) {
-        out.x = a.x - b.x;
-        out.y = a.y - b.y;
-        out.z = a.z - b.z;
-        return out;
+    toArray(array = [], offset = 0) {
+        const elements = this.elements;
+        array[0 + offset] = elements[0];
+        array[1 + offset] = elements[1];
+        array[2 + offset] = elements[2];
+        return array;
     }
-
-      /**
-     * @zh 归一化向量
+    /**
+     * 从数组赋值
+     * @param  {Array} array  数组
+     * @param  {Number} [offset=0] 数组偏移值
+     * @return {Vector3} this
      */
-    public static normalize<Out extends Vector3, Vec3Like extends Vector3> (out: Out, a: Vec3Like) {
-        _x = a.x;
-        _y = a.y;
-        _z = a.z;
-
-        let len = _x * _x + _y * _y + _z * _z;
-        if (len > 0) {
-            len = 1 / Math.sqrt(len);
-            out.x = _x * len;
-            out.y = _y * len;
-            out.z = _z * len;
+    fromArray(array, offset = 0) {
+        const elements = this.elements;
+        elements[0] = array[offset + 0];
+        elements[1] = array[offset + 1];
+        elements[2] = array[offset + 2];
+        return this;
+    }
+    /**
+     * Set the components of a vec3 to the given values
+     * @param {Number} x X component
+     * @param {Number} y Y component
+     * @param {Number} z Z component
+     * @returns {Vector3} this
+     */
+    set(x, y, z) {
+        vec3.set(this.elements, x, y, z);
+        return this;
+    }
+    /**
+     * Adds two vec3's
+     * @param {Vector3} a
+     * @param {Vector3} [b] 如果不传，计算 this 和 a 的和
+     * @returns {Vector3} this
+     */
+    add(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
         }
-        return out;
+        vec3.add(this.elements, a.elements, b.elements);
+        return this;
     }
-
-
-      /**
-     * @zh 向量叉积（向量积）
-     */
-    public static cross<Out extends Vector3, Vec3Like_1 extends Vector3, Vec3Like_2 extends Vector3 > (out: Out, a: Vec3Like_1, b: Vec3Like_2) {
-        const { x: ax, y: ay, z: az } = a;
-        const { x: bx, y: by, z: bz } = b;
-        out.x = ay * bz - az * by;
-        out.y = az * bx - ax * bz;
-        out.z = ax * by - ay * bx;
-        return out;
-    }
-
-    public static multiplyValue(out : Vector3, a : Vector3, v: number ): Vector3 {
-        out.copyFrom(a);
-        out.multiplyValue(v);
-        return out;
-    }
-
     /**
-     * 向量乘法。将当前向量乘以与指定向量的结果赋值给当前向量。
-     * @param other 指定的向量。
+     * Subtracts vector b from vector a
+     * @param {Vector3} a
+     * @param {Vector3} [b] 如果不传，计算 this 和 a 的差
+     * @returns {Vector3} this
      */
-    public static multiply (out : Vector3, a : Vector3, other: Vector3) : Vector3{
-        if (typeof other !== 'object') { console.warn('should use Vec3.scale for vector * scalar operation'); }
-        out.x = a.x * other.x;
-        out.y = a.y * other.y;
-        out.z = a.z * other.z;
-        return out;
+    subtract(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.subtract(this.elements, a.elements, b.elements);
+        return this;
+    }
+    /**
+     * Multiplies two vec3's
+     * @param {Vector3} a
+     * @param {Vector3} [b] 如果不传，计算 this 和 a 的积
+     * @returns {Vector3} this
+     */
+    multiply(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.multiply(this.elements, a.elements, b.elements);
+        return this;
+    }
+    /**
+     * Divides two vec3's
+     * @param {Vector3} a
+     * @param {Vector3} [b] 如果不传，计算 this 和 a 的商
+     * @returns {Vector3} this
+     */
+    divide(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.divide(this.elements, a.elements, b.elements);
+        return this;
+    }
+    /**
+     * Math.ceil the components of this
+     * @returns {Vector3} this
+     */
+    ceil() {
+        vec3.ceil(this.elements, this.elements);
+        return this;
+    }
+    /**
+     * Math.floor the components of this
+     * @returns {Vector3} this
+     */
+    floor() {
+        vec3.floor(this.elements, this.elements);
+        return this;
+    }
+    /**
+     * Returns the minimum of two vec3's
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @returns {Vector3} this
+     */
+    min(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.min(this.elements, a.elements, b.elements);
+        return this;
+    }
+    /**
+     * Returns the maximum of two vec3's
+     * @param  {Vector3} a
+     * @param  {Vector3} [b]  如果不传，计算 this 和 a 的结果
+     * @returns {Vector3} this
+     */
+    max(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.max(this.elements, a.elements, b.elements);
+        return this;
+    }
+    /**
+     * Math.round the components of this
+     * @returns {Vector3} this
+     */
+    round() {
+        vec3.round(this.elements, this.elements);
+        return this;
+    }
+    /**
+     * Scales this by a scalar number
+     * @param  {Number} scale amount to scale the vector by
+     * @returns {Vector3} this
+     */
+    scale(scale) {
+        vec3.scale(this.elements, this.elements, scale);
+        return this;
+    }
+    /**
+     * Adds two vec3's after scaling the second vector by a scalar value
+     * @param  {Number} scale the amount to scale the second vector by before adding
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @returns {Vector3} this
+     */
+    scaleAndAdd(scale, a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.scaleAndAdd(this.elements, a.elements, b.elements, scale);
+        return this;
+    }
+    /**
+     * Calculates the euclidian distance between two vec3's
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @return {Number} distance between a and b
+     */
+    distance(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        return vec3.distance(a.elements, b.elements);
+    }
+    /**
+     * Calculates the squared euclidian distance between two vec3's
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @return {Number} squared distance between a and b
+     */
+    squaredDistance(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        return vec3.squaredDistance(a.elements, b.elements);
+    }
+    /**
+     * Calculates the length of this
+     * @return {Number} length of this
+     */
+    length() {
+        return vec3.length(this.elements);
+    }
+    /**
+     * Calculates the squared length of this
+     * @return {Number} squared length of this
+     */
+    squaredLength() {
+        return vec3.squaredLength(this.elements);
+    }
+    /**
+     * Negates the components of this
+     * @returns {Vector3} this
+     */
+    negate() {
+        vec3.negate(this.elements, this.elements);
+        return this;
+    }
+    /**
+     * Returns the inverse of the components of a vec3
+     * @param  {Vector3} [a=this]
+     * @returns {Vector3} this
+     */
+    inverse(a) {
+        if (!a) {
+            a = this;
+        }
+        vec3.inverse(this.elements, a.elements);
+        return this;
+    }
+    /**
+     * Normalize this
+     * @returns {Vector3} this
+     */
+    normalize() {
+        vec3.normalize(this.elements, this.elements);
+        return this;
+    }
+    /**
+     * Calculates the dot product of two vec3's
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @return {Number}  product of a and b
+     */
+    dot(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        return vec3.dot(a.elements, b.elements);
+    }
+    /**
+     * Computes the cross product of two vec3's
+     * @param  {Vector2} a
+     * @param  {Vector2} [b] 如果不传，计算 this 和 a 的结果
+     * @return {Number}  cross product of a and b
+     */
+    cross(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        vec3.cross(this.elements, a.elements, b.elements);
+        return this;
+    }
+    /**
+     * Performs a linear interpolation between two vec3's
+     * @param  {Vector3} v
+     * @param  {Number} t interpolation amount between the two vectors
+     * @returns {Vector3} this
+     */
+    lerp(v, t) {
+        vec3.lerp(this.elements, this.elements, v.elements, t);
+        return this;
+    }
+    /**
+     * Performs a hermite interpolation with two control points
+     * @param  {Vector3} a
+     * @param  {Vector3} b
+     * @param  {Vector3} c
+     * @param  {Vector3} d
+     * @param  {Number} t interpolation amount between the two inputs
+     * @return {Vector3} this
+     */
+    hermite(a, b, c, d, t) {
+        vec3.hermite(this.elements, a.elements, b.elements, c.elements, d.elements, t);
+        return this;
+    }
+    /**
+     * Performs a bezier interpolation with two control points
+     * @param  {Vector3} a
+     * @param  {Vector3} b
+     * @param  {Vector3} c
+     * @param  {Vector3} d
+     * @param  {Number} t interpolation amount between the two inputs
+     * @return {Vector3} this
+     */
+    bezier(a, b, c, d, t) {
+        vec3.bezier(this.elements, a.elements, b.elements, c.elements, d.elements, t);
+        return this;
+    }
+    /**
+     * Generates a random vector with the given scale
+     * @param  {Number} [scale=1] Length of the resulting vector. If ommitted, a unit vector will be returned
+     * @returns {Vector3} this
+     */
+    random(scale) {
+        vec3.random(this.elements, scale);
+        return this;
+    }
+    /**
+     * Transforms the vec3 with a mat3
+     * @param  {Matrix3} m matrix to transform with
+     * @returns {Vector3} this
+     */
+    transformMat3(m) {
+        vec3.transformMat3(this.elements, this.elements, m.elements);
+        return this;
+    }
+    /**
+     * Transforms the vec3 with a mat4
+     * @param  {Matrix4} m matrix to transform with
+     * @returns {Vector3} this
+     */
+    transformMat4(m) {
+        vec3.transformMat4(this.elements, this.elements, m.elements);
+        return this;
+    }
+    /**
+     * Transforms the vec3 direction with a mat4
+     * @param  {Matrix4} m matrix to transform with
+     * @returns {Vector3} this
+     */
+    transformDirection(m) {
+        const elements = this.elements;
+        const mElements = m.elements;
+        const x = elements[0];
+        const y = elements[1];
+        const z = elements[2];
+
+        elements[0] = x * mElements[0] + y * mElements[4] + z * mElements[8];
+        elements[1] = x * mElements[1] + y * mElements[5] + z * mElements[9];
+        elements[2] = x * mElements[2] + y * mElements[6] + z * mElements[10];
+
+        return this;
+    }
+    /**
+     * Transforms the vec3 with a quat
+     * @param  {Quaternion} q quaternion to transform with
+     * @returns {Vector3} this
+     */
+    transformQuat(q) {
+        vec3.transformQuat(this.elements, this.elements, q.elements);
+        return this;
+    }
+    /**
+     * Rotate this 3D vector around the x-axis
+     * @param  {Vector3} origin The origin of the rotation
+     * @param  {Number} rotation The angle of rotation
+     * @return {Vector3} this
+     */
+    rotateX(origin, rotation) {
+        vec3.rotateX(this.elements, this.elements, origin.elements, rotation);
+        return this;
+    }
+    /**
+     * Rotate this 3D vector around the y-axis
+     * @param  {Vector3} origin The origin of the rotation
+     * @param  {Number} rotation The angle of rotation
+     * @return {Vector3} this
+     */
+    rotateY(origin, rotation) {
+        vec3.rotateY(this.elements, this.elements, origin.elements, rotation);
+        return this;
+    }
+    /**
+     * Rotate this 3D vector around the z-axis
+     * @param  {Vector3} origin The origin of the rotation
+     * @param  {Number} rotation The angle of rotation
+     * @return {Vector3} this
+     */
+    rotateZ(origin, rotation) {
+        vec3.rotateZ(this.elements, this.elements, origin.elements, rotation);
+        return this;
+    }
+    /**
+     * Returns whether or not the vectors have exactly the same elements in the same position (when compared with ===)
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @return {Boolean} True if the vectors are equal, false otherwise.
+     */
+    exactEquals(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        return vec3.exactEquals(a.elements, b.elements);
+    }
+    /**
+     * Returns whether or not the vectors have approximately the same elements in the same position.
+     * @param  {Vector3} a
+     * @param  {Vector3} [b] 如果不传，计算 this 和 a 的结果
+     * @return {Boolean} True if the vectors are equal, false otherwise.
+     */
+    equals(a, b) {
+        if (!b) {
+            b = a;
+            a = this;
+        }
+        return vec3.equals(a.elements, b.elements);
+    }
+    /**
+     * X component
+     * @type {Number}
+     */
+    x: Object = {
+        get() {
+            return this.elements[0];
+        },
+        set(value) {
+            this.elements[0] = value;
+        }
+    }
+    /**
+     * Y component
+     * @type {Number}
+     */
+    y: Object =  {
+        get() {
+            return this.elements[1];
+        },
+        set(value) {
+            this.elements[1] = value;
+        }
+    }
+    /**
+     * Z component
+     * @type {Number}
+     */
+    z: Object = {
+        get() {
+            return this.elements[2];
+        },
+        set(value) {
+            this.elements[2] = value;
+        }
+    }
+
+    sub(a, b){
+        return this.subtract(a, b);
+    }
+
+    mul(a, b){
+        return this.multiply(a, b);
+    }
+
+    div(a, b){
+        return this.divide(a, b);
+    }
+
+    dist(a, b){
+        return this.distance(a, b);
+    }
+
+    sqrDist(a, b){
+        return this.squaredDistance(a, b);
+    }
+
+    len(){
+        return this.length()
+    }
+
+    sqrLen(){
+        return this.squaredLength();
     }
 }

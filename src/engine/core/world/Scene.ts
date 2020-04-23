@@ -3,7 +3,7 @@ import { Shader } from "../gl/shaders/Shader";
 import { GameObject } from "./GameObject";
 import { ComponentManager } from "../components/ComponentManager";
 import { BehaviorManager } from "../behaviors/BehaviorManager";
-import { BaseCamera } from "./cameras/BaseCamera";
+import { Camera } from "./cameras/Camera";
 import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
 import { Dictionary } from "../Types";
 import { Matrix4x4 } from "../math/Matrix4x4";
@@ -29,8 +29,8 @@ export class Scene {
     private _description: string;
     private _sceneGraph: SceneGraph;
     private _state: LevelState = LevelState.UNINITIALIZED;
-    private _registeredCameras: Dictionary<BaseCamera> = {};
-    private _activeCamera: BaseCamera;
+    private _registeredCameras: Dictionary<Camera> = {};
+    private _activeCamera: Camera;
     private _lights : LightRendererComponent[] = [];
     private _skyBox : SkyBox;
 
@@ -62,7 +62,7 @@ export class Scene {
     }
 
     /** The currently active camera. */
-    public get activeCamera(): BaseCamera {
+    public get activeCamera(): Camera {
         return this._activeCamera;
     }
 
@@ -138,7 +138,7 @@ export class Scene {
      * if no active camera is currently set.
      * @param camera The camera to register.
      */
-    public registerCamera(camera: BaseCamera): void {
+    public registerCamera(camera: Camera): void {
         if (this._registeredCameras[camera.name] === undefined) {
             this._registeredCameras[camera.name] = camera;
             if (this._activeCamera === undefined) {
@@ -153,7 +153,7 @@ export class Scene {
      * Unregisters the provided camera with this level.
      * @param camera The camera to unregister.
      */
-    public unregisterCamera(camera: BaseCamera): void {
+    public unregisterCamera(camera: Camera): void {
         if (this._registeredCameras[camera.name] !== undefined) {
             this._registeredCameras[camera.name] = undefined;
             if (this._activeCamera === camera) {
