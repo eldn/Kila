@@ -1,5 +1,5 @@
+import { vec3 } from "gl-matrix";
 
-import * as vec3 from '../../../../node_modules/gl-matrix/gl-matrix.js';
 
  export class Vector3 {
 

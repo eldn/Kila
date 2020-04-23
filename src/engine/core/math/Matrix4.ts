@@ -1,6 +1,6 @@
-import * as mat4 from '../../../../node_modules/gl-matrix/gl-matrix.js';
 import { Vector3 } from './Vector3';
 import { Quaternion } from './Quaternion';
+import { mat4 } from "gl-matrix";
 
 
 let tempMatrix4;

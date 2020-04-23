@@ -1,5 +1,5 @@
-import * as mat3 from '../../../../node_modules/gl-matrix/gl-matrix.js';
 
+import { mat3 } from "gl-matrix";
 
 export class Matrix3{
 

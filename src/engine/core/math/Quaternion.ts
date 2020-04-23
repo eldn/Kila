@@ -1,6 +1,7 @@
-import { quat} from 'gl-matrix';
+
 import { EventMixin } from '../event/EventMixin';
 import { Matrix3 } from './Matrix3';
+import { quat } from "gl-matrix";
 
 
 const tempMat3 = new Matrix3();
