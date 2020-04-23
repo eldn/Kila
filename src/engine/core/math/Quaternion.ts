@@ -499,53 +499,52 @@ export class Quaternion extends EventMixin{
      * X component
      * @type {Number}
      */
-    x: Object = {
-        get() {
-            return this.elements[0];
-        },
-        set(value) {
-            this.elements[0] = value;
-            this.fire('update');
-        }
+    public get x(): number {
+        return this.elements[0];
     }
+
+    public set x(value: number) {
+        this.elements[0] = value;
+        this.fire('update');
+    }
+    
     /**
      * Y component
      * @type {Number}
      */
-    y:Object = {
-        get() {
-            return this.elements[1];
-        },
-        set(value) {
-            this.elements[1] = value;
-            this.fire('update');
-        }
+    public get y(): number {
+        return this.elements[1];
     }
+
+    public set y(value: number) {
+        this.elements[1] = value;
+        this.fire('update');
+    }
+
     /**
      * Z component
      * @type {Number}
      */
-    z: Object ={
-        get() {
-            return this.elements[2];
-        },
-        set(value) {
-            this.elements[2] = value;
-            this.fire('update');
-        }
+    public get z(): number {
+        return this.elements[2];
     }
-    /**
+
+    public set z(value: number) {
+        this.elements[2] = value;
+            this.fire('update');
+    }
+
+     /**
      * W component
      * @type {Number}
      */
-    w:Object = {
-        get() {
-            return this.elements[3];
-        },
-        set(value) {
-            this.elements[3] = value;
-            this.fire('update');
-        }
+    public get w(): number {
+        return this.elements[3];
+    }
+
+    public set w(value: number) {
+        this.elements[3] = value;
+        this.fire('update');
     }
 
     mul(a, b){
