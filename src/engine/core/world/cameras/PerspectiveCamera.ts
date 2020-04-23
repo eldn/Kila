@@ -116,16 +116,12 @@ export class PerspectiveCamera extends Camera {
     public processKeyboard(keyCode : number, deltaTime : number) : void{
         let velocity : number = this._movementSpeed * deltaTime / 1000;
         if (keyCode == KEY_CODE_MACRO.w)
-            // this.transform.position.add(v3_a.copy(this._front).scale(velocity));
             this.move(this.transform.quaternion.getBack(), velocity);
         if (keyCode == KEY_CODE_MACRO.s)
-            // this.transform.position.subtract(v3_a.copy(this._front).scale(velocity));
             this.move(this.transform.quaternion.getForward(), velocity);
         if (keyCode == KEY_CODE_MACRO.a)
-            // this.transform.position.subtract(v3_a.copy(this._right).scale(velocity));
             this.move(this.transform.quaternion.getLeft(), velocity);
         if (keyCode == KEY_CODE_MACRO.d)
-            // this.transform.position.add(v3_a.copy(this._right).scale(velocity)); 
             this.move(this.transform.quaternion.getRight(), velocity);
 
         // this._isDirty = true;
