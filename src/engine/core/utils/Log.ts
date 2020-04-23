@@ -72,10 +72,10 @@ export class log {
      * @param {String} id
      * @return {Object} this
      */
-    public static logOnce(id) {
+    public static logOnce(id, ...args) {
         if (!cache['log_' + id]) {
             cache['log_' + id] = true;
-            this.log.apply(this, Array.prototype.slice.call(arguments, 1));
+            this.log.apply(this, args);
         }
         return this;
     }
@@ -85,10 +85,10 @@ export class log {
      * @param {String} id
      * @return {Object} this
      */
-    public static warnOnce(id, msg) {
+    public static warnOnce(id : string, ...args) {
         if (!cache['warn_' + id]) {
             cache['warn_' + id] = true;
-            this.warn.apply(this, msg);
+            this.warn.apply(this, args);
         }
         return this;
     }
@@ -98,10 +98,10 @@ export class log {
      * @param {String} id
      * @return {Object} this
      */
-    public static errorOnce(id) {
+    public static errorOnce(id, ...args) {
         if (!cache['error_' + id]) {
             cache['error_' + id] = true;
-            this.error.apply(this, Array.prototype.slice.call(arguments, 1));
+            this.error.apply(this, args);
         }
         return this;
     }

@@ -90,7 +90,7 @@ export class semantic{
         camera = this.camera = _camera;
     }
 
-    handlerColorOrTexture(value, textureIndex) {
+    public static handlerColorOrTexture(value, textureIndex) {
         if (value && value.isTexture) {
             return this.handlerTexture(value, textureIndex);
         }
@@ -104,7 +104,7 @@ export class semantic{
         return tempFloat32Array4;
     }
 
-    handlerTexture(value, textureIndex) {
+    public static handlerTexture(value, textureIndex) {
         if (value && value.isTexture) {
             return this.handlerGLTexture(value.target, value.getGLTexture(state), textureIndex);
         }
@@ -112,7 +112,7 @@ export class semantic{
         return undefined;
     }
 
-    handlerGLTexture(target, texture, textureIndex) {
+    public static handlerGLTexture(target, texture, textureIndex) {
         if (texture) {
             state.activeTexture(gl.TEXTURE0 + textureIndex);
             state.bindTexture(target, texture);
@@ -122,7 +122,7 @@ export class semantic{
         return undefined;
     }
 
-    handlerUV(texture) {
+    public static handlerUV(texture) {
         if (texture && texture.isTexture) {
             return texture.uv || 0;
         }
