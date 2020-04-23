@@ -21,7 +21,6 @@
   "homepage": "https://github.com/eldn/GameEngine#readme",
   "dependencies": {
     "@types/gl-matrix": "^2.4.5",
-    "gl-matrix": "^3.3.0",
     "gulp": "^4.0.2",
     "gulp-typescript": "^5.0.1",
     "rollup": "^1.23.1",
