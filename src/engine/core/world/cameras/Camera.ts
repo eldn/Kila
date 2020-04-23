@@ -1,11 +1,11 @@
 import { GameObject } from "../GameObject";
-import { Matrix4 } from "../../math/Matrix4";
 import { Frustum } from "../../math/Frustum";
+import { Matrix4 } from "../../math/Matrix4";
 
 
 const tempMatrix4 = new Matrix4();
 
-export abstract class Camera extends GameObject {
+export class Camera extends GameObject {
 
      /**
      * 是否需要更新投影矩阵
@@ -222,8 +222,15 @@ export abstract class Camera extends GameObject {
         return this;
     }
 
-    /** Returns the view for this camera. */
-    public get view(): Matrix4 {
-        return this.transform.getTransformationMatrix();
+    
+     /**
+     * 改变元素的朝向
+     * @param {Node|Object|Vector3} node 需要朝向的元素，或者坐标
+     * @return {Node} this
+     */
+    lookAt(obj : GameObject) {
+        tempMatrix4.targetTo(this, obj, this.up);
+        this.transform.quaternion.fromMat4(tempMatrix4);
+        return this;
     }
 }

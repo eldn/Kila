@@ -1,15 +1,8 @@
 // https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/camera.h
 import { Camera } from "./Camera";
-import { SceneGraph } from "../SceneGraph";
 import { Vector3 } from "../../math/Vector3";
-import { Vector2 } from "../../math/Vector2";
-import { KEY_CODE_MACRO } from "../../define/Macro";
-import { Renderer } from "../../renderering/Renderer";
 import { Matrix4 } from "../../math/Matrix4";
 import math from "../../math/math";
-
-let v3_a : Vector3 = new Vector3();
-let m4_a : Matrix4 = new Matrix4();
 
 export class PerspectiveCamera extends Camera {
     

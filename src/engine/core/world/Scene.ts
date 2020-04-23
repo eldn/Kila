@@ -173,8 +173,4 @@ export class Scene {
     public getSkybox() : SkyBox{
         return this._skyBox;
     }
-
-    public getViewMatrix() : Matrix4{
-        return this.activeCamera.view;
-    }
 }

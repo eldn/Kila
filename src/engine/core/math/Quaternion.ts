@@ -2,6 +2,7 @@
 import { EventMixin } from '../event/EventMixin';
 import { Matrix3 } from './Matrix3';
 import { quat } from "gl-matrix";
+import { Matrix4 } from './Matrix4';
 
 
 const tempMat3 = new Matrix3();
@@ -412,7 +413,7 @@ export class Quaternion extends EventMixin{
      * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
      * @return {Quaternion} this
      */
-    fromMat4(mat, dontFireEvent) {
+    fromMat4(mat : Matrix4, dontFireEvent ?: boolean) {
         tempMat3.fromMat4(mat);
         this.fromMat3(tempMat3, dontFireEvent);
         return this;

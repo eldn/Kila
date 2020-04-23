@@ -19,7 +19,7 @@ export class EventMixin {
      * @param {Boolean} once Listen on event only once and no more response after the first response?
      * @returns {Object} The Event itself. Functions chain call supported.
      */
-    on(type, listener, once){
+    on(type : string, listener : Function, once ?: boolean){
         var listeners = (this._listeners = this._listeners || {});
         var eventListeners = (listeners[type] = listeners[type] || []);
         for(var i = 0, len = eventListeners.length; i < len; i++){

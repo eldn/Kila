@@ -5,12 +5,10 @@ import { Vector3 } from "../math/Vector3";
 import { SceneGraph } from "./SceneGraph";
 import { IComponent } from "../components/IComponent";
 import { IBehavior } from "../behaviors/IBehavior";
-import { Quaternion } from "../math/Quaternion";
-import { JsonAsset } from "../assets/JsonAssetLoader";
 import { Matrix4 } from "../math/Matrix4";
 
-const v3_a = new Vector3();
-const q_a = new Quaternion();
+const defaultUp = new Vector3(0, 1, 0);
+const tempMatrix4 = new Matrix4();
 
 export class GameObject extends TObject {
 
@@ -30,13 +28,23 @@ export class GameObject extends TObject {
     /** The transform of this entity. */
     public transform: Transform = new Transform();
 
+    
+        /**
+     * 元素的up向量
+     * @type {Vector3}
+     */
+
+    protected up : Vector3;
+
     /**
      * Creates a new entity.
      * @param name The name of this entity.
      */
-    public constructor(name: string) {
+    constructor(name: string) {
         super();
         this.name = name;
+
+        this.up = defaultUp.clone();
     }
 
     /** Returns the parent of this entity. */
@@ -294,7 +302,7 @@ export class GameObject extends TObject {
      */
     public update(time: number): void {
 
-        this._localMatrix = this.transform.getTransformationMatrix();
+        this._localMatrix.copy(this.transform.matrix);
         this.updateWorldMatrix();
 
         for (let c of this._components) {
@@ -357,4 +365,18 @@ export class GameObject extends TObject {
             this._worldMatrix.copy(this._localMatrix);
         }
     }
+
+
+    
+     /**
+     * 改变元素的朝向
+     * @param {Node|Object|Vector3} node 需要朝向的元素，或者坐标
+     * @return {Node} this
+     */
+    lookAt(obj : GameObject) {
+        tempMatrix4.targetTo(obj, this, this.up);
+        this.transform.quaternion.fromMat4(tempMatrix4);
+        return this;
+    }
+
 }

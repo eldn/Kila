@@ -49,9 +49,9 @@ export class log {
      * log，等同 console.log
      * @return {Object} this
      */
-    public static warn() {
+    public static warn(...args) {
         if (this.level >= LEVEL_WARN) {
-            console.warn.apply(console, arguments);
+            console.warn.apply(console, args);
         }
         return this;
     }
