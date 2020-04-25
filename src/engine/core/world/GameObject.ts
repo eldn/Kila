@@ -371,8 +371,8 @@ export class GameObject extends TObject {
      * @param {Node|Object|Vector3} node 需要朝向的元素，或者坐标
      * @return {Node} this
      */
-    lookAt(obj : GameObject) {
-        tempMatrix4.targetTo(obj, this, this.up);
+    lookAt(target : GameObject | Vector3) {
+        tempMatrix4.targetTo(target, this, this.up);
         this.transform.quaternion.fromMat4(tempMatrix4);
         return this;
     }
