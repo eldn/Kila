@@ -51,7 +51,6 @@ class TestGame implements IGame, IMessageHandler {
     let planeObject : GameObject = new GameObject("plane");
     planeObject.addComponent(meshRender);
     planeObject.transform.position.set(0, 0, 300);
-    planeObject.transform.rotation.degX = 0.2;
     this.addObject(planeObject);
 
     this.obj = planeObject;
@@ -68,7 +67,7 @@ class TestGame implements IGame, IMessageHandler {
     this.processInput(time);
 
     if(this.obj){
-      this.obj.transform.rotation.degZ += time *0.1;
+      this.obj.transform.rotationZ += time *0.1;
     }
     
 

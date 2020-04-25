@@ -301,8 +301,6 @@ export class GameObject extends TObject {
      * @param time The delta time in milliseconds since the last update call.
      */
     public update(time: number): void {
-
-        this._localMatrix.copy(this.transform.matrix);
         this.updateWorldMatrix();
 
         for (let c of this._components) {
@@ -358,11 +356,11 @@ export class GameObject extends TObject {
 
     protected updateWorldMatrix(): void {
 
-        let parentWorldMatrix : Matrix4 = (this._parent !== undefined) ? this._parent.worldMatrix : undefined
-        if (parentWorldMatrix !== undefined) {
-            this._worldMatrix = parentWorldMatrix.multiply( this._localMatrix);
+        let parentWorldMatrix : Matrix4 = this._parent  ? this._parent.worldMatrix : undefined
+        if (parentWorldMatrix) {
+            this._worldMatrix = parentWorldMatrix.multiply( this.transform.matrix);
         } else {
-            this._worldMatrix.copy(this._localMatrix);
+            this._worldMatrix.copy(this.transform.matrix);
         }
     }
 

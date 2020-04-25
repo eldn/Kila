@@ -7,7 +7,7 @@ import { KEY_CODE_MACRO } from "../../define/Macro";
 
 export class PerspectiveCamera extends Camera {
     
-    private _mouseSensitivity : number = 0.1;
+    private _mouseSensitivity : number = 0.01;
     private _movementSpeed : number = 2.5;
 
 
@@ -111,8 +111,8 @@ export class PerspectiveCamera extends Camera {
         xoffset *= this._mouseSensitivity;
         yoffset *= this._mouseSensitivity;
 
-        // this.transform.rotation.degX += xoffset;
-        // this.transform.rotation.degY += yoffset;
+        // this.transform.rotationX += xoffset;
+        // this.transform.rotationY += yoffset;
 
         console.log("xoffset:" +xoffset, ",yoffset:" + yoffset);
 

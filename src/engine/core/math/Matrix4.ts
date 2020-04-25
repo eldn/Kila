@@ -2,6 +2,7 @@ import { Vector3 } from './Vector3';
 import { Quaternion } from './Quaternion';
 import { mat4 } from "gl-matrix";
 import { Vector3Notifier } from './Vector3Notifier';
+import { Matrix4Notifier } from './Matrix4Notifier';
 
 
 let tempMatrix4;
@@ -29,7 +30,7 @@ export class Matrix4{
      * @param  {Matrix4} m the source matrix
      * @return {Matrix4} this
      */
-    copy(m) {
+    copy(m : Matrix4 | Matrix4Notifier) {
         mat4.copy(this.elements, m.elements);
         return this;
     }
@@ -139,7 +140,7 @@ export class Matrix4{
      * @param {Matrix4} [b] 如果不传，计算 this 和 a 的乘积
      * @return {Matrix4} this
      */
-    multiply(a : Matrix4, b ?: Matrix4) {
+    multiply(a : Matrix4 | Matrix4Notifier, b ?: Matrix4 | Matrix4Notifier) {
         if (!b) {
             b = a;
             a = this;

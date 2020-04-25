@@ -119,7 +119,7 @@ export class Scene {
      */
     public render(shader: Shader, projection : Matrix4, viewMatrix : Matrix4): void {
         if (this._state === LevelState.UPDATING) {
-            this._sceneGraph.render(shader, projection, viewMatrix);
+            this._sceneGraph.render( shader, projection, viewMatrix);
         }
     }
 
