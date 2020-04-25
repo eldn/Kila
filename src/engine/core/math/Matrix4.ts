@@ -423,18 +423,12 @@ export class Matrix4{
      * @param  {Vector3} up pointing up
      * @return {Matrix4} this
      */
-    targetTo(eye, target, up) {
-        if (!(eye instanceof Vector3Notifier) ){
-            eye = tempVector3.set(eye.x, eye.y, eye.z);
-        }
-        if (!(target instanceof Vector3Notifier)) {
-            target = tempVector32.set(target.x, target.y, target.z);
-        }
+    targetTo(eyePos : Vector3, targetPos : Vector3, upVector : Vector3) {
 
         // mat4.targetTo(this.elements, eye.elements, target.elements, up.elements);
-        eye = eye.elements;
-        target = target.elements;
-        up = up.elements;
+        let eye = eyePos.elements;
+        let target = targetPos.elements;
+        let up = upVector.elements;
         const out = this.elements;
 
         let eyex = eye[0];

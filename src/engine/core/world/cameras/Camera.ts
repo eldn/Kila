@@ -5,6 +5,8 @@ import { Vector3 } from "../../math/Vector3";
 
 
 const tempMatrix4 = new Matrix4();
+const tempVector3_1 = new Vector3();
+const tempVector3_2 = new Vector3();
 
 export class Camera extends GameObject {
 
@@ -230,7 +232,12 @@ export class Camera extends GameObject {
      * @return {Node} this
      */
     lookAt(target : GameObject | Vector3 ) {
-        tempMatrix4.targetTo(this, target, this.up);
+        if(target instanceof GameObject){
+            tempMatrix4.targetTo(tempVector3_1.copy(this.transform.position), tempVector3_2.copy(target.transform.position), this.up);
+        } else {
+            tempMatrix4.targetTo(tempVector3_1.copy(this.transform.position), target, this.up);
+        }
+        
         this.transform.quaternion.fromMat4(tempMatrix4);
         return this;
     }
