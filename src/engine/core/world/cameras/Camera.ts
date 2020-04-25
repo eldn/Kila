@@ -1,6 +1,7 @@
 import { GameObject } from "../GameObject";
 import { Frustum } from "../../math/Frustum";
 import { Matrix4 } from "../../math/Matrix4";
+import { Vector3 } from "../../math/Vector3";
 
 
 const tempMatrix4 = new Matrix4();
@@ -228,8 +229,8 @@ export class Camera extends GameObject {
      * @param {Node|Object|Vector3} node 需要朝向的元素，或者坐标
      * @return {Node} this
      */
-    lookAt(obj : GameObject) {
-        tempMatrix4.targetTo(this, obj, this.up);
+    lookAt(target : GameObject | Vector3 ) {
+        tempMatrix4.targetTo(this, target, this.up);
         this.transform.quaternion.fromMat4(tempMatrix4);
         return this;
     }
