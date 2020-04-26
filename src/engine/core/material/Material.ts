@@ -1,12 +1,11 @@
 import { Texture } from '../graphics/Texture';
-import { MappedValues } from "./MappedValues";
 import { gl } from '../gl/GLUtilities';
 import { TObject } from '../objects/Object';
-import { RenderOptions } from './RenderOptions';
-import { TextureOptions } from './TextureOptions';
+import { RenderOptions } from '../renderering/RenderOptions';
+import { TextureOptions } from '../renderering/TextureOptions';
 import { Mesh } from '../graphics/Mesh';
 import { log } from '../utils/Log';
-import { semantic } from './Semantic';
+import { semantic } from '../renderering/Semantic';
 
 
 const blankInfo = {
@@ -16,13 +15,24 @@ const blankInfo = {
     }
 };
 
+
+
+
 export class Material extends TObject {
+
+
+	/**
+     * shader cache id
+     * @default null
+     * @type {String}
+     */
+    shaderCacheId: number;
 
 	/**
 	 * 光照类型
 	 *
 	 * @private
-	 * @type {string}
+	 * @type {string} //NONE, PHONG, BLINN-PHONG, LAMBERT光照模型
 	 * @memberof Material
 	 */
 	private _lightType: string = 'NONE';

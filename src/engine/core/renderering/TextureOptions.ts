@@ -2,6 +2,7 @@ import { RenderOptions } from "./RenderOptions";
 import { Texture } from "../graphics/Texture";
 import { CubeTexture } from "../graphics/CubeTexture";
 import { log } from "../utils/Log";
+import { Color } from "../graphics/Color";
 
 export class TextureOptions {
 
@@ -16,16 +17,19 @@ export class TextureOptions {
     }
 
 
-    add(texture : Texture, optionName : string, callback ?: Function) {
+    add(texture : Texture | Color, optionName : string, callback ?: Function) {
         if (texture) {
             const {
                 uvTypes,
                 option
             } = this;
 
-            // const uv = texture.uv || 0;
-            // uvTypes[uv] = 1;
-            // option[optionName] = uv;
+            let uv : number = 0;
+            if(texture instanceof Texture){
+                uv = texture.uv
+            }
+            uvTypes[uv] = 1;
+            option[optionName] = uv;
 
             if (texture instanceof CubeTexture) {
                 option[`${optionName}_CUBE`] = 1;

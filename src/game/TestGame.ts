@@ -11,7 +11,7 @@ import { Message } from "../engine/core/message/Message";
 import { IMessageHandler } from "../engine/core/message/IMessageHandler";
 import { Mesh } from "../engine/core/graphics/Mesh";
 import { MeshRendererComponent } from "../engine/core/components/MeshRendererComponent";
-import { Material } from "../engine/core/renderering/Material";
+import { Material } from "../engine/core/material/Material";
 import { GameObject } from "../engine/core/world/GameObject";
 import { Texture } from "../engine/core/graphics/Texture";
 

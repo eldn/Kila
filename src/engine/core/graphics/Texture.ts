@@ -125,4 +125,11 @@ export class Texture implements IMessageHandler {
     private isValuePowerOf2(value: number): boolean {
         return (value & (value - 1)) == 0;
     }
+
+      /**
+     * uv
+     * @default 0
+     * @type {Number}
+     */
+    uv: number = 0;
 }

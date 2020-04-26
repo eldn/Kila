@@ -4,7 +4,7 @@ import { IComponent } from "./IComponent";
 import { BaseComponent } from "./BaseComponent";
 import { Shader } from "../gl/shaders/Shader";
 import { Mesh } from "../graphics/Mesh";
-import { Material } from "../renderering/Material";
+import { Material } from "../material/Material";
 import { Texture } from "../graphics/Texture";
 import { gl } from "../gl/GLUtilities";
 import { Color } from "../graphics/Color";
