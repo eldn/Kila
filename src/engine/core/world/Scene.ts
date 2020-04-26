@@ -9,6 +9,7 @@ import { Dictionary } from "../Types";
 import { LightRendererComponent } from "../components/LightComponent";
 import { SkyBox } from "./Skybox";
 import { Matrix4 } from "../math/Matrix4";
+import { Vector3 } from "../math/Vector3";
 
 export enum LevelState {
 
@@ -89,6 +90,7 @@ export class Scene {
         // Otherwise, look for the first one and make it active.
         // TODO: Add active camera to level config, assign by name.
         let defaultCamera = new PerspectiveCamera("DEFAULT_CAMERA");
+        defaultCamera.lookAt(new Vector3(0, 0, -1));
         this._sceneGraph.addObject(defaultCamera);
         this.registerCamera(defaultCamera);
         this._activeCamera = defaultCamera;

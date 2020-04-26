@@ -1,7 +1,6 @@
 // https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/camera.h
 import { Camera } from "./Camera";
 import { Vector3 } from "../../math/Vector3";
-import { Matrix4 } from "../../math/Matrix4";
 import math from "../../math/math";
 import { KEY_CODE_MACRO } from "../../define/Macro";
 
