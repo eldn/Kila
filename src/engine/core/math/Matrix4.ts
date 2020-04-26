@@ -404,16 +404,8 @@ export class Matrix4{
      * @param  {Vector3} up pointing up
      * @return {Matrix4} this
      */
-    lookAt(eye, center, up) {
-        if (!eye.isVector3) {
-            eye = tempVector3.set(eye.x, eye.y, eye.z);
-        }
-        if (!center.isVector3) {
-            center = tempVector32.set(center.x, center.y, center.z);
-        }
-
+    lookAt(eye : Vector3, center : Vector3, up : Vector3) {
         mat4.lookAt(this.elements, eye.elements, center.elements, up.elements);
-
         return this;
     }
     /**
