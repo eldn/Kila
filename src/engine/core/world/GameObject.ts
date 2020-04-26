@@ -359,7 +359,7 @@ export class GameObject extends TObject {
 
         let parentWorldMatrix : Matrix4 = this._parent  ? this._parent.worldMatrix : undefined
         if (parentWorldMatrix) {
-            this._worldMatrix = parentWorldMatrix.multiply( this.transform.matrix);
+            this._worldMatrix.multiply(parentWorldMatrix, this.transform.matrix);
         } else {
             this._worldMatrix.copy(this.transform.matrix);
         }

@@ -208,7 +208,7 @@ export class Matrix4{
      * @param {Number} rad the angle to rotate the matrix by
      * @return {Matrix4} this
      */
-    rotateZ(rad) {
+    rotateZ(rad : number) {
         mat4.rotateZ(this.elements, this.elements, rad);
         return this;
     }
@@ -217,7 +217,7 @@ export class Matrix4{
      * @param {Vector3} transition Translation vector
      * @return {Matrix4} this
      */
-    fromTranslation(v) {
+    fromTranslation(v : Vector3) {
         mat4.fromTranslation(this.elements, v.elements);
         return this;
     }
@@ -273,7 +273,7 @@ export class Matrix4{
      * @param  {Vector3} v Translation vector
      * @return {Matrix4} this
      */
-    fromRotationTranslation(q, v) {
+    fromRotationTranslation(q : Quaternion, v : Vector3) {
         mat4.fromRotationTranslation(this.elements, q.elements, v.elements);
         return this;
     }
