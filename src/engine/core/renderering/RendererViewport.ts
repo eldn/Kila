@@ -213,31 +213,9 @@ export class RendererViewport {
     private regenerateMatrix(): void {
         this._projection = new Matrix4();
         if ( this._projectionType === ViewportProjectionType.ORTHOGRAPHIC ) {
-            // this._projection = Matrix4.orthographic( this._x, this._width, this._height, this._y, this._nearClip, this._farClip );
             this._projection.ortho( this._x, this._width, this._height, this._y, this._nearClip, this._farClip )
         } else {
-            // this._projection = Matrix4.perspective( this._fov, this._width / this._height, this._nearClip, this._farClip );
-            const elements = this._projection.elements;
-            const near = this._nearClip;
-            const far = this._farClip;
-            const aspect = this.width / this.height;
-            const fov = this._fov;
-
-            const f = 1 / Math.tan(0.5 * math.degToRad(fov));
-    
-            elements[0] = f / aspect;
-            elements[5] = f;
-            elements[11] = -1;
-            elements[15] = 0;
-    
-            if (far) {
-                const nf = 1 / (near - far);
-                elements[10] = (near + far) * nf;
-                elements[14] = 2 * far * near * nf;
-            } else {
-                elements[10] = -1;
-                elements[14] = -2 * near;
-            }
+            this._projection.perspective(this._fov, this._width / this._height, this._nearClip, this._farClip);
         }
     }
 }

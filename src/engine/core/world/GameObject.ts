@@ -9,6 +9,7 @@ import { Matrix4 } from "../math/Matrix4";
 
 const defaultUp = new Vector3(0, 1, 0);
 const tempMatrix4 = new Matrix4();
+const tempVector3 = new Vector3();
 
 export class GameObject extends TObject {
 
@@ -371,8 +372,8 @@ export class GameObject extends TObject {
      * @param {Node|Object|Vector3} node 需要朝向的元素，或者坐标
      * @return {Node} this
      */
-    lookAt(target : GameObject | Vector3) {
-        tempMatrix4.targetTo(target, this, this.up);
+    lookAt(target : Vector3) {
+        tempMatrix4.targetTo(target, tempVector3.copy(this.transform.position), this.up);
         this.transform.quaternion.fromMat4(tempMatrix4);
         return this;
     }

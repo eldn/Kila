@@ -368,7 +368,7 @@ export class Matrix4{
      * @param {Number} far Far bound of the frustum
      * @return {Matrix4} this
      */
-    perspective(fovy, aspect, near, far) {
+    perspective(fovy : number, aspect : number, near : number, far : number) {
         mat4.perspective(this.elements, fovy, aspect, near, far);
         return this;
     }
