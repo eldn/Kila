@@ -49,11 +49,14 @@ class TestGame implements IGame, IMessageHandler {
     let meshRender : MeshRendererComponent = new MeshRendererComponent(mesh, material);
     
     let planeObject : GameObject = new GameObject("plane");
+    planeObject.transform.z = -10;
+    planeObject.transform.rotationX = 45;
+    planeObject.transform.rotationY = 45;
     planeObject.addComponent(meshRender);
-    planeObject.transform.position.set(0, 0, 300);
     this.addObject(planeObject);
-
     this.obj = planeObject;
+
+
   }
 
   addObject(obj : GameObject) : void {
@@ -69,7 +72,6 @@ class TestGame implements IGame, IMessageHandler {
     if(this.obj){
       this.obj.transform.rotationZ += time *0.1;
     }
-    
 
   }
 
@@ -186,7 +188,7 @@ class TestGame implements IGame, IMessageHandler {
 let engine: CoreEngine;
 
 window.onload = function () {
-  engine = new CoreEngine(600, 600);
+  engine = new CoreEngine(640, 480);
   engine.start(new TestGame(), "viewport");
 }
 

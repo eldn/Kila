@@ -11,6 +11,7 @@ import { Matrix4 } from "./math/Matrix4";
 import { semantic } from "./renderering/Semantic";
 import { WebGLState } from "./renderering/WebGlState";
 import { Camera } from "./world/cameras/Camera";
+import { Vector3 } from "./math/Vector3";
 
 export class CoreEngine {
 
@@ -50,7 +51,7 @@ export class CoreEngine {
         rendererViewportCreateInfo.height = this._gameHeight;
         rendererViewportCreateInfo.nearClip = 0.1;
         rendererViewportCreateInfo.farClip = 1000.0;
-        rendererViewportCreateInfo.fov = 45.0 * (Math.PI / 180);
+        rendererViewportCreateInfo.fov = 45.0 * Math.PI / 180;
         rendererViewportCreateInfo.x = 0;
         rendererViewportCreateInfo.y = 0;
 
@@ -130,14 +131,12 @@ export class CoreEngine {
         // Set view uniforms.
         let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
         gl.uniformMatrix4fv( projectionPosition, false, projection.toArray());
-        
-        // Set model uniforms.
-        let model = this._renderer.worldShader.getUniformLocation( "u_model" );
-        gl.uniformMatrix4fv( model, false, new Matrix4().toArray());
 
         // Use the active camera's matrix as the view
+        // let testView : Matrix4 = new Matrix4();
+        // testView.lookAt(new Vector3(0, 0, 10), new Vector3(0, 0, -1), new Vector3(0, 1, 0));
         let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
-        gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray() );
+        gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
          
 
         this._game.getRunningScene().render( this._renderer.worldShader, projection, viewMatrix);

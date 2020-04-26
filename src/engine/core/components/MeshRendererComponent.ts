@@ -9,6 +9,8 @@ import { Texture } from "../graphics/Texture";
 import { gl } from "../gl/GLUtilities";
 import { Color } from "../graphics/Color";
 import { Matrix4 } from "../math/Matrix4";
+import { MTLDoc } from "../utils/OBJDoc";
+import { Vector3 } from "../math/Vector3";
 
 export class MeshRendererCoponentData implements IComponentData {
     public name: string;
@@ -96,6 +98,9 @@ export class MeshRendererComponent extends BaseComponent {
                 let u_diffuse = shader.getUniformLocation("u_diffuse");
                 gl.uniform1i(u_diffuse, 0);
             }
+
+            let model = shader.getUniformLocation( "u_model" );
+            gl.uniformMatrix4fv( model, false, this._owner.worldMatrix.toArray());
 
             // mesh
             this._mesh.draw(shader, this.owner.worldMatrix, projection, viewMatrix);
