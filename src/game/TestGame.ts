@@ -33,12 +33,8 @@ window.onresize = function () {
 function test(){
   let rendererViewportCreateInfo: RendererViewportCreateInfo = new RendererViewportCreateInfo();
   rendererViewportCreateInfo.elementId = "viewport";
-  rendererViewportCreateInfo.projectionType = ViewportProjectionType.PERSPECTIVE;
   rendererViewportCreateInfo.width = 640;
   rendererViewportCreateInfo.height = 480;
-  rendererViewportCreateInfo.nearClip = 0.1;
-  rendererViewportCreateInfo.farClip = 1000.0;
-  rendererViewportCreateInfo.fov = 45.0 * Math.PI / 180;
   rendererViewportCreateInfo.x = 0;
   rendererViewportCreateInfo.y = 0;
   renderer = new Renderer( rendererViewportCreateInfo );

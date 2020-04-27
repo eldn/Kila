@@ -28,29 +28,16 @@ export class RendererViewportCreateInfo {
 
     public height?: number;
 
-    public fov?: number;
-
-    public nearClip: number;
-
-    public farClip: number;
-
-    public projectionType: ViewportProjectionType;
 
     public elementId?: string;
 }
 
 
 export class RendererViewport {
-    private _isDirty: boolean = true;
     private _x: number;
     private _y: number;
     private _width: number;
     private _height: number;
-    private _fov: number;
-    private _nearClip: number;
-    private _farClip: number;
-    private _projectionType: ViewportProjectionType;
-    private _projection: Matrix4;
     private _sizeMode: ViewportSizeMode = ViewportSizeMode.DYNAMIC;
 
     private _canvas: HTMLCanvasElement;
@@ -62,10 +49,6 @@ export class RendererViewport {
         this._height = createInfo.height;
         this._x = createInfo.x;
         this._y = createInfo.y;
-        this._nearClip = createInfo.nearClip;
-        this._farClip = createInfo.farClip;
-        this._fov = createInfo.fov;
-        this._projectionType = createInfo.projectionType;
 
         if ( this._width !== undefined && this._height !== undefined ) {
             //this._aspect = this._width / this._height;
@@ -105,15 +88,6 @@ export class RendererViewport {
         return this._height;
     }
 
-    public get fov(): number {
-        return this._fov;
-    }
-
-    public set fov( value: number ) {
-        this._fov = value;
-        this._isDirty = true;
-    }
-
     public get x(): number {
         return this._x;
     }
@@ -122,45 +96,10 @@ export class RendererViewport {
         return this._y;
     }
 
-    public get nearClip(): number {
-        return this._nearClip;
-    }
-
-    public set nearClip( value: number ) {
-        this._nearClip = value;
-        this._isDirty = true;
-    }
-
-    public get farClip(): number {
-        return this._farClip;
-    }
-
-    public set farClip( value: number ) {
-        this._farClip = value;
-        this._isDirty = true;
-    }
-
-    public get projectionType(): ViewportProjectionType {
-        return this._projectionType;
-    }
-
-    public set projectionType( value: ViewportProjectionType ) {
-        this._projectionType = value;
-        this._isDirty = true;
-    }
-
-    public getProjectionMatrix(): Matrix4 {
-        if ( this._isDirty || this._projection === undefined ) {
-            this.regenerateMatrix();
-        }
-        return this._projection;
-    }
-
   
     public OnResize( width: number, height: number ): void {
         this._width = width;
         this._height = height;
-        this._isDirty = true;
 
         if ( this._canvas !== undefined ) {
             if ( this._sizeMode === ViewportSizeMode.DYNAMIC ) {
@@ -205,15 +144,5 @@ export class RendererViewport {
     public Reposition( x: number, y: number ): void {
         this._x = x;
         this._y = y;
-        this._isDirty = true;
-    }
-
-    private regenerateMatrix(): void {
-        this._projection = new Matrix4();
-        if ( this._projectionType === ViewportProjectionType.ORTHOGRAPHIC ) {
-            this._projection.ortho( this._x, this._width, this._height, this._y, this._nearClip, this._farClip )
-        } else {
-            this._projection.perspective(this._fov, this._width / this._height, this._nearClip, this._farClip);
-        }
     }
 }
