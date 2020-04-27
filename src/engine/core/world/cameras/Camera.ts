@@ -99,7 +99,6 @@ export class Camera extends GameObject {
     public updateViewMatrix() {
         this.updateWorldMatrix();
         this._viewMatrix.invert(this.worldMatrix);
-
         return this;
     }
 
@@ -131,7 +130,6 @@ export class Camera extends GameObject {
         this.updateViewMatrix();
         this.viewProjectionMatrix.multiply(this.projectionMatrix, this.viewMatrix);
         this.updateFrustum(this.viewProjectionMatrix);
-
         return this;
     }
 

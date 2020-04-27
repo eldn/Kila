@@ -14,6 +14,7 @@ import { MeshRendererComponent } from "../engine/core/components/MeshRendererCom
 import { Material } from "../engine/core/material/Material";
 import { GameObject } from "../engine/core/world/GameObject";
 import { Texture } from "../engine/core/graphics/Texture";
+import { Vector3 } from "../engine/core/math/Vector3";
 
 
 class TestGame implements IGame, IMessageHandler {
@@ -25,43 +26,45 @@ class TestGame implements IGame, IMessageHandler {
   private lastY: number;
   private _scene: Scene;
 
-  constructor(){
-    this._scene = new Scene("testScene", "Test Scene!");
+  constructor() {
+
+    let camera : PerspectiveCamera = new PerspectiveCamera("DEFAULT_CAMERA");
+    camera.lookAt(new Vector3(0, 0, -1));
+
+    // this._sceneGraph.addObject(defaultCamera);
+    // this._activeCamera = defaultCamera;
+
+    this._scene = new Scene(camera);
     this._scene.load();
   }
 
   public get scene(): Scene {
     return this._scene;
   }
-  
+
   public set scene(value: Scene) {
     this._scene = value;
   }
 
 
-  private obj :GameObject ;
+  private obj: GameObject;
   updateReady(): void {
-    let mesh : Mesh = new Mesh("assets/models/plane3.obj");
-    let diffuse : Texture = new Texture("assets/textures/bricks2.jpg");
-    let normal : Texture = new Texture("assets/textures/bricks2_normal.png");
-    let dispMap : Texture = new Texture("assets/textures/bricks2_disp.jpg");
-    let material : Material = new Material();
-    let meshRender : MeshRendererComponent = new MeshRendererComponent(mesh, material);
-    
-    let planeObject : GameObject = new GameObject("plane");
+    let mesh: Mesh = new Mesh("assets/models/plane3.obj");
+    let material: Material = new Material();
+    let meshRender: MeshRendererComponent = new MeshRendererComponent(mesh, material);
+
+    let planeObject: GameObject = new GameObject("plane");
     planeObject.transform.z = -10;
     planeObject.transform.rotationX = 45;
     planeObject.transform.rotationY = 45;
     planeObject.addComponent(meshRender);
     this.addObject(planeObject);
     this.obj = planeObject;
-
-
   }
 
-  addObject(obj : GameObject) : void {
-    if(this._scene && obj){
-      this._scene.addObject(obj);  
+  addObject(obj: GameObject): void {
+    if (this._scene && obj) {
+      this._scene.addObject(obj);
     }
   }
 
@@ -69,8 +72,8 @@ class TestGame implements IGame, IMessageHandler {
 
     this.processInput(time);
 
-    if(this.obj){
-      this.obj.transform.rotationZ += time *0.1;
+    if (this.obj) {
+      this.obj.transform.rotationZ += time * 0.1;
     }
 
   }
@@ -79,21 +82,21 @@ class TestGame implements IGame, IMessageHandler {
 
   }
 
-  private _touchStart : Vector2 = Vector2.zero;
+  private _touchStart: Vector2 = Vector2.zero;
   onMessage(message: Message): void {
     if (!this.camera) {
       return;
     }
 
-    if (message.code == MESSAGE_MOUSE_WHEEL) {  
-        let event: MouseContext = message.context;
-        this.camera.processMouseScroll(event.wheelDelta);
-    } else if (message.code == MESSAGE_TOUCH_START){
-       let event: TouchContext = message.context;
-       this._touchStart.set(event.position.x, event.position.y);
-    } else if(message.code == MESSAGE_TOUCH_MOVE){
-       let event: TouchContext = message.context;
-       this.camera.processMouseMovement(-(event.position.x - this._touchStart.x) / 2, -(event.position.y - this._touchStart.y) / 2, true);
+    if (message.code == MESSAGE_MOUSE_WHEEL) {
+      let event: MouseContext = message.context;
+      this.camera.processMouseScroll(event.wheelDelta);
+    } else if (message.code == MESSAGE_TOUCH_START) {
+      let event: TouchContext = message.context;
+      this._touchStart.set(event.position.x, event.position.y);
+    } else if (message.code == MESSAGE_TOUCH_MOVE) {
+      let event: TouchContext = message.context;
+      this.camera.processMouseMovement(-(event.position.x - this._touchStart.x) / 2, -(event.position.y - this._touchStart.y) / 2, true);
     }
   }
 
@@ -113,18 +116,18 @@ class TestGame implements IGame, IMessageHandler {
         Message.subscribe(MESSAGE_TOUCH_MOVE, this);
 
 
-        let canvas : HTMLCanvasElement = Renderer.windowViewport.canvas;
-        let delta : number = 10000;
-        canvas.addEventListener("up", ()=>{
+        let canvas: HTMLCanvasElement = Renderer.windowViewport.canvas;
+        let delta: number = 10000;
+        canvas.addEventListener("up", () => {
           this.camera.processKeyboard(KEY_CODE_MACRO.w, delta);
         }, false);
-        canvas.addEventListener("down", ()=>{
+        canvas.addEventListener("down", () => {
           this.camera.processKeyboard(KEY_CODE_MACRO.s, delta);
         }, false);
-        canvas.addEventListener("left", ()=>{
+        canvas.addEventListener("left", () => {
           this.camera.processKeyboard(KEY_CODE_MACRO.a, delta);
         }, false);
-        canvas.addEventListener("right", ()=>{
+        canvas.addEventListener("right", () => {
           this.camera.processKeyboard(KEY_CODE_MACRO.d, delta);
         }, false);
       }
@@ -178,7 +181,7 @@ class TestGame implements IGame, IMessageHandler {
     }
   }
 
-  getRunningScene() : Scene{
+  getRunningScene(): Scene {
     return this._scene;
   }
 

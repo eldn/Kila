@@ -12,6 +12,7 @@ import { semantic } from "./renderering/Semantic";
 import { WebGLState } from "./renderering/WebGlState";
 import { Camera } from "./world/cameras/Camera";
 import { Vector3 } from "./math/Vector3";
+import { Scene } from "./world/Scene";
 
 export class CoreEngine {
 
@@ -121,25 +122,26 @@ export class CoreEngine {
     private render(): void {
         this._renderer.BeginRender();
 
-        let activeCamera : Camera = this._game.getRunningScene().activeCamera;
-        semantic.init(this._renderer, this._renderer.state, activeCamera, null, null);
-        activeCamera.updateViewProjectionMatrix();
+        let scene : Scene = this._game.getRunningScene();
+        let camera : Camera = scene.activeCamera;
 
+        semantic.init(this._renderer, this._renderer.state, camera, null, null);
+        camera.updateViewProjectionMatrix();
+
+      
         let projection : Matrix4 = Renderer.getProjection();
-        let viewMatrix : Matrix4 = activeCamera.viewMatrix;
+        let viewMatrix : Matrix4 = camera.viewMatrix;
         
         // Set view uniforms.
         let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
         gl.uniformMatrix4fv( projectionPosition, false, projection.toArray());
 
-        // Use the active camera's matrix as the view
-        // let testView : Matrix4 = new Matrix4();
-        // testView.lookAt(new Vector3(0, 0, 10), new Vector3(0, 0, -1), new Vector3(0, 1, 0));
+   
         let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
          
 
-        this._game.getRunningScene().render( this._renderer.worldShader, projection, viewMatrix);
+        scene.render( this._renderer.worldShader, projection, viewMatrix);
         this._game.render( this._renderer.worldShader );
 
         this._renderer.EndRender();

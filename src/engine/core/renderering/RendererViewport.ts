@@ -91,8 +91,6 @@ export class RendererViewport {
         gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
 
         // gl.enable(gl.FRAMEBUFFER_SRGB);
-
-        // Matrix4.orthographic( 0, this._canvas.width, this._canvas.height, 0, -100.0, 100.0 )
     }
 
     public get canvas(): HTMLCanvasElement {
