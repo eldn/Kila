@@ -1,6 +1,6 @@
 import { GameObject } from "../world/GameObject";
 import { Shader } from "../gl/shaders/Shader";
-import { Matrix4x4 } from "../math/Matrix4x4";
+import { Matrix4 } from "../math/Matrix4";
 
 
 export interface IComponent {
@@ -9,5 +9,5 @@ export interface IComponent {
     updateReady(): void;
     load(): void;
     update(time: number): void;
-    render(shader: Shader, projection : Matrix4x4, viewMatrix : Matrix4x4): void;
+    render(shader: Shader, projection : Matrix4, viewMatrix : Matrix4): void;
 }

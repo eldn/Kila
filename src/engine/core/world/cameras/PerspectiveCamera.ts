@@ -1,13 +1,8 @@
 // https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/camera.h
 import { Camera } from "./Camera";
-import { Vector3 } from "../../math/Vector3";
 import math from "../../math/math";
-import { KEY_CODE_MACRO } from "../../define/Macro";
 
 export class PerspectiveCamera extends Camera {
-    
-    private _mouseSensitivity : number = 0.01;
-    private _movementSpeed : number = 2.5;
 
 
     
@@ -104,53 +99,6 @@ export class PerspectiveCamera extends Camera {
 
     public radians(degrees: number): number {
         return degrees * (Math.PI / 180.0);
-    }
-
-    public processMouseMovement(xoffset : number, yoffset : number, constrainPitch : boolean = true) : void{
-        xoffset *= this._mouseSensitivity;
-        yoffset *= this._mouseSensitivity;
-
-        // this.transform.rotationX += xoffset;
-        // this.transform.rotationY += yoffset;
-
-        console.log("xoffset:" +xoffset, ",yoffset:" + yoffset);
-
-    }
-
-    public processKeyboard(keyCode : number, deltaTime : number) : void{
-        let velocity : number = this._movementSpeed * deltaTime / 1000;
-        if (keyCode == KEY_CODE_MACRO.w)
-            this.move(this.transform.quaternion.getBack(), velocity);
-        if (keyCode == KEY_CODE_MACRO.s)
-            this.move(this.transform.quaternion.getForward(), velocity);
-        if (keyCode == KEY_CODE_MACRO.a)
-            this.move(this.transform.quaternion.getLeft(), velocity);
-        if (keyCode == KEY_CODE_MACRO.d)
-            this.move(this.transform.quaternion.getRight(), velocity);
-
-        // this._isDirty = true;
-    }
-
-    private move(dir : Vector3, amt : number){
-        this.transform.position.add(dir.scale(amt));
-    }
-
-    
-
-    public processMouseScroll(yoffset : number) : void{
-        let angel: number = this._fov / (Math.PI / 180);
-        let sensitivity: number = 0.1;
-  
-        if (angel >= 1.0 && angel <= 45.0)
-          angel -= yoffset * sensitivity;
-  
-        if (angel <= 1.0)
-          angel = 1.0;
-  
-        if (angel >= 45.0)
-          angel = 45.0;
-  
-        this._fov = angel * (Math.PI / 180); 
     }
 
 }
