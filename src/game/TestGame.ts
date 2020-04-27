@@ -17,17 +17,17 @@ import { BehaviorManager } from "../engine/core/behaviors/BehaviorManager";
 
 let engine: CoreEngine;
 let renderer : Renderer;
-
+let scene : Scene;
 
 window.onload =  ()=> {
   engine = new CoreEngine();
   engine.start();
-  
+
   test();
 }
 
 window.onresize = function () {
-  renderer.Resize();
+  scene.resize();
 }
 
 function test(){
@@ -53,7 +53,7 @@ function test(){
   let camera : PerspectiveCamera = new PerspectiveCamera("DEFAULT_CAMERA");
   camera.lookAt(new Vector3(0, 0, -1));
   
-  let scene : Scene = new Scene(camera, renderer);
+  scene = new Scene(camera, renderer);
   scene.load();
 
 

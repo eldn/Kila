@@ -6,6 +6,7 @@ import { Matrix4 } from "../math/Matrix4";
 import { Renderer } from "../renderering/Renderer";
 import { gl } from "../gl/GLUtilities";
 import { semantic } from "../renderering/Semantic";
+import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
 
 export enum LevelState {
 
@@ -130,6 +131,15 @@ export class Scene {
 
     /** Called when this level is deactivated. */
     public onDeactivated(): void {
+        
+    }
+
+    public resize() : void{
+        this._renderer.Resize();
+
+        if(this._activeCamera instanceof PerspectiveCamera){
+            this._activeCamera.aspect = this._renderer.canvasWitdh / this._renderer.canvasHeight;
+        }
         
     }
 }

@@ -48,9 +48,7 @@ export class Renderer {
     }
 
     public Resize(): void {
-        if (this.windowViewport) {
-            this.windowViewport.OnResize(window.innerWidth, window.innerHeight);
-        }
+        this.windowViewport.OnResize(window.innerWidth, window.innerHeight);
     }
 
     public BeginRender(): void {
@@ -61,6 +59,15 @@ export class Renderer {
 
        
     }
+
+    public get canvasWitdh() : number{
+        return this.windowViewport.width;
+    }
+
+    public get canvasHeight() : number{
+        return this.windowViewport.height;
+    }
+
 
     public getProjection(): Matrix4 {
         if (this.windowViewport) {
