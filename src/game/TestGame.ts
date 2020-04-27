@@ -50,7 +50,7 @@ function test(){
   BehaviorManager.initialize();
   
 
-  let camera : PerspectiveCamera = new PerspectiveCamera("DEFAULT_CAMERA");
+  let camera : PerspectiveCamera = new PerspectiveCamera("DEFAULT_CAMERA", renderer.canvasWitdh / renderer.canvasHeight, 0.1, 1000.0, 50.0);
   camera.lookAt(new Vector3(0, 0, -1));
   
   scene = new Scene(camera, renderer);

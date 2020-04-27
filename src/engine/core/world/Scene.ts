@@ -86,7 +86,7 @@ export class Scene {
         this._activeCamera.updateViewProjectionMatrix();
         
 
-        let projection : Matrix4 = this._renderer.getProjection();
+        let projection : Matrix4 = this._activeCamera.projectionMatrix;
         let viewMatrix : Matrix4 = this._activeCamera.viewMatrix;
         
         // Set view uniforms.
