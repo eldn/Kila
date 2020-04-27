@@ -2,12 +2,10 @@ import { SceneGraph } from "./SceneGraph";
 import { Shader } from "../gl/shaders/Shader";
 import { GameObject } from "./GameObject";
 import { Camera } from "./cameras/Camera";
-import { PerspectiveCamera } from "./cameras/PerspectiveCamera";
-import { Dictionary } from "../Types";
-import { LightRendererComponent } from "../components/LightComponent";
-import { SkyBox } from "./Skybox";
 import { Matrix4 } from "../math/Matrix4";
-import { Vector3 } from "../math/Vector3";
+import { Renderer } from "../renderering/Renderer";
+import { gl } from "../gl/GLUtilities";
+import { semantic } from "../renderering/Semantic";
 
 export enum LevelState {
 
@@ -27,6 +25,7 @@ export class Scene {
     private _sceneGraph: SceneGraph;
     private _state: LevelState = LevelState.UNINITIALIZED;
     private _activeCamera: Camera;
+    private _renderer : Renderer;
 
     /**
      * Creates a new level.
@@ -34,9 +33,10 @@ export class Scene {
      * @param description A brief description of this level. 
      * Could be used on level selection screens for some games.
      */
-    public constructor(camera : Camera) {
+    public constructor(camera : Camera, render : Renderer) {
         this._sceneGraph = new SceneGraph();
         this._activeCamera = camera;
+        this._renderer = render;
     }
 
 
@@ -75,6 +75,32 @@ export class Scene {
     /** Unloads this level. */
     public unload(): void {
 
+    }
+
+    public tick(delta : number) : void {
+        this.update(delta);
+
+
+        semantic.init(this._renderer, this._renderer.state, this._activeCamera, null, null);
+        this._activeCamera.updateViewProjectionMatrix();
+        
+
+        let projection : Matrix4 = this._renderer.getProjection();
+        let viewMatrix : Matrix4 = this._activeCamera.viewMatrix;
+        
+        // Set view uniforms.
+        let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
+        gl.uniformMatrix4fv( projectionPosition, false, projection.toArray());
+
+   
+        let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
+        gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
+         
+        this._renderer.BeginRender();
+
+        this.render(this._renderer.worldShader, projection, viewMatrix);
+
+        this._renderer.EndRender();
     }
 
     /**

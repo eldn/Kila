@@ -1,6 +1,5 @@
 import { Vector2 } from "../math/Vector2";
 import { Message } from "../message/Message";
-import { Renderer } from "../renderering/Renderer";
 
 
  export const MESSAGE_MOUSE_DOWN: string = "MOUSE_DOWN";
@@ -57,7 +56,7 @@ import { Renderer } from "../renderering/Renderer";
      private static _resolutionScale: Vector2 = Vector2.one;
 
     
-     public static initialize( viewport: HTMLCanvasElement ): void {
+     public static initialize( canvas: HTMLCanvasElement ): void {
          for ( let i = 0; i < 255; ++i ) {
              InputManager._keys[i] = false;
          }
@@ -65,13 +64,12 @@ import { Renderer } from "../renderering/Renderer";
          window.addEventListener( "keydown", InputManager.onKeyDown );
          window.addEventListener( "keyup", InputManager.onKeyUp );
 
-         viewport.addEventListener( "mousedown", InputManager.onMouseDown );
-         viewport.addEventListener( "mousemove", InputManager.onMouseMove );
-         viewport.addEventListener( "mouseup", InputManager.onMouseUp );
+         canvas.addEventListener( "mousedown", InputManager.onMouseDown );
+         canvas.addEventListener( "mousemove", InputManager.onMouseMove );
+         canvas.addEventListener( "mouseup", InputManager.onMouseUp );
 
-         viewport.addEventListener( "mousewheel", InputManager.onMouseWheel );
+         canvas.addEventListener( "mousewheel", InputManager.onMouseWheel );
 
-         let canvas : HTMLCanvasElement = Renderer.windowViewport.canvas;
          canvas.addEventListener("touchstart", this.onTouchStart, false);
          canvas.addEventListener("touchmove", this.onTouchMove, false);
          canvas.addEventListener("touchend", this.onTouchEnd, false);

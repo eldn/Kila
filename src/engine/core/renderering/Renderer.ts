@@ -9,7 +9,7 @@ import { WebGLState } from "./WebGlState";
 
 export class Renderer {
 
-    public static windowViewport: RendererViewport;
+    public  windowViewport: RendererViewport;
 
     private _basicShader: BasicShader;
 
@@ -25,12 +25,14 @@ export class Renderer {
     }
 
     public constructor(createInfo: RendererViewportCreateInfo) {
-        Renderer.windowViewport = new RendererViewport(createInfo);
+        this.windowViewport = new RendererViewport(createInfo);
         this._state = new WebGLState(gl);
+
+        this.Initialize();
     }
 
     public get windowViewportCanvas(): HTMLCanvasElement {
-        return Renderer.windowViewport.canvas;
+        return this.windowViewport.canvas;
     }
 
     public get worldShader(): Shader {
@@ -41,11 +43,13 @@ export class Renderer {
 
         this._basicShader = new BasicShader();
         this._basicShader.use();
+
+        this.Resize();
     }
 
     public Resize(): void {
-        if (Renderer.windowViewport) {
-            Renderer.windowViewport.OnResize(window.innerWidth, window.innerHeight);
+        if (this.windowViewport) {
+            this.windowViewport.OnResize(window.innerWidth, window.innerHeight);
         }
     }
 
@@ -58,9 +62,9 @@ export class Renderer {
        
     }
 
-    public static getProjection(): Matrix4 {
-        if (Renderer.windowViewport) {
-            return Renderer.windowViewport.getProjectionMatrix();
+    public getProjection(): Matrix4 {
+        if (this.windowViewport) {
+            return this.windowViewport.getProjectionMatrix();
         } else {
             console.error("windowViewport not initliazed!");
             return null;
