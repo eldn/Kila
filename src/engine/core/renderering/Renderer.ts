@@ -6,6 +6,9 @@ import { BasicShader } from "../gl/shaders/BasicShader";
 import { Shader } from "../gl/shaders/Shader";
 import { Matrix4 } from "../math/Matrix4";
 import { WebGLState } from "./WebGlState";
+import { Scene } from "../world/Scene";
+import { Camera } from "../world/cameras/Camera";
+import { semantic } from "./Semantic";
 
 export class Renderer {
 
@@ -51,9 +54,37 @@ export class Renderer {
         this.windowViewport.OnResize(window.innerWidth, window.innerHeight);
     }
 
+
+    public render(scene : Scene, camera : Camera) : void {
+
+        this.beginRender();
+
+
+        semantic.init(this, this.state, camera, null, null);
+        camera.updateViewProjectionMatrix();
+        
+
+        let projection : Matrix4 = camera.projectionMatrix;
+        let viewMatrix : Matrix4 = camera.viewMatrix;
+        
+        // Set view uniforms.
+        let projectionPosition = this.worldShader.getUniformLocation( "u_projection" );
+        gl.uniformMatrix4fv( projectionPosition, false, projection.toArray());
+
+   
+        let viewPosition = this.worldShader.getUniformLocation( "u_view" );
+        gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
+        scene.sceneGraph.render(this.worldShader, projection, viewMatrix);
+        
+
+        this.endRender();
+    }
+
     public beginRender(): void {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
+
+
 
     public endRender(): void {
 

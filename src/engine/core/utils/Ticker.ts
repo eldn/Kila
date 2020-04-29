@@ -14,7 +14,7 @@ export class Ticker {
     /**
     * @private
     */
-    public static startTick(callBack: (timeStamp: number) => void, thisObject: any): void {
+    public static addTick(callBack: (timeStamp: number) => void, thisObject: any): void {
         let index = this.getTickIndex(callBack, thisObject);
         if (index != -1) {
             return;
@@ -28,7 +28,7 @@ export class Ticker {
     /**
      * @private
      */
-    public static stopTick(callBack: (timeStamp: number) => void, thisObject: any): void {
+    public static removeTick(callBack: (timeStamp: number) => void, thisObject: any): void {
         let index = this.getTickIndex(callBack, thisObject);
         if (index == -1) {
             return;

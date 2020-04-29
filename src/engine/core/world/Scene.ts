@@ -79,29 +79,11 @@ export class Scene {
     }
 
     public tick(delta : number) : void {
+        // update matrix
         this.update(delta);
 
-
-        semantic.init(this._renderer, this._renderer.state, this._activeCamera, null, null);
-        this._activeCamera.updateViewProjectionMatrix();
-        
-
-        let projection : Matrix4 = this._activeCamera.projectionMatrix;
-        let viewMatrix : Matrix4 = this._activeCamera.viewMatrix;
-        
-        // Set view uniforms.
-        let projectionPosition = this._renderer.worldShader.getUniformLocation( "u_projection" );
-        gl.uniformMatrix4fv( projectionPosition, false, projection.toArray());
-
-   
-        let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
-        gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
-         
-        this._renderer.beginRender();
-
-        this.render(this._renderer.worldShader, projection, viewMatrix);
-
-        this._renderer.endRender();
+        // render
+        this._renderer.render(this, this._activeCamera);
     }
 
     /**
@@ -112,26 +94,6 @@ export class Scene {
         if (this._state === LevelState.UPDATING) {
             this._sceneGraph.update(time);
         }
-    }
-
-    /**
-     * Renders this level.
-     * @param shader The shader to use when rendering.
-     */
-    public render(shader: Shader, projection : Matrix4, viewMatrix : Matrix4): void {
-        if (this._state === LevelState.UPDATING) {
-            this._sceneGraph.render( shader, projection, viewMatrix);
-        }
-    }
-
-    /** Called when this level is activated. */
-    public onActivated(): void {
-
-    }
-
-    /** Called when this level is deactivated. */
-    public onDeactivated(): void {
-        
     }
 
     public resize() : void{

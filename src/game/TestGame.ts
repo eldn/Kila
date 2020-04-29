@@ -65,7 +65,7 @@ function test(){
   scene.addObject(planeObject);
 
 
-  Ticker.startTick((timeDelta : number)=>{
+  Ticker.addTick((timeDelta : number)=>{
     scene.tick( timeDelta );
   }, this)
 
