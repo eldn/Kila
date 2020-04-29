@@ -157,5 +157,18 @@ export class Color {
         return new Color(0, 0, 255, 255);
     }
 
+    /**
+     * 转换到数组
+     * @param  {Array}  [array=[]] 转换到的数组
+     * @param  {Number} [offset=0] 数组偏移值
+     * @return {Array}
+     */
+    public toRGBArray(array : Array<number> = [], offset : number= 0) {
+        array[offset] = this._r;
+        array[offset + 1] = this._g;
+        array[offset + 2] = this._b;
+        return array;
+    }
+
 
 }
