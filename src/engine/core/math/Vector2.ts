@@ -386,4 +386,34 @@ export class Vector2 {
         this.elements[1] = value;
     }
 
+
+    sub(a , b){
+        return this.subtract(a, b);
+    }
+
+    mul(a , b){
+        return this.multiply(a, b);
+    }
+
+
+    div(a , b){
+        return this.divide(a, b);
+    }
+
+    dist(a , b){
+        return this.distance(a, b);
+    }
+
+    sqrDist(a , b){
+        return this.squaredDistance(a, b);
+    }
+
+    len(){
+        return this.length();
+    }
+
+    sqrLen(a , b){
+        return this.squaredLength();
+    }
+
 }
