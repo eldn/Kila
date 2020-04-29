@@ -20,6 +20,22 @@ export class Color {
         this._a = a;
     }
 
+    public copy(b : Color) : Color{
+        this._r = b.r;
+        this._g = b.g;
+        this._b = b.b;
+        this._a = b.a;
+        return this;
+    }
+
+    public scale(v : number) : Color{
+        this._r *= v;
+        this._g *= v;
+        this._b *= v;
+        this._a *= v;
+        return this;
+    }
+
     /** The red value [0-255] */
     public get r(): number {
         return this._r;
@@ -140,4 +156,6 @@ export class Color {
     public static blue(): Color {
         return new Color(0, 0, 255, 255);
     }
+
+
 }
