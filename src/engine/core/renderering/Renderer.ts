@@ -28,7 +28,7 @@ export class Renderer {
         this.windowViewport = new RendererViewport(createInfo);
         this._state = new WebGLState(gl);
 
-        this.Initialize();
+        this.initialize();
     }
 
     public get windowViewportCanvas(): HTMLCanvasElement {
@@ -39,23 +39,23 @@ export class Renderer {
         return this._basicShader;
     }
 
-    public Initialize(): void {
+    public initialize(): void {
 
         this._basicShader = new BasicShader();
         this._basicShader.use();
 
-        this.Resize();
+        this.resize();
     }
 
-    public Resize(): void {
+    public resize(): void {
         this.windowViewport.OnResize(window.innerWidth, window.innerHeight);
     }
 
-    public BeginRender(): void {
+    public beginRender(): void {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
 
-    public EndRender(): void {
+    public endRender(): void {
 
        
     }
@@ -66,15 +66,5 @@ export class Renderer {
 
     public get canvasHeight() : number{
         return this.windowViewport.height;
-    }
-
-
-    public getProjection(): Matrix4 {
-        if (this.windowViewport) {
-            return this.windowViewport.getProjectionMatrix();
-        } else {
-            console.error("windowViewport not initliazed!");
-            return null;
-        }
     }
 }

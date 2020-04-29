@@ -97,11 +97,11 @@ export class Scene {
         let viewPosition = this._renderer.worldShader.getUniformLocation( "u_view" );
         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
          
-        this._renderer.BeginRender();
+        this._renderer.beginRender();
 
         this.render(this._renderer.worldShader, projection, viewMatrix);
 
-        this._renderer.EndRender();
+        this._renderer.endRender();
     }
 
     /**
@@ -135,7 +135,7 @@ export class Scene {
     }
 
     public resize() : void{
-        this._renderer.Resize();
+        this._renderer.resize();
 
         if(this._activeCamera instanceof PerspectiveCamera){
             this._activeCamera.aspect = this._renderer.canvasWitdh / this._renderer.canvasHeight;
