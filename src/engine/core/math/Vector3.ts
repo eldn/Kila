@@ -486,7 +486,7 @@ import { Quaternion } from "./Quaternion";
         this.elements[2] = value;
      }
 
-    sub(a, b){
+    sub(a : Vector3, b ?: Vector3){
         return this.subtract(a, b);
     }
 
