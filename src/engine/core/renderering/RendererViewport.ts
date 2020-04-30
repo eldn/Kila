@@ -34,8 +34,8 @@ export class RendererViewportCreateInfo {
 
 
 export class RendererViewport {
-    private _x: number;
-    private _y: number;
+    private _offsetX: number;
+    private _offsetY: number;
     private _width: number;
     private _height: number;
     private _sizeMode: ViewportSizeMode = ViewportSizeMode.DYNAMIC;
@@ -47,8 +47,8 @@ export class RendererViewport {
 
         this._width = createInfo.width;
         this._height = createInfo.height;
-        this._x = createInfo.x;
-        this._y = createInfo.y;
+        this._offsetX = createInfo.x;
+        this._offsetY = createInfo.y;
 
         if ( this._width !== undefined && this._height !== undefined ) {
             //this._aspect = this._width / this._height;
@@ -88,12 +88,20 @@ export class RendererViewport {
         return this._height;
     }
 
-    public get x(): number {
-        return this._x;
+    public get offsetX(): number {
+        return this._offsetX;
     }
 
-    public get y(): number {
-        return this._y;
+    public set offsetX(v : number ){
+        this._offsetX = v;
+    }
+
+    public get offsetY(): number {
+        return this._offsetY;
+    }
+
+    public set offsetY(v : number){
+        this._offsetY = v;
     }
 
   
@@ -107,7 +115,7 @@ export class RendererViewport {
                 this._canvas.height = window.innerHeight;
                 this._width = window.innerWidth;
                 this._height = window.innerHeight;
-                gl.viewport( this._x, this._y, this._width, this._height );
+                gl.viewport( this._offsetX, this._offsetY, this._width, this._height );
             } else {
 
                 let newWidth = window.innerWidth;
@@ -132,7 +140,7 @@ export class RendererViewport {
                 this._canvas.width = newWidth;
                 this._canvas.height = newHeight;
 
-                gl.viewport( this._x, this._y, newWidth, newHeight );
+                gl.viewport( this._offsetX, this._offsetY, newWidth, newHeight );
 
                 // NOTE: The renderer shouldn't care about setting this in the input manager. May want to do this with messages instead.
                 let resolutionScale = new Vector2( newWidth / this._width, newHeight / this._height );
@@ -142,7 +150,7 @@ export class RendererViewport {
     }
 
     public Reposition( x: number, y: number ): void {
-        this._x = x;
-        this._y = y;
+        this._offsetX = x;
+        this._offsetY = y;
     }
 }

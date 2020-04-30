@@ -100,7 +100,7 @@ export class Scene {
         this._renderer.resize();
 
         if(this._activeCamera instanceof PerspectiveCamera){
-            this._activeCamera.aspect = this._renderer.canvasWitdh / this._renderer.canvasHeight;
+            this._activeCamera.aspect = this._renderer.width / this._renderer.height;
         }
         
     }

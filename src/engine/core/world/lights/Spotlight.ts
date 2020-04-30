@@ -1,85 +1,109 @@
 import { Vector3 } from "../../math/Vector3";
 import { Light, LightType } from "./Light";
-import { Color } from "../../graphics/Color";
-import { Shader } from "../../gl/shaders/Shader";
-import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
-import { LightRendererComponent } from "../../components/LightComponent";
+import { Matrix4 } from "../../math/Matrix4";
+import math from "../../math/math";
+import { LightShadow } from "./LightShadow";
 
-let v3_a : Vector3 = new Vector3();
-
-class SpotLightProperty {
-    position : Vector3 = new Vector3();
-    direction: Vector3 = new Vector3();
-    
-    ambient: Vector3 = new Vector3();
-    diffuse: Vector3 = new Vector3();
-    specular: Vector3 = new Vector3();
-
-    cutOff : number = 0;
-    outerCutOff : number = 0;
-
-    constructor(position : Vector3, direction: Vector3, ambient: Vector3, diffuse: Vector3, specular: Vector3, cutOff : number, outerCutOff : number) {
-        this.position.copyFrom(position);
-        this.direction.copyFrom(direction);
-        this.ambient.copyFrom(ambient);
-        this.diffuse.copyFrom(diffuse);
-        this.specular.copyFrom(specular);
-        this.cutOff = cutOff;
-        this.outerCutOff = outerCutOff;
-    }
-}
+const tempMatrix4 = new Matrix4();
+const tempVector3 = new Vector3();
 
 export class SpotLight extends Light{
 
-    private _lightProperty : SpotLightProperty;
+    
+    /**
+     * 阴影生成参数，默认不生成阴影
+     * @default null
+     * @type {object}
+     * @property {boolean} [debug=false] 是否显示生成的阴影贴图
+     * @property {number} [width=render.width] 阴影贴图的宽，默认为画布宽
+     * @property {number} [height=render.height] 阴影贴图的高，默认为画布高
+     * @property {number} [bias=0.005] depth最小差值，大于才显示阴影
+     * @property {Object} [cameraInfo=null] 阴影摄像机信息, 没有会根据当前相机自动计算
+     */
+    shadow: any = null;
+    _cutoffCos: number = 0.9763;
+    _cutoff: number = 12.5;
 
-    constructor(renderComponent : LightRendererComponent, type: LightType,name : string, color : Color){
-        super(renderComponent, type, name, color);
-        this._lightProperty = new SpotLightProperty(new Vector3(), new Vector3(), new Vector3(0.2, 0.2, 0.2), new Vector3(0.5, 0.5, 0.5), new Vector3(1.0, 1.0, 1.0), Math.cos(this.radians(12.5)), Math.cos(this.radians(17.5)));
+    /**
+     * 切光角(角度)，落在这个角度之内的光亮度为1
+     * @default 12.5
+     * @type {number}
+     */
+    get cutoff() {
+        return this._cutoff;
+    }
+    
+    set cutoff(value) {
+        this._cutoff = value;
+        this._cutoffCos = Math.cos(math.degToRad(value));
     }
 
-    public getDirection(out : Vector3) : Vector3{
-        out.copyFrom(this._lightProperty.direction);
-        return out;
+
+    _outerCutoffCos: number = 0.9537;
+    _outerCutoff: number = 17.5;
+    /**
+     * 外切光角(角度)，在切光角合外切光角之间的光亮度渐变到0
+     * @default 17.5
+     * @type {number}
+     */
+    get outerCutoff() {
+        return this._outerCutoff;
     }
 
-    public getAmbient(out : Vector3) : Vector3{
-        out.copyFrom(this._lightProperty.ambient);
-        return out;
+    set outerCutoff(value) {
+        this._outerCutoff = value;
+        this._outerCutoffCos = Math.cos(math.degToRad(value));
+    }
+    
+    /**
+     * @constructs
+     * @param {Object} [params] 创建对象的属性参数。可包含此类的所有属性。
+     */
+    constructor() {
+        super();
+
+        /**
+         * 光方向
+         * @type {Vector3}
+         * @default new Vector3(0, 0, 1)
+         */
+        this.direction = new Vector3(0, 0, 1);
     }
 
-    public getDiffuse(out : Vector3) : Vector3{
-        out.copyFrom(this._lightProperty.diffuse);
-        return out;
+    public lightShadow : LightShadow;
+
+    createShadowMap(renderer, camera) {
+        if (!this.shadow) {
+            return;
+        }
+        if (!this.lightShadow) {
+            this.lightShadow = new LightShadow({
+                light: this,
+                renderer,
+                width: this.shadow.width || renderer.width,
+                height: this.shadow.height || renderer.height,
+                debug: this.shadow.debug,
+                cameraInfo: this.shadow.cameraInfo
+            });
+            if ('minBias' in this.shadow) {
+                this.lightShadow.minBias = this.shadow.minBias;
+            }
+            if ('maxBias' in this.shadow) {
+                this.lightShadow.maxBias = this.shadow.maxBias;
+            }
+        }
+        this.lightShadow.createShadowMap(camera);
     }
 
-    public getSpecular(out : Vector3) : Vector3{
-        out.copyFrom(this._lightProperty.specular);
-        return out;
+    getWorldDirection() {
+        tempVector3.copy(this.direction).transformDirection(this._owner.worldMatrix).normalize();
+        return tempVector3;
     }
 
-    public setShaderProperty(shader: Shader) : void{
-
-        // let activeCamera: PerspectiveCamera = SceneManager.activeLevelActiveCamera as PerspectiveCamera;
-        // if (!activeCamera) {
-        //     return;
-        // }
-     
-        // // 设置光的位置和属性
-        // let position : Vector3 = activeCamera.getWorldPosition(v3_a);
-        // shader.setUniform3f("u_spotLight.position", position.x, position.y, position.z);
-
-        // let direction : Vector3 = activeCamera.getFront(v3_a);
-        // shader.setUniform3f("u_spotLight.direction", direction.x, direction.y, direction.z);
-
-        // shader.setUniform1f("u_spotLight.cutOff", this._lightProperty.cutOff);
-
-        // shader.setUniform1f("u_spotLight.outerCutOff", this._lightProperty.outerCutOff);
-
-        // // set shader's light uniform.
-        // shader.setUniform3f(`u_spotLight.ambient`, this._lightProperty.ambient.x, this._lightProperty.ambient.y, this._lightProperty.ambient.z);
-        // shader.setUniform3f(`u_spotLight.diffuse`, this._lightProperty.diffuse.x, this._lightProperty.diffuse.y, this._lightProperty.diffuse.z);
-        // shader.setUniform3f(`u_spotLight.specular`, this._lightProperty.specular.x, this._lightProperty.specular.y, this._lightProperty.specular.z);
+    getViewDirection(camera) {
+        const modelViewMatrix = camera.getModelViewMatrix(this, tempMatrix4);
+        tempVector3.copy(this.direction).transformDirection(modelViewMatrix).normalize();
+        return tempVector3;
     }
 
     

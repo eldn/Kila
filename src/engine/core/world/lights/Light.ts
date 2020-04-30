@@ -1,8 +1,11 @@
 import { Color } from "../../graphics/Color";
 import { Shader } from "../../gl/shaders/Shader";
-import { Matrix4x4 } from "../../math/Matrix4x4";
-import { GameObject } from "../GameObject";
 import { LightRendererComponent } from "../../components/LightComponent";
+import { Col } from "../../../../../editor/libs/imgui-js-master/imgui";
+import { TObject } from "../../objects/Object";
+import { Vector3 } from "../../math/Vector3";
+import { BaseComponent } from "../../components/BaseComponent";
+import { GameObject } from "../GameObject";
 
 export enum LightType{
     DirectionLight  = 0,
@@ -10,50 +13,120 @@ export enum LightType{
     SpotLight = 2
 }
 
-export class Light{
 
-    private _name : string;
-    private _color : Color;
-    private _type : LightType;
-    private _renderComponent : LightRendererComponent;
+const tempColor = new Color();
 
-    constructor(renderComponent : LightRendererComponent, type : LightType, name : string, color : Color){
-        this._renderComponent = renderComponent;
-        this._type = type;
-        this._name = name;
-        this._color = new Color(color.r, color.g, color.b, color.a);
+export class Light extends BaseComponent{
+
+     /**
+     * 光强度
+     * @type {Number}
+     * @default 1
+     */
+    amount: number =  1;
+
+    /**
+     * 是否开启灯光
+     * @type {Boolean}
+     * @default true
+     */
+    enabled: boolean = true;
+
+
+     /**
+     * 光常量衰减值, PointLight 和 SpotLight 时生效
+     * @type {Number}
+     * @readOnly
+     * @default 1
+     */
+    constantAttenuation: number = 1;
+
+
+     /**
+     * 光线性衰减值, PointLight 和 SpotLight 时生效
+     * @type {Number}
+     * @readOnly
+     * @default 0
+     */
+    linearAttenuation: number = 0;
+
+
+    /**
+     * 光二次衰减值, PointLight 和 SpotLight 时生效
+     * @type {Number}
+     * @readOnly
+     * @default 0
+     */
+    quadraticAttenuation: number = 0;
+
+
+    private _range: number = 0;
+
+    /**
+     * 光照范围, PointLight 和 SpotLight 时生效, 0 时代表光照范围无限大。
+     * @type {Number}
+     * @default 0
+     */
+    get range() {
+        return this._range;
     }
 
-    public get type() : LightType{
-        return this._type;
+    set range(value) {
+        this.constantAttenuation = 1;
+        if (value <= 0) {
+            this.linearAttenuation = 0;
+            this.quadraticAttenuation = 0;
+        } else {
+            this.linearAttenuation = 4.5 / value;
+            this.quadraticAttenuation = 75 / (value * value);
+        }
+        this._range = value;
     }
 
-    public getRenderComponent() : LightRendererComponent{
-        return this._renderComponent;
+
+    direction : Vector3 = new Vector3();
+
+    /**
+     * 灯光颜色
+     * @default new Color(1, 1, 1)
+     * @type {Color}
+     */
+    public color : Color;
+
+    /**
+     * @constructs
+     * @param {Object} [params] 创建对象的属性参数。可包含此类的所有属性。
+     */
+    constructor() {
+        super();
+        this.color = new Color(1, 1, 1);
     }
 
-    public get name(): string {
-        return this._name;
+
+    /**
+     * 获取光范围信息, PointLight 和 SpotLight 时生效
+     * @param  {Array} out  信息接受数组
+     * @param  {Number} offset 偏移值
+     */
+    public toInfoArray(out : Array<number>, offset : number) {
+        out[offset + 0] = this.constantAttenuation;
+        out[offset + 1] = this.linearAttenuation;
+        out[offset + 2] = this.quadraticAttenuation;
+        return this;
     }
 
-    public get color() : Color{
-        return new Color(this.color.r, this.color.g, this.color.b, this.color.a);
+    getRealColor() {
+        return tempColor.copy(this.color).scale(this.amount);
     }
 
-    public load() :void{
-     
+
+     /**
+     * 生成阴影贴图，支持阴影的子类需要重写
+     * @param  {WebGLRenderer} renderer
+     * @param  {Camera} camera
+     */
+    createShadowMap(renderer, camera) { // eslint-disable-line no-unused-vars
+
     }
 
-    public radians(degrees: number): number {
-        return degrees * (Math.PI / 180.0);
-    }
-
-    public draw(shader: Shader, model: Matrix4x4, projection : Matrix4x4, viewMatrix : Matrix4x4) :void{
-
-     
-    }
-
-    public setShaderProperty(shader: Shader) : void{
-        
-    }
 }

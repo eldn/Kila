@@ -13,7 +13,7 @@ export class WebGLState{
     private textureUnitDict : Object;
 
     private  currentFramebuffer : WebGLFramebuffer;
-    private  preFramebuffer : WebGLFramebuffer;
+    public  preFramebuffer : WebGLFramebuffer;
     private systemFramebuffer : WebGLFramebuffer;
 
     /**

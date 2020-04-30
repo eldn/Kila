@@ -9,13 +9,18 @@ import { WebGLState } from "./WebGlState";
 import { Scene } from "../world/Scene";
 import { Camera } from "../world/cameras/Camera";
 import { semantic } from "./Semantic";
+import { Color } from "../graphics/Color";
+import { Material } from "../material/Material";
+import { EventMixin } from "../event/EventMixin";
 
-export class Renderer {
+export class Renderer extends EventMixin{
 
     public  windowViewport: RendererViewport;
 
     private _basicShader: BasicShader;
 
+
+    public forceMaterial: Material;
 
     private _state: WebGLState;
 
@@ -28,6 +33,7 @@ export class Renderer {
     }
 
     public constructor(createInfo: RendererViewportCreateInfo) {
+        super();
         this.windowViewport = new RendererViewport(createInfo);
         this._state = new WebGLState(gl);
 
@@ -57,6 +63,7 @@ export class Renderer {
 
     public render(scene : Scene, camera : Camera) : void {
 
+
         this.beginRender();
 
 
@@ -75,9 +82,13 @@ export class Renderer {
         let viewPosition = this.worldShader.getUniformLocation( "u_view" );
         gl.uniformMatrix4fv( viewPosition, false, viewMatrix.toArray());
         scene.sceneGraph.render(this.worldShader, projection, viewMatrix);
-        
+
 
         this.endRender();
+    }
+
+    public clear(color : Color) : void {
+        // gl.clear(color.r, color.g, color.b, color.a);
     }
 
     public beginRender(): void {
@@ -91,11 +102,48 @@ export class Renderer {
        
     }
 
-    public get canvasWitdh() : number{
+    public get width() : number{
         return this.windowViewport.width;
     }
 
-    public get canvasHeight() : number{
+    public get height() : number{
         return this.windowViewport.height;
+    }
+
+     /**
+     * 设置viewport
+     * @param  {Number} [x=this.offsetX]  x
+     * @param  {Number} [y=this.offsetY] y
+     * @param  {Number} [width=this.gl.drawingBufferWidth]  width
+     * @param  {Number} [height=this.gl.drawingBufferHeight]  height
+     */
+    viewport(x ?: number, y ?: number, width ?: number, height ?: number) {
+     
+
+        const state = this._state;
+
+        if (state) {
+            if (x === undefined) {
+                x = this.windowViewport.offsetX;
+            } else {
+                this.windowViewport.offsetX = x;
+            }
+
+            if (y === undefined) {
+                y = this.windowViewport.offsetY;
+            } else {
+                this.windowViewport.offsetY = y;
+            }
+
+            if (width === undefined) {
+                width = gl.drawingBufferWidth;
+            }
+
+            if (height === undefined) {
+                height = gl.drawingBufferHeight;
+            }
+
+            state.viewport(x, y, width, height);
+        }
     }
 }
