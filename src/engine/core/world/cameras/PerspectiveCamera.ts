@@ -6,13 +6,13 @@ export class PerspectiveCamera extends Camera {
 
 
     
-    public constructor(name : string, apsect : number, near : number, far : number, fov : number) {
+    public constructor(name ?: string, apsect ?: number, near ?: number, far ?: number, fov ?: number) {
         super(name);
 
-        this._aspect = apsect;
-        this._near = near;
-        this._far = far;
-        this._fov = fov;
+        apsect && (this._aspect = apsect);
+        near && (this._near = near);
+        far && (this._far = far);
+        fov && (this._fov = fov);
         this.updateProjectionMatrix();
     }
 
