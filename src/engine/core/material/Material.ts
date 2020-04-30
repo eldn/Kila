@@ -632,10 +632,11 @@ export class Material extends TObject {
 	}
 
 
-	constructor() {
+	constructor(params ?: any) {
 		super()
 
-
+		Object.assign(this, params);
+		
 		if (this.needBasicAttributes) {
 			this.addBasicAttributes();
 		}

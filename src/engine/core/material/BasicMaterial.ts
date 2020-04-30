@@ -95,7 +95,7 @@ export class BasicMaterial extends Material{
 
     usedUniformVectors: number = 11;
 
-    constructor(){
+    constructor(params ?: any){
         super();
 
         this.diffuse = new Color(.5, .5, .5);

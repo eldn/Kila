@@ -2,6 +2,7 @@ import { GameObject } from "../GameObject";
 import { Frustum } from "../../math/Frustum";
 import { Matrix4 } from "../../math/Matrix4";
 import { Vector3 } from "../../math/Vector3";
+import { Geometry } from "../geometry/Geometry";
 
 
 const tempMatrix4 = new Matrix4();
@@ -107,8 +108,8 @@ export class Camera extends GameObject {
      * @param  {Boolean} forceUpdate 是否强制更新
      * @return {Geometry}
      */
-    getGeometry(forceUpdate) { // eslint-disable-line no-unused-vars
-
+    getGeometry(forceUpdate ?: boolean) : Geometry{ // eslint-disable-line no-unused-vars
+        return null;
     }
 
     /**

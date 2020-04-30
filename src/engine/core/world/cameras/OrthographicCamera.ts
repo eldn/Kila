@@ -1,4 +1,5 @@
 import { Camera } from "./Camera";
+import { Geometry } from "../geometry/Geometry";
 
 export class OrthographicCamera extends Camera{
 
@@ -112,6 +113,37 @@ export class OrthographicCamera extends Camera{
      */
     updateProjectionMatrix() {
         this.projectionMatrix.ortho(this.left, this.right, this.bottom, this.top, this.near, this.far);
+    }
+
+
+    private _geometry : Geometry;
+
+    getGeometry(forceUpdate ?: boolean) : Geometry{
+        if (forceUpdate || !this._geometry || this._isGeometryDirty) {
+            this._isGeometryDirty = false;
+
+            const geometry = new Geometry();
+
+            const p1 = [this.left, this.bottom, -this.near];
+            const p2 = [this.right, this.bottom, -this.near];
+            const p3 = [this.right, this.top, -this.near];
+            const p4 = [this.left, this.top, -this.near];
+            const p5 = [this.left, this.bottom, -this.far];
+            const p6 = [this.right, this.bottom, -this.far];
+            const p7 = [this.right, this.top, -this.far];
+            const p8 = [this.left, this.top, -this.far];
+
+            geometry.addRect(p5, p6, p7, p8); // front
+            geometry.addRect(p6, p2, p3, p7); // right
+            geometry.addRect(p2, p1, p4, p3); // back
+            geometry.addRect(p1, p5, p8, p4); // left
+            geometry.addRect(p8, p7, p3, p4); // top
+            geometry.addRect(p1, p2, p6, p5); // bottom
+
+            this._geometry = geometry;
+        }
+
+        return this._geometry;
     }
 
 }
