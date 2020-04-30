@@ -53,7 +53,7 @@ import { Message } from "../message/Message";
      private static _mouseY: number;
      private static _leftDown: boolean = false;
      private static _rightDown: boolean = false;
-     private static _resolutionScale: Vector2 = Vector2.one;
+     private static _resolutionScale: Vector2 = new Vector2(1, 1);
 
     
      public static initialize( canvas: HTMLCanvasElement ): void {
@@ -89,7 +89,7 @@ import { Message } from "../message/Message";
      }
 
      public static setResolutionScale( scale: Vector2 ): void {
-         InputManager._resolutionScale.copyFrom( scale );
+         InputManager._resolutionScale.copy( scale );
      }
 
      private static onKeyDown( event: KeyboardEvent ): boolean {
