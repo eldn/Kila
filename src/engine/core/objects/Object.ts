@@ -20,6 +20,10 @@ export abstract class TObject {
         return this._id;
     }
 
+    public get id(): number {
+        return this._id;
+    }
+
     public destroy(): void {
         this._id = undefined;
 

@@ -23,12 +23,13 @@ const math = {
         let uid = 0;
         return (prefix) => {
             let id = ++uid;
+            let id_str;
             if (prefix) {
-                id = prefix + '_' + id;
+                id_str = prefix + '_' + id;
             } else {
-                id += '';
+                id_str += '';
             }
-            return id;
+            return id_str;
         };
     })(),
     /**

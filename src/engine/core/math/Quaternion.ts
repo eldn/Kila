@@ -442,7 +442,7 @@ export class Quaternion extends EventMixin{
      * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
      * @return {Quaternion} this
      */
-    fromEuler(euler, dontFireEvent) {
+    fromEuler(euler, dontFireEvent ?: boolean) {
         // Based on https://github.com/mrdoob/three.js/blob/dev/src/math/Quaternion.js#L200
 
         // quat.fromEuler(this.elements, euler.x, euler.y, euler.z);

@@ -68,5 +68,22 @@ export class Utils {
         return gl.FLOAT;
     }
 
+
+    public static copyArrayData(destArr, srcArr, destIdx, srcIdx, count) {
+        if (!destArr || !srcArr) {
+            return;
+        }
+        if (srcArr.isGeometryData) {
+            srcArr = srcArr.data;
+        }
+        for (let i = 0; i < count; i++) {
+            destArr[destIdx + i] = srcArr[srcIdx + i];
+        }
+    }
+
+    public static hasOwnProperty(obj, name) {
+        return Object.prototype.hasOwnProperty.call(obj, name);
+    }
+
 }
 

@@ -347,7 +347,7 @@ export class GeometryData extends TObject{
         return false;
     }
 
-    merge(geometryData, transform) {
+    merge(geometryData, transform ?: any) {
         if (geometryData.type !== this.type || geometryData.size !== this.size) {
             log.warn('geometryData type or size not same, cannot merge!', this, geometryData);
             return this;

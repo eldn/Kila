@@ -387,7 +387,7 @@ export class Vector2 {
     }
 
 
-    sub(a , b){
+    sub(a : Vector2 , b ?: Vector2){
         return this.subtract(a, b);
     }
 

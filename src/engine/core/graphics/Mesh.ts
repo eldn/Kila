@@ -19,7 +19,7 @@ export class Mesh implements IMessageHandler {
     protected _origin: Vector3 = new Vector3();
     private _meshAsset: ModelAsset;
 
-    constructor(modelPath: string) {
+    constructor(modelPath?: string) {
         this._modelPath = modelPath;
         this._vertextBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
         this._uvBuffer = new GLBuffer(gl.FLOAT, gl.ARRAY_BUFFER, gl.TRIANGLES);
