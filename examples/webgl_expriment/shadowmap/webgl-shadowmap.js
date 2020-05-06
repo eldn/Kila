@@ -1,5 +1,10 @@
 var cubeRotation = 0.0;
 
+// 生成的纹理的分辨率，纹理必须是标准的尺寸 256*256 1024*1024  2048*2048
+var resolution = 256;
+var offset_width = resolution;
+var offset_height = resolution;
+
 main();
 
 //
@@ -23,12 +28,11 @@ function main() {
   precision highp float;
   attribute vec4 aVertexPosition;
 
-  uniform mat4 uModelViewMatrix;
-  uniform mat4 uProjectionMatrix;
+  uniform mat4 uMvpMatrix;
 
 
   void main(void) {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    gl_Position = uMvpMatrix * aVertexPosition;
   }
 `;
 
@@ -36,51 +40,57 @@ function main() {
 const shadow_create_fsSource = `
   precision highp float;
   void main(void) {
-    vec4 bitShift = vec4(1.0, 256.0, 256.0 * 256.0, 256.0 * 256.0 * 256.0);
-    const vec4 bitMask = vec4(1.0/256.0, 1.0/256.0, 1.0/256.0, 0.0);
-    vec4 rgbaDepth = fract(gl_FragCoord.z * bitShift);
-    rgbaDepth -= rgbaDepth.gbaa * bitMask;
-    gl_FragColor = rgbaDepth;
+    gl_FragColor = vec4( 0.0, 0.0, 0.0,gl_FragCoord.z);
   }
 `;
 
 
 const shadow_create_shaderProgram = initShaderProgram(gl, shadow_create_vsSource, shadow_create_fsSource);
 
+  const shadow_create_shaderProgram_info = {
+    program: shadow_create_shaderProgram,
+    attribLocations: {
+      vertexPosition: gl.getAttribLocation(shadow_create_shaderProgram, 'aVertexPosition'),
+      textureCoord: gl.getAttribLocation(shadow_create_shaderProgram, 'aTextureCoord'),
+    },
+    uniformLocations: {
+      uMvpMatrix: gl.getUniformLocation(shadow_create_shaderProgram, 'uMvpMatrix')
+    },
+  };
 
 
 // =======================> shadow display shader <=========================
 
 const shadow_display_vsSource = `
 precision highp float;
+
 attribute vec4 aVertexPosition;
-attribute vec4 a_Color;
+attribute vec4 aColor;
 
-uniform mat4 uModelViewMatrix;
-uniform mat4 uProjectionMatrix;
+uniform mat4 uMvpMatrix;
+uniform mat4 uMvpMatrixFromLight;
 
-uniform mat4 u_MvpMatrixFromLight;
 varying vec4 v_PositionFromLight;
 varying vec4 v_Color;
 
 void main(void) {
-  gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-  v_PositionFromLight = u_MvpMatrixFromLight * aVertexPosition;
-  v_Color = a_Color;
+  gl_Position = uMvpMatrix * aVertexPosition;
+  v_PositionFromLight = uMvpMatrixFromLight * aVertexPosition;
+  v_Color = aColor;
 }
 `;
 
 
 const shadow_display_fsSource = `
 precision highp float;
-uniform sampler2D u_ShadowMap;
+uniform sampler2D uShadowMap;
 varying vec4 v_PositionFromLight;
 varying vec4 v_Color;
 
 void main(void) {
     vec3 shadowCoord = (v_PositionFromLight.xyz / v_PositionFromLight.w) / 2.0 + 0.5;
-    vec4 rgbaDepth = texture2D(u_ShadowMap, shadowCoord.xy);
-    float depth = rgbaDepth.r;
+    vec4 rgbaDepth = texture2D(uShadowMap, shadowCoord.xy);
+    float depth = rgbaDepth.a;
     float visibility = (shadowCoord.z > depth + 0.005) ? 0.5 : 1.0;
     gl_FragColor = vec4(v_Color.rgb * visibility, v_Color.a);
 }
@@ -88,6 +98,19 @@ void main(void) {
 
 
 const shadow_display_shaderProgram = initShaderProgram(gl, shadow_display_vsSource, shadow_display_fsSource);
+
+const shadow_display_shaderProgram_info = {
+  program: shadow_display_shaderProgram,
+  attribLocations: {
+    vertexPosition: gl.getAttribLocation(shadow_display_shaderProgram, 'aVertexPosition'),
+    color: gl.getAttribLocation(shadow_display_shaderProgram, 'aColor'),
+  },
+  uniformLocations: {
+    uMvpMatrix: gl.getUniformLocation(shadow_display_shaderProgram, 'uMvpMatrix'),
+    uMvpFromLight: gl.getUniformLocation(shadow_display_shaderProgram, 'uMvpMatrixFromLight'),
+    uShadowMap: gl.getUniformLocation(shadow_display_shaderProgram, 'uShadowMap'),
+  },
+};
 
 // =======================> shadow display shader <=========================
 
@@ -142,6 +165,25 @@ const shadow_display_shaderProgram = initShaderProgram(gl, shadow_display_vsSour
   };
 
 
+   // 设置帧缓冲区对象
+   var fbo = initFramebufferObject(gl);
+   if(!fbo){
+       console.log("无法设置帧缓冲区对象");
+       return;
+   }
+
+
+
+
+  // 声明一个光源的变换矩阵
+  const viewProjectMatrixFromLight = mat4.create();
+  mat4.perspective(viewProjectMatrixFromLight,
+                   70.0,
+                   offset_width/offset_height,
+                   1.0,
+                   100.0);
+  mat4.lookAt(viewProjectMatrixFromLight, [6.0, 8.0, -6.0], [0,0,0],[0,1,0]);
+
 
   // =================================> cube <================================
   const cubeBuffers = initCubeBuffers(gl);
@@ -189,6 +231,33 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     [10, 10, 0.1]); 
 
 
+// =================================> light <================================
+
+ const lightBuffers = initCubeBuffers(gl);
+ const lightTexture = loadTexture(gl, 'white1.png');
+ const lightModelViewMatrix = mat4.create();
+
+
+  mat4.translate(lightModelViewMatrix,     // destination matrix
+    lightModelViewMatrix,     // matrix to translate
+    [6.0, 8.0, -6.0]);  // amount to translate
+
+
+  mat4.rotate(lightModelViewMatrix,  // destination matrix
+    lightModelViewMatrix,  // matrix to rotate
+  45,     // amount to rotate in radians
+  [0, 0, 1]);       // axis to rotate around (Z)
+
+
+  mat4.rotate(lightModelViewMatrix,  // destination matrix
+    lightModelViewMatrix,  // matrix to rotate
+  45,// amount to rotate in radians
+  [0, 1, 0]);       // axis to rotate around (X)
+
+
+  mat4.scale(lightModelViewMatrix,  // destination matrix
+    lightModelViewMatrix,  // matrix to rotate
+  [0.3, 0.3, 0.3]);       // axis to rotate around (X)
 
 
   var then = 0;
@@ -210,7 +279,7 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
 
     drawScene(gl, programInfo, cubeBuffers, cubeModelViewMatrix, cubeTexture);
     drawScene(gl, programInfo, planeBuffers, planeModelViewMatrix, planeTexture);
-
+    drawScene(gl, programInfo, lightBuffers, lightModelViewMatrix, lightTexture);
 
     cubeRotation += deltaTime;
 
@@ -575,7 +644,7 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
 
   mat4.translate(projectionMatrix,     // destination matrix
   projectionMatrix,     // matrix to translate
-  [0.0, 0.0, -10]);  // amount to translate
+  [0.0, 0.0, -20]);  // amount to translate
 
 
 //  mat4.lookAt(projectionMatrix, projectionMatrix, [0, 0, 0]);
@@ -722,5 +791,66 @@ function loadShader(gl, type, source) {
   }
 
   return shader;
+}
+
+
+function initFramebufferObject(gl) {
+  var framebuffer, texture, depthBuffer;
+
+  //定义错误函数
+  function error() {
+      if(framebuffer) gl.deleteFramebuffer(framebuffer);
+      if(texture) gl.deleteFramebuffer(texture);
+      if(depthBuffer) gl.deleteFramebuffer(depthBuffer);
+      return null;
+  }
+
+  //创建帧缓冲区对象
+  framebuffer = gl.createFramebuffer();
+  if(!framebuffer){
+      console.log("无法创建帧缓冲区对象");
+      return error();
+  }
+
+  //创建纹理对象并设置其尺寸和参数
+  texture = gl.createTexture();
+  if(!texture){
+      console.log("无法创建纹理对象");
+      return error();
+  }
+
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, offset_width, offset_height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  framebuffer.texture = texture;//将纹理对象存入framebuffer
+
+  //创建渲染缓冲区对象并设置其尺寸和参数
+  depthBuffer = gl.createRenderbuffer();
+  if(!depthBuffer){
+      console.log("无法创建渲染缓冲区对象");
+      return error();
+  }
+
+  gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, offset_width, offset_height);
+
+  //将纹理和渲染缓冲区对象关联到帧缓冲区对象上
+  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+  gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER,depthBuffer);
+
+  //检查帧缓冲区对象是否被正确设置
+  var e = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+  if(gl.FRAMEBUFFER_COMPLETE !== e){
+      console.log("渲染缓冲区设置错误"+e.toString());
+      return error();
+  }
+
+  //取消当前的focus对象
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+
+  return framebuffer;
 }
 
