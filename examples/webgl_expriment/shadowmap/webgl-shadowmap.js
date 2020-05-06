@@ -50,8 +50,7 @@ const shadow_create_shaderProgram = initShaderProgram(gl, shadow_create_vsSource
   const shadow_create_shaderProgram_info = {
     program: shadow_create_shaderProgram,
     attribLocations: {
-      vertexPosition: gl.getAttribLocation(shadow_create_shaderProgram, 'aVertexPosition'),
-      textureCoord: gl.getAttribLocation(shadow_create_shaderProgram, 'aTextureCoord'),
+      vertexPosition: gl.getAttribLocation(shadow_create_shaderProgram, 'aVertexPosition')
     },
     uniformLocations: {
       uMvpMatrix: gl.getUniformLocation(shadow_create_shaderProgram, 'uMvpMatrix')
@@ -277,7 +276,16 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
   
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+
+    // 切换绘制场景为帧缓冲区
+    // gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    // gl.viewport(0.0,0.0,offset_height,offset_height);
+    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    // drawShadow(gl, shadow_create_shaderProgram_info, cubeBuffers, viewProjectMatrixFromLight.mul(viewProjectMatrixFromLight, cubeModelViewMatrix));
+
     drawScene(gl, programInfo, cubeBuffers, cubeModelViewMatrix, cubeTexture);
+
+
     drawScene(gl, programInfo, planeBuffers, planeModelViewMatrix, planeTexture);
     drawScene(gl, programInfo, lightBuffers, lightModelViewMatrix, lightTexture);
 
@@ -613,25 +621,11 @@ function isPowerOf2(value) {
 //
 function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
 
-
-  // Create a perspective matrix, a special matrix that is
-  // used to simulate the distortion of perspective in a camera.
-  // Our field of view is 45 degrees, with a width/height
-  // ratio that matches the display size of the canvas
-  // and we only want to see objects between 0.1 units
-  // and 100 units away from the camera.
-
   const fieldOfView = 45 * Math.PI / 180;   // in radians
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const zNear = 0.1;
   const zFar = 1000.0;
   const projectionMatrix = mat4.create();
-
-
-
-
-
-
 
   // note: glmatrix.js always has the first argument
   // as the destination to receive the result.
@@ -646,27 +640,6 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
   projectionMatrix,     // matrix to translate
   [0.0, 0.0, -20]);  // amount to translate
 
-
-//  mat4.lookAt(projectionMatrix, projectionMatrix, [0, 0, 0]);
-
-
-  
-
-
-
-  // mat4.rotate(cubeModelViewMatrix,  // destination matrix
-  // cubeModelViewMatrix,  // matrix to rotate
-  // 45,     // amount to rotate in radians
-  // [0, 0, 1]);       // axis to rotate around (Z)
-
-
-  // mat4.rotate(cubeModelViewMatrix,  // destination matrix
-  // cubeModelViewMatrix,  // matrix to rotate
-  // 45,// amount to rotate in radians
-  // [0, 1, 0]);       // axis to rotate around (X)
-
-  // Tell WebGL how to pull out the positions from the position
-  // buffer into the vertexPosition attribute
   {
     const numComponents = 3;
     const type = gl.FLOAT;
@@ -718,6 +691,7 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
       programInfo.uniformLocations.projectionMatrix,
       false,
       projectionMatrix);
+      
   gl.uniformMatrix4fv(
       programInfo.uniformLocations.modelViewMatrix,
       false,
@@ -733,6 +707,51 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
 
   // Tell the shader we bound the texture to texture unit 0
   gl.uniform1i(programInfo.uniformLocations.uSampler, 0);
+
+  {
+    const vertexCount = 36;
+    const type = gl.UNSIGNED_SHORT;
+    const offset = 0;
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+  }
+
+}
+
+
+function drawShadow(gl, programInfo, buffers, mvpMatrix) {
+
+  {
+    const numComponents = 3;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.vertexPosition,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset);
+    gl.enableVertexAttribArray(
+        programInfo.attribLocations.vertexPosition);
+  }
+
+
+  // Tell WebGL which indices to use to index the vertices
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
+  // Tell WebGL to use our program when drawing
+
+  gl.useProgram(programInfo.program);
+
+  // Set the shader uniforms
+
+  gl.uniformMatrix4fv(
+      programInfo.uniformLocations.uMvpMatrix,
+      false,
+      mvpMatrix);
 
   {
     const vertexCount = 36;
