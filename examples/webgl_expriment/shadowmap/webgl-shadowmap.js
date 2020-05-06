@@ -142,28 +142,53 @@ const shadow_display_shaderProgram = initShaderProgram(gl, shadow_display_vsSour
   };
 
 
+
+  // =================================> cube <================================
   const cubeBuffers = initCubeBuffers(gl);
   const cubeTexture = loadTexture(gl, 'cubetexture.png');
   const cubeModelViewMatrix = mat4.create();
 
 
-  const planeBuffers = initPlaneBuffers(gl);
-  const planeTexture = loadTexture(gl, 'floor.png');
-  const planeModelViewMatrix = mat4.create();
+  mat4.translate(cubeModelViewMatrix,     // destination matrix
+    cubeModelViewMatrix,     // matrix to translate
+    [-0.0, 5.0, -6.0]);  // amount to translate
 
-  // mat4.translate(planeModelViewMatrix,     // destination matrix
-  //   planeModelViewMatrix,     // matrix to translate
-  //   [-0.0, 0.0, -10.0]);  // amount to translate
 
-    // mat4.rotate(planeModelViewMatrix,  // destination matrix
-    //   planeModelViewMatrix,  // matrix to rotate
-    //   180,     // amount to rotate in radians
-    //   [1, 0, 0]);       // axis to rotate around (Z)
+  mat4.rotate(cubeModelViewMatrix,  // destination matrix
+  cubeModelViewMatrix,  // matrix to rotate
+  45,     // amount to rotate in radians
+  [0, 0, 1]);       // axis to rotate around (Z)
 
-    mat4.scale(planeModelViewMatrix,  // destination matrix
-      planeModelViewMatrix,  // matrix to rotate
-      180,     // amount to rotate in radians
-      [1, 0, 0]);       // axis to rotate around (Z)
+
+  mat4.rotate(cubeModelViewMatrix,  // destination matrix
+  cubeModelViewMatrix,  // matrix to rotate
+  45,// amount to rotate in radians
+  [0, 1, 0]);       // axis to rotate around (X)
+
+// =================================> plane <================================
+
+
+const planeBuffers = initCubeBuffers(gl);
+const planeTexture = loadTexture(gl, 'floor.png');
+const planeModelViewMatrix = mat4.create();
+
+
+mat4.translate(planeModelViewMatrix,     // destination matrix
+  planeModelViewMatrix,     // matrix to translate
+  [-0.0, 0.0, -10]);  // amount to translate
+
+
+  mat4.rotate(planeModelViewMatrix,     // destination matrix
+    planeModelViewMatrix,     // matrix to translate
+    90,
+    [1, 0, 0]);  // amount to translate
+
+
+  mat4.scale(planeModelViewMatrix,     // destination matrix
+    planeModelViewMatrix,     // matrix to translate
+    [10, 10, 0.1]); 
+
+
 
 
   var then = 0;
@@ -173,23 +198,6 @@ const shadow_display_shaderProgram = initShaderProgram(gl, shadow_display_vsSour
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
-
-    mat4.translate(cubeModelViewMatrix,     // destination matrix
-      cubeModelViewMatrix,     // matrix to translate
-      [-0.0, 0.0, -6.0]);  // amount to translate
-
-
-    mat4.rotate(cubeModelViewMatrix,  // destination matrix
-    cubeModelViewMatrix,  // matrix to rotate
-    cubeRotation,     // amount to rotate in radians
-    [0, 0, 1]);       // axis to rotate around (Z)
-
-
-    mat4.rotate(cubeModelViewMatrix,  // destination matrix
-    cubeModelViewMatrix,  // matrix to rotate
-    cubeRotation * .7,// amount to rotate in radians
-    [0, 1, 0]);       // axis to rotate around (X)
-
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
@@ -550,6 +558,12 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
   const zFar = 1000.0;
   const projectionMatrix = mat4.create();
 
+
+
+
+
+
+
   // note: glmatrix.js always has the first argument
   // as the destination to receive the result.
   mat4.perspective(projectionMatrix,
@@ -557,6 +571,30 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
                    aspect,
                    zNear,
                    zFar);
+
+
+  mat4.translate(projectionMatrix,     // destination matrix
+  projectionMatrix,     // matrix to translate
+  [0.0, 0.0, -10]);  // amount to translate
+
+
+//  mat4.lookAt(projectionMatrix, projectionMatrix, [0, 0, 0]);
+
+
+  
+
+
+
+  // mat4.rotate(cubeModelViewMatrix,  // destination matrix
+  // cubeModelViewMatrix,  // matrix to rotate
+  // 45,     // amount to rotate in radians
+  // [0, 0, 1]);       // axis to rotate around (Z)
+
+
+  // mat4.rotate(cubeModelViewMatrix,  // destination matrix
+  // cubeModelViewMatrix,  // matrix to rotate
+  // 45,// amount to rotate in radians
+  // [0, 1, 0]);       // axis to rotate around (X)
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute
