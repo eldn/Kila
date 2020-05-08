@@ -1,4 +1,4 @@
-// var cubeRotation = 0.0;
+var cubeRotation = 0.0;
 var resolution = 256;
 var offset_width = resolution;
 var offset_height = resolution;
@@ -25,10 +25,7 @@ function main() {
   const shadow_create_vsSource = `
   precision highp float;
   attribute vec4 aVertexPosition;
-
   uniform mat4 uMvpMatrix;
-
-
   void main(void) {
     gl_Position = uMvpMatrix * aVertexPosition;
   }
@@ -38,7 +35,11 @@ function main() {
 const shadow_create_fsSource = `
   precision highp float;
   void main(void) {
-    gl_FragColor = vec4( 0.0, 0.0, 0.0,gl_FragCoord.z);
+    const vec4 bitShift = vec4(1.0, 256.0, 256.0*256.0, 256.0*256.0*256.0);
+    const vec4 bitMask = vec4(1.0/256.0, 1.0/256.0, 1.0/256.0, 0.0);
+    vec4 rgbaDepth = fract(gl_FragCoord.z * bitShift);
+    rgbaDepth -= rgbaDepth.gbaa * bitMask;
+    gl_FragColor = rgbaDepth;
   }
 `;
 
@@ -85,11 +86,17 @@ uniform sampler2D uShadowMap;
 varying vec4 v_PositionFromLight;
 varying highp vec2 vTextureCoord;
 
+float unpackDepth(const in vec4 rgbaDepth){
+    const vec4 bitShift = vec4(1.0, 1.0/256.0, 1.0/(256.0*256.0), 1.0/(256.0*256.0*256.0));
+    float depth = dot(rgbaDepth, bitShift);
+    return depth;
+}
+
 void main(void) {
-    vec3 shadowCoord = (v_PositionFromLight.xyz / v_PositionFromLight.w) / 2.0 + 0.5;
+    vec3 shadowCoord = (v_PositionFromLight.xyz/v_PositionFromLight.w)/2.0 + 0.5;
     vec4 rgbaDepth = texture2D(uShadowMap, shadowCoord.xy);
-    float depth = rgbaDepth.a;
-    float visibility = (shadowCoord.z > depth + 0.005) ? 0.5 : 1.0;
+    float depth = unpackDepth(rgbaDepth);
+    float visibility = (shadowCoord.z > depth + 0.0015) ? 0.5 : 1.0;
     vec4 textureColor = texture2D(uNormalTexture, vTextureCoord);
     gl_FragColor = vec4(textureColor.rgb * visibility, textureColor.a);
 }
@@ -287,6 +294,18 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
      gl.viewport(0.0,0.0,offset_height,offset_height);
 
+
+    //  // roatate cube
+    //  mat4.rotate(cubeModelViewMatrix,  // destination matrix
+    //   cubeModelViewMatrix,  // matrix to rotate
+    //   cubeRotation,     // amount to rotate in radians
+    //   [0, 0, 1]);       // axis to rotate around (Z)
+
+    //   mat4.rotate(cubeModelViewMatrix,  // destination matrix
+    //     cubeModelViewMatrix,  // matrix to rotate
+    //         cubeRotation * .7,// amount to rotate in radians
+    //         [0, 1, 0]);       // axis to rotate around (X)
+
     
     // create cube shadow
     var mvpFromLight_cube = mat4.create();
@@ -325,8 +344,6 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     var mvpMatrix_light = mat4.create();
     mat4.mul(mvpMatrix_light, projectionMatrix, lightModelViewMatrix);
     drawScene(gl, programInfo, lightBuffers, mvpMatrix_light, lightTexture);
-
-    // cubeRotation += deltaTime;
 
     requestAnimationFrame(render);
   }
