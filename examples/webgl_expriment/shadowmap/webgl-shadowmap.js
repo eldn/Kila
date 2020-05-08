@@ -1,6 +1,4 @@
-var cubeRotation = 0.0;
-
-// 生成的纹理的分辨率，纹理必须是标准的尺寸 256*256 1024*1024  2048*2048
+// var cubeRotation = 0.0;
 var resolution = 256;
 var offset_width = resolution;
 var offset_height = resolution;
@@ -23,9 +21,7 @@ function main() {
     return;
   }
 
-
-  // =======================> shadow create shader <=========================
-
+  //============================ create shadow program
   const shadow_create_vsSource = `
   precision highp float;
   attribute vec4 aVertexPosition;
@@ -60,7 +56,7 @@ const shadow_create_shaderProgram = initShaderProgram(gl, shadow_create_vsSource
   };
 
 
-// =======================> shadow display shader <=========================
+// ====================== shadwo display program
 
 const shadow_display_vsSource = `
 precision highp float;
@@ -116,26 +112,21 @@ const shadow_display_shaderProgram_info = {
   },
 };
 
-// =======================> shadow display shader <=========================
-
-  // Vertex shader program
+// ======================= normal program
 
   const vsSource = `
     attribute vec4 aVertexPosition;
     attribute vec2 aTextureCoord;
 
-    uniform mat4 uModelViewMatrix;
-    uniform mat4 uProjectionMatrix;
+    uniform mat4 uMvpMatrix;
 
     varying highp vec2 vTextureCoord;
 
     void main(void) {
-      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+      gl_Position = uMvpMatrix * aVertexPosition;
       vTextureCoord = aTextureCoord;
     }
   `;
-
-  // Fragment shader program
 
   const fsSource = `
     varying highp vec2 vTextureCoord;
@@ -147,14 +138,8 @@ const shadow_display_shaderProgram_info = {
     }
   `;
 
-  // Initialize a shader program; this is where all the lighting
-  // for the vertices and so forth is established.
   const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 
-  // Collect all the info needed to use the shader program.
-  // Look up which attributes our shader program is using
-  // for aVertexPosition, aTextureCoord and also
-  // look up uniform locations.
   const programInfo = {
     program: shaderProgram,
     attribLocations: {
@@ -162,33 +147,12 @@ const shadow_display_shaderProgram_info = {
       textureCoord: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
     },
     uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
-      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+      uMvpMatrix: gl.getUniformLocation(shaderProgram, 'uMvpMatrix'),
       uSampler: gl.getUniformLocation(shaderProgram, 'uSampler'),
     },
   };
 
-
-   // 设置帧缓冲区对象
-   var fbo = initFramebufferObject(gl);
-   if(!fbo){
-       console.log("无法设置帧缓冲区对象");
-       return;
-   }
-
-
-
-  // 声明一个光源的变换矩阵
-  const viewProjectMatrixFromLight = mat4.create();
-  mat4.perspective(viewProjectMatrixFromLight,
-                   70.0,
-                   offset_width/offset_height,
-                   1.0,
-                   100.0);
-  mat4.lookAt(viewProjectMatrixFromLight, light_pos, [0,0,0], [0,1,0]);
-
-
-  // =================================> cube <================================
+  // ================= cube 
   const cubeBuffers = initCubeBuffers(gl);
   const cubeTexture = loadTexture(gl, 'cubetexture.png');
   const cubeModelViewMatrix = mat4.create();
@@ -196,7 +160,7 @@ const shadow_display_shaderProgram_info = {
 
   mat4.translate(cubeModelViewMatrix,     // destination matrix
     cubeModelViewMatrix,     // matrix to translate
-    [-0.0, 5.0, -6.0]);  // amount to translate
+    [0.0, 5.0, -6.0]);  // amount to translate
 
 
   mat4.rotate(cubeModelViewMatrix,  // destination matrix
@@ -210,8 +174,7 @@ const shadow_display_shaderProgram_info = {
   45,// amount to rotate in radians
   [0, 1, 0]);       // axis to rotate around (X)
 
-// =================================> plane <================================
-
+// ===================== plane 
 
 const planeBuffers = initCubeBuffers(gl);
 const planeTexture = loadTexture(gl, 'floor.png');
@@ -220,7 +183,7 @@ const planeModelViewMatrix = mat4.create();
 
 mat4.translate(planeModelViewMatrix,     // destination matrix
   planeModelViewMatrix,     // matrix to translate
-  [-0.0, 0.0, -10]);  // amount to translate
+  [0.0, 0.0, -10]);  // amount to translate
 
 
   mat4.rotate(planeModelViewMatrix,     // destination matrix
@@ -234,7 +197,7 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     [10, 10, 0.1]); 
 
 
-// =================================> light <================================
+// =============================== light
 
  const lightBuffers = initCubeBuffers(gl);
  const lightTexture = loadTexture(gl, 'white1.png');
@@ -266,25 +229,44 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
   var then = 0;
 
 
-
+  // ================ perspective camera 
   const fieldOfView = 45 * Math.PI / 180;   // in radians
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const zNear = 0.1;
   const zFar = 1000.0;
   const projectionMatrix = mat4.create();
 
-  // note: glmatrix.js always has the first argument
-  // as the destination to receive the result.
   mat4.perspective(projectionMatrix,
                    fieldOfView,
                    aspect,
                    zNear,
                    zFar);
 
+    
+  let lookAtMatrix_camera = mat4.create();
+  mat4.lookAt(lookAtMatrix_camera, [0.0, 0.0, 20], [0,0,0], [0,1,0]);
+  mat4.mul(projectionMatrix, projectionMatrix, lookAtMatrix_camera);
 
-  mat4.translate(projectionMatrix,     // destination matrix
-  projectionMatrix,     // matrix to translate
-  [0.0, 0.0, -20]);  // amount to translate
+
+  // ===============  view project matrix from light
+
+  const viewProjectMatrixFromLight = mat4.create();
+  mat4.perspective(viewProjectMatrixFromLight,
+                   70.0,
+                   offset_width/offset_height,
+                   1.0,
+                   100.0);
+  let lookAtMatrix_light = mat4.create();
+  mat4.lookAt(lookAtMatrix_light, light_pos, [0,0,0], [0,1,0]);
+  mat4.mul(viewProjectMatrixFromLight, viewProjectMatrixFromLight, lookAtMatrix_light);
+
+
+ // ====== create init framebuffer
+  var fbo = initFramebufferObject(gl);
+  if(!fbo){
+      console.error("inite framebuffer fail!");
+      return;
+  }
 
   // Draw the scene repeatedly
   function render(now) {
@@ -297,16 +279,11 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
     gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
   
-    // Clear the canvas before we start drawing on it.
+   
   
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-
-     // 开启0号纹理缓冲区并绑定帧缓冲区对象的纹理
+     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
      gl.activeTexture(gl.TEXTURE0);
      gl.bindTexture(gl.TEXTURE_2D, fbo.texture);
- 
-     // 切换绘制场景为帧缓冲区
      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
      gl.viewport(0.0,0.0,offset_height,offset_height);
 
@@ -321,8 +298,10 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     mat4.mul(mvpFromLight_plane, viewProjectMatrixFromLight, planeModelViewMatrix);
     drawShadow(gl, shadow_create_shaderProgram_info, planeBuffers, mvpFromLight_plane);
 
+    // save shadow image
+    // createImageFromTexture(gl, fbo.texture, offset_width, offset_height);
 
-    // reset draw
+
     gl.viewport(0.0,0.0,canvas.width,canvas.height);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -335,35 +314,29 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     mat4.mul(mvp_plane, projectionMatrix, planeModelViewMatrix);
     drawSceneWithShadow(gl, shadow_display_shaderProgram_info, planeBuffers, mvp_plane, mvpFromLight_plane, planeTexture, fbo.texture);
 
+    // var mvpMatrix_cube = mat4.create();
+    // mat4.mul(mvpMatrix_cube, projectionMatrix, cubeModelViewMatrix);
+    // drawScene(gl, programInfo, cubeBuffers, mvpMatrix_cube, cubeTexture);
 
-    drawScene(gl, programInfo, lightBuffers, lightModelViewMatrix, lightTexture);
+    // var mvpMatrix_plane = mat4.create();
+    // mat4.mul(mvpMatrix_plane, projectionMatrix, planeModelViewMatrix);
+    // drawScene(gl, programInfo, planeBuffers, mvpMatrix_plane, planeTexture);
 
-    cubeRotation += deltaTime;
+    var mvpMatrix_light = mat4.create();
+    mat4.mul(mvpMatrix_light, projectionMatrix, lightModelViewMatrix);
+    drawScene(gl, programInfo, lightBuffers, mvpMatrix_light, lightTexture);
+
+    // cubeRotation += deltaTime;
 
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
 }
 
-//
-// initCubeBuffers
-//
-// Initialize the buffers we'll need. For this demo, we just
-// have one object -- a simple three-dimensional cube.
-//
+
 function initCubeBuffers(gl) {
-
-  // Create a buffer for the cube's vertex positions.
-
   const positionBuffer = gl.createBuffer();
-
-  // Select the positionBuffer as the one to apply buffer
-  // operations to from here out.
-
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-  // Now create an array of positions for the cube.
-
   const positions = [
     // Front face
     -1.0, -1.0,  1.0,
@@ -402,13 +375,8 @@ function initCubeBuffers(gl) {
     -1.0,  1.0, -1.0,
   ];
 
-  // Now pass the list of positions into WebGL to build the
-  // shape. We do this by creating a Float32Array from the
-  // JavaScript array, then use it to fill the current buffer.
 
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
-
-  // Now set up the texture coordinates for the faces.
 
   const textureCoordBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
@@ -449,15 +417,8 @@ function initCubeBuffers(gl) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordinates),
                 gl.STATIC_DRAW);
 
-  // Build the element array buffer; this specifies the indices
-  // into the vertex arrays for each face's vertices.
-
   const indexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-  // This array defines each face as two triangles, using the
-  // indices into the vertex array to specify each triangle's
-  // position.
 
   const indices = [
     0,  1,  2,      0,  2,  3,    // front
@@ -467,8 +428,6 @@ function initCubeBuffers(gl) {
     16, 17, 18,     16, 18, 19,   // right
     20, 21, 22,     20, 22, 23,   // left
   ];
-
-  // Now send the element array to GL
 
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,
       new Uint16Array(indices), gl.STATIC_DRAW);
@@ -751,26 +710,7 @@ function drawSceneWithShadow(gl, programInfo, buffers, mvpMatrix, mvpFromLightMa
 //
 // Draw the scene.
 //
-function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
-
-  const fieldOfView = 45 * Math.PI / 180;   // in radians
-  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-  const zNear = 0.1;
-  const zFar = 1000.0;
-  const projectionMatrix = mat4.create();
-
-  // note: glmatrix.js always has the first argument
-  // as the destination to receive the result.
-  mat4.perspective(projectionMatrix,
-                   fieldOfView,
-                   aspect,
-                   zNear,
-                   zFar);
-
-
-  mat4.translate(projectionMatrix,     // destination matrix
-  projectionMatrix,     // matrix to translate
-  [0.0, 0.0, -20]);  // amount to translate
+function drawScene(gl, programInfo, buffers, mvpMatrix, texture) {
 
   {
     const numComponents = 3;
@@ -820,14 +760,10 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
   // Set the shader uniforms
 
   gl.uniformMatrix4fv(
-      programInfo.uniformLocations.projectionMatrix,
+      programInfo.uniformLocations.uMvpMatrix,
       false,
-      projectionMatrix);
+      mvpMatrix);
       
-  gl.uniformMatrix4fv(
-      programInfo.uniformLocations.modelViewMatrix,
-      false,
-      modelViewMatrix);
 
   // Specify the texture to map onto the faces.
 
@@ -1009,3 +945,44 @@ function initFramebufferObject(gl) {
   return framebuffer;
 }
 
+
+
+function createImageFromTexture(gl, texture, width, height) {
+  // Create a framebuffer backed by the texture
+  var framebuffer = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+
+  // Read the contents of the framebuffer
+  var data = new Uint8Array(width * height * 4);
+  gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, data);
+
+  gl.deleteFramebuffer(framebuffer);
+
+  // Create a 2D canvas to store the result 
+  var canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  var context = canvas.getContext('2d');
+
+  // Copy the pixels to a 2D canvas
+  var imageData = context.createImageData(width, height);
+  imageData.data.set(data);
+  context.putImageData(imageData, 0, 0);
+
+  // var img = new Image();
+  // img.src = canvas.toDataURL();
+  // return img;
+
+  canvas.toBlob(
+    blob => {
+      const anchor = document.createElement('a');
+      anchor.download = 'my-file-name.png'; // optional, but you can give the file a name
+      anchor.href = URL.createObjectURL(blob);
+      anchor.click(); // ✨ magic!
+      URL.revokeObjectURL(anchor.href); // remove it from memory and save on memory! 
+    },
+    'image/png',
+    0.9,
+  );
+}
