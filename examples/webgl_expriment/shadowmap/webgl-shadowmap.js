@@ -4,6 +4,8 @@ var cubeRotation = 0.0;
 var resolution = 256;
 var offset_width = resolution;
 var offset_height = resolution;
+var light_pos = [6.0, 8.0, -6.0];
+var canvas;
 
 main();
 
@@ -11,7 +13,7 @@ main();
 // Start here
 //
 function main() {
-  const canvas = document.querySelector('#glcanvas');
+  canvas = document.querySelector('#glcanvas');
   const gl = canvas.getContext('webgl');
 
   // If we don't have a GL context, give up now
@@ -64,34 +66,36 @@ const shadow_display_vsSource = `
 precision highp float;
 
 attribute vec4 aVertexPosition;
-attribute vec4 aColor;
+attribute vec2 aTextureCoord;
 
 uniform mat4 uMvpMatrix;
 uniform mat4 uMvpMatrixFromLight;
 
 varying vec4 v_PositionFromLight;
-varying vec4 v_Color;
+varying highp vec2 vTextureCoord;
 
 void main(void) {
   gl_Position = uMvpMatrix * aVertexPosition;
   v_PositionFromLight = uMvpMatrixFromLight * aVertexPosition;
-  v_Color = aColor;
+  vTextureCoord = aTextureCoord;
 }
 `;
 
 
 const shadow_display_fsSource = `
 precision highp float;
+uniform sampler2D uNormalTexture;
 uniform sampler2D uShadowMap;
 varying vec4 v_PositionFromLight;
-varying vec4 v_Color;
+varying highp vec2 vTextureCoord;
 
 void main(void) {
     vec3 shadowCoord = (v_PositionFromLight.xyz / v_PositionFromLight.w) / 2.0 + 0.5;
     vec4 rgbaDepth = texture2D(uShadowMap, shadowCoord.xy);
     float depth = rgbaDepth.a;
     float visibility = (shadowCoord.z > depth + 0.005) ? 0.5 : 1.0;
-    gl_FragColor = vec4(v_Color.rgb * visibility, v_Color.a);
+    vec4 textureColor = texture2D(uNormalTexture, vTextureCoord);
+    gl_FragColor = vec4(textureColor.rgb * visibility, textureColor.a);
 }
 `;
 
@@ -102,12 +106,13 @@ const shadow_display_shaderProgram_info = {
   program: shadow_display_shaderProgram,
   attribLocations: {
     vertexPosition: gl.getAttribLocation(shadow_display_shaderProgram, 'aVertexPosition'),
-    color: gl.getAttribLocation(shadow_display_shaderProgram, 'aColor'),
+    textureCoord: gl.getAttribLocation(shadow_display_shaderProgram, 'aTextureCoord'),
   },
   uniformLocations: {
     uMvpMatrix: gl.getUniformLocation(shadow_display_shaderProgram, 'uMvpMatrix'),
     uMvpFromLight: gl.getUniformLocation(shadow_display_shaderProgram, 'uMvpMatrixFromLight'),
-    uShadowMap: gl.getUniformLocation(shadow_display_shaderProgram, 'uShadowMap'),
+    uNormalTexture: gl.getUniformLocation(shadow_display_shaderProgram, 'uNormalTexture'),
+    uShadowMap: gl.getUniformLocation(shadow_display_shaderProgram, 'uShadowMap')
   },
 };
 
@@ -173,7 +178,6 @@ const shadow_display_shaderProgram_info = {
 
 
 
-
   // 声明一个光源的变换矩阵
   const viewProjectMatrixFromLight = mat4.create();
   mat4.perspective(viewProjectMatrixFromLight,
@@ -181,7 +185,7 @@ const shadow_display_shaderProgram_info = {
                    offset_width/offset_height,
                    1.0,
                    100.0);
-  mat4.lookAt(viewProjectMatrixFromLight, [6.0, 8.0, -6.0], [0,0,0],[0,1,0]);
+  mat4.lookAt(viewProjectMatrixFromLight, light_pos, [0,0,0], [0,1,0]);
 
 
   // =================================> cube <================================
@@ -239,7 +243,7 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
 
   mat4.translate(lightModelViewMatrix,     // destination matrix
     lightModelViewMatrix,     // matrix to translate
-    [6.0, 8.0, -6.0]);  // amount to translate
+    light_pos);  // amount to translate
 
 
   mat4.rotate(lightModelViewMatrix,  // destination matrix
@@ -261,6 +265,27 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
 
   var then = 0;
 
+
+
+  const fieldOfView = 45 * Math.PI / 180;   // in radians
+  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+  const zNear = 0.1;
+  const zFar = 1000.0;
+  const projectionMatrix = mat4.create();
+
+  // note: glmatrix.js always has the first argument
+  // as the destination to receive the result.
+  mat4.perspective(projectionMatrix,
+                   fieldOfView,
+                   aspect,
+                   zNear,
+                   zFar);
+
+
+  mat4.translate(projectionMatrix,     // destination matrix
+  projectionMatrix,     // matrix to translate
+  [0.0, 0.0, -20]);  // amount to translate
+
   // Draw the scene repeatedly
   function render(now) {
     now *= 0.001;  // convert to seconds
@@ -277,16 +302,40 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 
-    // 切换绘制场景为帧缓冲区
-    // gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-    // gl.viewport(0.0,0.0,offset_height,offset_height);
-    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    // drawShadow(gl, shadow_create_shaderProgram_info, cubeBuffers, viewProjectMatrixFromLight.mul(viewProjectMatrixFromLight, cubeModelViewMatrix));
+     // 开启0号纹理缓冲区并绑定帧缓冲区对象的纹理
+     gl.activeTexture(gl.TEXTURE0);
+     gl.bindTexture(gl.TEXTURE_2D, fbo.texture);
+ 
+     // 切换绘制场景为帧缓冲区
+     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+     gl.viewport(0.0,0.0,offset_height,offset_height);
 
-    drawScene(gl, programInfo, cubeBuffers, cubeModelViewMatrix, cubeTexture);
+    
+    // create cube shadow
+    var mvpFromLight_cube = mat4.create();
+    mat4.mul(mvpFromLight_cube, viewProjectMatrixFromLight, cubeModelViewMatrix);
+    drawShadow(gl, shadow_create_shaderProgram_info, cubeBuffers, mvpFromLight_cube);
+
+    // create plane shadow
+    var mvpFromLight_plane = mat4.create();
+    mat4.mul(mvpFromLight_plane, viewProjectMatrixFromLight, planeModelViewMatrix);
+    drawShadow(gl, shadow_create_shaderProgram_info, planeBuffers, mvpFromLight_plane);
 
 
-    drawScene(gl, programInfo, planeBuffers, planeModelViewMatrix, planeTexture);
+    // reset draw
+    gl.viewport(0.0,0.0,canvas.width,canvas.height);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    var mvp_cube = mat4.create();
+    mat4.mul(mvp_cube, projectionMatrix, cubeModelViewMatrix);
+    drawSceneWithShadow(gl, shadow_display_shaderProgram_info, cubeBuffers, mvp_cube, mvpFromLight_cube, cubeTexture, fbo.texture);
+    
+    var mvp_plane = mat4.create();
+    mat4.mul(mvp_plane, projectionMatrix, planeModelViewMatrix);
+    drawSceneWithShadow(gl, shadow_display_shaderProgram_info, planeBuffers, mvp_plane, mvpFromLight_plane, planeTexture, fbo.texture);
+
+
     drawScene(gl, programInfo, lightBuffers, lightModelViewMatrix, lightTexture);
 
     cubeRotation += deltaTime;
@@ -616,6 +665,89 @@ function isPowerOf2(value) {
   return (value & (value - 1)) == 0;
 }
 
+
+//
+// Draw the scene.
+//
+function drawSceneWithShadow(gl, programInfo, buffers, mvpMatrix, mvpFromLightMatrix, normalTexture, shadowMapTexture) {
+
+  {
+    const numComponents = 3;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.vertexPosition,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset);
+    gl.enableVertexAttribArray(
+        programInfo.attribLocations.vertexPosition);
+  }
+
+  // Tell WebGL how to pull out the texture coordinates from
+  // the texture coordinate buffer into the textureCoord attribute.
+  {
+    const numComponents = 2;
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.textureCoord,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset);
+    gl.enableVertexAttribArray(
+        programInfo.attribLocations.textureCoord);
+  }
+
+  // Tell WebGL which indices to use to index the vertices
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
+
+  // Tell WebGL to use our program when drawing
+
+  gl.useProgram(programInfo.program);
+
+  // Set the shader uniforms
+
+  gl.uniformMatrix4fv(
+      programInfo.uniformLocations.uMvpMatrix,
+      false,
+      mvpMatrix);
+      
+  gl.uniformMatrix4fv(
+      programInfo.uniformLocations.uMvpFromLight,
+      false,
+      mvpFromLightMatrix);
+
+  // Specify the texture to map onto the faces.
+
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, normalTexture);
+
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_2D, shadowMapTexture);
+
+  gl.uniform1i(programInfo.uniformLocations.uNormalTexture, 0);
+  gl.uniform1i(programInfo.uniformLocations.uShadowMap, 1);
+
+  {
+    const vertexCount = 36;
+    const type = gl.UNSIGNED_SHORT;
+    const offset = 0;
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+  }
+
+}
+
 //
 // Draw the scene.
 //
@@ -721,6 +853,8 @@ function drawScene(gl, programInfo, buffers, modelViewMatrix, texture) {
 function drawShadow(gl, programInfo, buffers, mvpMatrix) {
 
   {
+    
+
     const numComponents = 3;
     const type = gl.FLOAT;
     const normalize = false;
@@ -759,6 +893,8 @@ function drawShadow(gl, programInfo, buffers, mvpMatrix) {
     const offset = 0;
     gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
   }
+
+  
 
 }
 
