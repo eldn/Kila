@@ -2,7 +2,7 @@ var cubeRotation = 0.0;
 var resolution = 1024;
 var offset_width = resolution;
 var offset_height = resolution;
-var light_pos = [0, 8.0, -6.0];
+var light_pos = [4, 8.0, -6.0];
 var canvas;
 
 main();
@@ -167,7 +167,7 @@ const shadow_display_shaderProgram_info = {
 
   mat4.translate(cubeModelViewMatrix,     // destination matrix
     cubeModelViewMatrix,     // matrix to translate
-    [0.0, 5.0, 0.0]);  // amount to translate
+    [0.0, 0.0, 0.0]);  // amount to translate
 
 
   mat4.rotate(cubeModelViewMatrix,  // destination matrix
@@ -190,18 +190,12 @@ const planeModelViewMatrix = mat4.create();
 
 mat4.translate(planeModelViewMatrix,     // destination matrix
   planeModelViewMatrix,     // matrix to translate
-  [0.0, 0.0, 0.0]);  // amount to translate
+  [0.0, -5.0, 0.0]);  // amount to translate
 
 
-  mat4.rotate(planeModelViewMatrix,     // destination matrix
+mat4.scale(planeModelViewMatrix,     // destination matrix
     planeModelViewMatrix,     // matrix to translate
-    90,
-    [1, 0, 0]);  // amount to translate
-
-
-  mat4.scale(planeModelViewMatrix,     // destination matrix
-    planeModelViewMatrix,     // matrix to translate
-    [10, 10, 0.1]); 
+    [10, 0.01, 10]); 
 
 
 // =============================== light
@@ -237,14 +231,13 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
                    zNear,
                    zFar);
 
-    
-  let lookAtMatrix_camera = mat4.create();
-  mat4.lookAt(lookAtMatrix_camera, [0.0, 0.0, 20], [0,0,0], [0,1,0]);
-  mat4.mul(projectionMatrix, projectionMatrix, lookAtMatrix_camera);
+
+  let cameraViewMatrix = mat4.create();
+  mat4.lookAt(cameraViewMatrix, [0.0, 0.0, 20], [0,0,0], [0,1,0]);
+  mat4.mul(projectionMatrix, projectionMatrix, cameraViewMatrix);
 
 
   // ===============  view project matrix from light
-
   const viewProjectMatrixFromLight = mat4.create();
   mat4.ortho(viewProjectMatrixFromLight,
                    -40.0,
@@ -274,26 +267,14 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
-  
-   
-  
-     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-     gl.activeTexture(gl.TEXTURE0);
-     gl.bindTexture(gl.TEXTURE_2D, fbo.texture);
-     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
-     gl.viewport(0.0,0.0,offset_height,offset_height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 
-    //  // roatate cube
-    //  mat4.rotate(cubeModelViewMatrix,  // destination matrix
-    //   cubeModelViewMatrix,  // matrix to rotate
-    //   cubeRotation,     // amount to rotate in radians
-    //   [0, 0, 1]);       // axis to rotate around (Z)
 
-    //   mat4.rotate(cubeModelViewMatrix,  // destination matrix
-    //     cubeModelViewMatrix,  // matrix to rotate
-    //         cubeRotation * .7,// amount to rotate in radians
-    //         [0, 1, 0]);       // axis to rotate around (X)
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, fbo.texture);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.viewport(0.0,0.0,offset_height,offset_height);
 
     
     // create cube shadow
@@ -308,7 +289,6 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
 
     // save shadow image
     // createImageFromTexture(gl, fbo.texture, offset_width, offset_height);
-
 
     gl.viewport(0.0,0.0,canvas.width,canvas.height);
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
