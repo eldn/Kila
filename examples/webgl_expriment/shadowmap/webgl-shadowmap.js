@@ -5,6 +5,14 @@ var offset_height = resolution;
 var light_pos = [4, 8.0, -6.0];
 var canvas;
 
+// mouse operation
+var canvasIsPressed = false
+var xRotation = Math.PI / 20
+var yRotation = 0
+var lastPressX
+var lastPressY
+
+
 main();
 
 //
@@ -13,6 +21,10 @@ main();
 function main() {
   canvas = document.querySelector('#glcanvas');
   const gl = canvas.getContext('webgl');
+
+
+  // init mouse event
+  initMouse();
 
   // If we don't have a GL context, give up now
 
@@ -218,23 +230,7 @@ mat4.scale(planeModelViewMatrix,     // destination matrix
   var then = 0;
 
 
-  // ================ perspective camera 
-  const fieldOfView = 45 * Math.PI / 180;   // in radians
-  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-  const zNear = 0.1;
-  const zFar = 1000.0;
-  const projectionMatrix = mat4.create();
-
-  mat4.perspective(projectionMatrix,
-                   fieldOfView,
-                   aspect,
-                   zNear,
-                   zFar);
-
-
-  let cameraViewMatrix = mat4.create();
-  mat4.lookAt(cameraViewMatrix, [0.0, 0.0, 20], [0,0,0], [0,1,0]);
-  mat4.mul(projectionMatrix, projectionMatrix, cameraViewMatrix);
+  
 
 
   // ===============  view project matrix from light
@@ -263,6 +259,36 @@ mat4.scale(planeModelViewMatrix,     // destination matrix
     now *= 0.001;  // convert to seconds
     const deltaTime = now - then;
     then = now;
+
+
+    // ================ perspective camera 
+    const fieldOfView = 45 * Math.PI / 180;   // in radians
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const zNear = 0.1;
+    const zFar = 1000.0;
+    const projectionMatrix = mat4.create();
+
+    mat4.perspective(projectionMatrix,
+                    fieldOfView,
+                    aspect,
+                    zNear,
+                    zFar);
+
+
+    let cameraViewMatrix = mat4.create();
+    mat4.lookAt(cameraViewMatrix, [0.0, 0.0, 20], [0,0,0], [0,1,0]);
+    mat4.mul(projectionMatrix, projectionMatrix, cameraViewMatrix);
+
+
+    // mouse operation
+    var xRotMatrix = mat4.create();
+    var yRotMatrix = mat4.create();
+    mat4.rotate(xRotMatrix, xRotMatrix, xRotation, [1, 0, 0]);
+    mat4.rotate(yRotMatrix, yRotMatrix, -yRotation, [0, 1, 0]);
+
+    mat4.mul(projectionMatrix, projectionMatrix, xRotMatrix);
+    mat4.mul(projectionMatrix, projectionMatrix, yRotMatrix);
+
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
@@ -971,4 +997,49 @@ function createImageFromTexture(gl, texture, width, height) {
     'image/png',
     0.9,
   );
+}
+
+
+function initMouse(){
+
+  canvas.onmousedown = function (e) {
+    canvasIsPressed = true
+    lastPressX = e.pageX
+    lastPressY = e.pageY
+  }
+  canvas.onmouseup = function () {
+    canvasIsPressed = false
+  }
+  canvas.onmouseout = function () {
+    canvasIsPressed = false
+  }
+  canvas.onmousemove = function (e) {
+    if (canvasIsPressed) {
+      xRotation += (e.pageY - lastPressY) / 50
+      yRotation -= (e.pageX - lastPressX) / 50
+  
+      xRotation = Math.min(xRotation, Math.PI / 2.5)
+      xRotation = Math.max(xRotation, 0.1)
+  
+      lastPressX = e.pageX
+      lastPressY = e.pageY
+    }
+  }
+  
+  canvas.addEventListener('touchstart', function (e) {
+    lastPressX = e.touches[0].clientX
+    lastPressY = e.touches[0].clientY
+  })
+
+  canvas.addEventListener('touchmove', function (e) {
+    e.preventDefault()
+    xRotation += (e.touches[0].clientY - lastPressY) / 50
+    yRotation -= (e.touches[0].clientX - lastPressX) / 50
+  
+    xRotation = Math.min(xRotation, Math.PI / 2.5)
+    xRotation = Math.max(xRotation, 0.1)
+  
+    lastPressX = e.touches[0].clientX
+    lastPressY = e.touches[0].clientY
+  })
 }
