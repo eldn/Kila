@@ -1,8 +1,8 @@
 var cubeRotation = 0.0;
-var resolution = 256;
+var resolution = 1024;
 var offset_width = resolution;
 var offset_height = resolution;
-var light_pos = [6.0, 8.0, -6.0];
+var light_pos = [0, 8.0, -6.0];
 var canvas;
 
 main();
@@ -167,7 +167,7 @@ const shadow_display_shaderProgram_info = {
 
   mat4.translate(cubeModelViewMatrix,     // destination matrix
     cubeModelViewMatrix,     // matrix to translate
-    [0.0, 5.0, -6.0]);  // amount to translate
+    [0.0, 5.0, 0.0]);  // amount to translate
 
 
   mat4.rotate(cubeModelViewMatrix,  // destination matrix
@@ -190,7 +190,7 @@ const planeModelViewMatrix = mat4.create();
 
 mat4.translate(planeModelViewMatrix,     // destination matrix
   planeModelViewMatrix,     // matrix to translate
-  [0.0, 0.0, -10]);  // amount to translate
+  [0.0, 0.0, 0.0]);  // amount to translate
 
 
   mat4.rotate(planeModelViewMatrix,     // destination matrix
@@ -214,18 +214,6 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
   mat4.translate(lightModelViewMatrix,     // destination matrix
     lightModelViewMatrix,     // matrix to translate
     light_pos);  // amount to translate
-
-
-  mat4.rotate(lightModelViewMatrix,  // destination matrix
-    lightModelViewMatrix,  // matrix to rotate
-  45,     // amount to rotate in radians
-  [0, 0, 1]);       // axis to rotate around (Z)
-
-
-  mat4.rotate(lightModelViewMatrix,  // destination matrix
-    lightModelViewMatrix,  // matrix to rotate
-  45,// amount to rotate in radians
-  [0, 1, 0]);       // axis to rotate around (X)
 
 
   mat4.scale(lightModelViewMatrix,  // destination matrix
@@ -258,11 +246,13 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
   // ===============  view project matrix from light
 
   const viewProjectMatrixFromLight = mat4.create();
-  mat4.perspective(viewProjectMatrixFromLight,
-                   70.0,
-                   offset_width/offset_height,
-                   1.0,
-                   100.0);
+  mat4.ortho(viewProjectMatrixFromLight,
+                   -40.0,
+                   40.0,
+                   -40.0,
+                   40.0,
+                   -40.0,
+                   90);
   let lookAtMatrix_light = mat4.create();
   mat4.lookAt(lookAtMatrix_light, light_pos, [0,0,0], [0,1,0]);
   mat4.mul(viewProjectMatrixFromLight, viewProjectMatrixFromLight, lookAtMatrix_light);
@@ -284,7 +274,6 @@ mat4.translate(planeModelViewMatrix,     // destination matrix
     gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
     gl.clearDepth(1.0);                 // Clear everything
     gl.enable(gl.DEPTH_TEST);           // Enable depth testing
-    gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
   
    
   
