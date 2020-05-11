@@ -2,7 +2,7 @@ var cubeRotation = 0.0;
 var resolution = 1024;
 var offset_width = resolution;
 var offset_height = resolution;
-var light_pos = [4, 8.0, -6.0];
+var light_pos = [4, 4.0, -4.0];
 var canvas;
 
 // mouse operation
@@ -108,7 +108,7 @@ void main(void) {
     vec3 shadowCoord = (v_PositionFromLight.xyz/v_PositionFromLight.w)/2.0 + 0.5;
     vec4 rgbaDepth = texture2D(uShadowMap, shadowCoord.xy);
     float depth = unpackDepth(rgbaDepth);
-    float visibility = (shadowCoord.z > depth + 0.0015) ? 0.5 : 1.0;
+    float visibility = (shadowCoord.z > depth + 0.0005) ? 0.5 : 1.0;
     vec4 textureColor = texture2D(uNormalTexture, vTextureCoord);
     gl_FragColor = vec4(textureColor.rgb * visibility, textureColor.a);
 }
@@ -179,19 +179,19 @@ const shadow_display_shaderProgram_info = {
 
   mat4.translate(cubeModelViewMatrix,     // destination matrix
     cubeModelViewMatrix,     // matrix to translate
-    [0.0, 0.0, 0.0]);  // amount to translate
+    [0.0, -4.0, 0.0]);  // amount to translate
 
 
-  mat4.rotate(cubeModelViewMatrix,  // destination matrix
-  cubeModelViewMatrix,  // matrix to rotate
-  45,     // amount to rotate in radians
-  [0, 0, 1]);       // axis to rotate around (Z)
+  // mat4.rotate(cubeModelViewMatrix,  // destination matrix
+  // cubeModelViewMatrix,  // matrix to rotate
+  // 45,     // amount to rotate in radians
+  // [0, 0, 1]);       // axis to rotate around (Z)
 
 
-  mat4.rotate(cubeModelViewMatrix,  // destination matrix
-  cubeModelViewMatrix,  // matrix to rotate
-  45,// amount to rotate in radians
-  [0, 1, 0]);       // axis to rotate around (X)
+  // mat4.rotate(cubeModelViewMatrix,  // destination matrix
+  // cubeModelViewMatrix,  // matrix to rotate
+  // 45,// amount to rotate in radians
+  // [0, 1, 0]);       // axis to rotate around (X)
 
 // ===================== plane 
 
