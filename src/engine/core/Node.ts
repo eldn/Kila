@@ -16,22 +16,7 @@ const TRAVERSE_STOP_NONE = false;
 const TRAVERSE_STOP_CHILDREN = 1;
 const TRAVERSE_STOP_ALL = true;
 
-/**
- * 节点，3D场景中的元素，是大部分类的基类
- * @class
- * @mixes EventMixin
- * @example
- * const node = new Hilo3d.Node({
- *     name:'test',
- *     x:100,
- *     rotationX:30,
- *     onUpdate(){
- *         this.rotationY ++;
- *     }
- * });
- * node.scaleX = 0.3;
- * stage.addChild(node);
- */
+
 export class Node extends EventNode{
  
     /**
@@ -93,13 +78,6 @@ export class Node extends EventNode{
     pointerChildren: boolean = true;
 
     /**
-     * 是否用鼠标指针
-     * @default false
-     * @type {Boolean}
-     */
-    useHandCursor: boolean = false;
-
-    /**
      * 是否强制使用父元素 worldMatrix，供高级开发者使用
      * @private
      * @type {Boolean}
@@ -141,7 +119,6 @@ export class Node extends EventNode{
         this.children = [];
         
         this.worldMatrix = new Matrix4();
-
         this._matrix = new Matrix4Notifier();
         this._position = new Vector3Notifier(0, 0, 0);
         this._scale = new Vector3Notifier(1, 1, 1);
@@ -175,17 +152,16 @@ export class Node extends EventNode{
     }
 
     /**
-     * @param {boolean} [isChild=false] 是否子节点，子节点不会处理动画及骨骼Mesh，即如果有动画将共享
      * @return {Node} 返回clone的Node
      */
-    clone(isChild) {
+    clone() {
         const node = new Node();
         node.name = this.name;
         node.setPosition(this.x, this.y, this.z);
         node.setScale(this.scaleX, this.scaleY, this.scaleZ);
         node.setRotation(this.rotationX, this.rotationY, this.rotationZ);
         this.children.forEach((child) => {
-            node.addChild(child.clone(true));
+            node.addChild(child.clone());
         });
         return node;
     }
@@ -197,37 +173,32 @@ export class Node extends EventNode{
      */
     getChildrenNameMap() {
         const map = {};
-        this.traverse((child) => {
+        this.traverse((child : Node) => {
             map[child.name] = child;
-
-            // fix smd animation bug
-            const originName = child._originName;
-            if (originName !== undefined && !map[originName]) {
-                map[originName] = child;
-            }
         }, true);
         return map;
     }
+
     /**
      * 添加一个子元素
      * @param {Node} child 需要添加的子元素
      * @return {Node} this
      */
-    addChild(child) {
+    addChild(child : Node) {
         if (child.parent) {
             child.removeFromParent();
         }
         child.parent = this;
         this.children.push(child);
-
         return this;
     }
+
     /**
      * 移除指定的子元素
      * @param {Node} child 需要移除的元素
      * @return {Node} this
      */
-    removeChild(child) {
+    removeChild(child : Node) {
         const index = this.children.indexOf(child);
         if (index > -1) {
             this.children.splice(index, 1);
@@ -235,15 +206,17 @@ export class Node extends EventNode{
         }
         return this;
     }
+
     /**
      * 将当前元素添加到某个父元素的子元素中
      * @param {Node} parent 需要添加到的父元素
      * @return {Node} this
      */
-    addTo(parent) {
+    addTo(parent : Node) {
         parent.addChild(this);
         return this;
     }
+
     /**
      * 将当前元素从其父元素中移除
      * @return {Node} this
@@ -254,6 +227,7 @@ export class Node extends EventNode{
         }
         return this;
     }
+
     /**
      * 更新本地矩阵
      * @return {Node} this
@@ -292,6 +266,7 @@ export class Node extends EventNode{
         this._matrixDirty = false;
         return this;
     }
+
     /**
      * 更新世界矩阵
      * @param  {Boolean} [force=true] 是否强制更新
@@ -327,7 +302,7 @@ export class Node extends EventNode{
      * @param  {Boolean}  onlyChild
      * @return {Enum}  TRAVERSE_STOP_ALL, TRAVERSE_STOP_CHILDREN, TRAVERSE_STOP_NONE
      */
-    _traverse(callback, onlyChild) {
+    _traverse(callback : Function, onlyChild : boolean) {
         if (!onlyChild) {
             const res = callback(this);
             if (res) {
@@ -345,23 +320,25 @@ export class Node extends EventNode{
 
         return TRAVERSE_STOP_NONE;
     }
+
     /**
      * 遍历当前元素的子孙元素
      * @param {Function(Node)} callback 每个元素都会调用这个函数处理
      * @param {Boolean} [onlyChild=false] 是否只遍历子元素
      * @return {Node} this
      */
-    traverse(callback, onlyChild = false) {
+    traverse(callback : Function, onlyChild : boolean = false) {
         this._traverse(callback, onlyChild);
         return this;
     }
+
     /**
      * 遍历当前元素的子孙元素(广度优先)
      * @param {Function(Node)} callback 每个元素都会调用这个函数处理
      * @param {Boolean} [onlyChild=false] 是否只遍历子元素
      * @return {Node} this
      */
-    traverseBFS(callback, onlyChild = false) {
+    traverseBFS(callback : Function, onlyChild : boolean = false) {
         let currentQueue;
         let nextQueue;
         if (!onlyChild) {
@@ -385,12 +362,13 @@ export class Node extends EventNode{
         }
         return this;
     }
+
     /**
      * 根据函数来获取一个子孙元素(广度优先)
      * @param {Function} fn 判读函数
      * @return {Node|null} 返回获取到的子孙元素
      */
-    getChildByFnBFS(fn) {
+    getChildByFnBFS(fn : Function) {
         let result = null;
         this.traverseBFS((child) => {
             if (fn(child)) {
@@ -402,12 +380,13 @@ export class Node extends EventNode{
 
         return result;
     }
+
     /**
      * 根据 name path 来获取子孙元素
      * @param  {String[]} path 名字数组, e.g., getChildByNamePath(['a', 'b', 'c'])
      * @return {Node|null} 返回获取到的子孙元素
      */
-    getChildByNamePath(path) {
+    getChildByNamePath(path : Array<string>) {
         let currentNode = this;
         for (let i = 0, l = path.length; i < l; i++) {
             const name = path[i];
@@ -421,12 +400,13 @@ export class Node extends EventNode{
 
         return currentNode;
     }
+
     /**
      * 遍历调用子孙元素onUpdate方法
      * @param  {Number} dt
      * @return {Node} this
      */
-    traverseUpdate(dt) {
+    traverseUpdate(dt : number) {
         this.traverse((node) => {
             if (node.onUpdate) {
                 node.onUpdate(dt);
@@ -438,12 +418,13 @@ export class Node extends EventNode{
         });
         return this;
     }
+
     /**
      * 根据函数来获取一个子孙元素
      * @param {Function} fn 判读函数
      * @return {Node|null} 返回获取到的子孙元素
      */
-    getChildByFn(fn) {
+    getChildByFn(fn : Function) {
         let result = null;
         this.traverse((child) => {
             if (fn(child)) {
@@ -455,12 +436,13 @@ export class Node extends EventNode{
 
         return result;
     }
+
     /**
      * 根据函数来获取匹配的所有子孙元素
      * @param {Function} fn 判读函数
      * @return {Node[]} 返回获取到的子孙元素
      */
-    getChildrenByFn(fn) {
+    getChildrenByFn(fn : Function) {
         let result = [];
         this.traverse((child) => {
             if (fn(child)) {
@@ -469,30 +451,34 @@ export class Node extends EventNode{
         }, true);
         return result;
     }
+
     /**
      * 获取指定name的首个子孙元素
      * @param {string} name 元素name
      * @return {Node|null} 获取的元素
      */
-    getChildByName(name) {
+    getChildByName(name : string) {
         return this.getChildByFn(child => child.name === name);
     }
+
     /**
      * 获取指定name的所有子孙元素
      * @param {string} name 元素name
      * @return {Node[]} 获取的元素数组
      */
-    getChildrenByName(name) {
+    getChildrenByName(name : string){
         return this.getChildrenByFn(child => child.name === name);
     }
+
     /**
      * 获取指定id的子孙元素
      * @param {string} id 元素id
      * @return {Node|null} 获取的元素
      */
-    getChildById(id) {
+    getChildById(id : string) {
         return this.getChildByFn(child => child.id === id);
     }
+
     /**
      * 获取指定类名的所有子孙元素
      * @param {string} className 类名
@@ -501,14 +487,7 @@ export class Node extends EventNode{
     getChildrenByClassName(className) {
         return this.getChildrenByFn(child => child.className === className);
     }
-    /**
-     * 获取指定基类名的所有子孙元素
-     * @param {string} className 类名
-     * @return {Node[]} 获取的元素数组
-     */
-    getChildrenByBaseClassName(className) {
-        return this.getChildrenByFn(child => child['is' + className]);
-    }
+
     /**
      * 设置元素的缩放比例
      * @param {number} x X缩放比例
@@ -516,10 +495,11 @@ export class Node extends EventNode{
      * @param {number} z Z缩放比例
      * @return {Node} this
      */
-    setScale(x, y = x, z = y) {
+    setScale(x : number, y : number = x, z : number = y) {
         this._scale.set(x, y, z);
         return this;
     }
+
     /**
      * 设置元素的位置
      * @param {number} x X方向位置
@@ -527,10 +507,11 @@ export class Node extends EventNode{
      * @param {number} z Z方向位置
      * @return {Node} this
      */
-    setPosition(x, y, z) {
+    setPosition(x : number, y : number, z : number) {
         this._position.set(x, y, z);
         return this;
     }
+
     /**
      * 设置元素的旋转
      * @param {number} x X轴旋转角度, 角度制
@@ -538,10 +519,11 @@ export class Node extends EventNode{
      * @param {number} z Z轴旋转角度, 角度制
      * @return {Node} this
      */
-    setRotation(x, y, z) {
+    setRotation(x : number, y : number, z : number) {
         this._rotation.setDegree(x, y, z);
         return this;
     }
+
     /**
      * 设置中心点
      * @param {Number} x 中心点x
@@ -549,73 +531,32 @@ export class Node extends EventNode{
      * @param {Number} z 中心点z
      * @return {Node} this
      */
-    setPivot(x, y, z) {
+    setPivot(x : number, y : number, z : number) {
         this._pivot.set(x, y, z);
         return this;
     }
+
     /**
      * 改变元素的朝向
      * @param {Node|Object|Vector3} node 需要朝向的元素，或者坐标
      * @return {Node} this
      */
-    lookAt(node) {
-        tempMatrix4.targetTo(node, this.position, this.up);
+    lookAt(node : Node) {
+        tempMatrix4.targetTo(node.position, this.position, this.up);
         this._quaternion.fromMat4(tempMatrix4);
         return this;
     }
-    /**
-     * raycast
-     * @param  {Ray} ray
-     * @param {Boolean} [sort=false] 是否按距离排序
-     * @param {Boolean} [eventMode=false] 是否事件模式
-     * @return {raycastInfo[]|null}
-     */
-    raycast(ray, sort = false, eventMode = false) {
-        if (!this.visible) {
-            return null;
-        }
-        let resArray = [];
-        this.traverse((child) => {
-            if (eventMode && !child.pointerEnabled) {
-                return TRAVERSE_STOP_CHILDREN;
-            }
 
-            if (child.isMesh) {
-                const res = child.raycast(ray, false);
-                if (res) {
-                    resArray = resArray.concat(res.map((point) => {
-                        return {
-                            mesh: child,
-                            point
-                        };
-                    }));
-                }
-            }
-
-            if (eventMode && !this.pointerChildren) {
-                return TRAVERSE_STOP_CHILDREN;
-            }
-
-            return false;
-        });
-
-        if (resArray.length) {
-            if (sort) {
-                ray.sortPoints(resArray, 'point');
-            }
-            return resArray;
-        }
-
-        return null;
-    }
-
-    private _matrix : Matrix4Notifier;
+    
 
     /**
      * 元素的矩阵
      * @type {Matrix4Notifier}
      * @readOnly
      */
+
+    private _matrix : Matrix4Notifier;
+
     get matrix() {
         this.updateMatrix();
         return this._matrix;
@@ -625,14 +566,14 @@ export class Node extends EventNode{
         log.warnOnce('Node.matrix.set', 'node.matrix is readOnly.Use node.matrix.copy instead.');
         this._matrix.copy(value);
     }
-    
-    private _position : Vector3Notifier;
 
     /**
      * 位置
      * @type {Vector3Notifier}
      * @readOnly
      */
+    private _position : Vector3Notifier;
+
     get position() {
         return this._position;
     }
@@ -681,15 +622,16 @@ export class Node extends EventNode{
         this._position.elements[2] = value;
         this._matrixDirty = true;
     }
-    
 
-    private _scale : Vector3Notifier;
 
     /**
      * 缩放
      * @type {Vector3Notifier}
      * @readOnly
      */
+
+    private _scale : Vector3Notifier;
+
     get scale() {
         return this._scale;
     }
@@ -870,22 +812,13 @@ export class Node extends EventNode{
 
     matrixVersion: number = 0;
 
-    /**
-     * 销毁 Node 资源
-     * @param {WebGLRenderer} renderer
-     * @param {Boolean} [destroyTextures=false] 是否销毁材质的贴图，默认不销毁
-     * @return {Node} this
-     */
-    destroy(renderer, destroyTextures = false) {
-        const nodes = this.getChildrenByBaseClassName('Node');
+
+    destroy() {
+        const nodes = this.children;
         this.off();
         nodes.forEach((node) => {
-            if (node.isMesh) {
-                node.destroy(renderer, destroyTextures);
-            } else {
-                node.off();
-                node.removeFromParent();
-            }
+             node.off();
+             node.removeFromParent();
         });
 
         this.removeFromParent();

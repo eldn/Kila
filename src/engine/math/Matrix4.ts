@@ -415,7 +415,7 @@ export class Matrix4{
      * @param  {Vector3} up pointing up
      * @return {Matrix4} this
      */
-    targetTo(eyePos : Vector3, targetPos : Vector3 | Vector3Notifier, upVector : Vector3) {
+    targetTo(eyePos : Vector3 | Vector3Notifier, targetPos : Vector3 | Vector3Notifier, upVector : Vector3) {
 
         // mat4.targetTo(this.elements, eye.elements, target.elements, up.elements);
         let eye = eyePos.elements;
