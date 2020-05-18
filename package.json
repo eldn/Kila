@@ -9,8 +9,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node_modules/.bin/wepack-dev-server",
-    "watch":"node_modules/.bin/webpack -w",
-    "build":"node_modules/.bin/webpack"
+    "watch": "node_modules/.bin/webpack -w",
+    "build": "node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",

@@ -3,14 +3,14 @@ import { Matrix3 } from './Matrix3';
 import { quat } from "gl-matrix";
 import { Matrix4 } from './Matrix4';
 import { Vector3 } from './Vector3';
-import { EventMixin } from '../event/EventMixin';
+import { EventNode } from '../event/EventNode';
 
 
 const tempMat3 = new Matrix3();
 const tempVec3 = new Vector3();
 
 
-export class Quaternion extends EventMixin{
+export class Quaternion extends EventNode{
 
     public elements : quat;
 

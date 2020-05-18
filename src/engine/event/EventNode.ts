@@ -8,7 +8,7 @@
  * @module hilo/event/EventMixin
  * @requires hilo/core/Class
  */
-export class EventMixin {
+export class EventNode {
     _listeners: Object;
 
     /**
@@ -37,7 +37,7 @@ export class EventMixin {
      * @param {Function} listener Event listener callback function to be removed.
      * @returns {Object} The Event itself. Functions chain call supported.
      */
-    off(type, listener){
+    off(type ?: string, listener ?: Function){
         //remove all event listeners
         if(arguments.length == 0){
             this._listeners = null;

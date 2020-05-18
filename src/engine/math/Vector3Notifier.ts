@@ -1,9 +1,9 @@
 import { Vector3 } from "./Vector3";
 import {vec3} from 'gl-matrix';
-import { EventMixin } from "../event/EventMixin";
+import { EventNode } from "../event/EventNode";
 
 
-export class Vector3Notifier extends EventMixin{
+export class Vector3Notifier extends EventNode{
 
 
     public elements : vec3;
