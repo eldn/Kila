@@ -42,7 +42,7 @@ export class Vector4{
      * @param  {Number} [offset=0] 数组偏移值
      * @return {Array}
      */
-    toArray(array = [], offset = 0) {
+    toArray(array : Float32Array = new Float32Array(), offset = 0) {
         const elements = this.elements;
         array[0 + offset] = elements[0];
         array[1 + offset] = elements[1];
