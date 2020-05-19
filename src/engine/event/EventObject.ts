@@ -1,14 +1,7 @@
 
 
-/**
- * @language=en
- * @class EventMixin is a mixin on event related functions. Use Class.mix(target, EventMixin) to add event function onto target.
- * @static
- * @mixin
- * @module hilo/event/EventMixin
- * @requires hilo/core/Class
- */
-export class EventNode {
+
+export class EventObject {
     _listeners: Object;
 
     /**
@@ -86,7 +79,7 @@ export class EventNode {
         var eventListeners = listeners[eventType];
         if(eventListeners){
             var eventListenersCopy = eventListeners.slice(0);
-            event = event || new EventObject(eventType, this, detail);
+            event = event || new EventObjectNode(eventType, this, detail);
             if(event._stopped) return false;
 
             for(var i = 0; i < eventListenersCopy.length; i++){
@@ -108,7 +101,7 @@ export class EventNode {
 };
 
 
-export class EventObject{
+export class EventObjectNode{
 
     type: null;
     target: null;

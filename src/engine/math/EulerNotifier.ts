@@ -2,7 +2,7 @@ import { Matrix4 } from "./Matrix4";
 import math from "./math";
 import { Euler } from "./Euler";
 import { Quaternion } from "./Quaternion";
-import { EventNode } from "../event/EventNode";
+import { EventObject } from "../event/EventObject";
 import { log } from "../utils/Log";
 
 
@@ -10,7 +10,7 @@ const tempMatrix = new Matrix4();
 const DEG2RAD = math.DEG2RAD;
 const RAD2DEG = math.RAD2DEG;
 
-export class EulerNotifier extends EventNode {
+export class EulerNotifier extends EventObject {
 
 
     elements: Float32Array;
