@@ -32,6 +32,9 @@ export class Camera extends GameObject{
      */
     _needUpdateProjectionMatrix: boolean = true;
 
+
+    _isGeometryDirty : boolean = false;
+
     constructor(){
         super();
 

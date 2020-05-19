@@ -1,6 +1,17 @@
+import { glConstants } from "../constants/glConstants";
 
 
 export const EPSILON = 0.000001;
+
+
+const {
+    BYTE,
+    UNSIGNED_BYTE,
+    SHORT,
+    UNSIGNED_SHORT,
+    UNSIGNED_INT,
+    FLOAT
+} = glConstants;
 
 
 export class Utils {
@@ -82,6 +93,48 @@ export class Utils {
     
         return new Array(len - str.length + 1).join(char || '0') + str;
     }
+
+    public static getTypedArrayGLType(array) {
+        if (array instanceof Float32Array) {
+            return FLOAT;
+        }
+    
+        if (array instanceof Int8Array) {
+            return BYTE;
+        }
+    
+        if (array instanceof Uint8Array) {
+            return UNSIGNED_BYTE;
+        }
+    
+        if (array instanceof Int16Array) {
+            return SHORT;
+        }
+    
+        if (array instanceof Uint16Array) {
+            return UNSIGNED_SHORT;
+        }
+    
+        if (array instanceof Uint32Array) {
+            return UNSIGNED_INT;
+        }
+    
+        return FLOAT;
+    }
+
+    public static getTypedArrayClass(type){
+        const TypedArrayClassMap = {
+            [glConstants.BYTE]: Int8Array,
+            [glConstants.UNSIGNED_BYTE]: Uint8Array,
+            [glConstants.SHORT]: Int16Array,
+            [glConstants.UNSIGNED_SHORT]: Uint16Array,
+            [glConstants.UNSIGNED_INT]: Uint32Array,
+            [glConstants.FLOAT]: Float32Array
+        };
+        return TypedArrayClassMap[type] || Float32Array;
+    }
+
+
 
 }
 
