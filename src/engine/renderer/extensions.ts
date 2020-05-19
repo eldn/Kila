@@ -35,6 +35,12 @@ const extensions = {
      */
     textureFilterAnisotropic: undefined,
 
+
+    shaderTextureLod : undefined,
+
+
+    uintIndices : undefined,
+
     _usedExtensions: {},
     _disabledExtensions: {},
 
