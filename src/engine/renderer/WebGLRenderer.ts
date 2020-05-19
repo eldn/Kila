@@ -5,6 +5,10 @@ import RenderList from "./RenderList";
 import { LightManager } from "../light/LightManager";
 import WebGLResourceManager from "./WebGLResourceManager";
 import { WebGLState } from "./WebGlState";
+import extensions from "./extensions";
+import capabilities from "./capabilities";
+import glType from "./glType";
+import Shader from "../shader/shader";
 
 export class WebGLRenderer extends EventObject{
 
@@ -153,19 +157,10 @@ export class WebGLRenderer extends EventObject{
         super();
         
         this.clearColor = new Color(1, 1, 1);
-
         this.domElement = domElement;
-
-       
         this.renderInfo = new RenderInfo();
-
-        
         this.renderList = new RenderList();
-
-
         this.lightManager = new LightManager();
-
-        
         this.resourceManager = new WebGLResourceManager();
     }
 
