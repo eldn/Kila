@@ -19,6 +19,11 @@ const TRAVERSE_STOP_ALL = true;
 
 
 export class GameObject extends EventObject{
+
+
+    static TRAVERSE_STOP_NONE : boolean  = TRAVERSE_STOP_NONE;
+    static TRAVERSE_STOP_CHILDREN : number  = TRAVERSE_STOP_CHILDREN;
+    static TRAVERSE_STOP_ALL : boolean  = TRAVERSE_STOP_ALL;
  
     /**
      * Node 的名字，可以通过 getChildByName 查找
@@ -273,7 +278,7 @@ export class GameObject extends EventObject{
      * @param  {Boolean} [force=true] 是否强制更新
      * @return {GameObject} this
      */
-    updateMatrixWorld(force) {
+    updateMatrixWorld(force ?: boolean) {
         this.traverse((node) => {
             if (node.autoUpdateWorldMatrix || force) {
                 if (node.parent) {

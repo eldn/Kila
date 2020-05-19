@@ -60,9 +60,9 @@ export class log {
      * error，等同 console.log
      * @return {Object} this
      */
-    public static error() {
+    public static error(...args) {
         if (this.level >= LEVEL_ERROR) {
-            console.error.apply(console, arguments);
+            console.error.apply(console, args);
         }
         return this;
     }

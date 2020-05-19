@@ -5,6 +5,7 @@ import { TextureOptions } from "../renderer/TextureOptions";
 import { RenderOptions } from "../renderer/RenderOptions";
 import { Mesh } from "../core/Mesh";
 import { log } from "../utils/Log";
+import { semantic } from "../renderer/Semantic";
 
 
 
@@ -326,41 +327,6 @@ export class Material {
 		this._normalMapScale = value;
 	}
 
-	/**
-	 *视差贴图
-	 *
-	 * @private
-	 * @type {Texture}
-	 * @memberof Material
-	 */
-	private _parallaxMap: Texture = null;
-
-	public get parallaxMap(): Texture {
-		return this._parallaxMap;
-	}
-
-	public set parallaxMap(value: Texture) {
-		this._parallaxMap = value;
-	}
-
-
-	/**
-	 * 是否忽略透明度
-	 *
-	 * @private
-	 * @type {boolean}
-	 * @memberof Material
-	 */
-	private _ignoreTranparent: boolean = false;
-
-	public get ignoreTranparent(): boolean {
-		return this._ignoreTranparent;
-	}
-
-	public set ignoreTranparent(value: boolean) {
-		this._ignoreTranparent = value;
-	}
-
 	setDefaultTransparentBlend() {
 		this.blend = true;
 		this.depthMask = false;
@@ -640,10 +606,6 @@ export class Material {
 					option.NORMAL_MAP_SCALE = 1;
 				}
 			});
-		}
-
-		if (this.ignoreTranparent) {
-			option.IGNORE_TRANSPARENT = 1;
 		}
 
 		if (this.alphaCutoff > 0) {

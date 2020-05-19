@@ -2,6 +2,8 @@ import capabilities from "../renderer/capabilities";
 import { Pool } from "../utils/Pool";
 import { WebGLRenderer } from "../renderer/WebGLRenderer";
 import math from "../math/math";
+import { Mesh } from "../core/Mesh";
+import { LightManager } from "../light/LightManager";
 var basicFragCode = require('./basic.frag');
 var basicVertCode =  require('./basic.vert');
 var geometryFragCode = require('./geometry.frag');
@@ -149,20 +151,9 @@ export class Shader {
      * @param {Boolean} useLogDepth 是否使用对数深度
      * @return {string}
      */
-    static getHeaderKey(mesh, material, lightManager, fog, useLogDepth?: boolean) {
+    static getHeaderKey(mesh : Mesh, material, lightManager : LightManager) {
         let headerKey = 'header_' + material.id + '_' + lightManager.lightInfo.uid;
-        if (mesh.isSkinedMesh) {
-            headerKey += '_joint' + mesh.skeleton.jointCount;
-        }
-        if (fog) {
-            headerKey += '_fog_' + fog.mode;
-        }
-
         headerKey += '_' + mesh.geometry.getShaderKey();
-
-        if (useLogDepth) {
-            headerKey += '_fogDepth';
-        }
         return headerKey;
     }
 
@@ -175,8 +166,8 @@ export class Shader {
      * @param {Fog} fog
      * @return {String}
      */
-    static getHeader(mesh, material, lightManager, fog, useLogDepth) {
-        const headerKey = this.getHeaderKey(mesh, material, lightManager, fog);
+    static getHeader(mesh, material, lightManager) {
+        const headerKey = this.getHeaderKey(mesh, material, lightManager);
         let header = headerCache.get(headerKey);
         if (!header || material.isDirty) {
             const headers = {};
@@ -187,18 +178,6 @@ export class Shader {
             }
             material.getRenderOption(headers);
             mesh.getRenderOption(headers);
-
-            if (fog) {
-                headers['HAS_FOG'] = 1;
-                fog.getRenderOption(headers);
-            }
-
-            if (useLogDepth) {
-                headers['USE_LOG_DEPTH'] = 1;
-                if (capabilities['EXT_FRAG_DEPTH']) {
-                    headers['USE_EXT_FRAG_DEPTH'] = 1;
-                }
-            }
 
             if (headers['HAS_NORMAL'] && headers['NORMAL_MAP']) {
                 headers['HAS_TANGENT'] = 1;
@@ -245,11 +224,11 @@ export class Shader {
      * @param {Boolean} useLogDepth
      * @return {Shader}
      */
-    static getShader(mesh, material, isUseInstance, lightManager, fog, useLogDepth) {
-        const header = this.getHeader(mesh, material, lightManager, fog, useLogDepth);
+    static getShader(mesh, material, lightManager) {
+        const header = this.getHeader(mesh, material, lightManager);
 
         if (material.isBasicMaterial || material.isPBRMaterial) {
-            return this.getBasicShader(material, isUseInstance, header);
+            return this.getBasicShader(material, header);
         }
         if (material.isShaderMaterial) {
             return this.getCustomShader(material.vs, material.fs, header, (material.shaderCacheId || material.id), material.useHeaderCache);
@@ -265,12 +244,8 @@ export class Shader {
      * @param  {Fog}  fog
      * @return {Shader}
      */
-    static getBasicShader(material, isUseInstance, header) {
+    static getBasicShader(material, header) {
         let instancedUniforms;
-        if (isUseInstance) {
-            instancedUniforms = material.getInstancedUniforms().map(x => x.name);
-            instancedUniforms = instancedUniforms.join('|');
-        }
         let key = material.className + ':' + instancedUniforms;
         if (material.onBeforeCompile) {
             key += ':' + (material.shaderCacheId || material.id);

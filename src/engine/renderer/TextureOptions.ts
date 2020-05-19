@@ -1,8 +1,7 @@
 import { RenderOptions } from "./RenderOptions";
-import { Texture } from "../graphics/Texture";
-import { CubeTexture } from "../graphics/CubeTexture";
 import { log } from "../utils/Log";
-import { Color } from "../graphics/Color";
+import Texture from "../texture/Texture";
+import Color from "../math/Color";
 
 export class TextureOptions {
 
@@ -30,10 +29,6 @@ export class TextureOptions {
             }
             uvTypes[uv] = 1;
             option[optionName] = uv;
-
-            if (texture instanceof CubeTexture) {
-                option[`${optionName}_CUBE`] = 1;
-            }
 
             if (callback) {
                 callback(texture);
