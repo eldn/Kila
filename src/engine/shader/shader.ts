@@ -6,10 +6,8 @@ import { Mesh } from "../core/Mesh";
 import { LightManager } from "../light/LightManager";
 import { Material } from "../material/Material";
 import { BasicMaterial } from "../material/BasicMaterial";
-var basicFragCode = require('./basic.frag');
-var basicVertCode =  require('./basic.vert');
-var geometryFragCode = require('./geometry.frag');
-var pbrFragCode =  require('./pbr.frag');
+const basicFragCode = require('./basic.frag');
+const basicVertCode =  require('./basic.vert');
 
 
 const cache = new Pool();
@@ -20,7 +18,7 @@ const CUSTUM_OPTION_PREFIX = 'HILO_CUSTUM_OPTION_';
  * Shader类
  * @class
  */
-export class Shader {
+class Shader {
 
 
     /**

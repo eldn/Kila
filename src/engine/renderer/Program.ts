@@ -1,6 +1,6 @@
 import glType from './glType';
 import extensions from './extensions';
-import Shader from '../shader/Shader';
+import Shader from '../shader/shader';
 import { Pool } from '../utils/Pool';
 import { WebGLState } from './WebGlState';
 import math from '../math/math';

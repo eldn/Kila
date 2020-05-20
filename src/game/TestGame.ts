@@ -9,7 +9,6 @@ import { Mesh } from "../engine/core/Mesh";
 import { BasicMaterial } from "../engine/material/BasicMaterial";
 import { Ticker } from "../engine/utils/Ticker";
 import AmbientLight from "../engine/light/AmbientLight";
-import { Vector2 } from "../engine/math/Vector2";
 import LazyTexture from "../engine/texture/LazyTexture";
 import math from "../engine/math/math";
 
