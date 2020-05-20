@@ -20,6 +20,7 @@ import { Camera } from "../camera/Camera";
 import { Scene } from "../core/Scene";
 import { semantic } from "./Semantic";
 import GameObject from "../core/GameObject";
+import { Light } from "../light/Light";
 
 
 
@@ -184,10 +185,13 @@ export class WebGLRenderer extends EventObject{
      */
     useVao: boolean = true;
 
-    constructor(domElement: HTMLCanvasElement) {
+    constructor(domElement: HTMLCanvasElement, clearColor ?: Color) {
         super();
-        
-        this.clearColor = new Color(1, 1, 1);
+        if(clearColor){
+            this.clearColor = clearColor;
+        } else{
+            this.clearColor  = new Color(1, 1, 1)
+        }
         this.domElement = domElement;
         this.renderInfo = new RenderInfo();
         this.renderList = new RenderList();
@@ -580,14 +584,14 @@ export class WebGLRenderer extends EventObject{
         stage.updateMatrixWorld();
         camera.updateViewProjectionMatrix();
 
-        stage.traverse((node) => {
+        stage.traverse((node : GameObject) => {
             if (!node.visible) {
                 return GameObject.TRAVERSE_STOP_CHILDREN;
             }
 
-            if (node.isMesh) {
+            if (node instanceof Mesh) {
                 renderList.addMesh(node, camera);
-            } else if (node.isLight) {
+            } else if (node instanceof Light) {
                 lightManager.addLight(node);
             }
 

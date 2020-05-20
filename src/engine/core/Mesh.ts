@@ -21,6 +21,11 @@ export class Mesh extends GameObject{
         this._usedResourceDict = {};
     }
 
+    getRenderOption(opt = {}) {
+        this.geometry.getRenderOption(opt);
+        return opt;
+    }
+
     useResource(res : any) {
         if (res) {
             this._usedResourceDict[res.constructor + ':' + res.id] = res;

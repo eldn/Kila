@@ -4,6 +4,8 @@ import { WebGLRenderer } from "../renderer/WebGLRenderer";
 import math from "../math/math";
 import { Mesh } from "../core/Mesh";
 import { LightManager } from "../light/LightManager";
+import { Material } from "../material/Material";
+import { BasicMaterial } from "../material/BasicMaterial";
 var basicFragCode = require('./basic.frag');
 var basicVertCode =  require('./basic.vert');
 var geometryFragCode = require('./geometry.frag');
@@ -35,8 +37,6 @@ export class Shader {
      */
     fs: string = '';
 
-
-    static commonOptions: Object = {};
 
     static renderer: WebGLRenderer;
 
@@ -166,12 +166,11 @@ export class Shader {
      * @param {Fog} fog
      * @return {String}
      */
-    static getHeader(mesh, material, lightManager) {
+    static getHeader(mesh : Mesh, material : Material, lightManager : LightManager) {
         const headerKey = this.getHeaderKey(mesh, material, lightManager);
         let header = headerCache.get(headerKey);
         if (!header || material.isDirty) {
             const headers = {};
-            Object.assign(headers, this.commonOptions);
             const lightType = material.lightType;
             if (lightType && lightType !== 'NONE') {
                 lightManager.getRenderOption(headers);
@@ -189,7 +188,7 @@ export class Shader {
                 delete headers['POINT_LIGHTS_SMC'];
             }
 
-            header = `#define SHADER_NAME ${material.className}\n`;
+            header = `#define SHADER_NAME ${material.constructor.name}\n`;
             header += Object.keys(headers).map((name) => {
                 if (name.indexOf(CUSTUM_OPTION_PREFIX) > -1) {
                     return `#define ${name.replace(CUSTUM_OPTION_PREFIX, '')} ${headers[name]}`;
@@ -224,15 +223,13 @@ export class Shader {
      * @param {Boolean} useLogDepth
      * @return {Shader}
      */
-    static getShader(mesh, material, lightManager) {
+    static getShader(mesh : Mesh, material : Material, lightManager : LightManager) {
         const header = this.getHeader(mesh, material, lightManager);
 
-        if (material.isBasicMaterial || material.isPBRMaterial) {
+        if (material instanceof BasicMaterial) {
             return this.getBasicShader(material, header);
         }
-        if (material.isShaderMaterial) {
-            return this.getCustomShader(material.vs, material.fs, header, (material.shaderCacheId || material.id), material.useHeaderCache);
-        }
+      
         return null;
     }
 
@@ -244,37 +241,16 @@ export class Shader {
      * @param  {Fog}  fog
      * @return {Shader}
      */
-    static getBasicShader(material, header) {
-        let instancedUniforms;
-        let key = material.className + ':' + instancedUniforms;
-        if (material.onBeforeCompile) {
-            key += ':' + (material.shaderCacheId || material.id);
-        }
+    static getBasicShader(material : Material, header : string) {
+        let key = material.constructor.name + ':';
 
         let shader = cache.get(key);
         if (!shader) {
             let fs = '';
             let vs = basicVertCode;
 
-            if (material.isBasicMaterial) {
-                if (material.isGeometryMaterial) {
-                    fs += geometryFragCode;
-                } else {
-                    fs += basicFragCode;
-                }
-            } else if (material.isPBRMaterial) {
-                fs += pbrFragCode;
-            }
-
-            if (material.onBeforeCompile) {
-                const newCode = material.onBeforeCompile(vs, fs);
-                fs = newCode.fs;
-                vs = newCode.vs;
-            }
-
-            if (instancedUniforms) {
-                const instancedUniformsReg = new RegExp(`^\\s*uniform\\s+(\\w+)\\s+(${instancedUniforms});`, 'gm');
-                vs = vs.replace(instancedUniformsReg, 'attribute $1 $2;');
+            if(material instanceof BasicMaterial){
+                fs += basicFragCode;
             }
 
             shader = this.getCustomShader(vs, fs, header, key, true);

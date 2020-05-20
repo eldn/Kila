@@ -39,6 +39,9 @@ export class Material {
      */
 	shaderCacheId: number;
 
+
+	_shaderNumId : number;
+
 	/**
 	 * 光照类型
 	 *

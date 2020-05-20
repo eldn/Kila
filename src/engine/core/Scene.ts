@@ -76,6 +76,11 @@ export class Scene extends GameObject{
             params.pixelRatio = pixelRatio;
         }
 
+        this.width = params.width;
+        this.height = params.height;
+        this.camera = params.camera;
+        this.canvas = params.canvas;
+
         this.initRenderer(params);
     }
 
@@ -86,7 +91,7 @@ export class Scene extends GameObject{
      */
     initRenderer(params : iSceneParams) {
         const canvas = this.canvas = this.createCanvas(params);
-        this.renderer = new WebGLRenderer(canvas);
+        this.renderer = new WebGLRenderer(canvas, params.clearColor);
         this.resize(this.width, this.height, this.pixelRatio, true);
     }
 

@@ -145,6 +145,7 @@ export class Program {
         this.ignoreError = ignoreError;
         this.attributes = {};
         this.uniforms = {};
+        this.state = state;
         this.gl = this.state.gl;
         this.program = this.createProgram();
 

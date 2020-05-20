@@ -47,6 +47,7 @@ let renderer : WebGLRenderer = scene.renderer;
 let directionLight : DirectionLight = new DirectionLight();
 directionLight.color = new Color(1, 1, 1);
 directionLight.direction = new Vector3(0, -1, 0);
+scene.addChild(directionLight);
 
 let ticker : Ticker = new Ticker(60);
 ticker.addTick(scene);
