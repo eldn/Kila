@@ -17,16 +17,13 @@ export class TextureOptions {
 
 
     add(texture : Texture | Color, optionName : string, callback ?: Function) {
-        if (texture) {
+        if (texture && texture instanceof Texture) {
             const {
                 uvTypes,
                 option
             } = this;
 
-            let uv : number = 0;
-            if(texture instanceof Texture){
-                uv = texture.uv
-            }
+            const uv : number = texture.uv || 0;
             uvTypes[uv] = 1;
             option[optionName] = uv;
 

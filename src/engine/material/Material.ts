@@ -630,6 +630,9 @@ export class Material {
 		if (lightType !== 'NONE') {
 			option.HAS_LIGHT = 1;
 		}
+		if (this.premultiplyAlpha) {
+            option.PREMULTIPLY_ALPHA = 1;
+        }
 
 		let textureOption: TextureOptions = this._textureOption.reset(option);
 
