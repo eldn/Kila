@@ -3,11 +3,6 @@ import { log } from "../utils/Log";
 import { GeometryData } from "./GeometryData";
 
 
-const aabbData = [ // eslint-disable-line no-unused-vars
-    [0, 0, 0],
-    [0, 0, 0]
-];
-
 /**
  * 长方体几何体
  * @class

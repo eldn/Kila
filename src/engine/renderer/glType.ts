@@ -114,7 +114,7 @@ const glType = {
      * init
      * @param  {WebGLRenderingContext} gl
      */
-    init(gl) {
+    init(gl : WebGLRenderingContext) {
         DATA_TYPES.forEach((dataType) => {
             const name = dataType.name;
 

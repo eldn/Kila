@@ -9,6 +9,9 @@ import { Mesh } from "../engine/core/Mesh";
 import { BasicMaterial } from "../engine/material/BasicMaterial";
 import { Ticker } from "../engine/utils/Ticker";
 import AmbientLight from "../engine/light/AmbientLight";
+import { Vector2 } from "../engine/math/Vector2";
+import LazyTexture from "../engine/texture/LazyTexture";
+import math from "../engine/math/math";
 
 
 let test = function () {
@@ -41,6 +44,23 @@ let test = function () {
     this.rotationY += .5;
   }
   scene.addChild(colorBox);
+
+
+  let angle: number = 0;
+  let axis = new Vector3(1, 1, 1).normalize();
+  let textureBox: Mesh = new Mesh();
+  textureBox.geometry = boxGeometry;
+  textureBox.material = new BasicMaterial();
+  textureBox.material.diffuse = new LazyTexture({
+    crossOrigin: true,
+    src: '//gw.alicdn.com/tfs/TB1iNtERXXXXXcBaXXXXXXXXXXX-600-600.png'
+  });
+  textureBox.x = 1;
+  textureBox.onUpdate = function () {
+    angle += math.DEG2RAD;
+    this.quaternion.setAxisAngle(axis, angle);
+  }
+  scene.addChild(textureBox);
 
 
   let renderer: WebGLRenderer = scene.renderer;

@@ -83,7 +83,7 @@ export class Material {
 	 * @type {boolean}
 	 * @memberof Material
 	 */
-	private _depthMask: boolean = false;
+	private _depthMask: boolean = true;
 
 	public get depthMask(): boolean {
 		return this._depthMask;
@@ -334,10 +334,17 @@ export class Material {
 		this.blend = true;
 		this.depthMask = false;
 
-		this.blendSrc = SRC_ALPHA;
-		this.blendDst = ONE_MINUS_SRC_ALPHA;
-		this.blendSrcAlpha = SRC_ALPHA;
-		this.blendDstAlpha = ONE_MINUS_SRC_ALPHA;
+		if (this.premultiplyAlpha) {
+            this.blendSrc = ONE;
+            this.blendDst = ONE_MINUS_SRC_ALPHA;
+            this.blendSrcAlpha = ONE;
+            this.blendDstAlpha = ONE_MINUS_SRC_ALPHA;
+        } else {
+            this.blendSrc = SRC_ALPHA;
+            this.blendDst = ONE_MINUS_SRC_ALPHA;
+            this.blendSrcAlpha = SRC_ALPHA;
+            this.blendDstAlpha = ONE_MINUS_SRC_ALPHA;
+        }
 	}
 
 	/**
@@ -428,6 +435,30 @@ export class Material {
 
 	public set attributes(value: Object) {
 		this._attributes = value;
+	}
+
+	/**
+     * 渲染顺序数字小的先渲染（透明物体和不透明在不同的队列）
+     * @default 0
+     * @type {Number}
+     */
+    renderOrder: number = 0;
+	_premultiplyAlpha: boolean = true;
+
+	 /**
+     * 是否预乘 alpha
+     * @type {Boolean}
+     * @default true
+     */
+	get premultiplyAlpha() {
+		return this._premultiplyAlpha;
+	}
+
+	set premultiplyAlpha(value) {
+		this._premultiplyAlpha = value;
+		if (this.transparent) {
+			this.setDefaultTransparentBlend();
+		}
 	}
 
 
