@@ -35,6 +35,7 @@ let test = function () {
   boxGeometry.setAllRectUV([[0, 1], [1, 1], [1, 0], [0, 0]]);
 
   let colorBox: Mesh = new Mesh();
+  colorBox.name = 'colorBox';
   colorBox.geometry = boxGeometry;
   colorBox.material = new BasicMaterial();
   colorBox.material.diffuse = new Color(0.8, 0, 0);
@@ -49,6 +50,7 @@ let test = function () {
   let angle: number = 0;
   let axis = new Vector3(1, 1, 1).normalize();
   let textureBox: Mesh = new Mesh();
+  textureBox.name = 'textureBox';
   textureBox.geometry = boxGeometry;
   textureBox.material = new BasicMaterial();
   textureBox.material.diffuse = new LazyTexture({
