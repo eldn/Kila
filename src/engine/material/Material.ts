@@ -66,7 +66,7 @@ export class Material {
 	 * @type {boolean}
 	 * @memberof Material
 	 */
-	private _depthTest: boolean = false;
+	private _depthTest: boolean = true;
 
 	public get depthTest(): boolean {
 		return this._depthTest;
@@ -113,7 +113,7 @@ export class Material {
 		this._depthFunc = value;
 	}
 
-	private _cullFace: boolean = false;
+	private _cullFace: boolean = true;
 
 	public get cullFace(): boolean {
 		return this._cullFace;
