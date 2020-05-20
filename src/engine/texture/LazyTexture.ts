@@ -73,7 +73,7 @@ class LazyTexture extends Texture{
      * @param {string} [params.src] 图片地址
      */
     constructor(params) {
-        super(params);
+        super();
         if (params) {
             // 必须在src设置前赋值
             if ('crossOrigin' in params) {
@@ -81,6 +81,12 @@ class LazyTexture extends Texture{
             }
             if ('autoLoad' in params) {
                 this.autoLoad = params.autoLoad;
+            }
+            if ('placeHolder' in params) {
+                this.placeHolder = params.placeHolder;
+            }
+            if ('src' in params) {
+                this.src = params.src;
             }
         }
         this.image = this.placeHolder || placeHolder;

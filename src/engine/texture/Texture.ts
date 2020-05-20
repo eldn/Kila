@@ -305,10 +305,9 @@ export class Texture extends EventObject{
      * @constructs
      * @param {object} params 初始化参数，所有params都会复制到实例上
      */
-    constructor(params) {
+    constructor() {
         super();
         this.id = math.generateUUID(this.constructor.name);
-        Object.assign(this, params);
     }
 
 
@@ -605,9 +604,9 @@ export class Texture extends EventObject{
      * @return {Texture}
      */
     clone() {
-        const option = Object.assign({}, this);
-        delete option.id;
-        const texture = new Texture(option);
+        const texture = new Texture();
+        Object.assign(texture, this);
+        texture.id = math.generateUUID(this.constructor.name);
         return texture;
     }
 }
