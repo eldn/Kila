@@ -134,6 +134,13 @@ export class Utils {
         return TypedArrayClassMap[type] || Float32Array;
     }
 
+    public static getExtension(url) {
+        const extRegExp = /\/?[^/]+\.(\w+)(\?\S+)?$/i;
+        const match = String(url).match(extRegExp);
+    
+        return match && match[1].toLowerCase() || null;
+    }
+
 
 
 }

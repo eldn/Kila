@@ -5,6 +5,7 @@ import math from "../math/math";
 import capabilities from "../renderer/capabilities";
 import extensions from "../renderer/extensions";
 import { WebGLState } from "../renderer/WebGlState";
+import { EventObject } from "../event/EventObject";
 
 
 
@@ -20,7 +21,7 @@ const {
 
 const cache = new Pool();
 
-export class Texture {
+export class Texture extends EventObject{
     
     /**
      * 缓存
@@ -305,6 +306,7 @@ export class Texture {
      * @param {object} params 初始化参数，所有params都会复制到实例上
      */
     constructor(params) {
+        super();
         this.id = math.generateUUID(this.constructor.name);
         Object.assign(this, params);
     }
