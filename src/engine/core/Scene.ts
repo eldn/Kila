@@ -80,6 +80,7 @@ export class Scene extends GameObject{
         this.height = params.height;
         this.camera = params.camera;
         this.canvas = params.canvas;
+        this.pixelRatio = params.pixelRatio;
 
         this.initRenderer(params);
     }

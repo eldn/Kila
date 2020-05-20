@@ -9,14 +9,17 @@ import { Mesh } from "../engine/core/Mesh";
 import { BasicMaterial } from "../engine/material/BasicMaterial";
 import { Ticker } from "../engine/utils/Ticker";
 
-let camera : PerspectiveCamera  = new PerspectiveCamera();
+
+let test = function(){
+
+  let camera : PerspectiveCamera  = new PerspectiveCamera();
 camera.aspect = innerWidth / innerHeight;
 camera.far = 100;
 camera.near = 0.1;
 camera.z = 3;
 
 let scene : Scene = new Scene({
-  container :  document.getElementById('gameArea'),
+  container :  document.getElementById('container'),
   width : innerWidth,
   height : innerHeight,
   clearColor : new Color(0.4, 0.4, 0.4),
@@ -63,3 +66,11 @@ setTimeout(function() {
   ticker.start(true);
   gl = renderer.gl;
 }, 10);
+
+
+}
+
+window.onload = function(){
+  test();
+}
+
