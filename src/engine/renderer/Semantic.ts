@@ -100,7 +100,7 @@ export class semantic{
     }
 
     public static handlerTexture(value, textureIndex) {
-        if (value && value.isTexture) {
+        if (value && value instanceof Texture) {
             return this.handlerGLTexture(value.target, value.getGLTexture(state), textureIndex);
         }
 

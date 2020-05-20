@@ -1,3 +1,4 @@
+
 /**
  * WebGL 状态管理，减少 api 调用
  * @class
@@ -15,6 +16,7 @@ export class WebGLState{
     private  currentFramebuffer : WebGLFramebuffer;
     public  preFramebuffer : WebGLFramebuffer;
     private systemFramebuffer : WebGLFramebuffer;
+    private _pixelStorei : Object;
 
     /**
      * @constructs
@@ -34,6 +36,7 @@ export class WebGLState{
         this.textureUnitDict = {};
         this.currentFramebuffer = null;
         this.preFramebuffer = null;
+        this._pixelStorei = {};
     }
 
     /**
@@ -194,6 +197,19 @@ export class WebGLState{
      */
     blendEquationSeparate(modeRGB, modeAlpha) {
         this.set2('blendEquationSeparate', modeRGB, modeAlpha);
+    }
+
+    /**
+     * pixelStorei
+     * @param  {Glenum} pname
+     * @param  {Glenum} param
+     */
+    pixelStorei(pname, param) {
+        const currentParam = this._pixelStorei[pname];
+        if (currentParam !== param) {
+            this._pixelStorei[pname] = param;
+            this.gl.pixelStorei(pname, param);
+        }
     }
 
     /**
