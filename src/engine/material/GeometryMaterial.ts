@@ -32,8 +32,8 @@ export class GeometryMaterial extends BasicMaterial{
      * @constructs
      * @param {object} params 初始化参数，所有params都会复制到实例上
      */
-    constructor(params ?: any) {
-        super(params);
+    constructor() {
+        super();
         Object.assign(this.uniforms, {
             u_cameraFar: 'CAMERAFAR',
             u_cameraNear: 'CAMERANEAR',

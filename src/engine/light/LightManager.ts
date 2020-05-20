@@ -3,6 +3,7 @@ import { Vector3 } from "../math/Vector3";
 import { Utils } from "../math/Utils";
 import { log } from "../utils/Log";
 import { DirectionLight } from "./DirectionLight";
+import AmbientLight from "./AmbientLight";
 
 
 
@@ -65,24 +66,14 @@ export class LightManager{
         if (!light.enabled) {
             return this;
         }
-
-        // if (light.isAmbientLight) {
-        //     lights = this.ambientLights;
-        // } else if (light.isDirectionalLight) {
-        //     lights = this.directionalLights;
-        // } else if (light.isPointLight) {
-        //     lights = this.pointLights;
-        // } else if (light.isSpotLight) {
-        //     lights = this.spotLights;
-        // } else if (light.isAreaLight) {
-        //     lights = this.areaLights;
-        // } else {
-        //     log.warnOnce(`LightManager.addLight(${light.id})`, 'Not support this light:', light);
-        // }
-
+        
         if (light instanceof DirectionLight) {
             lights = this.directionalLights;
-        } else {
+        }
+        else if (light instanceof AmbientLight){
+            lights = this.ambientLights;
+        } 
+        else {
             log.warnOnce(`LightManager.addLight(${light.id})`, 'Not support this light:', light);
         }
 
