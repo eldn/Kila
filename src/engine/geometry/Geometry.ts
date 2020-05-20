@@ -104,14 +104,12 @@ export class Geometry{
 
     /**
      * @constructs
-     * @param {object} [params] 初始化参数，所有params都会复制到实例上
      */
-    constructor(mode : number) {
+    constructor() {
         this.id = math.generateUUID(this.constructor.name);
 
         this.currentVerticesCount = 0;
         this.currentIndicesCount = 0;
-        this.mode = mode;
     }
 
     _needUpdateNormals: boolean = false;
@@ -724,7 +722,8 @@ export class Geometry{
      * @return {Geometry} 返回clone的Geometry
      */
     clone() {
-        const geometry = new Geometry(this.mode);
+        const geometry = new Geometry();
+        geometry.mode = this.mode;
 
         if (this.vertices) {
             geometry.vertices = this.vertices.clone();

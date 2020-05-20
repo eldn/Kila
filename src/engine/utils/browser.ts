@@ -11,7 +11,7 @@
  * @static
  * @module hilo/util/browser
  */
-var browser = (function(){
+export var browser = (function(){
     var ua = navigator.userAgent;
     var doc = document;
     var win = window;
@@ -163,5 +163,3 @@ var browser = (function(){
     
     return data;
 })();
-
-module.exports = browser;

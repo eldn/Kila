@@ -4,7 +4,7 @@ import { Utils } from "../math/Utils";
 import { WebGLRenderer } from "../renderer/WebGLRenderer";
 
 export interface iSceneParams{
-    container ?: HTMLDocument;
+    container ?: HTMLElement;
     width ?: number;
     height ?: number;
     pixelRatio ?: number;
@@ -119,7 +119,7 @@ export class Scene extends GameObject{
      * @param  {Boolean} [force=false] 是否强制刷新
      * @return {Stage} 舞台本身。链式调用支持。
      */
-    resize(width : number, height : number, pixelRatio : number, force : boolean) {
+    resize(width : number, height : number, pixelRatio ?: number, force ?: boolean) {
 
         if (pixelRatio === undefined) {
             pixelRatio = this.pixelRatio;

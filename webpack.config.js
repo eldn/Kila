@@ -12,7 +12,19 @@ const path = require("path");
                             {
                                  test: /\.ts$/, // 正则表达式，如果是.ts结尾的文件 
                                  use: ["ts-loader"] // 则使用ts-loader来加载TypeScript源码并自动进行转译 
-                            } 
+                            },{
+                                test: /\.(glsl|frag|vert)$/,
+                                exclude: /node_modules/,
+                                loader: 'glslify-import-loader'
+                            }, {
+                                test: /\.(glsl|frag|vert)$/,
+                                exclude: /node_modules/,
+                                loader: 'raw-loader'
+                            }, {
+                                test: /\.(glsl|frag|vert)$/,
+                                exclude: /node_modules/,
+                                loader: 'glslify-loader'
+                            }
                           ] 
             },
             // devServer参数详细说明，请参考https://webpack.js.org/configuration/ dev-server/网页相关内容 

@@ -425,6 +425,11 @@ export class GameObject extends EventObject{
         return this;
     }
 
+
+    onUpdate(){
+        
+    }
+
     /**
      * 根据函数来获取一个子孙元素
      * @param {Function} fn 判读函数

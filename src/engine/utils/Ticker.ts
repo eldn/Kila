@@ -4,6 +4,8 @@
  * Licensed under the MIT License
  */
 
+import { browser } from "./browser";
+
 
 
 /**
@@ -14,7 +16,7 @@
  * @requires hilo/core/Class
  * @requires hilo/util/browser
  */
-class Ticker{
+export class Ticker{
 
     constructor(fps){
         this._targetFPS = fps || 60;
@@ -231,5 +233,3 @@ class Ticker{
         return tickObj;
     }
 }
-
-module.exports = Ticker;
