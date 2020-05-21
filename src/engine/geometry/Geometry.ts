@@ -106,10 +106,14 @@ export class Geometry{
      * @constructs
      */
     constructor() {
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
 
         this.currentVerticesCount = 0;
         this.currentIndicesCount = 0;
+    }
+
+    getClassName() : string{
+        return "Geometry";
     }
 
     _needUpdateNormals: boolean = false;

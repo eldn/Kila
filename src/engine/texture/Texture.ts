@@ -239,6 +239,10 @@ export class Texture extends EventObject{
 
         return this.width;
     }
+
+    getClassName() : string{
+        return "Texture";
+    }
     
 
     /**
@@ -307,7 +311,7 @@ export class Texture extends EventObject{
      */
     constructor() {
         super();
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
     }
 
 
@@ -606,7 +610,7 @@ export class Texture extends EventObject{
     clone() {
         const texture = new Texture();
         Object.assign(texture, this);
-        texture.id = math.generateUUID(this.constructor.name);
+        texture.id = math.generateUUID(this.getClassName());
         return texture;
     }
 }

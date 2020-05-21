@@ -114,11 +114,15 @@ export class GameObject extends EventObject{
      */
     worldMatrix : Matrix4;
 
+    getClassName() : string{
+        return "GameObject";
+    }
+
     constructor() {
         super();
 
        
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
         
         this.up = defaultUp.clone();
         

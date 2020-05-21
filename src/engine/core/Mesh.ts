@@ -21,6 +21,10 @@ export class Mesh extends GameObject{
         this._usedResourceDict = {};
     }
 
+    getClassName() : string{
+        return "Mesh";
+    }
+
     getRenderOption(opt = {}) {
         this.geometry.getRenderOption(opt);
         return opt;

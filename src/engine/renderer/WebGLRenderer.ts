@@ -199,6 +199,10 @@ export class WebGLRenderer extends EventObject{
         this.resourceManager = new WebGLResourceManager();
     }
 
+    getClassName() : string{
+        return "WebGLRenderer";
+    }
+
 
      /**
      * 改变大小

@@ -16,5 +16,9 @@
     "temp",
     "build",
     "settings"
-  ]
+  ],
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
+  }
 }

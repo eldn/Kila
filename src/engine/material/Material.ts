@@ -59,6 +59,10 @@ export class Material {
 		this._lightType = value;
 	}
 
+	getClassName() : string{
+        return "Material";
+    }
+
 	/**
 	 * 
 	 * 深度测试
@@ -466,7 +470,7 @@ export class Material {
 
 	constructor() {
 
-		this.id = math.generateUUID(this.constructor.name);
+		this.id = math.generateUUID(this.getClassName());
 
 
 		this.uniforms = {};

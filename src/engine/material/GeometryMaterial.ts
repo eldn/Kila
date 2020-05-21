@@ -68,4 +68,8 @@ export class GeometryMaterial extends BasicMaterial{
         return option;
     }
 
+    getClassName() : string{
+        return "GeometryMaterial";
+    }
+
 }

@@ -65,6 +65,10 @@ export class Program {
         return this.getProgram(shader, state, true);
     }
 
+    getClassName() : string{
+        return "Program";
+    }
+
     /**
      * 片段代码
      * @type {String}
@@ -136,7 +140,7 @@ export class Program {
      */
     constructor(state : WebGLState, vertexShader : string, fragShader : string, ignoreError : boolean) {
         
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
         this._dict = {};
 
 

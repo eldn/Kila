@@ -15,6 +15,10 @@ export class TextureOptions {
         return this;
     }
 
+    getClassName() : string{
+        return "TextureOptions";
+    }
+
 
     add(texture : Texture | Color, optionName : string, callback ?: Function) {
         if (texture && texture instanceof Texture) {

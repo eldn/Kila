@@ -35,6 +35,10 @@ export class Camera extends GameObject{
 
     _isGeometryDirty : boolean = false;
 
+    getClassName() : string{
+        return "Camera";
+    }
+
     constructor(){
         super();
 

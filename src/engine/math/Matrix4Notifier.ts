@@ -20,6 +20,10 @@ export class Matrix4Notifier extends EventObject{
         this.elements = mat4.create();
     }
 
+    getClassName() : string{
+        return "Matrix4Notifier";
+    }
+
     
       /**
      * Copy the values from one mat4 to this

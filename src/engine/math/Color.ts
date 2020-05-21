@@ -9,6 +9,10 @@ import { Utils } from "./Utils";
  */
 export class Color extends Vector4{
 
+    getClassName() : string{
+        return "Color";
+    }
+
     /**
      * r
      * @type {Number}

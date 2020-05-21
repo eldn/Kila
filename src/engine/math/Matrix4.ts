@@ -25,6 +25,11 @@ export class Matrix4{
          */
         this.elements = mat4.create();
     }
+
+    getClassName() : string{
+        return "Matrix4";
+    }
+
     /**
      * Copy the values from one mat4 to this
      * @param  {Matrix4} m the source matrix

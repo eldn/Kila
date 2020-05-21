@@ -13,6 +13,10 @@ class RenderInfo{
         this.reset();
     }
 
+    getClassName() : string{
+        return "RenderInfo";
+    }
+
     /**
      * 当前面数
      * @type {Number}

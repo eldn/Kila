@@ -97,6 +97,10 @@ export class Light extends GameObject{
         this.color = new Color(1, 1, 1);
     }
 
+    getClassName() : string{
+        return "Light";
+    }
+
 
     /**
      * 获取光范围信息, PointLight 和 SpotLight 时生效

@@ -106,7 +106,7 @@ class GLBuffer {
      */
     constructor(gl, target = ARRAY_BUFFER, data, usage = STATIC_DRAW) {
         
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
 
         this.gl = gl;
         
@@ -121,6 +121,10 @@ class GLBuffer {
         if (data) {
             this.bufferData(data);
         }
+    }
+
+    getClassName() : string{
+        return "GLBuffer";
     }
 
     /**

@@ -70,6 +70,10 @@ export class HashObject implements IHashObject {
         this.$hashCode = $hashCount++;
     }
 
+    getClassName() : string{
+        return "HashObject";
+    }
+
     /**
      * @private
      */

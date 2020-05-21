@@ -75,6 +75,10 @@ export class VertexArrayObject {
         currentVao = null;
     }
 
+    getClassName() : string{
+        return "VertexArrayObject";
+    }
+
     /**
      * @default VertexArrayObject
      * @type {String}

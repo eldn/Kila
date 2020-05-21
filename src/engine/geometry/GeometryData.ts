@@ -79,7 +79,7 @@ export class GeometryData{
      */
     constructor(data : any, size : number) {
         
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
 
         /**
          * @type {TypedArray}
@@ -94,6 +94,10 @@ export class GeometryData{
         if (!this.size) {
             log.warn('GeometryData.constructor: geometryData must set size!', this);
         }
+    }
+
+    getClassName() : string{
+        return "GeometryData";
     }
 
 

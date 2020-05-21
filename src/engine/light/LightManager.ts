@@ -45,6 +45,10 @@ export class LightManager{
         };
     }
 
+    getClassName() : string{
+        return "LightManager";
+    }
+
     getRenderOption(option = {}) {
         Utils.each(this.lightInfo, (count, name) => {
             if (name === 'uid' || !count) {
