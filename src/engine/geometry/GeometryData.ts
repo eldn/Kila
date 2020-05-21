@@ -79,7 +79,7 @@ export class GeometryData{
      */
     constructor(data : any, size : number) {
         
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
 
         /**
          * @type {TypedArray}

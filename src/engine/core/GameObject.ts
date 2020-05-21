@@ -122,7 +122,7 @@ export class GameObject extends EventObject{
         super();
 
        
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
         
         this.up = defaultUp.clone();
         

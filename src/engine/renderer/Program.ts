@@ -140,7 +140,7 @@ export class Program {
      */
     constructor(state : WebGLState, vertexShader : string, fragShader : string, ignoreError : boolean) {
         
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
         this._dict = {};
 
 

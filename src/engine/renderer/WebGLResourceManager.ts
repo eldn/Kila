@@ -1,4 +1,5 @@
 import { Mesh } from "../core/Mesh";
+import VertexArrayObject from "./VertexArrayObject";
 
 
 /**
@@ -36,9 +37,9 @@ class WebGLResourceManager{
      * @param  {Mesh} mesh 使用资源的mesh
      * @return {WebGLResourceManager} this
      */
-    useResource(res : any, mesh : Mesh) {
+    useResource(res : VertexArrayObject, mesh : Mesh) {
         if (res) {
-            const key = res.constructor.name + ':' + res.id;
+            const key = res.getClassName() + ':' + res.id;
             if (!this._usedResourceDict[key]) {
                 this._usedResourceDict[key] = res;
 

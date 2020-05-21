@@ -188,7 +188,7 @@ export class Shader {
                 delete headers['POINT_LIGHTS_SMC'];
             }
 
-            header = `#define SHADER_NAME ${material.constructor.name}\n`;
+            header = `#define SHADER_NAME ${material.getClassName()}\n`;
             header += Object.keys(headers).map((name) => {
                 if (name.indexOf(CUSTUM_OPTION_PREFIX) > -1) {
                     return `#define ${name.replace(CUSTUM_OPTION_PREFIX, '')} ${headers[name]}`;
@@ -242,7 +242,7 @@ export class Shader {
      * @return {Shader}
      */
     static getBasicShader(material : Material, header : string) {
-        let key = material.constructor.name + ':';
+        let key = material.getClassName() + ':';
 
         let shader = cache.get(key);
         if (!shader) {
@@ -321,8 +321,12 @@ export class Shader {
      * @param  {Object} params 初始化参数，所有params都会复制到实例上
      */
     constructor(params) {
-        this.id = math.generateUUID(this.constructor.name);
+        this.id = math.generateUUID(this.getClassName());
         Object.assign(this, params);
+    }
+
+    getClassName() : string{
+        return "Shader";
     }
 
     /**
