@@ -15,6 +15,10 @@ class AmbientLight extends Light{
     constructor() {
         super();
     }
+
+    getClassName() : string{
+        return "AmbientLight";
+    }
 }
 
 export default AmbientLight;

@@ -24,6 +24,10 @@ export class Sphere{
         }
     }
 
+    getClassName() : string{
+        return "Sphere";
+    }
+
 
     /**
      * 克隆

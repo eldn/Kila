@@ -239,6 +239,10 @@ export class Texture extends EventObject{
 
         return this.width;
     }
+
+    getClassName() : string{
+        return "Texture";
+    }
     
 
     /**

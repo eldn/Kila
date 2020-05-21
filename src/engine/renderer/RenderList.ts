@@ -66,6 +66,10 @@ export class RenderList{
         this.transparentList = [];
     }
 
+    getClassName() : string{
+        return "RenderList";
+    }
+
     /**
      * 重置列表
      */

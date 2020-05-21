@@ -20,6 +20,11 @@ import { Quaternion } from "./Quaternion";
          */
         this.elements = vec3.fromValues(x, y, z);
     }
+
+    getClassName() : string{
+        return "Vector3";
+    }
+
     /**
      * Copy the values from one vec3 to this
      * @param  {Vector3} m the source vector

@@ -15,6 +15,10 @@ export class Plane{
         this.distance = distance;
     }
 
+    getClassName() : string{
+        return "Plane";
+    }
+
 
      /**
      * Copy the values from one plane to this

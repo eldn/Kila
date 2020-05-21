@@ -39,6 +39,12 @@ export class EulerNotifier extends EventObject {
         this.elements = new Float32Array([x, y, z]);
         this.updateDegrees();
     }
+
+    getClassName() : string{
+        return "EulerNotifier";
+    }
+
+
     /**
      * 克隆
      * @return {Euler}

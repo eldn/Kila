@@ -63,6 +63,10 @@ class BasicLoader extends EventObject  {
     static set cache(vale) {
         log.warn('BasicLoader.cache is readonly!');
     }
+
+    getClassName() : string{
+        return "BasicLoader";
+    }
     
     
     /**

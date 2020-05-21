@@ -4,6 +4,10 @@
 export class EventObject {
     _listeners: Object;
 
+    getClassName() : string{
+        return "EventObject";
+    }
+
     /**
      * @language=en
      * Add an event listenser.

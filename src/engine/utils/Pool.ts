@@ -10,6 +10,10 @@ export class Pool{
         this._cache = {};
     }
 
+    getClassName() : string{
+        return "Pool";
+    }
+
      /**
      * 获取对象
      * @param  {String} id

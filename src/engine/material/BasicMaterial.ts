@@ -121,6 +121,10 @@ export class BasicMaterial extends Material{
         });
     }
 
+    getClassName() : string{
+        return "BasicMaterial";
+    }
+
 
     getRenderOption(option: RenderOptions = {}) {
         super.getRenderOption(option);

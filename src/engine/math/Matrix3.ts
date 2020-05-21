@@ -17,6 +17,11 @@ export class Matrix3{
          */
         this.elements = mat3.create();
     }
+
+    getClassName() : string{
+        return "Matrix3";
+    }
+
     /**
      * Copy the values from one mat3 to this
      * @param  {Matrix3} m the source matrix

@@ -96,6 +96,10 @@ export class GeometryData{
         }
     }
 
+    getClassName() : string{
+        return "GeometryData";
+    }
+
 
     _stride: number = 0;
 

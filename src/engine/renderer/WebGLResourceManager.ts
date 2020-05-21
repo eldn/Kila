@@ -26,6 +26,10 @@ class WebGLResourceManager{
        
     }
 
+    getClassName() : string{
+        return "WebGLResourceManager";
+    }
+
     /**
      * 标记使用资源
      * @param  {Object} res

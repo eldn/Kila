@@ -41,6 +41,10 @@ export class DirectionLight extends Light{
         this.direction = new Vector3(0, 0, 1);
     }
 
+    getClassName() : string{
+        return "DirectionLight";
+    }
+
     getWorldDirection() {
         tempVector3.copy(this.direction).transformDirection(this.worldMatrix).normalize();
         return tempVector3;

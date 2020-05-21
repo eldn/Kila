@@ -85,6 +85,10 @@ export class Scene extends GameObject{
         this.initRenderer(params);
     }
 
+    getClassName() : string{
+        return "Scene";
+    }
+
     /**
      * 初始化渲染器
      * @private

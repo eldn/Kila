@@ -15,6 +15,10 @@ export class Frustum{
         }
     }
 
+    getClassName() : string{
+        return "Frustum";
+    }
+
     /**
      * Copy the values from one frustum to this
      * @param  {Frustum} m the source frustum

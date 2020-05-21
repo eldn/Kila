@@ -27,6 +27,10 @@ export class WebGLState{
         this.reset(gl);
     }
 
+    getClassName() : string{
+        return "WebGLState";
+    }
+
     /**
      * 重置状态
      */

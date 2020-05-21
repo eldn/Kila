@@ -27,6 +27,10 @@ export class Quaternion extends EventObject{
         this.elements = quat.fromValues(x, y, z, w);
     }
 
+    getClassName() : string{
+        return "Quaternion";
+    }
+
     /**
      * Copy the values from one quat to this
      * @param  {Quaternion} q

@@ -28,6 +28,10 @@ class LoadCache extends EventObject{
         this._files = {};
     }
 
+    getClassName() : string{
+        return "LoadCache";
+    }
+
     update(key : string, state : number, data ?: any) {
         if (!this.enabled) {
             return;

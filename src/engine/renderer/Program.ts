@@ -65,6 +65,10 @@ export class Program {
         return this.getProgram(shader, state, true);
     }
 
+    getClassName() : string{
+        return "Program";
+    }
+
     /**
      * 片段代码
      * @type {String}

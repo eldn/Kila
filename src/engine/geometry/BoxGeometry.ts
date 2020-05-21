@@ -62,6 +62,10 @@ class BoxGeometry extends Geometry {
         }
     }
 
+    getClassName() : string{
+        return "BoxGeometry";
+    }
+
     buildWithSegments() {
         const {
             width,

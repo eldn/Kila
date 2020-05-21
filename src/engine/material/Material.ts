@@ -59,6 +59,10 @@ export class Material {
 		this._lightType = value;
 	}
 
+	getClassName() : string{
+        return "Material";
+    }
+
 	/**
 	 * 
 	 * 深度测试

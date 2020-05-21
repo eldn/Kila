@@ -19,6 +19,11 @@ export class Vector4{
          */
         this.elements = vec4.fromValues(x, y, z, w);
     }
+
+    getClassName() : string{
+        return "Vector4";
+    }
+
     /**
      * Copy the values from one vec4 to this
      * @param  {Vector4} m the source vector

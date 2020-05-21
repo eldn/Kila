@@ -114,6 +114,10 @@ export class GameObject extends EventObject{
      */
     worldMatrix : Matrix4;
 
+    getClassName() : string{
+        return "GameObject";
+    }
+
     constructor() {
         super();
 

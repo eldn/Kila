@@ -9,6 +9,10 @@ const RAD2DEG = math.RAD2DEG;
 
 export class Euler{
 
+    getClassName() : string{
+        return "Euler";
+    }
+
 
     elements : Float32Array;
     

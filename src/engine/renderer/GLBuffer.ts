@@ -123,6 +123,10 @@ class GLBuffer {
         }
     }
 
+    getClassName() : string{
+        return "GLBuffer";
+    }
+
     /**
      * 绑定
      * @return {GLBuffer} this

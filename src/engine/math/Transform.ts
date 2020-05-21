@@ -36,6 +36,10 @@ export class Transform{
         this._quaternion.on('update', this._onQuaternionUpdate.bind(this));
     }
 
+    getClassName() : string{
+        return "Transform";
+    }
+
       /**
      * 设置元素的缩放比例
      * @param {number} x X缩放比例

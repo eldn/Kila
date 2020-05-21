@@ -30,6 +30,10 @@ class Loader{
         return Loader._loaders[ext];
     }
 
+    getClassName() : string{
+        return "Loader";
+    }
+
 
     /**
      * load

@@ -61,6 +61,10 @@ class LazyTexture extends Texture{
         }
     }
 
+    getClassName() : string{
+        return "LazyTexture";
+    }
+
     placeHolder : any;
     
 

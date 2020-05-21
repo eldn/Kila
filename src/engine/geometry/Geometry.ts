@@ -112,6 +112,10 @@ export class Geometry{
         this.currentIndicesCount = 0;
     }
 
+    getClassName() : string{
+        return "Geometry";
+    }
+
     _needUpdateNormals: boolean = false;
 
 
