@@ -1,9 +1,0 @@
-{
-    "levels": [
-        {
-            "name": "test 1",
-            "description": "A test level.",
-            "file": "assets/levels/test1.json"
-        }
-    ]
-}
