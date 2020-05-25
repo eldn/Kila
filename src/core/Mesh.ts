@@ -1,14 +1,20 @@
 import GameObject from "./GameObject";
 import { WebGLRenderer } from "../renderer/WebGLRenderer";
+import { Material } from "../material";
+import { Geometry } from "../geometry";
+import { VertexArrayObject } from "..";
+import Shader from "../shader/shader";
 
 export class Mesh extends GameObject{
 
-    material : any;
-    geometry : any;
+    public material : Material;
+    public geometry : Geometry;
 
     _sortRenderZ : number;
 
-    // store webgl resource
+    /**
+     *store webgl resource
+     */
     private _usedResourceDict : Object;
 
     private _isDestroyed : boolean;
@@ -16,26 +22,23 @@ export class Mesh extends GameObject{
 
     constructor(){
         super();
-
-
         this._usedResourceDict = {};
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Mesh";
     }
 
-    getRenderOption(opt = {}) {
+    public getRenderOption(opt : Object = {}) : Object {
         this.geometry.getRenderOption(opt);
         return opt;
     }
 
-    useResource(res : any) {
+    public useResource(res :  VertexArrayObject | Shader) {
         if (res) {
-            this._usedResourceDict[res.constructor + ':' + res.id] = res;
+            this._usedResourceDict[res.getClassName() + ':' + res.id] = res;
         }
     }
-
 
     destroy(renderer :  WebGLRenderer, needDestroyTextures : boolean = false){
         if (this._isDestroyed) {

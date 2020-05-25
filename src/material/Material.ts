@@ -708,4 +708,30 @@ export class Material {
 			}
 		}
 	}
+
+	 /**
+     * 获取材质全部贴图
+     * @returns
+     */
+    getTextures() {
+        const textures = [];
+        for (const propName in this) {
+            const texture = this[propName];
+            if (texture && texture instanceof Texture) {
+                textures.push(texture);
+            }
+        }
+
+        return textures;
+    }
+
+	/**
+     * 销毁贴图
+     * @returns this
+     */
+    destroyTextures() {
+        this.getTextures().forEach((texture) => {
+            texture.destroy();
+        });
+    }
 }

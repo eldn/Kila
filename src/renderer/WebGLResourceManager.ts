@@ -1,5 +1,6 @@
 import { Mesh } from "../core/Mesh";
 import VertexArrayObject from "./VertexArrayObject";
+import Shader from "../shader/shader";
 
 
 /**
@@ -33,17 +34,17 @@ class WebGLResourceManager{
 
     /**
      * 标记使用资源
-     * @param  {Object} res
+     * @param  {VertexArrayObject | Shader} res
      * @param  {Mesh} mesh 使用资源的mesh
      * @return {WebGLResourceManager} this
      */
-    useResource(res : VertexArrayObject, mesh : Mesh) {
+    useResource(res : VertexArrayObject | Shader, mesh : Mesh) {
         if (res) {
             const key = res.getClassName() + ':' + res.id;
             if (!this._usedResourceDict[key]) {
                 this._usedResourceDict[key] = res;
 
-                if (res.useResource) {
+                if (res instanceof VertexArrayObject) {
                     res.useResource(this, mesh);
                 }
             }

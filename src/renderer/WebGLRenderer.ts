@@ -459,10 +459,6 @@ export class WebGLRenderer extends EventObject{
 
             geometry.isDirty = false;
         }
-
-        if (geometry.vertexCount) {
-            vao.vertexCount = geometry.vertexCount;
-        }
     }
 
     /**
@@ -527,10 +523,6 @@ export class WebGLRenderer extends EventObject{
         program.useProgram();
         this.setupMaterial(program, mesh, this._lastProgram !== program);
         this._lastProgram = program;
-
-        if (mesh.material.wireframe && geometry.mode !== LINES) {
-            geometry.convertToLinesMode();
-        }
 
         const vaoId = geometry.id + program.id;
         const vao = VertexArrayObject.getVao(gl, vaoId, this.useVao, geometry.mode);
