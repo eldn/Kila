@@ -2,36 +2,40 @@
  * @namespace math
  * @type {Object}
  */
-const math = {
+export class math{
+
     /**
      * 角度值转弧度值
      * @type {Number}
      */
-    DEG2RAD: Math.PI / 180,
+    static DEG2RAD: number = Math.PI / 180;
+
     /**
      * 弧度值转角度值
      * @type {Number}
      */
-    RAD2DEG: 180 / Math.PI,
+    static RAD2DEG: number = 180 / Math.PI;
+
+
+    private static _uid : number = 0;
+
     /**
      * 生成唯一ID
      * @function
      * @param  {String} [prefix=''] ID前缀
      * @return {String} ID
      */
-    generateUUID: (() => {
-        let uid = 0;
-        return (prefix) => {
-            let id = ++uid;
-            let id_str;
-            if (prefix) {
-                id_str = prefix + '_' + id;
-            } else {
-                id_str += '';
-            }
-            return id_str;
-        };
-    })(),
+    static generateUUID (prefix : string) {
+        let id = ++this._uid;
+        let id_str;
+        if (prefix) {
+            id_str = prefix + '_' + id;
+        } else {
+            id_str += '';
+        }
+        return id_str;
+    }
+
     /**
      * 截取
      * @param  {Number} value 值
@@ -39,47 +43,52 @@ const math = {
      * @param  {Number} max 最大值
      * @return {Number}
      */
-    clamp(value, min, max) {
+    static clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
-    },
+    }
+
     /**
      * 角度值转换成弧度值
      * @param  {Number} deg 角度值
      * @return {Number} 弧度值
      */
-    degToRad(deg) {
+    static degToRad(deg) {
         return deg * this.DEG2RAD;
-    },
+    }
+
     /**
      * 弧度值转换成角度值
      * @param  {Number} rad 弧度值
      * @return {Number} 角度值
      */
-    radToDeg(rad) {
+    static radToDeg(rad) {
         return rad * this.RAD2DEG;
-    },
+    }
+
     /**
      * 是否是 2 的指数值
      * @param  {Number}  value
      * @return {Boolean}
      */
-    isPowerOfTwo(value) {
+    static isPowerOfTwo(value) {
         return (value & (value - 1)) === 0 && value !== 0;
-    },
+    }
+
     /**
      * 最近的 2 的指数值
      * @param  {Uint} value
      * @return {Uint}
      */
-    nearestPowerOfTwo(value) {
+    static nearestPowerOfTwo(value) {
         return 2 ** Math.round(Math.log(value) / Math.LN2);
-    },
+    }
+
     /**
      * 下一个的 2 的指数值
      * @param  {Uint} value
      * @return {Uint}
      */
-    nextPowerOfTwo(value) {
+    static nextPowerOfTwo(value) {
         value--;
         value |= value >> 1;
         value |= value >> 2;
@@ -90,6 +99,6 @@ const math = {
 
         return value;
     }
-};
+}
 
 export default math;

@@ -109,20 +109,27 @@ async function generate (options) {
 
     console.log(`Bundling...`);
     const giftInputPath = tscOutputDtsFile;
-    const giftOutputPath = join(dirName,'kila.d.ts' );
+    const giftOutputPath = join(dirName,'KILA.d.ts' );
     const giftResult = gift.bundle({
         verbose: true,
         input: giftInputPath,
         output: giftOutputPath,
-        name: 'kila',
+        name: 'KILA',
         rootModule: 'index',
     });
     if (giftResult.error !== gift.GiftErrors.Ok) {
         console.error(`Failed to bundle declaration files because of gift error: ${gift.GiftErrors[giftResult.error]}.`);
         return false;
     }
+
+    // replace " declare module "kila" " to  "  declare namespace kila " 
+    giftResult.code = giftResult.code.replace("declare module \"KILA\"", "declare namespace KILA");
+
+
     writeFileSync(giftOutputPath, giftResult.code);
     unlinkSync(giftInputPath);
+
+    
 
     return true;
 }

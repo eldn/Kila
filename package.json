@@ -12,7 +12,7 @@
     "watch": "node_modules/.bin/webpack -w",
     "build": "node_modules/.bin/webpack",
     "doc": "typedoc --out docs src",
-    "build-typings": "dts-bundle --name Kila --main lib/index.d.ts"
+    "build-declaration": "node ./tools/generate-declarations/generate-declarations-cli.js"
   },
   "repository": {
     "type": "git",

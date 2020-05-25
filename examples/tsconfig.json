@@ -20,7 +20,7 @@
     ],
     "include": [
         "./**/*.ts",
-        "../kila.d.ts"
+        "../dist/KILA.d.ts"
     ],
     "typedocOptions": {
       "mode": "modules",

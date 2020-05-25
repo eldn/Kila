@@ -6,7 +6,7 @@ import { Light } from "./Light";
  * @class
  * @extends Light
  */
-class AmbientLight extends Light{
+export class AmbientLight extends Light{
     autoUpdateWorldMatrix: boolean = false;
     /**
      * @constructs

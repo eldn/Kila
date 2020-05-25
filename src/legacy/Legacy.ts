@@ -1,4 +1,4 @@
-import * as Kila from "../index";
+import * as kila from "../index";
 
 declare var global: any;
 
@@ -10,7 +10,7 @@ if (typeof globalObject !== "undefined") {
     KILA.Debug = KILA.Debug || {};
 
 
-    for (var key in Kila) {
-        KILA[key] = (<any>Kila)[key];
+    for (var key in kila) {
+        KILA[key] = (<any>kila)[key];
     }
 }
