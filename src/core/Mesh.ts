@@ -40,7 +40,7 @@ export class Mesh extends GameObject{
         }
     }
 
-    destroy(renderer :  WebGLRenderer, needDestroyTextures : boolean = false){
+    public destroy(renderer :  WebGLRenderer, needDestroyTextures : boolean = false){
         if (this._isDestroyed) {
             return this;
         }
@@ -49,6 +49,7 @@ export class Mesh extends GameObject{
 
         const resourceManager = renderer.resourceManager;
         const _usedResourceDict = this._usedResourceDict;
+        
         for (let id in _usedResourceDict) {
             resourceManager.destroyIfNoRef(_usedResourceDict[id]);
         }

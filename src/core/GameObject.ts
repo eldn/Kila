@@ -775,7 +775,7 @@ export class GameObject extends EventObject{
     matrixVersion: number = 0;
 
 
-    destroy(renderer :  WebGLRenderer, needDestroyTextures : boolean = false) {
+    destroy(renderer :  WebGLRenderer, needDestroyTextures : boolean = false) : GameObject {
         const nodes = this.children;
         this.off();
         nodes.forEach((node) => {
