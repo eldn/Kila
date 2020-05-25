@@ -10,13 +10,11 @@ import math from "../math/math";
 import { Sphere } from "../math/Sphere";
 import { Utils } from "../math/Utils";
 import { glConstants } from "../constants/glConstants";
+import { iBounds } from "./Bounds";
 
 const {
     TRIANGLES,
     LINES,
-    FRONT,
-    BACK,
-    FRONT_AND_BACK
 } = glConstants;
 
 
@@ -39,72 +37,53 @@ export class Geometry{
 
     /**
      * 顶点数据
-     * @default null
-     * @type {GeometryData}
      */
-    vertices: GeometryData = null;
+    public vertices: GeometryData = null;
 
     
     /**
      * uv 数据
-     * @default null
-     * @type {GeometryData}
      */
-    uvs: GeometryData = null;
+    public uvs: GeometryData = null;
 
 
     /**
      * uv1 数据
-     * @default null
-     * @type {GeometryData}
      */
-    uvs1: GeometryData = null;
+    public uvs1: GeometryData = null;
 
 
     /**
      * color 数据
-     * @default null
-     * @type {GeometryData}
      */
-    colors: GeometryData = null;
+    public colors: GeometryData = null;
 
     /**
      * 顶点索引数据
-     * @default null
-     * @type {GeometryData}
      */
-    indices: GeometryData = null;
+    public indices: GeometryData = null;
 
     /**
      * 绘制模式
-     * @default TRIANGLES
-     * @type {number}
      */
-    mode: number = TRIANGLES;
+    public mode: number = TRIANGLES;
 
 
     /**
      * 是否是静态
-     * @type {Boolean}
-     * @default true
      */
-    isStatic: boolean = true;
+    public isStatic: boolean = true;
 
      /**
      * 是否需要更新
-     * @type {Boolean}
-     * @default true
      */
-    isDirty: boolean = true;
+    public isDirty: boolean = true;
 
-    currentVerticesCount : number;
-    currentIndicesCount : number;
+    public currentVerticesCount : number;
+    public currentIndicesCount : number;
+    public id : string;
 
-    id : string;
-
-    /**
-     * @constructs
-     */
+   
     constructor() {
         this.id = math.generateUUID(this.getClassName());
 
@@ -112,18 +91,17 @@ export class Geometry{
         this.currentIndicesCount = 0;
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Geometry";
     }
 
-    _needUpdateNormals: boolean = false;
+    private _needUpdateNormals: boolean = false;
 
 
     private _normals : GeometryData;
+
      /**
      * 法向量数据，如果没有的话会自动生成
-     * @default null
-     * @type {Float32Array}
      */
     get normals() {
         if (this._needUpdateNormals || !this._normals) {
@@ -136,7 +114,6 @@ export class Geometry{
         this._normals = data;
         this._needUpdateNormals = false;
     }
-    
 
     calculateNormals() {
         const vertices = this.vertices;
@@ -193,40 +170,38 @@ export class Geometry{
 
 
     private _tangents : GeometryData;
+
      /**
      * 切线向量数据，如果没有的话会自动生成
-     * @default null
-     * @type {Float32Array}
      */
     get tangents() {
         if (!this._tangents) {
-            this.calculateTangents(this.uvs, '_tangents');
+            this._calculateTangents(this.uvs, '_tangents');
         }
         return this._tangents;
     }
 
-    set tangents(data) {
+    set tangents(data : GeometryData) {
         this._tangents = data;
     }
 
     private _tangents1 : GeometryData;
+
       /**
      * 切线向量数据，如果没有的话会自动生成
-     * @default null
-     * @type {Float32Array}
      */
     get tangents1() {
         if (!this._tangents1) {
-            this.calculateTangents(this.uvs1, '_tangents1');
+            this._calculateTangents(this.uvs1, '_tangents1');
         }
         return this._tangents1;
     }
 
-    set tangents1(data) {
+    set tangents1(data : GeometryData) {
         this._tangents1 = data;
     }
     
-    calculateTangents(uvs, tangentsName) {
+    private _calculateTangents(uvs : GeometryData, tangentsName : string) : void{
         const vertices = this.vertices;
         if (!vertices) {
             log.warnOnce('geometry.calculateTangents', 'geometry.calculateTangents error:no vertices data.');
@@ -290,65 +265,38 @@ export class Geometry{
         this.isDirty = true;
     }
 
-     /**
-     * 将三角形模式转换为线框模式，即 Material 中的 wireframe
-     */
-    convertToLinesMode() {
-        if (this.mode !== TRIANGLES) {
-            log.warn('Only support convert triangles to lines mode!');
-            return;
-        }
-        if (!this.indices) {
-            log.warn('Has no indices!');
-            return;
-        }
-
-        let newIndices = new Uint16Array(this.indices.length * 2);
-        let data = this.indices.data;
-        for (let i = 0; i < data.length; i += 3) {
-            newIndices[i * 2] = data[i]; // A
-            newIndices[i * 2 + 1] = data[i + 1]; // B
-            newIndices[i * 2 + 2] = data[i + 1]; // B
-            newIndices[i * 2 + 3] = data[i + 2]; // C
-            newIndices[i * 2 + 4] = data[i + 2]; // C
-            newIndices[i * 2 + 5] = data[i]; // A
-        }
-        this.indices.data = newIndices;
-        this.mode = LINES;
-    }
-
     /**
      * 平移
-     * @param  {Number} [x=0]
-     * @param  {Number} [y=0]
-     * @param  {Number} [z=0]
-     * @return {Geometry} this
+     * @param  x
+     * @param  y
+     * @param  z
+     * @returns this
      */
-    translate(x = 0, y = 0, z = 0) {
+    public translate(x : number = 0, y : number = 0, z : number = 0) : Geometry{
         this.transformMat4(tempMatrix4.fromTranslation(tempVector31.set(x, y, z)));
         return this;
     }
 
      /**
      * 缩放
-     * @param  {Number} [x=1]
-     * @param  {Number} [y=1]
-     * @param  {Number} [z=1]
-     * @return {Geometry} this
+     * @param  x
+     * @param  y
+     * @param  z
+     * @returns  this
      */
-    scale(x = 1, y = 1, z = 1) {
+    public scale(x : number = 1, y : number = 1, z : number = 1) : Geometry{
         this.transformMat4(tempMatrix4.fromScaling(tempVector31.set(x, y, z)));
         return this;
     }
 
     /**
      * 旋转
-     * @param  {Number} [x=0] 旋转角度x
-     * @param  {Number} [y=0] 旋转角度y
-     * @param  {Number} [z=0] 旋转角度z
-     * @return {Geometry} this
+     * @param  x 旋转角度x
+     * @param  y 旋转角度y
+     * @param  z 旋转角度z
+     * @returns  this
      */
-    rotate(x = 0, y = 0, z = 0) {
+    public rotate(x : number = 0, y : number = 0, z : number = 0) : Geometry{
         this.transformMat4(tempMatrix4.fromQuat(tempQuaternion.fromEuler({
             x: x * math.DEG2RAD,
             y: y * math.DEG2RAD,
@@ -360,10 +308,10 @@ export class Geometry{
 
     /**
      * Transforms the geometry with a mat4.
-     * @param  {Matrix4} mat4
-     * @return {Geometry} this
+     * @param  mat4
+     * @returns  this
      */
-    transformMat4(mat4) {
+    public transformMat4(mat4 : Matrix4) : Geometry {
         const vertices = this.vertices;
         if (vertices) {
             vertices.traverse((vertex, index, offset) => {
@@ -392,11 +340,11 @@ export class Geometry{
 
      /**
      * 合并两个 geometry
-     * @param  {Geometry} geometry
-     * @param  {Matrix4} [matrix=null] 合并的矩阵
-     * @return {Geometry} this
+     * @param  geometry
+     * @param  matrix 合并的矩阵
+     * @return  this
      */
-    merge(geometry, matrix) {
+    public merge(geometry : Geometry, matrix ?: Matrix4) : Geometry{
         let vertices = geometry.vertices;
         if (vertices && this.vertices) {
             const count = this.vertices.count;
@@ -452,7 +400,7 @@ export class Geometry{
         return this;
     }
 
-    ensureData(name, size, total, TypedArray) {
+    public ensureData(name : string, size : number, total : number, TypedArray : any)  : void{
         let geometryData = this[name];
         if (!geometryData || total > geometryData.length) {
             const newData = new TypedArray(total);
@@ -468,9 +416,9 @@ export class Geometry{
 
     /**
      * 添加顶点
-     * @param {...number[]} points 顶点坐标，如 addPoints([x, y, z], [x, y, z])
+     * @params points 顶点坐标，如 addPoints([x, y, z], [x, y, z])
      */
-    addPoints(...args) {
+    public addPoints(...args) : number{
         const points = [].slice.call(arguments);
         const total = (this.currentVerticesCount + points.length) * 3;
         this.ensureData('vertices', 3, total, Float32Array);
@@ -484,11 +432,12 @@ export class Geometry{
         });
         return this.currentVerticesCount - points.length;
     }
+
     /**
      * 添加顶点索引
-     * @param {...number} indices 顶点索引，如 addIndices(0, 1, 2)
+     * @params indices 顶点索引，如 addIndices(0, 1, 2)
      */
-    addIndices(...args) {
+    public addIndices(...args) : void {
         const indices = [].slice.call(arguments);
         const total = this.currentIndicesCount + indices.length;
         this.ensureData('indices', 1, total, Uint16Array);
@@ -499,43 +448,47 @@ export class Geometry{
 
         this._needUpdateNormals = true;
     }
+
     /**
      * 添加一条线
-     * @param {number[]} p1 起点坐标，如 [x, y, z]
-     * @param {number[]} p2 终点坐标
+     * @param  p1 起点坐标，如 [x, y, z]
+     * @param  p2 终点坐标
      */
-    addLine(p1, p2) {
+    public addLine(p1 : Array<number>, p2 : Array<number>) : void{
         let start = this.addPoints(p1, p2);
         this.addIndices(start, start + 1);
     }
+
     /**
      * 添加一个三角形 ABC
-     * @param {number[]} p1 点A，如 [x, y, z]
-     * @param {number[]} p2 点B
-     * @param {number[]} p3 点C
+     * @param  p1 点A，如 [x, y, z]
+     * @param  p2 点B
+     * @param p3 点C
      */
-    addFace(p1, p2, p3) {
+    public addFace(p1: Array<number>, p2 : Array<number>, p3: Array<number>) : void {
         let start = this.addPoints(p1, p2, p3);
         this.addIndices(start, start + 1, start + 2);
     }
+
     /**
      * 添加一个矩形 ABCD
-     * @param {number[]} p1 点A，如 [x, y, z]
-     * @param {number[]} p2 点B
-     * @param {number[]} p3 点C
-     * @param {number[]} p4 点D
+     * @param  p1 点A，如 [x, y, z]
+     * @param p2 点B
+     * @param p3 点C
+     * @param p4 点D
      */
-    addRect(p1, p2, p3, p4) {
+    public addRect(p1: Array<number>, p2: Array<number>, p3: Array<number>, p4: Array<number>) : void {
         let start = this.addPoints(p1, p2, p3, p4);
         // 0 1 2 & 0 2 3 make a rect
         this.addIndices(start, start + 1, start + 2, start, start + 2, start + 3);
     }
+
     /**
      * 设置顶点对应的uv坐标
-     * @param {number} start 开始的顶点索引
-     * @param {number[][]} uvs uv坐标数据，如 [[0, 0], [1, 0]]
+     * @param start 开始的顶点索引
+     * @param uvs uv坐标数据，如 [[0, 0], [1, 0]]
      */
-    setVertexUV(start, uvs) {
+    public setVertexUV(start : number, uvs : number[][]) : void {
         this.ensureData('uvs', 2, this.vertices.length / 3 * 2, Float32Array);
         const data = this.uvs.data;
         for (let i = 0; i < uvs.length; i++) {
@@ -543,35 +496,38 @@ export class Geometry{
             data[start + i * 2 + 1] = uvs[i][1];
         }
     }
+
     /**
      * 设置三角形ABC的uv
-     * @param {number} start 开始的顶点索引
-     * @param {number[]} p1 点A的uv，如 [0, 0]
-     * @param {number[]} p2 点B的uv
-     * @param {number[]} p3 点C的uv
+     * @param start 开始的顶点索引
+     * @param p1 点A的uv，如 [0, 0]
+     * @param p2 点B的uv
+     * @param p3 点C的uv
      */
-    setFaceUV(start, p1, p2, p3) {
+    public setFaceUV(start : number, p1 : Array<number>, p2 : Array<number>, p3 : Array<number>) : void{
         this.setVertexUV(start, [p1, p2, p3]);
     }
+
     /**
      * 设置矩形ABCD的uv
-     * @param {number} start 开始的顶点索引
-     * @param {number[]} p1 点A的uv，如 [0, 0]
-     * @param {number[]} p2 点B的uv
-     * @param {number[]} p3 点C的uv
-     * @param {number[]} p4 点D的uv
+     * @param start 开始的顶点索引
+     * @param  p1 点A的uv，如 [0, 0]
+     * @param p2 点B的uv
+     * @param p3 点C的uv
+     * @param p4 点D的uv
      */
-    setRectUV(start, p1, p2, p3, p4) {
+    public setRectUV(start : number, p1 : Array<number>, p2 : Array<number>, p3 : Array<number>, p4 : Array<number>) : void{
         this.setVertexUV(start, [p1, p2, p3, p4]);
     }
+
     /**
      * 获取指定matrix变化后的包围盒数据
      *
-     * @param {Matrix4} [null] matrix 需要变换的矩阵
-     * @param {Bounds} [bounds] 包围盒数据，传入的话会改变他
-     * @return {Bounds} 包围盒数据
+     * @param matrix 需要变换的矩阵
+     * @param bounds 包围盒数据，传入的话会改变他
+     * @return 包围盒数据
      */
-    getBounds(matrix = null, bounds ?: any) {
+    public getBounds(matrix : Matrix4 = null, bounds ?: iBounds) : iBounds {
         if (!bounds) {
             bounds = {
                 xMin: Infinity,
@@ -610,14 +566,14 @@ export class Geometry{
         return bounds;
     }
 
-    private _localBounds : any;
+    private _localBounds : iBounds;
 
     /**
      * 获取本地包围盒
-     * @param  {Boolean} [force=false] 是否强制刷新
-     * @return {Bounds}
+     * @param  force 是否强制刷新
+     * @returns
      */
-    getLocalBounds(force = false) {
+    public getLocalBounds(force : boolean = false) : iBounds{
         if (!this._localBounds || force) {
             this._localBounds = this.getBounds();
         }
@@ -628,10 +584,10 @@ export class Geometry{
 
     /**
      * 获取球面包围盒
-     * @param  {Matrix4} matrix
-     * @return {Sphere}
+     * @param  matrix
+     * @returns
      */
-    getSphereBounds(matrix) {
+    public getSphereBounds(matrix : Matrix4) : Sphere{
         if (!this._sphereBounds) {
             this._sphereBounds = new Sphere();
         }
@@ -643,14 +599,14 @@ export class Geometry{
         return sphereBounds;
     }
 
-    private _localSphereBounds : any;
+    private _localSphereBounds : Sphere;
 
     /**
      * 获取本地球面包围盒
-     * @param  {Boolean} [force=false] 是否强制刷新
-     * @return {Sphere}
+     * @param  force 是否强制刷新
+     * @returns
      */
-    getLocalSphereBounds(force = false) {
+    public getLocalSphereBounds(force : boolean = false) : Sphere{
         if (!this._localSphereBounds || force) {
             const localBounds = this.getLocalBounds(force);
             const sphere = new Sphere({
@@ -667,11 +623,12 @@ export class Geometry{
         }
         return this._localSphereBounds;
     }
+
     /**
      * 将 Geometry 转换成无 indices
-     * @param {number} [verticesItemLen=3] 转换结果的顶点数据的位数(3 or 4)，如果为4会补1
+     * @param verticesItemLen 转换结果的顶点数据的位数(3 or 4)，如果为4会补1
      */
-    convertToNoIndices(verticesItemLen = 3) {
+    public convertToNoIndices(verticesItemLen : number = 3) : void {
         if (this.mode !== TRIANGLES) {
             log.warn('Only support convert triangles to lines mode!');
             return;
@@ -713,19 +670,16 @@ export class Geometry{
     }
 
 
-    positionDecodeMat : any;
-
-    uvDecodeMat : any;
-
-    uv1DecodeMat : any;
-
-    normalDecodeMat : any;
+    public positionDecodeMat : Matrix4;
+    public uvDecodeMat : Matrix4;
+    public uv1DecodeMat : Matrix4;
+    public normalDecodeMat : Matrix4;
 
     /**
      * clone当前Geometry
-     * @return {Geometry} 返回clone的Geometry
+     * @returns 返回clone的Geometry
      */
-    clone() {
+    public clone() {
         const geometry = new Geometry();
         geometry.mode = this.mode;
 
@@ -768,26 +722,8 @@ export class Geometry{
 
         return geometry;
     }
-    /**
-     * 检测 aabb 碰撞
-     * @param  {Ray} ray
-     * @return {Vector3[]|null}
-     */
-    _aabbRaycast(ray) {
-        const bounds = this.getLocalBounds();
-        const res = ray.intersectsBox([
-            [bounds.xMin, bounds.yMin, bounds.zMin],
-            [bounds.xMax, bounds.yMax, bounds.zMax]
-        ]);
-
-        if (res) {
-            return [res];
-        }
-
-        return null;
-    }
    
-    getRenderOption(opt : any = {}) {
+    public getRenderOption(opt : any = {})  : any{
         if (this.positionDecodeMat) {
             opt.QUANTIZED = 1;
             opt.POSITION_QUANTIZED = 1;
@@ -813,27 +749,25 @@ export class Geometry{
 
     protected _shaderKey : string;
 
-    getShaderKey() {
+    public getShaderKey() : string {
         if (this._shaderKey === undefined) {
             this._shaderKey = 'geometry';
             if (this.colors) {
                 this._shaderKey += '_colors';
             }
-
             if (this.positionDecodeMat) {
                 this._shaderKey += 'positionDecodeMat';
             }
             
         }
-
         return this._shaderKey;
     }
 
     /**
      * 获取数据的内存大小，只处理顶点数据，单位为字节
-     * @return {number} 内存占用大小
+     * @returns 内存占用大小
      */
-    getSize() {
+    public getSize() : number {
         let sum = 0;
         for (const key in this) {
             if (Utils.hasOwnProperty(this, key) && this[key] && (this[key] instanceof GeometryData)) {
@@ -848,7 +782,7 @@ export class Geometry{
      * @deprecated
      * @return {Geometry} this
      */
-    destroy() {
+    public destroy() : void {
         log.warn('Geometry.destroy has been deprecated, use mesh.destroy(renderer) instead.');
     }
 }

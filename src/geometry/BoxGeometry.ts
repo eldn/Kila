@@ -5,54 +5,39 @@ import { GeometryData } from "./GeometryData";
 
 /**
  * 长方体几何体
- * @class
- * @extends Geometry
  */
 export class BoxGeometry extends Geometry {
     /**
      * box的宽度
-     * @default 1
-     * @type {number}
      */
-    width: number = 1;
+    private _width: number = 1;
+
     /**
      * box的高度
-     * @default 1
-     * @type {number}
      */
-    height: number = 1;
+    private _height: number = 1;
 
     /**
      * box的深度
-     * @default 1
-     * @type {number}
      */
-    depth: number = 1;
+    private _depth: number = 1;
 
     /**
      * 水平分割面的数量
-     * @default 1
-     * @type {number}
      */
-    widthSegments: number = 1;
+    private _widthSegments: number = 1;
 
     /**
      * 垂直分割面的数量
-     * @default 1
-     * @type {number}
      */
-    heightSegments: number = 1;
+    private _heightSegments: number = 1;
 
     /**
      * 深度分割面的数量
-     * @default 1
-     * @type {number}
      */
-    depthSegments: number = 1;
+    private _depthSegments: number = 1;
 
-    /**
-     * @constructs
-     */
+    
     constructor() {
         super();
         if (this.isSegments()) {
@@ -62,18 +47,18 @@ export class BoxGeometry extends Geometry {
         }
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "BoxGeometry";
     }
 
-    buildWithSegments() {
+    public buildWithSegments() : void {
         const {
-            width,
-            height,
-            depth,
-            widthSegments,
-            heightSegments,
-            depthSegments
+            _width: width,
+            _height: height,
+            _depth: depth,
+            _widthSegments: widthSegments,
+            _heightSegments: heightSegments,
+            _depthSegments: depthSegments
         } = this;
 
         const xVertexCount = (heightSegments + 1) * (depthSegments + 1);
@@ -109,7 +94,7 @@ export class BoxGeometry extends Geometry {
         this.buildPlane(idxInfo, 0, 1, 2, -1, 1, width, height, -depth / 2, widthSegments, heightSegments);
     }
 
-    buildPlane(idxInfo, u, v, w, uDir, vDir, uLength, vLength, wValue, uSegments, vSegments) {
+    public buildPlane(idxInfo : Array<number>, u : number, v : number, w : number, uDir : number, vDir : number, uLength : number, vLength : number, wValue : number, uSegments : number, vSegments : number) : void{
         const uDiff = uLength / uSegments;
         const vDiff = vLength / vSegments;
         const uHalf = uLength / 2;
@@ -153,16 +138,16 @@ export class BoxGeometry extends Geometry {
         idxInfo[1] = currentIndicesIdx;
     }
 
-    build() {
+    public build() : void {
         const vertices = new Float32Array(72);
         const indices = new Uint16Array(36);
 
         this.vertices = new GeometryData(vertices, 3);
         this.indices = new GeometryData(indices, 1);
 
-        const halfWidth = this.width / 2;
-        const halfHeight = this.height / 2;
-        const halfDepth = this.depth / 2;
+        const halfWidth = this._width / 2;
+        const halfHeight = this._height / 2;
+        const halfDepth = this._depth / 2;
 
         const p1 = [-halfWidth, -halfHeight, -halfDepth];
         const p2 = [halfWidth, -halfHeight, -halfDepth];
@@ -181,15 +166,15 @@ export class BoxGeometry extends Geometry {
         this.addRect(p2, p1, p4, p3); // back
     }
 
-    isSegments() {
-        return this.widthSegments > 1 || this.heightSegments > 1 || this.depthSegments > 1;
+    public isSegments() : boolean {
+        return this._widthSegments > 1 || this._heightSegments > 1 || this._depthSegments > 1;
     }
     
     /**
      * 设置朝前面的uv，不支持设置带有 widthSegments heightSegments depthSegments 的实例
-     * @param {number[][]} uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
+     * @param  uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
      */
-    setFrontUV(uv) {
+    public setFrontUV(uv : number[][]) : void {
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setFrontUV!');
             return;
@@ -199,9 +184,9 @@ export class BoxGeometry extends Geometry {
 
     /**
      * 设置右侧面的uv，不支持设置带有 widthSegments heightSegments depthSegments 的实例
-     * @param {number[][]} uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
+     * @param  uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
      */
-    setRightUV(uv) {
+    public setRightUV(uv: number[][]) : void{
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setRightUV!');
             return;
@@ -211,9 +196,9 @@ export class BoxGeometry extends Geometry {
 
     /**
      * 设置朝后面的uv，不支持设置带有 widthSegments heightSegments depthSegments 的实例
-     * @param {number[][]} uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
+     * @param uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
      */
-    setBackUV(uv) {
+    public setBackUV(uv : number[][]) : void {
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setBackUV!');
             return;
@@ -223,9 +208,9 @@ export class BoxGeometry extends Geometry {
 
     /**
      * 设置左侧面的uv，不支持设置带有 widthSegments heightSegments depthSegments 的实例
-     * @param {number[][]} uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
+     * @param uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
      */
-    setLeftUV(uv) {
+    setLeftUV(uv: number[][]) : void {
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setLeftUV!');
             return;
@@ -235,9 +220,9 @@ export class BoxGeometry extends Geometry {
 
     /**
      * 设置顶部面的uv，不支持设置带有 widthSegments heightSegments depthSegments 的实例
-     * @param {number[][]} uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
+     * @param  uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
      */
-    setTopUV(uv) {
+    setTopUV(uv: number[][]) : void {
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setTopUV!');
             return;
@@ -247,9 +232,9 @@ export class BoxGeometry extends Geometry {
 
     /**
      * 设置底部面的uv，不支持设置带有 widthSegments heightSegments depthSegments 的实例
-     * @param {number[][]} uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
+     * @param  uv uv数据，如 [[0, 1], [1, 1], [1, 0], [0, 0]]
      */
-    setBottomUV(uv) {
+    setBottomUV(uv: number[][]) : void {
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setBottomUV!');
             return;
@@ -269,7 +254,7 @@ export class BoxGeometry extends Geometry {
      *     [[0, 1], [1, 1], [1, 0], [0, 0]]<br>
      * ]
      */
-    setAllRectUV(uv) {
+    setAllRectUV(uv: number[][]) : BoxGeometry {
         if (this.isSegments()) {
             log.warn('segmented BoxGeometry dont support setAllRectUV!');
             return null;

@@ -23,30 +23,23 @@ export class GeometryData{
 
     /**
      * The number of components per vertex attribute.Must be 1, 2, 3, or 4.
-     * @type {Number}
      */
-    size: number;
+    public size: number;
 
     /**
      * Whether integer data values should be normalized when being casted to a float.
-     * @type {Boolean}
-     * @default false
      */
-    normalized: boolean = false;
+    public normalized: boolean = false;
 
      /**
      * The data type of each component in the array.
-     * @type {GLenum}
      */
-    type: number;
+    public type: number;
 
-    _isSubDirty:  boolean = false;
-    _isAllDirty: boolean = false;
+    private _isSubDirty:  boolean = false;
+    private _isAllDirty: boolean = false;
 
-    /**
-     * @type {Boolean}
-     * @default false
-     */
+  
     get isDirty() {
         return this._isSubDirty || this._isAllDirty;
     }
@@ -58,32 +51,20 @@ export class GeometryData{
         }
     }
     
-     /**
-     * @type {String}
-     */
-    bufferViewId: string;
-
-    /**
-     * glBuffer
-     * @type {Buffer}
-     */
-    glBuffer: Buffer;
-
-    id : string;
+ 
+    public bufferViewId: string;
+    public glBuffer: Buffer;
+    public id : string;
 
      /**
      * @constructs
-     * @param  {TypedArray} data  数据
-     * @param  {Number} size The number of components per vertex attribute.Must be 1, 2, 3, or 4.
-     * @param  {Object} [params] 初始化参数，所有params都会复制到实例上
+     * @param   data  数据
+     * @param  size The number of components per vertex attribute.Must be 1, 2, 3, or 4.
+     * @param  params 初始化参数，所有params都会复制到实例上
      */
     constructor(data : any, size : number) {
         
         this.id = math.generateUUID(this.getClassName());
-
-        /**
-         * @type {TypedArray}
-         */
         this.data = data;
         this.size = size;
 
@@ -96,19 +77,17 @@ export class GeometryData{
         }
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "GeometryData";
     }
 
 
-    _stride: number = 0;
+    private _stride: number = 0;
 
     /**
      * The offset in bytes between the beginning of consecutive vertex attributes.
-     * @type {Number}
-     * @default this.size
      */
-    get stride() {
+    get stride() : number {
         return this._stride;
     }
 
@@ -117,30 +96,26 @@ export class GeometryData{
         this.strideSize = value === 0 ? 0 : value / this.data.BYTES_PER_ELEMENT;
     }
     
-    strideSize: number = 0;
+    public strideSize: number = 0;
 
-    _offset: number = 0;
+    private _offset: number = 0;
 
      /**
      * An offset in bytes of the first component in the vertex attribute array. Must be a multiple of type.
-     * @type {Number}
-     * @default 0
      */
-    get offset() {
+    get offset() : number{
         return this._offset;
     }
 
-    set offset(value) {
+    set offset(value : number) {
         this._offset = value;
         this.offsetSize = value / this.data.BYTES_PER_ELEMENT;
     }
 
     offsetSize:  number = 0;
     
-    /**
-     * @type {TypedArray}
-     */
-    set data(data) {
+  
+    set data(data : any) {
         if (data) {
             this._data = data;
             this.type = Utils.getTypedArrayGLType(data);
@@ -154,19 +129,13 @@ export class GeometryData{
         return this._data;
     }
 
-     /**
-     * @type {Number}
-     * @readOnly
-     */
-    get length() {
+
+    get length() : number {
         return this._data.length;
     }
     
-     /**
-     * @type {Number}
-     * @readOnly
-     */
-    get realLength() {
+
+    get realLength() : number{
         if (this.strideSize === 0) {
             return this._data.length;
         }
@@ -175,17 +144,13 @@ export class GeometryData{
     
     /**
      * 获取数据大小，单位为字节
-     * @return {number} 数据大小
+     * @returns 数据大小
      */
-    getByteLength() {
+    getByteLength() : number {
         return this._data.BYTES_PER_ELEMENT * this.realLength;
     }
 
-    /**
-     * @type {Number}
-     * @readOnly
-     */
-    get count() {
+    get count() : number {
         if (this.strideSize === 0) {
             return this._data.length / this.size;
         }
@@ -194,10 +159,10 @@ export class GeometryData{
     
     /**
      * 更新部分数据
-     * @param {Number} offset 偏移index
-     * @param {TypedArray} data 数据
+     * @param offset 偏移index
+     * @param  data 数据
      */
-    setSubData(offset, data) {
+    public setSubData(offset : number, data : any) : void{
         this._isSubDirty = true;
         this.data.set(data, offset);
 
@@ -215,7 +180,7 @@ export class GeometryData{
     /**
      * 清除 subData
      */
-    clearSubData() {
+    public clearSubData() {
         if (this.subDataList) {
             this.subDataList.length = 0;
         }
@@ -225,9 +190,9 @@ export class GeometryData{
 
     /**
      * clone
-     * @return {GeometryData}
+     * @returns
      */
-    clone() {
+    public clone() : GeometryData {
         const res = new GeometryData(null, 1);
         res.copy(this);
         return res;
@@ -235,9 +200,9 @@ export class GeometryData{
 
     /**
      * copy
-     * @param  {GeometryData} geometryData
+     * @param  geometryData
      */
-    copy(geometryData) {
+    public copy(geometryData : GeometryData) : void{
         const data = geometryData.data;
         this.data = new data.constructor(data);
         this.size = geometryData.size;
@@ -249,10 +214,10 @@ export class GeometryData{
 
     /**
      * 获取偏移值
-     * @param  {Number} index
-     * @return {Number}
+     * @param  index
+     * @returns
      */
-    getOffset(index) {
+    public getOffset(index : number) : number{
         const strideSize = this.strideSize;
         if (strideSize === 0) {
             return index * this.size;
@@ -262,20 +227,20 @@ export class GeometryData{
 
     /**
      * 获取值
-     * @param  {Number} index
-     * @return {Number|Vector2|Vector3|Vector4}
+     * @param index
+     * @returns
      */
-    get(index) {
+    public get(index : number) : any {
         const offset = this.getOffset(index);
         return this.getByOffset(offset);
     }
 
     /**
      * 设置值
-     * @param {Number} index
-     * @param {Number|Vector2|Vector3|Vector4} value
+     * @param  index
+     * @param  value
      */
-    set(index, value) {
+    public set(index : number, value : any) {
         const offset = this.getOffset(index);
         this.setByOffset(offset, value);
         return offset;
@@ -283,10 +248,10 @@ export class GeometryData{
 
     /**
      * 根据 offset 获取值
-     * @param  {Number} offset
-     * @return {Number|Vector2|Vector3|Vector4}
+     * @param   offset
+     * @returns
      */
-    getByOffset(offset) {
+    public getByOffset(offset : number) : any{
         const size = this.size;
         if (size > 1) {
             const tempVector = sizeVectorMap[size];
@@ -298,10 +263,10 @@ export class GeometryData{
 
      /**
      * 根据 offset 设置值
-     * @param {Number} offset
-     * @param {Number|Vector2|Vector3|Vector4} value
+     * @param  offset
+     * @param } value
      */
-    setByOffset(offset, value) {
+    public setByOffset(offset, value) {
         const size = this.size;
         const data = this._data;
         if (size > 1) {
@@ -314,10 +279,10 @@ export class GeometryData{
 
      /**
      * 按 index 遍历
-     * @param  {Function} callback(attribute, index, offset)
-     * @return {Boolean}
+     * @param  callback(attribute, index, offset)
+     * @returns
      */
-    traverse(callback) {
+    public traverse(callback : Function) : boolean {
         const count = this.count;
         for (let index = 0; index < count; index++) {
             const offset = this.getOffset(index);
@@ -332,10 +297,10 @@ export class GeometryData{
 
     /**
      * 按 Component 遍历 Component
-     * @param  {Function} callback(data, offset)
-     * @return {Boolean}
+     * @param   callback(data, offset)
+     * @returns
      */
-    traverseByComponent(callback) {
+    public traverseByComponent(callback : Function) : boolean {
         const count = this.count;
         const size = this.size;
         const data = this._data;
@@ -353,7 +318,7 @@ export class GeometryData{
         return false;
     }
 
-    merge(geometryData, transform ?: any) {
+    public merge(geometryData : GeometryData, transform ?: any) : GeometryData{
         if (geometryData.type !== this.type || geometryData.size !== this.size) {
             log.warn('geometryData type or size not same, cannot merge!', this, geometryData);
             return this;
