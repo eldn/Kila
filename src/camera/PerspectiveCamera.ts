@@ -11,10 +11,9 @@ export class PerspectiveCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "PerspectiveCamera";
     }
-
 
 
     private _near: number = 0.1;
@@ -70,9 +69,9 @@ export class PerspectiveCamera extends Camera {
     /**
      * 更新投影矩阵
      */
-    updateProjectionMatrix() {
+    public updateProjectionMatrix() : void {
 
-        const elements = this.projectionMatrix.elements;
+        const elements = this._projectionMatrix.elements;
         const {
             near,
             far,

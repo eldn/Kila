@@ -27,94 +27,65 @@ export class GameObject extends EventObject{
  
     /**
      * Node 的名字，可以通过 getChildByName 查找
-     * @type {string}
+     *
      */
-    name: string = '';
+    public name: string = '';
 
 
     /**
      * 是否自动更新世界矩阵
-     * @default true
-     * @type {boolean}
      */
-    autoUpdateWorldMatrix: boolean = true;
+    public autoUpdateWorldMatrix: boolean = true;
 
     /**
      * 是否自动更新子元素世界矩阵
-     * @default true
-     * @type {boolean}
      */
-    autoUpdateChildWorldMatrix: boolean = true;
+    public autoUpdateChildWorldMatrix: boolean = true;
 
     /**
      * 父节点
-     * @default null
-     * @type {GameObject}
      */
-    parent: GameObject = null;
-    _quatDirty: boolean = false;
-    _matrixDirty: boolean = false;
+    public parent: GameObject = null;
+
+    private _quatDirty: boolean = false;
+    private _matrixDirty: boolean = false;
 
     /**
      * 每次更新的时候是否调用子节点的 onUpdate 方法
-     * @default true
-     * @type {boolean}
      */
-    needCallChildUpdate: boolean = true;
+    public needCallChildUpdate: boolean = true;
 
     /**
      * 节点是否显示
-     * @default true
-     * @type {boolean}
      */
-    visible: boolean = true;
+    public visible: boolean = true;
 
-    /**
-     * 可视对象是否接受交互事件。默认为接受交互事件，即true。
-     * @default true
-     * @type {Boolean}
-     */
-    pointerEnabled: boolean = true;
-
-    /**
-     * 子元素是否接受交互事件。
-     * @default true
-     * @type {Boolean}
-     */
-    pointerChildren: boolean = true;
 
     /**
      * 是否强制使用父元素 worldMatrix，供高级开发者使用
-     * @private
-     * @type {Boolean}
      */
-    __forceUseParentWorldMatrix: boolean = false;
+    public __forceUseParentWorldMatrix: boolean = false;
 
 
-     /**
-     * @type {string}
-     */
-    id : string;
+    
+    public id : string;
 
     /**
      * 元素的up向量
-     * @type {Vector3}
      */
-    up : Vector3;
+    public up : Vector3;
 
     /**
      * 元素直接点数组
-     * @type {GameObject[]}
      */
-    children : Array<GameObject>;
+    public children : Array<GameObject>;
 
     /**
      * 元素的世界矩阵
-     * @type {Matrix4}
      */
-    worldMatrix : Matrix4;
+    public worldMatrix : Matrix4;
 
-    getClassName() : string{
+    public getClassName() : string{
         return "GameObject";
     }
 
@@ -162,9 +133,10 @@ export class GameObject extends EventObject{
     }
 
     /**
-     * @return {GameObject} 返回clone的Node
+     * 克隆
+     * @returns 返回clone的Node
      */
-    clone() {
+    public clone() : GameObject{
         const node = new GameObject();
         node.name = this.name;
         node.setPosition(this.x, this.y, this.z);
@@ -179,9 +151,9 @@ export class GameObject extends EventObject{
 
     /**
      * 将所以子孙元素放到一个对象中，对象key为元素的name，value为该元素
-     * @return {Object} 返回获取的对象
+     * @returns  返回获取的对象
      */
-    getChildrenNameMap() {
+    public getChildrenNameMap() : Object {
         const map = {};
         this.traverse((child : GameObject) => {
             map[child.name] = child;
@@ -191,10 +163,10 @@ export class GameObject extends EventObject{
 
     /**
      * 添加一个子元素
-     * @param {GameObject} child 需要添加的子元素
-     * @return {GameObject} this
+     * @param child 需要添加的子元素
+     * @returns this
      */
-    addChild(child : GameObject) {
+    public addChild(child : GameObject) : GameObject {
         if (child.parent) {
             child.removeFromParent();
         }
@@ -205,10 +177,10 @@ export class GameObject extends EventObject{
 
     /**
      * 移除指定的子元素
-     * @param {GameObject} child 需要移除的元素
-     * @return {GameObject} this
+     * @param child 需要移除的元素
+     * @returns this
      */
-    removeChild(child : GameObject) {
+    public removeChild(child : GameObject): GameObject {
         const index = this.children.indexOf(child);
         if (index > -1) {
             this.children.splice(index, 1);
@@ -219,19 +191,19 @@ export class GameObject extends EventObject{
 
     /**
      * 将当前元素添加到某个父元素的子元素中
-     * @param {GameObject} parent 需要添加到的父元素
-     * @return {GameObject} this
+     * @param  parent 需要添加到的父元素
+     * @returns this
      */
-    addTo(parent : GameObject) {
+    public addTo(parent : GameObject) : GameObject {
         parent.addChild(this);
         return this;
     }
 
     /**
      * 将当前元素从其父元素中移除
-     * @return {GameObject} this
+     * @returns this
      */
-    removeFromParent() {
+    public removeFromParent() : GameObject{
         if (this.parent) {
             this.parent.removeChild(this);
         }
@@ -240,9 +212,9 @@ export class GameObject extends EventObject{
 
     /**
      * 更新本地矩阵
-     * @return {GameObject} this
+     * @returns this
      */
-    updateMatrix() {
+    public updateMatrix() : GameObject {
         if (this._matrixDirty) {
             this._matrixDirty = false;
             this.matrixVersion++;
@@ -254,9 +226,9 @@ export class GameObject extends EventObject{
 
     /**
      * 更新四元数
-     * @return {GameObject} this
+     * @returns  this
      */
-    updateQuaternion() {
+    public updateQuaternion() : GameObject {
         if (this._quatDirty) {
             this._quatDirty = false;
             this._quaternion.fromEuler(this._rotation, true);
@@ -267,9 +239,9 @@ export class GameObject extends EventObject{
 
     /**
      * 更新transform属性
-     * @return {GameObject} this
+     * @returns this
      */
-    updateTransform() {
+    public updateTransform() : GameObject{
         this._matrix.decompose(this._quaternion, this._position, this._scale, this._pivot);
         this._onQuaternionUpdate();
 
@@ -279,10 +251,10 @@ export class GameObject extends EventObject{
 
     /**
      * 更新世界矩阵
-     * @param  {Boolean} [force=true] 是否强制更新
-     * @return {GameObject} this
+     * @param  是否强制更新
+     * @returns  this
      */
-    updateMatrixWorld(force ?: boolean) {
+    public updateMatrixWorld(force : boolean = true) : GameObject {
         this.traverse((node) => {
             if (node.autoUpdateWorldMatrix || force) {
                 if (node.parent) {
@@ -307,12 +279,11 @@ export class GameObject extends EventObject{
  
     /**
      * _traverse
-     * @private
-     * @param  {Function(Node)} callback
-     * @param  {Boolean}  onlyChild
-     * @return {Enum}  TRAVERSE_STOP_ALL, TRAVERSE_STOP_CHILDREN, TRAVERSE_STOP_NONE
+     * @param  callback
+     * @param   onlyChild
+     * @returns TRAVERSE_STOP_ALL, TRAVERSE_STOP_CHILDREN, TRAVERSE_STOP_NONE
      */
-    _traverse(callback : Function, onlyChild : boolean) {
+    private _traverse(callback : Function, onlyChild : boolean) : boolean {
         if (!onlyChild) {
             const res = callback(this);
             if (res) {
@@ -333,22 +304,22 @@ export class GameObject extends EventObject{
 
     /**
      * 遍历当前元素的子孙元素
-     * @param {Function(Node)} callback 每个元素都会调用这个函数处理
-     * @param {Boolean} [onlyChild=false] 是否只遍历子元素
-     * @return {GameObject} this
+     * @param callback 每个元素都会调用这个函数处理
+     * @param  是否只遍历子元素
+     * @returns this
      */
-    traverse(callback : Function, onlyChild : boolean = false) {
+    public traverse(callback : Function, onlyChild : boolean = false) : GameObject{
         this._traverse(callback, onlyChild);
         return this;
     }
 
     /**
      * 遍历当前元素的子孙元素(广度优先)
-     * @param {Function(Node)} callback 每个元素都会调用这个函数处理
-     * @param {Boolean} [onlyChild=false] 是否只遍历子元素
-     * @return {GameObject} this
+     * @param  callback 每个元素都会调用这个函数处理
+     * @param onlyChild 是否只遍历子元素
+     * @returns this
      */
-    traverseBFS(callback : Function, onlyChild : boolean = false) {
+    public traverseBFS(callback : Function, onlyChild : boolean = false) : GameObject {
         let currentQueue;
         let nextQueue;
         if (!onlyChild) {
@@ -375,10 +346,10 @@ export class GameObject extends EventObject{
 
     /**
      * 根据函数来获取一个子孙元素(广度优先)
-     * @param {Function} fn 判读函数
-     * @return {GameObject|null} 返回获取到的子孙元素
+     * @param  fn 判读函数
+     * @returns 返回获取到的子孙元素
      */
-    getChildByFnBFS(fn : Function) {
+    public getChildByFnBFS(fn : Function) : GameObject {
         let result = null;
         this.traverseBFS((child) => {
             if (fn(child)) {
@@ -393,14 +364,14 @@ export class GameObject extends EventObject{
 
     /**
      * 根据 name path 来获取子孙元素
-     * @param  {String[]} path 名字数组, e.g., getChildByNamePath(['a', 'b', 'c'])
-     * @return {GameObject|null} 返回获取到的子孙元素
+     * @param  path 名字数组, e.g., getChildByNamePath(['a', 'b', 'c'])
+     * @returns  返回获取到的子孙元素
      */
-    getChildByNamePath(path : Array<string>) {
-        let currentNode = this;
+    public getChildByNamePath(path : Array<string>) : GameObject{
+        let currentNode : GameObject = this;
         for (let i = 0, l = path.length; i < l; i++) {
             const name = path[i];
-            const node = currentNode.getChildByFnBFS(child => child.name === name);
+            const node : GameObject = currentNode.getChildByFnBFS(child => child.name === name);
             if (node) {
                 currentNode = node;
             } else {
@@ -416,7 +387,7 @@ export class GameObject extends EventObject{
      * @param  {Number} dt
      * @return {GameObject} this
      */
-    traverseUpdate(dt : number) {
+    public traverseUpdate(dt : number) : GameObject{
         this.traverse((node) => {
             if (node.onUpdate) {
                 node.onUpdate(dt);
@@ -430,17 +401,17 @@ export class GameObject extends EventObject{
     }
 
 
-    onUpdate(){
+    public onUpdate() : void{
         
     }
 
     /**
      * 根据函数来获取一个子孙元素
-     * @param {Function} fn 判读函数
-     * @return {GameObject|null} 返回获取到的子孙元素
+     * @param  fn 判读函数
+     * @returns  返回获取到的子孙元素
      */
-    getChildByFn(fn : Function) {
-        let result = null;
+    public getChildByFn(fn : Function) : GameObject {
+        let result : GameObject = null;
         this.traverse((child) => {
             if (fn(child)) {
                 result = child;
@@ -454,10 +425,10 @@ export class GameObject extends EventObject{
 
     /**
      * 根据函数来获取匹配的所有子孙元素
-     * @param {Function} fn 判读函数
-     * @return {GameObject[]} 返回获取到的子孙元素
+     * @param  fn 判读函数
+     * @returns 返回获取到的子孙元素
      */
-    getChildrenByFn(fn : Function) {
+    public getChildrenByFn(fn : Function) : Array<GameObject> {
         let result = [];
         this.traverse((child) => {
             if (fn(child)) {
@@ -469,94 +440,94 @@ export class GameObject extends EventObject{
 
     /**
      * 获取指定name的首个子孙元素
-     * @param {string} name 元素name
-     * @return {GameObject|null} 获取的元素
+     * @param  name 元素name
+     * @returns  获取的元素
      */
-    getChildByName(name : string) {
+    public getChildByName(name : string) : GameObject{
         return this.getChildByFn(child => child.name === name);
     }
 
     /**
      * 获取指定name的所有子孙元素
-     * @param {string} name 元素name
-     * @return {GameObject[]} 获取的元素数组
+     * @param  name 元素name
+     * @return 获取的元素数组
      */
-    getChildrenByName(name : string){
+    public getChildrenByName(name : string) : Array<GameObject>{
         return this.getChildrenByFn(child => child.name === name);
     }
 
     /**
      * 获取指定id的子孙元素
-     * @param {string} id 元素id
-     * @return {GameObject|null} 获取的元素
+     * @param  id 元素id
+     * @returns  获取的元素
      */
-    getChildById(id : string) {
+    public getChildById(id : string) : GameObject{
         return this.getChildByFn(child => child.id === id);
     }
 
     /**
      * 获取指定类名的所有子孙元素
-     * @param {string} className 类名
-     * @return {GameObject[]} 获取的元素数组
+     * @param className 类名
+     * @returns 获取的元素数组
      */
-    getChildrenByClassName(className) {
+    public getChildrenByClassName(className : string) : Array<GameObject>{
         return this.getChildrenByFn(child => child.className === className);
     }
 
     /**
      * 设置元素的缩放比例
-     * @param {number} x X缩放比例
-     * @param {number} y Y缩放比例
-     * @param {number} z Z缩放比例
-     * @return {GameObject} this
+     * @param x X缩放比例
+     * @param  y Y缩放比例
+     * @param z Z缩放比例
+     * @return  this
      */
-    setScale(x : number, y : number = x, z : number = y) {
+    public setScale(x : number, y : number = x, z : number = y) : GameObject {
         this._scale.set(x, y, z);
         return this;
     }
 
     /**
      * 设置元素的位置
-     * @param {number} x X方向位置
-     * @param {number} y Y方向位置
-     * @param {number} z Z方向位置
-     * @return {GameObject} this
+     * @param  x X方向位置
+     * @param  y Y方向位置
+     * @param  z Z方向位置
+     * @return  this
      */
-    setPosition(x : number, y : number, z : number) {
+    public setPosition(x : number, y : number, z : number) : GameObject {
         this._position.set(x, y, z);
         return this;
     }
 
     /**
      * 设置元素的旋转
-     * @param {number} x X轴旋转角度, 角度制
-     * @param {number} y Y轴旋转角度, 角度制
-     * @param {number} z Z轴旋转角度, 角度制
-     * @return {GameObject} this
+     * @param  x X轴旋转角度, 角度制
+     * @param y Y轴旋转角度, 角度制
+     * @param z Z轴旋转角度, 角度制
+     * @returns  this
      */
-    setRotation(x : number, y : number, z : number) {
+    public setRotation(x : number, y : number, z : number) : GameObject{
         this._rotation.setDegree(x, y, z);
         return this;
     }
 
     /**
      * 设置中心点
-     * @param {Number} x 中心点x
-     * @param {Number} y 中心点y
-     * @param {Number} z 中心点z
-     * @return {GameObject} this
+     * @param  x 中心点x
+     * @param y 中心点y
+     * @param z 中心点z
+     * @returns  this
      */
-    setPivot(x : number, y : number, z : number) {
+    public setPivot(x : number, y : number, z : number) : GameObject {
         this._pivot.set(x, y, z);
         return this;
     }
 
     /**
      * 改变元素的朝向
-     * @param {GameObject|Object|Vector3} node 需要朝向的元素，或者坐标
-     * @return {GameObject} this
+     * @param node 需要朝向的元素，或者坐标
+     * @returns this
      */
-    lookAt(node : GameObject) {
+    public lookAt(node : GameObject) : GameObject{
         tempMatrix4.targetTo(node.position, this.position, this.up);
         this._quaternion.fromMat4(tempMatrix4);
         return this;
@@ -566,10 +537,7 @@ export class GameObject extends EventObject{
 
     /**
      * 元素的矩阵
-     * @type {Matrix4Notifier}
-     * @readOnly
      */
-
     private _matrix : Matrix4Notifier;
 
     get matrix() {
@@ -584,8 +552,6 @@ export class GameObject extends EventObject{
 
     /**
      * 位置
-     * @type {Vector3Notifier}
-     * @readOnly
      */
     private _position : Vector3Notifier;
 
@@ -601,7 +567,6 @@ export class GameObject extends EventObject{
 
     /**
      * x轴坐标
-     * @type {number}
      */
     get x() {
         return this._position.elements[0];
@@ -614,7 +579,6 @@ export class GameObject extends EventObject{
     
     /**
      * y轴坐标
-     * @type {number}
      */
     get y() {
         return this._position.elements[1];
@@ -627,7 +591,6 @@ export class GameObject extends EventObject{
     
     /**
      * z轴坐标
-     * @type {number}
      */
     get z() {
         return this._position.elements[2];
@@ -641,8 +604,6 @@ export class GameObject extends EventObject{
 
     /**
      * 缩放
-     * @type {Vector3Notifier}
-     * @readOnly
      */
 
     private _scale : Vector3Notifier;
@@ -659,7 +620,6 @@ export class GameObject extends EventObject{
 
     /**
      * 缩放比例x
-     * @type {number}
      */
     get scaleX() {
         return this._scale.elements[0];
@@ -672,7 +632,6 @@ export class GameObject extends EventObject{
     
     /**
      * 缩放比例y
-     * @type {number}
      */
     get scaleY() {
         return this._scale.elements[1];
@@ -685,7 +644,6 @@ export class GameObject extends EventObject{
     
     /**
      * 缩放比例z
-     * @type {number}
      */
     get scaleZ() {
         return this._scale.elements[2];
@@ -699,8 +657,6 @@ export class GameObject extends EventObject{
 
     /**
      * 中心点
-     * @type {Vector3Notifier}
-     * @readOnly
      */
     private _pivot : Vector3Notifier;
     
@@ -716,7 +672,6 @@ export class GameObject extends EventObject{
 
     /**
      * 中心点x
-     * @type {Number}
      */
     get pivotX() {
         return this._pivot.elements[0];
@@ -729,7 +684,6 @@ export class GameObject extends EventObject{
     
     /**
      * 中心点y
-     * @type {Number}
      */
     get pivotY() {
         return this._pivot.elements[1];
@@ -742,7 +696,6 @@ export class GameObject extends EventObject{
     
     /**
      * 中心点z
-     * @type {Number}
      */
     get pivotZ() {
         return this._pivot.elements[2];
@@ -756,8 +709,6 @@ export class GameObject extends EventObject{
 
     /**
      * 欧拉角
-     * @type {EulerNotifier}
-     * @readOnly
      */
     private _rotation : EulerNotifier;
 
@@ -773,7 +724,6 @@ export class GameObject extends EventObject{
 
     /**
      * 旋转角度 x, 角度制
-     * @type {number}
      */
     get rotationX () {
         return this._rotation.degX;
@@ -785,7 +735,6 @@ export class GameObject extends EventObject{
     
     /**
      * 旋转角度 y, 角度制
-     * @type {number}
      */
     get rotationY() {
         return this._rotation.degY;
@@ -797,7 +746,6 @@ export class GameObject extends EventObject{
     
     /**
      * 旋转角度 z, 角度制
-     * @type {number}
      */
     get rotationZ() {
         return this._rotation.degZ;
@@ -810,7 +758,6 @@ export class GameObject extends EventObject{
 
     /**
      * 四元数角度
-     * @type {Quaternion}
      */
     private _quaternion : Quaternion;
 
@@ -864,28 +811,3 @@ export class GameObject extends EventObject{
 }
 
 export default GameObject;
-
-/**
- * 包围盒信息
- * @typedef {object} Bounds
- * @property {number} x 包围盒中心的X坐标
- * @property {number} y 包围盒中心的Y坐标
- * @property {number} z 包围盒中心的Z坐标
- * @property {number} width 包围盒的宽度
- * @property {number} height 包围盒的高度
- * @property {number} depth 包围盒的深度
- * @property {number} xMin X轴的最小值
- * @property {number} xMax X轴的最大值
- * @property {number} yMin Y轴的最小值
- * @property {number} yMax Y轴的最大值
- * @property {number} zMin Z轴的最小值
- * @property {number} zMax Z轴的最大值
- */
-
-
-/**
- * 碰撞信息
- * @typedef {object} raycastInfo
- * @property {Mesh} mesh 碰撞的 mesh
- * @property {Vector3} point 碰撞得点
- */

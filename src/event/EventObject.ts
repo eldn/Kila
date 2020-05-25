@@ -4,17 +4,17 @@
 export class EventObject {
     _listeners: Object;
 
-    getClassName() : string{
+    public getClassName() : string{
         return "EventObject";
     }
 
     /**
      * @language=en
      * Add an event listenser.
-     * @param {String} type Event type to listen.
-     * @param {Function} listener Callback function of event listening.
-     * @param {Boolean} once Listen on event only once and no more response after the first response?
-     * @returns {Object} The Event itself. Functions chain call supported.
+     * @param  type Event type to listen.
+     * @param listener Callback function of event listening.
+     * @param  once Listen on event only once and no more response after the first response?
+     * @returns The Event itself. Functions chain call supported.
      */
     on(type : string, listener : Function, once ?: boolean){
         var listeners = (this._listeners = this._listeners || {});
@@ -30,9 +30,9 @@ export class EventObject {
     /**
      * @language=en
      * Remove one event listener. Remove all event listeners if no parameter provided, and remove all event listeners on one type which is provided as the only parameter.
-     * @param {String} type The type of event listener that want to remove.
-     * @param {Function} listener Event listener callback function to be removed.
-     * @returns {Object} The Event itself. Functions chain call supported.
+     * @param  type The type of event listener that want to remove.
+     * @param listener Event listener callback function to be removed.
+     * @returns The Event itself. Functions chain call supported.
      */
     off(type ?: string, listener ?: Function){
         //remove all event listeners
@@ -64,9 +64,9 @@ export class EventObject {
     /**
      * @language=en
      * Send events. If the first parameter is an Object, take it  as an Event Object.
-     * @param {String} type Event type to send.
-     * @param {Object} detail The detail (parameters go with the event) of Event to send.
-     * @returns {Boolean} Whether Event call successfully.
+     * @param  type Event type to send.
+     * @param  detail The detail (parameters go with the event) of Event to send.
+     * @returns Whether Event call successfully.
      */
     fire(type : any, detail ?: any){
         var event, eventType;
