@@ -10,8 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node_modules/.bin/wepack-dev-server",
     "watch": "node_modules/.bin/webpack -w",
-    "build": "node_modules/.bin/webpack",
+    "build": "npm run build-ts && npm run build-declaration",
     "doc": "typedoc --out docs src",
+    "build-ts":"node_modules/.bin/webpack",
     "build-declaration": "node ./tools/generate-declarations/generate-declarations-cli.js"
   },
   "repository": {
@@ -45,6 +46,7 @@
     "tfig": "^1.2.3",
     "ts-loader": "^7.0.4",
     "typedoc": "^0.17.7",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0"
