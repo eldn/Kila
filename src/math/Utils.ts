@@ -94,7 +94,7 @@ export class Utils {
         return new Array(len - str.length + 1).join(char || '0') + str;
     }
 
-    public static getTypedArrayGLType(array) {
+    public static getTypedArrayGLType(array : TypedArray) {
         if (array instanceof Float32Array) {
             return FLOAT;
         }
@@ -122,14 +122,14 @@ export class Utils {
         return FLOAT;
     }
 
-    public static getTypedArrayClass(type){
+    public static getTypedArrayClass(type : number) : TypeArrayConstructor{
         const TypedArrayClassMap = {
-            [glConstants.BYTE]: Int8Array,
-            [glConstants.UNSIGNED_BYTE]: Uint8Array,
-            [glConstants.SHORT]: Int16Array,
-            [glConstants.UNSIGNED_SHORT]: Uint16Array,
-            [glConstants.UNSIGNED_INT]: Uint32Array,
-            [glConstants.FLOAT]: Float32Array
+            [BYTE]: Int8Array,
+            [UNSIGNED_BYTE]: Uint8Array,
+            [SHORT]: Int16Array,
+            [UNSIGNED_SHORT]: Uint16Array,
+            [UNSIGNED_INT]: Uint32Array,
+            [FLOAT]: Float32Array
         };
         return TypedArrayClassMap[type] || Float32Array;
     }

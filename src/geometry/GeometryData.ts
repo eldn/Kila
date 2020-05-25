@@ -17,7 +17,7 @@ const sizeVectorMap = {
 
 export class GeometryData{
 
-    private _data : any;
+    private _data : TypedArray;
 
     private subDataList : Array<any>;
 
@@ -62,7 +62,7 @@ export class GeometryData{
      * @param  size The number of components per vertex attribute.Must be 1, 2, 3, or 4.
      * @param  params 初始化参数，所有params都会复制到实例上
      */
-    constructor(data : any, size : number) {
+    constructor(data : TypedArray, size : number) {
         
         this.id = math.generateUUID(this.getClassName());
         this.data = data;
@@ -115,7 +115,7 @@ export class GeometryData{
     offsetSize:  number = 0;
     
   
-    set data(data : any) {
+    set data(data : TypedArray) {
         if (data) {
             this._data = data;
             this.type = Utils.getTypedArrayGLType(data);
@@ -125,7 +125,7 @@ export class GeometryData{
         }
     }
     
-    get data() {
+    get data() : TypedArray {
         return this._data;
     }
 
@@ -203,8 +203,10 @@ export class GeometryData{
      * @param  geometryData
      */
     public copy(geometryData : GeometryData) : void{
-        const data = geometryData.data;
-        this.data = new data.constructor(data);
+        const data : TypedArray = geometryData.data;
+        const arrayType = Utils.getTypedArrayGLType(data);
+        let dataClass = Utils.getTypedArrayClass(arrayType);
+        this.data = new dataClass(data);
         this.size = geometryData.size;
         this.stride = geometryData.stride;
         this.normalized = geometryData.normalized;
@@ -240,7 +242,7 @@ export class GeometryData{
      * @param  index
      * @param  value
      */
-    public set(index : number, value : any) {
+    public set(index : number, value : any) : number{
         const offset = this.getOffset(index);
         this.setByOffset(offset, value);
         return offset;
@@ -251,7 +253,7 @@ export class GeometryData{
      * @param   offset
      * @returns
      */
-    public getByOffset(offset : number) : any{
+    public getByOffset(offset : number){
         const size = this.size;
         if (size > 1) {
             const tempVector = sizeVectorMap[size];
@@ -266,7 +268,7 @@ export class GeometryData{
      * @param  offset
      * @param } value
      */
-    public setByOffset(offset, value) {
+    public setByOffset(offset : number, value : any) : void {
         const size = this.size;
         const data = this._data;
         if (size > 1) {
