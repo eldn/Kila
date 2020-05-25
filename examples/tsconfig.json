@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+      "module": "ES2015",
+      "lib": [ "dom", "es6"],
+      "target": "es6",
+      "experimentalDecorators": true,
+      "skipLibCheck": true,
+      "outDir": "./dist",
+      "sourceMap": true,
+       "declaration": false,
+       "rootDir":"./"
+    },
+    "exclude": [
+      "node_modules",
+      "library",
+      "local",
+      "temp",
+      "build",
+      "settings"
+    ],
+    "include": [
+        "./**/*.ts",
+        "../kila.d.ts"
+    ],
+    "typedocOptions": {
+      "mode": "modules",
+      "out": "docs"
+    }
+  }

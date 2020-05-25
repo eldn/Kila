@@ -11,7 +11,8 @@
     "dev": "node_modules/.bin/wepack-dev-server",
     "watch": "node_modules/.bin/webpack -w",
     "build": "node_modules/.bin/webpack",
-    "doc": "typedoc --out docs src"
+    "doc": "typedoc --out docs src",
+    "build-typings": "dts-bundle --name Kila --main lib/index.d.ts"
   },
   "repository": {
     "type": "git",
@@ -34,10 +35,14 @@
     "typescript": "^3.9.3"
   },
   "devDependencies": {
+    "dts-bundle": "^0.7.3",
+    "dts-bundle-webpack": "^1.0.2",
+    "fs-extra": "^9.0.0",
     "glslify": "^6.0.1",
     "glslify-import-loader": "^0.1.2",
     "glslify-loader": "^1.0.2",
     "raw-loader": "^0.5.1",
+    "tfig": "^1.2.3",
     "ts-loader": "^7.0.4",
     "typedoc": "^0.17.7",
     "webpack": "^4.43.0",

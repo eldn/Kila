@@ -1,6 +1,8 @@
 const path = require("path");
- module.exports = { entry: "./src/game/TestGame.ts", // 入口ts文件，名字可以任取，但是一定要注意 路径设置是否正确 
-                    output: { filename: "./bundle.js" // 自动会产生dist目录，因此可以去掉dist/目录 
+const os = require("os");
+
+ module.exports = { entry: "./src/legacy/Legacy.ts", // 入口ts文件，名字可以任取，但是一定要注意 路径设置是否正确 
+                    output: { filename: "./Kila.js" // 自动会产生dist目录，因此可以去掉dist/目录 
                 },
                  mode: 'development', // 本书中，设置为开发模式 
                  devtool: "inline-source-map", // 如果要调试TypeScript源码，需要设置成这样 
@@ -25,7 +27,7 @@ const path = require("path");
                                 exclude: /node_modules/,
                                 loader: 'glslify-loader'
                             }
-                          ] 
+                    ] 
             },
             // devServer参数详细说明，请参考https://webpack.js.org/configuration/ dev-server/网页相关内容 
             devServer: { // 就是配置我们npm install webpack-dev- server –save-dev安装的那个服务器 

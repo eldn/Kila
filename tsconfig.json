@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "module": "ES2015",
-    "lib": [ "dom", "es6"],
-    "target": "es6",
+    "module": "commonjs",
+    "lib": [ "es2015", "es2017", "dom"],
+    "target": "es5",
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "outDir": "./bin",
+    "outDir": "./dist",
     "sourceMap": true,
-     "declaration": false
+    "noImplicitAny": false,
+    "downlevelIteration": true,
+    "esModuleInterop": true
   },
   "exclude": [
     "node_modules",
@@ -15,7 +17,8 @@
     "local",
     "temp",
     "build",
-    "settings"
+    "settings",
+    "examples"
   ],
   "typedocOptions": {
     "mode": "modules",
