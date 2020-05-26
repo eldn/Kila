@@ -3,149 +3,157 @@ import { Quaternion } from './Quaternion';
 import { mat4 } from "gl-matrix";
 import { Vector3Notifier } from './Vector3Notifier';
 import { Matrix4Notifier } from './Matrix4Notifier';
+import { Matrix3 } from './Matrix3';
 
 
 let tempMatrix4;
 const tempVector3 = new Vector3();
-const tempVector32 = new Vector3();
 
 export class Matrix4{
 
-
+    /**
+     * 数据
+     */
     public elements : mat4;
 
-          /**
+    /**
      * Creates a new identity mat4
-     * @constructs
      */
     constructor() {
-        /**
-         * 数据
-         * @type {Float32Array}
-         */
+        
         this.elements = mat4.create();
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Matrix4";
     }
 
     /**
      * Copy the values from one mat4 to this
-     * @param  {Matrix4} m the source matrix
-     * @return {Matrix4} this
+     * @param   m the source matrix
+     * @returns this
      */
-    copy(m : Matrix4 | Matrix4Notifier) {
+    public copy(m : Matrix4 | Matrix4Notifier) : Matrix4{
         mat4.copy(this.elements, m.elements);
         return this;
     }
+
     /**
      * Creates a new mat4 initialized with values from this matrix
-     * @return {Matrix4} a new Matrix4
+     * @return a new Matrix4
      */
-    clone() {
+    public clone() : Matrix4 {
         const m = new Matrix4();
         mat4.copy(m.elements, this.elements);
         return m;
     }
+
     /**
      * 转换到数组
-     * @param  {Array}  [array=[]] 数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Array}
+     * @param  array 数组
+     * @param  offset 数组偏移值
+     * @return
      */
-    toArray(array = [], offset = 0) {
+    public toArray(array : Array<number> = [], offset : number = 0) : Array<number>{
         const elements = this.elements;
         for (let i = 0; i < 16; i++) {
             array[offset + i] = elements[i];
         }
         return array;
     }
+
     /**
      * 从数组赋值
-     * @param  {Array} array  数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Matrix4} this
+     * @param  array  数组
+     * @param  offset 数组偏移值
+     * @return  this
      */
-    fromArray(array, offset = 0) {
+    public fromArray(array : Array<number>, offset : number = 0) : Matrix4 {
         const elements = this.elements;
         for (let i = 0; i < 16; i++) {
             elements[i] = array[offset + i];
         }
         return this;
     }
+
     /**
      * Set the components of a mat3 to the given values
-     * @param {Number} m00
-     * @param {Number} m01
-     * @param {Number} m02
-     * @param {Number} m03
-     * @param {Number} m10
-     * @param {Number} m11
-     * @param {Number} m12
-     * @param {Number} m13
-     * @param {Number} m20
-     * @param {Number} m21
-     * @param {Number} m22
-     * @param {Number} m23
-     * @param {Number} m30
-     * @param {Number} m31
-     * @param {Number} m32
-     * @param {Number} m33
+     * @param  m00
+     * @param  m01
+     * @param  m02
+     * @param m03
+     * @param  m10
+     * @param  m11
+     * @param m12
+     * @param  m13
+     * @param m20
+     * @param  m21
+     * @param m22
+     * @param  m23
+     * @param  m30
+     * @param  m31
+     * @param m32
+     * @param  m33
      * @return {Matrix4} this
      */
-    set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33) {
+    public set(m00 : number, m01: number, m02: number, m03: number, m10: number, m11: number, m12: number, m13: number, m20: number, m21: number, m22: number, m23: number, m30: number, m31: number, m32: number, m33: number) : Matrix4 {
         mat4.set(this.elements, m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
         return this;
     }
-    /**
+
+    /**s
      * Set this to the identity matrix
-     * @return {Matrix4} this
+     * @returns this
      */
-    identity() {
+    public identity() : Matrix4 {
         mat4.identity(this.elements);
         return this;
     }
+    
     /**
      * Transpose the values of this
-     * @return {Matrix4} this
+     * @returns this
      */
-    transpose() {
+    public transpose() : Matrix4 {
         mat4.transpose(this.elements, this.elements);
         return this;
     }
+
     /**
      * invert a matrix
-     * @param {Matrix4} [m=this]
-     * @return {Matrix4} this
+     * @param m
+     * @returns this
      */
-    invert(m = this) {
+    public invert(m :Matrix4  = this) : Matrix4{
         mat4.invert(this.elements, m.elements);
         return this;
     }
+
     /**
      * Calculates the adjugate of a mat4
-     * @param {Matrix4} [m=this]
-     * @return {Matrix4} this
+     * @param m
+     * @returns this
      */
-    adjoint(m = this) {
+    public adjoint(m : Matrix4 = this) : Matrix4{
         mat4.adjoint(this.elements, m.elements);
         return this;
     }
+
     /**
      * Calculates the determinant of this
-     * @return {Matrix4} this
+     * @returns this
      */
-    determinant() {
+    public determinant() : number {
         return mat4.determinant(this.elements);
     }
+
     /**
      * Multiplies two matrix4's
-     * @param {Matrix4} a
-     * @param {Matrix4} [b] 如果不传，计算 this 和 a 的乘积
-     * @return {Matrix4} this
+     * @param  a
+     * @param b 如果不传，计算 this 和 a 的乘积
+     * @returns this
      */
-    multiply(a : Matrix4 | Matrix4Notifier, b ?: Matrix4 | Matrix4Notifier) {
+    public multiply(a : Matrix4 | Matrix4Notifier, b ?: Matrix4 | Matrix4Notifier) : Matrix4{
         if (!b) {
             b = a;
             a = this;
@@ -153,274 +161,300 @@ export class Matrix4{
         mat4.multiply(this.elements, a.elements, b.elements);
         return this;
     }
+
     /**
      * 左乘
-     * @param {Matrix4} m
-     * @return {Matrix4} this
+     * @param  m
+     * @returns this
      */
-    premultiply(m) {
+    public premultiply(m : Matrix4) : Matrix4 {
         this.multiply(m, this);
         return this;
     }
+
     /**
      * Translate this by the given vector
-     * @param {Vector3} v vector to translate by
-     * @return {Matrix4} this
+     * @param  v vector to translate by
+     * @return this
      */
-    translate(v) {
+    public translate(v : Vector3) : Matrix4 {
         mat4.translate(this.elements, this.elements, v.elements);
         return this;
     }
+
     /**
      * Scales the mat3 by the dimensions in the given vec2
-     * @param {Vector3} v the vec3 to scale the matrix by
-     * @return {Matrix4} this
+     * @param v the vec3 to scale the matrix by
+     * @return this
      */
-    scale(v) {
+    public scale(v : Vector3) : Matrix4 {
         mat4.scale(this.elements, this.elements, v.elements);
         return this;
     }
+
     /**
      * Rotates this by the given angle
-     * @param {Number} rad the angle to rotate the matrix by
-     * @param {Vector3} axis the axis to rotate around
-     * @return {Matrix4} this
+     * @param  rad the angle to rotate the matrix by
+     * @param  axis the axis to rotate around
+     * @return this
      */
-    rotate(rad, axis) {
+    public rotate(rad : number, axis : Vector3) : Matrix4 {
         mat4.rotate(this.elements, this.elements, rad, axis.elements);
         return this;
     }
+
     /**
      * Rotates this by the given angle around the X axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @return {Matrix4} this
+     * @param  rad the angle to rotate the matrix by
+     * @return  this
      */
-    rotateX(rad) {
+    public rotateX(rad : number) : Matrix4 {
         mat4.rotateX(this.elements, this.elements, rad);
         return this;
     }
+
     /**
      * Rotates this by the given angle around the Y axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @return {Matrix4} this
+     * @param  rad the angle to rotate the matrix by
+     * @return  this
      */
-    rotateY(rad) {
+    public rotateY(rad : number) : Matrix4 {
         mat4.rotateY(this.elements, this.elements, rad);
         return this;
     }
+
     /**
      * Rotates this by the given angle around the Z axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @return {Matrix4} this
+     * @param rad the angle to rotate the matrix by
+     * @return  this
      */
-    rotateZ(rad : number) {
+    public rotateZ(rad : number) : Matrix4 {
         mat4.rotateZ(this.elements, this.elements, rad);
         return this;
     }
+
     /**
      * Creates a matrix from a vector translation
-     * @param {Vector3} transition Translation vector
-     * @return {Matrix4} this
+     * @param transition Translation vector
+     * @return  this
      */
-    fromTranslation(v : Vector3) {
+    public fromTranslation(v : Vector3) : Matrix4{
         mat4.fromTranslation(this.elements, v.elements);
         return this;
     }
+
     /**
      * Creates a matrix from a vector scaling
-     * @param  {Vector3} v Scaling vector
-     * @return {Matrix4} this
+     * @param   v Scaling vector
+     * @return  this
      */
-    fromScaling(v) {
+    public fromScaling(v : Vector3) : Matrix4 {
         mat4.fromScaling(this.elements, v.elements);
         return this;
     }
+
     /**
      * Creates a matrix from a given angle around a given axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @param {Vector3} axis the axis to rotate around
-     * @return {Matrix4} this
+     * @param  rad the angle to rotate the matrix by
+     * @param axis the axis to rotate around
+     * @return  this
      */
-    fromRotation(rad, axis) {
+    public fromRotation(rad : number, axis : Vector3) : Matrix4 {
         mat4.fromRotation(this.elements, rad, axis.elements);
         return this;
     }
+    
     /**
      * Creates a matrix from the given angle around the X axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @return {Matrix4} this
+     * @param  rad the angle to rotate the matrix by
+     * @return  this
      */
-    fromXRotation(rad) {
+    public fromXRotation(rad : number) : Matrix4 {
         mat4.fromXRotation(this.elements, rad);
         return this;
     }
+
     /**
      * Creates a matrix from the given angle around the Y axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @return {Matrix4} this
+     * @param rad the angle to rotate the matrix by
+     * @return  this
      */
-    fromYRotation(rad) {
+    public fromYRotation(rad : number) : Matrix4 {
         mat4.fromYRotation(this.elements, rad);
         return this;
     }
+
     /**
      * Creates a matrix from the given angle around the Z axis
-     * @param {Number} rad the angle to rotate the matrix by
-     * @return {Matrix4} this
+     * @param rad the angle to rotate the matrix by
+     * @return this
      */
-    fromZRotation(rad) {
+    public fromZRotation(rad : number) : Matrix4 {
         mat4.fromZRotation(this.elements, rad);
         return this;
     }
+
     /**
      * Creates a matrix from a quaternion rotation and vector translation
-     * @param  {Quaternion} q Rotation quaternion
-     * @param  {Vector3} v Translation vector
-     * @return {Matrix4} this
+     * @param  q Rotation quaternion
+     * @param   v Translation vector
+     * @return this
      */
-    fromRotationTranslation(q : Quaternion, v : Vector3) {
+    public fromRotationTranslation(q : Quaternion, v : Vector3) : Matrix4 {
         mat4.fromRotationTranslation(this.elements, q.elements, v.elements);
         return this;
     }
+
     /**
      * Returns the translation vector component of a transformation
      *  matrix. If a matrix is built with fromRotationTranslation,
      *  the returned vector will be the same as the translation vector
      *  originally supplied.
-     * @param  {Vector3} [out=new Vector3] Vector to receive translation component
-     * @return {Vector3} out
+     * @param   out Vector to receive translation component
+     * @return  out
      */
-    getTranslation(out = new Vector3()) {
+    public getTranslation(out : Vector3 = new Vector3()) : Vector3 {
         mat4.getTranslation(out.elements, this.elements);
         return out;
     }
+
     /**
      * Returns the scaling factor component of a transformation
      *  matrix. If a matrix is built with fromRotationTranslationScale
      *  with a normalized Quaternion paramter, the returned vector will be
      *  the same as the scaling vector
      *  originally supplied.
-     * @param  {Vector3} [out=new Vector3] Vector to receive scaling factor component
-     * @return {Vector3} out
+     * @param out Vector to receive scaling factor component
+     * @return  out
      */
-    getScaling(out = new Vector3()) {
+    public getScaling(out : Vector3 = new Vector3()) : Vector3{
         mat4.getScaling(out.elements, this.elements);
         return out;
     }
+
     /**
      * Returns a quaternion representing the rotational component
      *  of a transformation matrix. If a matrix is built with
      *  fromRotationTranslation, the returned quaternion will be the
      *  same as the quaternion originally supplied.
-     * @param {Quaternion} out Quaternion to receive the rotation component
-     * @return {Quaternion} out
+     * @param  out Quaternion to receive the rotation component
+     * @return out
      */
-    getRotation(out = new Quaternion()) {
+    public getRotation(out : Quaternion = new Quaternion()) : Quaternion {
         mat4.getRotation(out.elements, this.elements);
         return out;
     }
+
     /**
      * Creates a matrix from a quaternion rotation, vector translation and vector scale
-     * @param  {Quaternion} q Rotation quaternion
-     * @param  {Vector3} v Translation vector
-     * @param  {Vector3} s Scaling vector
-     * @return {Matrix4} this
+     * @param   q Rotation quaternion
+     * @param  v Translation vector
+     * @param  s Scaling vector
+     * @return  this
      */
-    fromRotationTranslationScale(q, v, s) {
+    public fromRotationTranslationScale(q : Quaternion, v : Vector3, s : Vector3) : Matrix4{
         mat4.fromRotationTranslationScale(this.elements, q.elements, v.elements, s.elements);
         return this;
     }
+
     /**
      * Creates a matrix from a quaternion rotation, vector translation and vector scale, rotating and scaling around the given origin
-     * @param  {Quaternion} q Rotation quaternion
-     * @param  {Vector3} v Translation vector
-     * @param  {Vector3} s Scaling vector
-     * @param  {Vector3} o The origin vector around which to scale and rotate
-     * @return {Matrix4} this
+     * @param   q Rotation quaternion
+     * @param   v Translation vector
+     * @param  s Scaling vector
+     * @param  o The origin vector around which to scale and rotate
+     * @return  this
      */
-    fromRotationTranslationScaleOrigin(q, v, s, o) {
+    public fromRotationTranslationScaleOrigin(q : Quaternion, v : Vector3, s : Vector3, o : Vector3) : Matrix4 {
         mat4.fromRotationTranslationScaleOrigin(this.elements, q.elements, v.elements, s.elements, o.elements);
         return this;
     }
+
     /**
      * Calculates a 4x4 matrix from the given quaternion
-     * @param {Quaternion} q Quaternion to create matrix from
-     * @return {Matrix4} this
+     * @param q Quaternion to create matrix from
+     * @return this
      */
-    fromQuat(q) {
+    public fromQuat(q : Quaternion) : Matrix4 {
         mat4.fromQuat(this.elements, q.elements);
         return this;
     }
+
     /**
      * Generates a frustum matrix with the given bounds
-     * @param  {Number} left  Left bound of the frustum
-     * @param  {Number} right Right bound of the frustum
-     * @param  {Number} bottom Bottom bound of the frustum
-     * @param  {Number} top Top bound of the frustum
-     * @param  {Number} near Near bound of the frustum
-     * @param  {Number} far Far bound of the frustum
-     * @return {Matrix4} this
+     * @param  left  Left bound of the frustum
+     * @param   right Right bound of the frustum
+     * @param  bottom Bottom bound of the frustum
+     * @param  top Top bound of the frustum
+     * @param  near Near bound of the frustum
+     * @param   far Far bound of the frustum
+     * @return this
      */
-    frustum(left, right, bottom, top, near, far) {
+    public frustum(left : number, right : number, bottom : number, top : number, near : number, far : number) : Matrix4{
         mat4.frustum(this.elements, left, right, bottom, top, near, far);
         return this;
     }
+
     /**
      * Generates a perspective projection matrix with the given bounds
-     * @param {Number} fovy Vertical field of view in radians
-     * @param {Number} aspect Aspect ratio. typically viewport width/height
-     * @param {Number} near Near bound of the frustum
-     * @param {Number} far Far bound of the frustum
-     * @return {Matrix4} this
+     * @param  fovy Vertical field of view in radians
+     * @param aspect Aspect ratio. typically viewport width/height
+     * @param  near Near bound of the frustum
+     * @param far Far bound of the frustum
+     * @return  this
      */
-    perspective(fovy : number, aspect : number, near : number, far : number) {
+    public perspective(fovy : number, aspect : number, near : number, far : number) : Matrix4 {
         mat4.perspective(this.elements, fovy, aspect, near, far);
         return this;
     }
+
     /**
      * Generates a perspective projection matrix with the given field of view.
-     * @param  {Object} fov Object containing the following values: upDegrees, downDegrees, leftDegrees, rightDegrees
-     * @param  {Number} Near bound of the frustum
-     * @param  {Number} far Far bound of the frustum
-     * @return {Matrix4} this
+     * @param  fov Object containing the following values: upDegrees, downDegrees, leftDegrees, rightDegrees
+     * @param   Near bound of the frustum
+     * @param  far Far bound of the frustum
+     * @return this
      */
-    perspectiveFromFieldOfView(fov, near, far) {
+    public perspectiveFromFieldOfView(fov : Object, near : number, far : number) : Matrix4 {
         mat4.perspectiveFromFieldOfView(this.elements, fov, near, far);
         return this;
     }
+
     /**
      * Generates a orthogonal projection matrix with the given bounds
-     * @param  {Number} left  Left bound of the frustum
-     * @param  {Number} right Right bound of the frustum
-     * @param  {Number} bottom Bottom bound of the frustum
-     * @param  {Number} top Top bound of the frustum
-     * @param  {Number} near Near bound of the frustum
-     * @param  {Number} far Far bound of the frustum
-     * @return {Matrix4} this
+     * @param  left  Left bound of the frustum
+     * @param  right Right bound of the frustum
+     * @param   bottom Bottom bound of the frustum
+     * @param   top Top bound of the frustum
+     * @param near Near bound of the frustum
+     * @param  far Far bound of the frustum
+     * @return  this
      */
-    ortho(left, right, bottom, top, near, far) {
+    public ortho(left : number, right : number, bottom : number, top : number, near : number, far : number) : Matrix4 {
         mat4.ortho(this.elements, left, right, bottom, top, near, far);
         return this;
     }
+
     /**
      * Generates a look-at matrix with the given eye position, focal point, and up axis
-     * @param  {XYZObject} eye Position of the viewer
-     * @param  {XYZObject} center Point the viewer is looking at
-     * @param  {Vector3} up pointing up
-     * @return {Matrix4} this
+     * @param   eye Position of the viewer
+     * @param   center Point the viewer is looking at
+     * @param  up pointing up
+     * @return this
      */
-    lookAt(eye : Vector3, center : Vector3, up : Vector3) {
+    public lookAt(eye : Vector3, center : Vector3, up : Vector3) : Matrix4 {
         mat4.lookAt(this.elements, eye.elements, center.elements, up.elements);
         return this;
     }
+
     /**
      * Generates a matrix that makes something look at something else.
-     * @param  {XYZObject} eye Position of the viewer
-     * @param  {XYZObject} Point the viewer is looking at
-     * @param  {Vector3} up pointing up
-     * @return {Matrix4} this
+     * @param   eye Position of the viewer
+     * @param   Point the viewer is looking at
+     * @param  up pointing up
+     * @return  this
      */
-    targetTo(eyePos : Vector3 | Vector3Notifier, targetPos : Vector3 | Vector3Notifier, upVector : Vector3) {
+    public targetTo(eyePos : Vector3 | Vector3Notifier, targetPos : Vector3 | Vector3Notifier, upVector : Vector3) : Matrix4 {
 
         // mat4.targetTo(this.elements, eye.elements, target.elements, up.elements);
         let eye = eyePos.elements;
@@ -490,20 +524,22 @@ export class Matrix4{
         out[15] = 1;
         return this;
     }
+
     /**
      * Returns Frobenius norm of a mat4
-     * @return {Number} Frobenius norm
+     * @return  Frobenius norm
      */
-    frob() {
+    public frob() : number {
         return mat4.frob(this.elements);
     }
+
     /**
      * Adds two mat4's
-     * @param {Matrix4} a
-     * @param {Matrix4} [b] 如果不传，计算 this 和 a 的和
-     * @return {Marix4} this
+     * @param a
+     * @param b 如果不传，计算 this 和 a 的和
+     * @return  this
      */
-    add(a, b) {
+    public add(a : Matrix4, b ?: Matrix4) : Matrix4 {
         if (!b) {
             b = a;
             a = this;
@@ -511,13 +547,14 @@ export class Matrix4{
         mat4.add(this.elements, a.elements, b.elements);
         return this;
     }
+
     /**
      * Subtracts matrix b from matrix a
-     * @param {Matrix4} a
-     * @param {Matrix4} [b]  如果不传，计算 this 和 a 的差
-     * @return {Marix4} this
+     * @param  a
+     * @param b  如果不传，计算 this 和 a 的差
+     * @return  this
      */
-    subtract(a, b) {
+    public subtract(a : Matrix4, b ?: Matrix4) : Matrix4 {
         if (!b) {
             b = a;
             a = this;
@@ -525,41 +562,44 @@ export class Matrix4{
         mat4.subtract(this.elements, a.elements, b.elements);
         return this;
     }
+
     /**
      * Returns whether or not the matrices have exactly the same elements in the same position (when compared with ===)
-     * @param {Matrix4} a
-     * @param {Matrix4} [b] 如果不传，比较 this 和 a 是否相等
-     * @return {Boolean}
+     * @param  a
+     * @param b 如果不传，比较 this 和 a 是否相等
+     * @return
      */
-    exactEquals(a, b) {
+    public exactEquals(a : Matrix4, b ?: Matrix4) : boolean {
         if (!b) {
             b = a;
             a = this;
         }
         return mat4.exactEquals(a.elements, b.elements);
     }
+
     /**
      * Returns whether or not the matrices have approximately the same elements in the same position.
-     * @param {Matrix4} a
-     * @param {Matrix4} [b] 如果不传，比较 this 和 a 是否近似相等
-     * @return {Boolean}
+     * @param  a
+     * @param b 如果不传，比较 this 和 a 是否近似相等
+     * @return
      */
-    equals(a, b) {
+    public equals(a : Matrix4, b ?: Matrix4) : boolean {
         if (!b) {
             b = a;
             a = this;
         }
         return mat4.equals(a.elements, b.elements);
     }
+
     /**
      * compose
-     * @param  {Quaternion} q quaternion
-     * @param  {Vector3} v position
-     * @param  {Vector3} s scale
-     * @param  {Vector3} p [pivot]
-     * @return {Matrix4}  this
+     * @param  q quaternion
+     * @param  v position
+     * @param  s scale
+     * @param   p [pivot]
+     * @return   this
      */
-    compose(q, v, s, p) {
+    public compose(q : Quaternion, v : Vector3, s : Vector3, p : Vector3) : Matrix4{
         if (p) {
             this.fromRotationTranslationScaleOrigin(q, v, s, p);
         } else {
@@ -567,15 +607,16 @@ export class Matrix4{
         }
         return this;
     }
+
     /**
      * decompose
-     * @param  {Quaternion} q quaternion
-     * @param  {Vector3} v position
-     * @param  {Vector3} s scale
-     * @param  {Vector3} p [pivot]
-     * @return {Matrix4}  this
+     * @param   q quaternion
+     * @param   v position
+     * @param  s scale
+     * @param   p [pivot]
+     * @return   this
      */
-    decompose(q, v, s, p) {
+    public decompose(q : Quaternion, v : Vector3, s : Vector3, p : Vector3) : Matrix4 {
         this.getScaling(s);
         this.getTranslation(v);
 
