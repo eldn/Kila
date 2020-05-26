@@ -117,7 +117,7 @@ export class Scene extends GameObject{
      * @param  force是否强制刷新
      * @returns 舞台本身。链式调用支持。
      */
-    public resize(width : number, height : number, pixelRatio : number, force : boolean = false) : Scene{
+    public resize(width : number, height : number, pixelRatio ?: number, force : boolean = false) : Scene{
 
         if (pixelRatio === undefined) {
             pixelRatio = this._pixelRatio;

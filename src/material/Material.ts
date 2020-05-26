@@ -6,6 +6,7 @@ import { RenderOptions } from "../renderer/RenderOptions";
 import { Mesh } from "../core/Mesh";
 import { log } from "../utils/Log";
 import { semantic } from "../renderer/Semantic";
+import { Color } from "../math";
 
 
 
@@ -299,6 +300,19 @@ export class Material {
 			}
 		}
 	}
+	
+
+	private _diffuse: Texture | Color;
+
+	public get diffuse(): Texture | Color {
+		return this._diffuse;
+	}
+
+	public set diffuse(value: Texture | Color) {
+		this._diffuse = value;
+	}
+
+	
 
 	/**
 	 *法线贴图
