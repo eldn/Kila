@@ -1,31 +1,25 @@
-/**
- * @namespace math
- * @type {Object}
- */
+
 export class math{
 
     /**
      * 角度值转弧度值
-     * @type {Number}
      */
-    static DEG2RAD: number = Math.PI / 180;
+    public static DEG2RAD: number = Math.PI / 180;
 
     /**
      * 弧度值转角度值
-     * @type {Number}
      */
-    static RAD2DEG: number = 180 / Math.PI;
+    public static RAD2DEG: number = 180 / Math.PI;
 
 
     private static _uid : number = 0;
 
     /**
      * 生成唯一ID
-     * @function
-     * @param  {String} [prefix=''] ID前缀
-     * @return {String} ID
+     * @param  prefixID前缀
+     * @returns ID
      */
-    static generateUUID (prefix : string) {
+    public static generateUUID (prefix : string = '') : string {
         let id = ++this._uid;
         let id_str;
         if (prefix) {
@@ -38,57 +32,57 @@ export class math{
 
     /**
      * 截取
-     * @param  {Number} value 值
-     * @param  {Number} min 最小值
-     * @param  {Number} max 最大值
-     * @return {Number}
+     * @param   value 值
+     * @param  min 最小值
+     * @param   max 最大值
+     * @returns
      */
-    static clamp(value, min, max) {
+    public static clamp(value : number, min : number, max : number) : number {
         return Math.max(min, Math.min(max, value));
     }
 
     /**
      * 角度值转换成弧度值
-     * @param  {Number} deg 角度值
-     * @return {Number} 弧度值
+     * @param  deg 角度值
+     * @returns 弧度值
      */
-    static degToRad(deg) {
+    public static degToRad(deg : number) : number {
         return deg * this.DEG2RAD;
     }
 
     /**
      * 弧度值转换成角度值
-     * @param  {Number} rad 弧度值
-     * @return {Number} 角度值
+     * @param   rad 弧度值
+     * @returns 角度值
      */
-    static radToDeg(rad) {
+    public static radToDeg(rad : number) : number {
         return rad * this.RAD2DEG;
     }
 
     /**
      * 是否是 2 的指数值
-     * @param  {Number}  value
-     * @return {Boolean}
+     * @param   value
+     * @returns
      */
-    static isPowerOfTwo(value) {
+    public static isPowerOfTwo(value : number) : boolean {
         return (value & (value - 1)) === 0 && value !== 0;
     }
 
     /**
      * 最近的 2 的指数值
-     * @param  {Uint} value
-     * @return {Uint}
+     * @param value
+     * @returns
      */
-    static nearestPowerOfTwo(value) {
+    public static nearestPowerOfTwo(value : number) : number {
         return 2 ** Math.round(Math.log(value) / Math.LN2);
     }
 
     /**
      * 下一个的 2 的指数值
-     * @param  {Uint} value
-     * @return {Uint}
+     * @param  value
+     * @returns
      */
-    static nextPowerOfTwo(value) {
+    public static nextPowerOfTwo(value : number) : number {
         value--;
         value |= value >> 1;
         value |= value >> 2;

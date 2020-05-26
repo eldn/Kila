@@ -4,19 +4,14 @@ import { Utils } from "./Utils";
 
 /**
  * 颜色类
- * @class
- * @extends Vector4
  */
 export class Color extends Vector4{
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Color";
     }
 
-    /**
-     * r
-     * @type {Number}
-     */
+    
     get r() : number  {
         return this.x;
     }
@@ -25,10 +20,7 @@ export class Color extends Vector4{
         this.x = v;
     }
     
-    /**
-     * g
-     * @type {Number}
-     */
+   
     get g() : number  {
         return this.y;
     }
@@ -36,11 +28,7 @@ export class Color extends Vector4{
     set g(v : number ) {
         this.y = v;
     }
-    
-    /**
-     * b
-     * @type {Number}
-     */
+  
     get b() : number  {
         return this.z;
     }
@@ -49,10 +37,7 @@ export class Color extends Vector4{
         this.z = v;
     }
     
-    /**
-     * a
-     * @type {Number}
-     */
+  
     get a() : number  {
         return this.w;
     }
@@ -61,23 +46,17 @@ export class Color extends Vector4{
         this.w = v;
     }
     
-    /**
-     * @constructs
-     * @param  {number} r
-     * @param  {number} g
-     * @param  {number} b
-     * @param  {number} a
-     */
+
     constructor(r : number = 1, g : number  = 1, b : number  = 1, a : number  = 1) {
         super( r, g, b, a);
     }
     /**
      * 转换到数组
-     * @param  {Array}  [array=[]] 转换到的数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Array}
+     * @param  array 转换到的数组
+     * @param  offset 数组偏移值
+     * @returns
      */
-    toRGBArray(array : Array<number>  = [], offset  : number = 0) {
+    public toRGBArray(array : Array<number>  = [], offset  : number = 0) : Array<number>{
         const el = this.elements;
         array[offset] = el[0];
         array[offset + 1] = el[1];
@@ -87,11 +66,11 @@ export class Color extends Vector4{
 
     /**
      * 从数组赋值
-     * @param  {Array} array 数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Color}
+     * @param   array 数组
+     * @param  offset 数组偏移值
+     * @returns
      */
-    fromUintArray(array : Array<number> , offset : number  = 0) {
+    public fromUintArray(array : Array<number> , offset : number  = 0) : Color {
         this.elements[0] = array[offset] / 255;
         this.elements[1] = array[offset + 1] / 255;
         this.elements[2] = array[offset + 2] / 255;
@@ -101,10 +80,10 @@ export class Color extends Vector4{
 
     /**
      * 从十六进制值赋值
-     * @param  {String|Number} hex 颜色的十六进制值，可以以下形式："#ff9966", "ff9966", "#f96", "f96", 0xff9966
-     * @return {Color}
+     * @param   hex 颜色的十六进制值，可以以下形式："#ff9966", "ff9966", "#f96", "f96", 0xff9966
+     * @returns
      */
-    fromHEX(hex : number | string ) {
+    public fromHEX(hex : number | string ): Color {
         if (typeof hex === 'number') {
             hex = Utils.padLeft(hex.toString(16), 6);
         } else {
@@ -123,9 +102,9 @@ export class Color extends Vector4{
 
     /**
      * 转16进制
-     * @return {string}
+     * @returns
      */
-    toHEX() {
+    public toHEX() : string {
         let hex = '';
         for (let i = 0; i < 3; i++) {
             hex += Utils.padLeft(Math.floor(this.elements[i] * 255).toString(16), 2);

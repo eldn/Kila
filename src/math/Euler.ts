@@ -1,6 +1,8 @@
 import math from "./math";
 import { Matrix4 } from "./Matrix4";
 import { log } from "../utils/Log";
+import { Quaternion } from "./Quaternion";
+import { EulerNotifier } from "./EulerNotifier";
 
 
 const tempMatrix = new Matrix4();
@@ -9,31 +11,27 @@ const RAD2DEG = math.RAD2DEG;
 
 export class Euler{
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Euler";
     }
 
 
-    elements : Float32Array;
+    public elements : Float32Array;
     
-        /**
+    /**
      * 旋转顺序，默认为 ZYX
-     * @type {string}
-     * @default 'ZYX'
      */
-    order: string = 'ZYX';
+    public order: string = 'ZYX';
 
-
-    _degX : number;
-    _degY : number;
-    _degZ : number;
+    private _degX : number;
+    private _degY : number;
+    private _degZ : number;
 
 
     /**
-     * @constructs
-     * @param  {Number} [x=0]  角度 X, 弧度制
-     * @param  {Number} [y=0]  角度 Y, 弧度制
-     * @param  {Number} [z=0]  角度 Z, 弧度制
+     * @param   x 角度 X, 弧度制
+     * @param   y 角度 Y, 弧度制
+     * @param   z 角度 Z, 弧度制
      */
     constructor(x = 0, y = 0, z = 0) {
         this.elements = new Float32Array([x, y, z]);
@@ -41,19 +39,20 @@ export class Euler{
     }
     /**
      * 克隆
-     * @return {Euler}
+     * @returns {Euler}
      */
-    clone() {
+    public clone() : Euler  {
         const euler = new Euler();
         euler.copy(this);
         return euler;
     }
+
     /**
      * 复制
-     * @param  {Euler} euler
-     * @return {Euler} this
+     * @param  euler
+     * @returns this
      */
-    copy(euler) {
+    public copy(euler : Euler | EulerNotifier) : Euler{
         this.elements[0] = euler.x;
         this.elements[1] = euler.y;
         this.elements[2] = euler.z;
@@ -61,67 +60,72 @@ export class Euler{
         this.updateDegrees();
         return this;
     }
+
     /**
      * Set the components of a euler to the given values
-     * @param {Number} x x 轴旋转角度, 弧度制
-     * @param {Number} y y 轴旋转角度, 弧度制
-     * @param {Number} z z 轴旋转角度, 弧度制
-     * @return {Euler} this
+     * @param x x 轴旋转角度, 弧度制
+     * @param y y 轴旋转角度, 弧度制
+     * @param z z 轴旋转角度, 弧度制
+     * @returns this
      */
-    set(x, y, z) {
+    public set(x : number, y : number, z : number) {
         this.elements[0] = x;
         this.elements[1] = y;
         this.elements[2] = z;
         this.updateDegrees();
         return this;
     }
+
     /**
      * 设置角度
-     * @param {Number} degX x 轴旋转角度, 角度制
-     * @param {Number} degY y 轴旋转角度, 角度制
-     * @param {Number} degZ z 轴旋转角度, 角度制
-     * @return {Euler} this
+     * @param degX x 轴旋转角度, 角度制
+     * @param degY y 轴旋转角度, 角度制
+     * @param degZ z 轴旋转角度, 角度制
+     * @returns this
      */
-    setDegree(degX, degY, degZ) {
+    public setDegree(degX : number, degY : number, degZ : number) : Euler {
         this._degX = degX;
         this._degY = degY;
         this._degZ = degZ;
         this.updateRadians();
         return this;
     }
+
     /**
      * 从数组赋值
-     * @param  {Array} array  数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Euler} this
+     * @param   array  数组
+     * @param  offset数组偏移值
+     * @returns this
      */
-    fromArray(array, offset = 0) {
+    public fromArray(array : Array<number>, offset : number = 0) : Euler{
         this.elements[0] = array[offset];
         this.elements[1] = array[offset + 1];
         this.elements[2] = array[offset + 2];
         this.updateDegrees();
         return this;
     }
+
     /**
      * 转换到数组
-     * @param  {Array}  [array=[]] 数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Array}
+     * @param  array 数组
+     * @param  offset 数组偏移值
+     * @returns
      */
-    toArray(array = [], offset = 0) {
+    public toArray(array : Array<number> = [], offset : number = 0) : Array<number> {
         array[offset] = this.elements[0];
         array[offset + 1] = this.elements[0 + 1];
         array[offset + 2] = this.elements[0 + 2];
         return array;
     }
+
     /**
      * Creates a euler from the given 4x4 rotation matrix.
-     * @param {Matrix4} mat rotation matrix
-     * @param {string} [order=this.order] 旋转顺序，默认为当前Euler实例的order
-     * @return {Euler} this
+     *  Based on https://github.com/mrdoob/three.js/blob/dev/src/math/Euler.js#L133
+     * @param mat rotation matrix
+     * @param order 旋转顺序，默认为当前Euler实例的order
+     * @returns this
      */
-    fromMat4(mat, order) {
-        // Based on https://github.com/mrdoob/three.js/blob/dev/src/math/Euler.js#L133
+    public fromMat4(mat : Matrix4, order : string = this.order) : Euler {
 
         const elements = mat.elements;
         const m11 = elements[0];
@@ -200,25 +204,26 @@ export class Euler{
         this.updateDegrees();
         return this;
     }
+
     /**
      * Creates a euler from the given quat.
-     * @param  {Quaternion} quat
-     * @param  {String} [order=this.order] 旋转顺序，默认为当前Euler实例的order
-     * @return {Euler} this
+     * @param  quat
+     * @param  order 旋转顺序，默认为当前Euler实例的order
+     * @returns this
      */
-    fromQuat(quat, order) {
+    public fromQuat(quat : Quaternion, order : string = this.order) : Euler {
         tempMatrix.fromQuat(quat);
         return this.fromMat4(tempMatrix, order);
     }
 
-    updateDegrees() {
+    public updateDegrees() : Euler {
         this._degX = this.elements[0] * RAD2DEG;
         this._degY = this.elements[1] * RAD2DEG;
         this._degZ = this.elements[2] * RAD2DEG;
         return this;
     }
 
-    updateRadians() {
+    public updateRadians() : Euler {
         this.elements[0] = this._degX * DEG2RAD;
         this.elements[1] = this._degY * DEG2RAD;
         this.elements[2] = this._degZ * DEG2RAD;
@@ -227,41 +232,36 @@ export class Euler{
 
     /**
      * 角度 X, 角度制
-     * @type {Number}
      */
-
-    get degX() {
+    get degX() : number{
         return this._degX;
     }
 
-    set degX(value) {
+    set degX(value : number) {
         this._degX = value;
         this.elements[0] = value * DEG2RAD;
     }
 
-
     /**
      * 角度 Y, 角度制
-     * @type {Number}
      */
-    get degY() {
+    get degY() : number{
         return this._degY;
     }
 
-    set degY(value) {
+    set degY(value : number) {
         this._degY = value;
         this.elements[1] = value * DEG2RAD;
     }
 
     /**
      * 角度 Z, 角度制
-     * @type {Number}
      */
-    get degZ() {
+    get degZ() : number {
         return this._degZ;
     }
 
-    set degZ(value) {
+    set degZ(value : number) {
         this._degZ = value;
         this.elements[2] = value * DEG2RAD;
     }
@@ -269,39 +269,36 @@ export class Euler{
 
     /**
      * 角度 X, 弧度制
-     * @type {Number}
      */
-    get x() {
+    get x() : number{
         return this.elements[0];
     }
 
-    set x(value) {
+    set x(value : number) {
         this.elements[0] = value;
         this._degX = value * RAD2DEG;
     }
     
     /**
      * 角度 Y, 弧度制
-     * @type {Number}
      */
-    get y() {
+    get y() : number {
         return this.elements[1];
     }
 
-    set y(value) {
+    set y(value : number) {
         this.elements[1] = value;
         this._degY = value * RAD2DEG;
     }
     
     /**
      * 角度 Z, 弧度制
-     * @type {Number}
      */
-    get z() {
+    get z()  : number{
         return this.elements[2];
     }
 
-    set z(value) {
+    set z(value : number) {
         this.elements[2] = value;
         this._degZ = value * RAD2DEG;
     }

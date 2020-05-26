@@ -1,136 +1,144 @@
 
 import { mat3 } from "gl-matrix";
+import { Vector2, Quaternion, Matrix4 } from ".";
 
 export class Matrix3{
 
-
-    public elements : mat3;
+    /**
+     * 数据
+     */
+    public elements : mat3 = mat3.create();
     
      /**
      * Creates a new identity mat3
-     * @constructs
      */
     constructor() {
-        /**
-         * 数据
-         * @type {Float32Array}
-         */
-        this.elements = mat3.create();
+       
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Matrix3";
     }
 
     /**
      * Copy the values from one mat3 to this
-     * @param  {Matrix3} m the source matrix
-     * @return {Matrix3} this
+     * @param  m the source matrix
+     * @returns this
      */
-    copy(m) {
+    public copy(m : Matrix3) : Matrix3 {
         mat3.copy(this.elements, m.elements);
         return this;
     }
+
     /**
      * Creates a new mat3 initialized with values from this matrix
-     * @return {Matrix3} a new Matrix3
+     * @returns a new Matrix3
      */
-    clone() {
+    public clone() : Matrix3 {
         const m = new Matrix3();
         mat3.copy(m.elements, this.elements);
         return m;
     }
+
     /**
      * 转换到数组
-     * @param  {Array}  [array=[]] 数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Array}
+     * @param  array 数组
+     * @param  offset 数组偏移值
+     * @returns
      */
-    toArray(array = [], offset = 0) {
+    public toArray(array : Array<number> = [], offset : number = 0) : Array<number>{
         const elements = this.elements;
         for (let i = 0; i < 9; i++) {
             array[offset + i] = elements[i];
         }
         return array;
     }
+
     /**
      * 从数组赋值
-     * @param  {Array} array  数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Matrix3} this
+     * @param  array  数组
+     * @param  offset数组偏移值
+     * @returns this
      */
-    fromArray(array, offset = 0) {
+    public fromArray(array : Array<number>, offset : number = 0) : Matrix3 {
         const elements = this.elements;
         for (let i = 0; i < 9; i++) {
             elements[i] = array[offset + i];
         }
         return this;
     }
+
     /**
      * Set the components of a mat3 to the given values
-     * @param {Number} m00
-     * @param {Number} m01
-     * @param {Number} m02
-     * @param {Number} m10
-     * @param {Number} m11
-     * @param {Number} m12
-     * @param {Number} m20
-     * @param {Number} m21
-     * @param {Number} m22
-     * @return {Matrix3} this
+     * @param m00
+     * @param  m01
+     * @param m02
+     * @param m10
+     * @param m11
+     * @param  m12
+     * @param  m20
+     * @param m21
+     * @param m22
+     * @return  this
      */
-    set(m00, m01, m02, m10, m11, m12, m20, m21, m22) {
+    public set(m00 : number, m01 : number, m02 : number, m10 : number, m11 : number, m12 : number, m20 : number, m21 : number, m22 : number) : Matrix3 {
         mat3.set(this.elements, m00, m01, m02, m10, m11, m12, m20, m21, m22);
         return this;
     }
+
     /**
      * Set this to the identity matrix
-     * @return {Matrix3} this
+     * @returnsthis
      */
-    identity() {
+    public identity() : Matrix3{
         mat3.identity(this.elements);
         return this;
     }
+
     /**
      * Transpose the values of this
-     * @return {Matrix3} this
+     * @returns this
      */
-    transpose() {
+    public transpose() : Matrix3 {
         mat3.transpose(this.elements, this.elements);
         return this;
     }
+
     /**
      * invert a matrix
-     * @param  {Matrix3} [m = this]
-     * @return {Matrix3} this
+     * @param  m
+     * @returns this
      */
-    invert(m = this) {
+    public invert(m : Matrix3 = this) : Matrix3 {
         mat3.invert(this.elements, m.elements);
         return this;
     }
+
     /**
      * Calculates the adjugate of a mat3
      * @param  {Matrix3} [m=this]
      * @return {Matrix3} this
      */
-    adjoint(m = this) {
+    public adjoint(m : Matrix3 = this) : Matrix3 {
         mat3.adjoint(this.elements, m.elements);
         return this;
     }
+
     /**
      * Calculates the determinant of this
-     * @return {Number}
+     * @returns
      */
-    determinant() {
+    public determinant() : number {
         return mat3.determinant(this.elements);
     }
+
     /**
      * Multiplies two matrix3's
-     * @param  {Matrix3} a
-     * @param  {Matrix3} [b] 如果不传，计算 this 和 a 的乘积
-     * @return {Matrix3} this
+     * @param   a
+     * @param  b如果不传，计算 this 和 a 的乘积
+     * @returns this
      */
-    multiply(a, b) {
+    public multiply(a : Matrix3, b ?: Matrix3) : Matrix3{
         if (!b) {
             b = a;
             a = this;
@@ -138,110 +146,120 @@ export class Matrix3{
         mat3.multiply(this.elements, a.elements, b.elements);
         return this;
     }
+
     /**
      * 左乘
-     * @param  {Matrix3} m
-     * @return {Matrix3}  this
+     * @param  m
+     * @returns  this
      */
-    premultiply(m) {
+    public premultiply(m : Matrix3) : Matrix3 {
         this.multiply(m, this);
         return this;
     }
+
     /**
      * Translate this by the given vector
-     * @param  {Vector2} v vector to translate by
-     * @return {Matrix3} this
+     * @param v vector to translate by
+     * @returns this
      */
-    translate(v) {
+    public translate(v : Vector2) : Matrix3 {
         mat3.translate(this.elements, this.elements, v.elements);
         return this;
     }
+
     /**
      * Rotates this by the given angle
-     * @param  {Number} rad the angle to rotate the matrix by
-     * @return {Matrix3} this
+     * @param  rad the angle to rotate the matrix by
+     * @returns  this
      */
-    rotate(rad) {
+    public rotate(rad : number) : Matrix3 {
         mat3.rotate(this.elements, this.elements, rad);
         return this;
     }
+
     /**
      * Scales the mat3 by the dimensions in the given vec2
-     * @param  {Vector2} v the vec2 to scale the matrix by
-     * @return {Matrix3} this
+     * @param  v the vec2 to scale the matrix by
+     * @returns  this
      */
-    scale(v) {
+    public scale(v : Vector2) : Matrix3{
         mat3.scale(this.elements, this.elements, v.elements);
         return this;
     }
+
     /**
      * Creates a matrix from a vector translation
-     * @param  {Vector2} v Translation vector
-     * @return {Matrix3} this
+     * @param   v Translation vector
+     * @returns  this
      */
-    fromTranslation(v) {
+    public fromTranslation(v : Vector2) :  Matrix3{
         mat3.fromTranslation(this.elements, v.elements);
         return this;
     }
+
     /**
      * Creates a matrix from a given angle
-     * @param  {Number} rad the angle to rotate the matrix by
-     * @return {Matrix3} this
+     * @param   rad the angle to rotate the matrix by
+     * @return this
      */
-    fromRotation(rad) {
+    public fromRotation(rad : number) : Matrix3 {
         mat3.fromRotation(this.elements, rad);
         return this;
     }
+
     /**
      * Creates a matrix from a vector scaling
-     * @param  {Vector2} v Scaling vector
-     * @return {Matrix3} this
+     * @param v Scaling vector
+     * @returns this
      */
-    fromScaling(v) {
+    public fromScaling(v : Vector2) : Matrix3{
         mat3.fromScaling(this.elements, v.elements);
         return this;
     }
     /**
      * Calculates a 3x3 matrix from the given quaternion
-     * @param  {Quaternion} q Quaternion to create matrix from
-     * @return {Matrix3} this
+     * @param  q Quaternion to create matrix from
+     * @return  this
      */
-    fromQuat(q) {
+    public fromQuat(q : Quaternion) : Matrix3 {
         mat3.fromQuat(this.elements, q.elements);
         return this;
     }
+
     /**
      * Calculates a 3x3 normal matrix (transpose inverse) from the 4x4 matrix
-     * @param  {Matrix4} m Mat4 to derive the normal matrix from
-     * @return {Matrix3} this
+     * @param  m Mat4 to derive the normal matrix from
+     * @return this
      */
-    normalFromMat4(m) {
+    public normalFromMat4(m : Matrix4) : Matrix3 {
         mat3.normalFromMat4(this.elements, m.elements);
         return this;
     }
+
     /**
      * Copies the upper-left 3x3 values into the given mat3.
-     * @param  {Matrix4} m the source 4x4 matrix
-     * @return {Matrix3} this
+     * @param   m the source 4x4 matrix
+     * @return  this
      */
-    fromMat4(m) {
+    public fromMat4(m : Matrix4) :Matrix3  {
         mat3.fromMat4(this.elements, m.elements);
         return this;
     }
+
     /**
      * Returns Frobenius norm of this
-     * @return {Number} Frobenius norm
+     * @return  Frobenius norm
      */
-    frob() {
+    public frob() : number {
         return mat3.frob(this.elements);
     }
     /**
      * Adds two mat3's
-     * @param {Matrix3} a
-     * @param {Matrix3} [b] 如果不传，计算 this 和 a 的和
-     * @return {Marix4} this
+     * @param  a
+     * @param b 如果不传，计算 this 和 a 的和
+     * @return  this
      */
-    add(a, b) {
+    public add(a : Matrix3, b ?: Matrix3) : Matrix3 {
         if (!b) {
             b = a;
             a = this;
@@ -249,13 +267,14 @@ export class Matrix3{
         mat3.add(this.elements, a.elements, b.elements);
         return this;
     }
+
     /**
      * Subtracts matrix b from matrix a
-     * @param {Matrix3} a
-     * @param {Matrix3} [b] 如果不传，计算 this 和 a 的差
-     * @return {Marix4} this
+     * @param a
+     * @param b 如果不传，计算 this 和 a 的差
+     * @return  this
      */
-    subtract(a, b) {
+    public subtract(a : Matrix3, b ?: Matrix3) : Matrix3 {
         if (!b) {
             b = a;
             a = this;
@@ -263,26 +282,28 @@ export class Matrix3{
         mat3.subtract(this.elements, a.elements, b.elements);
         return this;
     }
+
     /**
      * Returns whether or not the matrices have exactly the same elements in the same position (when compared with ===)
-     * @param {Matrix3} a
-     * @param {Matrix3} [b] 如果不传，比较 this 和 a 是否相等
-     * @return {Boolean}
+     * @param  a
+     * @param b 如果不传，比较 this 和 a 是否相等
+     * @return 
      */
-    exactEquals(a, b) {
+    public exactEquals(a : Matrix3, b ?: Matrix3) : Boolean {
         if (!b) {
             b = a;
             a = this;
         }
         return mat3.exactEquals(a.elements, b.elements);
     }
+
     /**
      * Returns whether or not the matrices have approximately the same elements in the same position.
-     * @param {Matrix3} a
-     * @param {Matrix3} [b] 如果不传，比较 this 和 a 是否近似相等
-     * @return {Boolean}
+     * @param  a
+     * @param b 如果不传，比较 this 和 a 是否近似相等
+     * @return 
      */
-    equals(a, b) {
+    public equals(a : Matrix3, b : Matrix3) : boolean {
         if (!b) {
             b = a;
             a = this;
@@ -292,14 +313,14 @@ export class Matrix3{
 
     /**
      * fromRotationTranslationScale
-     * @param  {Number} r rad angle
-     * @param  {Number} x
-     * @param  {Number} y
-     * @param  {Number} scaleX
-     * @param  {Number} scaleY
-     * @return {Matrix3}
+     * @param   r rad angle
+     * @param   x
+     * @param   y
+     * @param  scaleX
+     * @param   scaleY
+     * @return 
      */
-    fromRotationTranslationScale(rotation, x, y, scaleX, scaleY) {
+    public fromRotationTranslationScale(rotation : number, x : number, y : number, scaleX : number, scaleY : number) : Matrix3{
         const cos = Math.cos(rotation);
         const sin = Math.sin(rotation);
 
@@ -308,12 +329,12 @@ export class Matrix3{
     }
 
 
-    sub(a, b){
+    public sub(a : Matrix3, b ?: Matrix3) : Matrix3{
         return this.subtract(a, b);
     }
 
 
-    mul(a, b) {
+    public mul(a : Matrix3, b ?: Matrix3) : Matrix3{
         return this.multiply(a, b);
     }
 }

@@ -312,7 +312,7 @@ class Shader {
      */
     alwaysUse: boolean = false;
 
-    id : number;
+    id : string;
 
     /**
      * @constructs

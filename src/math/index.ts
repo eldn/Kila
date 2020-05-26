@@ -1,7 +1,6 @@
 export * from "./Color";
 export * from "./Euler";
 export * from "./EulerNotifier";
-export * from "./Frustum";
 export * from "./math";
 export * from "./Matrix3";
 export * from "./Matrix4";

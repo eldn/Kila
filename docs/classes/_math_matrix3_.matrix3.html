@@ -143,17 +143,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L7">src/math/Matrix3.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L10">src/math/Matrix3.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new identity mat3</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>constructs</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 						</li>
@@ -165,12 +161,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="elements" class="tsd-anchor"></a>
 					<h3>elements</h3>
-					<div class="tsd-signature tsd-kind-icon">elements<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">mat3</span></div>
+					<div class="tsd-signature tsd-kind-icon">elements<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">mat3</span><span class="tsd-signature-symbol"> = mat3.create()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L7">src/math/Matrix3.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L10">src/math/Matrix3.ts:10</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>数据</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -179,13 +180,13 @@
 					<a name="add" class="tsd-anchor"></a>
 					<h3>add</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L244">src/math/Matrix3.ts:244</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L262">src/math/Matrix3.ts:262</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -196,13 +197,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，计算 this 和 a 的和</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -211,13 +215,13 @@
 					<a name="adjoint" class="tsd-anchor"></a>
 					<h3>adjoint</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">adjoint<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">adjoint<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L116">src/math/Matrix3.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L122">src/math/Matrix3.ts:122</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -228,10 +232,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <span class="tsd-signature-type">this</span><span class="tsd-signature-symbol"> = this</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> = this</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -246,7 +250,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L38">src/math/Matrix3.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L37">src/math/Matrix3.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -263,13 +267,13 @@
 					<a name="copy" class="tsd-anchor"></a>
 					<h3>copy</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L30">src/math/Matrix3.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L28">src/math/Matrix3.ts:28</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -280,13 +284,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m: <span class="tsd-signature-type">any</span></h5>
+									<h5>m: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the source matrix</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -301,7 +305,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L124">src/math/Matrix3.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L131">src/math/Matrix3.ts:131</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,13 +321,13 @@
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L285">src/math/Matrix3.ts:285</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L306">src/math/Matrix3.ts:306</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -334,10 +338,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5>b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，比较 this 和 a 是否近似相等</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -348,13 +355,13 @@
 					<a name="exactequals" class="tsd-anchor"></a>
 					<h3>exact<wbr>Equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">exact<wbr>Equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">exact<wbr>Equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L272">src/math/Matrix3.ts:272</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L292">src/math/Matrix3.ts:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -365,13 +372,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，比较 this 和 a 是否相等</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -385,7 +395,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L235">src/math/Matrix3.ts:235</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L253">src/math/Matrix3.ts:253</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,13 +412,13 @@
 					<a name="fromarray" class="tsd-anchor"></a>
 					<h3>from<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L62">src/math/Matrix3.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L63">src/math/Matrix3.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -419,7 +429,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>array: <span class="tsd-signature-type">any</span></h5>
+									<h5>array: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>数组</p>
 									</div>
@@ -428,7 +438,7 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -437,13 +447,13 @@
 					<a name="frommat4" class="tsd-anchor"></a>
 					<h3>from<wbr>Mat4</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Mat4<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Mat4<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L227">src/math/Matrix3.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L244">src/math/Matrix3.ts:244</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -454,13 +464,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m: <span class="tsd-signature-type">any</span></h5>
+									<h5>m: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the source 4x4 matrix</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -469,13 +479,13 @@
 					<a name="fromquat" class="tsd-anchor"></a>
 					<h3>from<wbr>Quat</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Quat<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Quat<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L209">src/math/Matrix3.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L224">src/math/Matrix3.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -486,13 +496,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Quaternion to create matrix from</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -501,13 +511,13 @@
 					<a name="fromrotation" class="tsd-anchor"></a>
 					<h3>from<wbr>Rotation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L191">src/math/Matrix3.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L205">src/math/Matrix3.ts:205</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -518,13 +528,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -533,13 +543,13 @@
 					<a name="fromrotationtranslationscale" class="tsd-anchor"></a>
 					<h3>from<wbr>Rotation<wbr>Translation<wbr>Scale</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<wbr>Scale<span class="tsd-signature-symbol">(</span>rotation<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, scaleX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, scaleY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<wbr>Scale<span class="tsd-signature-symbol">(</span>rotation<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, scaleX<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, scaleY<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L302">src/math/Matrix3.ts:302</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L323">src/math/Matrix3.ts:323</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -550,22 +560,22 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rotation: <span class="tsd-signature-type">any</span></h5>
+									<h5>rotation: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>x: <span class="tsd-signature-type">any</span></h5>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>y: <span class="tsd-signature-type">any</span></h5>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>scaleX: <span class="tsd-signature-type">any</span></h5>
+									<h5>scaleX: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>scaleY: <span class="tsd-signature-type">any</span></h5>
+									<h5>scaleY: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -573,13 +583,13 @@
 					<a name="fromscaling" class="tsd-anchor"></a>
 					<h3>from<wbr>Scaling</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Scaling<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Scaling<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L200">src/math/Matrix3.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L215">src/math/Matrix3.ts:215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -590,13 +600,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Scaling vector</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -605,13 +615,13 @@
 					<a name="fromtranslation" class="tsd-anchor"></a>
 					<h3>from<wbr>Translation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Translation<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Translation<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L182">src/math/Matrix3.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L195">src/math/Matrix3.ts:195</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -622,13 +632,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Translation vector</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -643,7 +653,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L21">src/math/Matrix3.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L19">src/math/Matrix3.ts:19</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -654,22 +664,25 @@
 					<a name="identity" class="tsd-anchor"></a>
 					<h3>identity</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">identity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">identity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L90">src/math/Matrix3.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L93">src/math/Matrix3.ts:93</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Set this to the identity matrix</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>returnsthis</dt>
+									<dd></dd>
+								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
-							<p>this</p>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -677,13 +690,13 @@
 					<a name="invert" class="tsd-anchor"></a>
 					<h3>invert</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">invert<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">invert<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L107">src/math/Matrix3.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L112">src/math/Matrix3.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -694,10 +707,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <span class="tsd-signature-type">this</span><span class="tsd-signature-symbol"> = this</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> = this</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -706,25 +719,25 @@
 					<a name="mul" class="tsd-anchor"></a>
 					<h3>mul</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">mul<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">mul<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L316">src/math/Matrix3.ts:316</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L337">src/math/Matrix3.ts:337</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -732,13 +745,13 @@
 					<a name="multiply" class="tsd-anchor"></a>
 					<h3>multiply</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">multiply<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">multiply<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L133">src/math/Matrix3.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L141">src/math/Matrix3.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -749,13 +762,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -764,13 +777,13 @@
 					<a name="normalfrommat4" class="tsd-anchor"></a>
 					<h3>normal<wbr>From<wbr>Mat4</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">normal<wbr>From<wbr>Mat4<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">normal<wbr>From<wbr>Mat4<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L218">src/math/Matrix3.ts:218</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L234">src/math/Matrix3.ts:234</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -781,13 +794,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m: <span class="tsd-signature-type">any</span></h5>
+									<h5>m: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Mat4 to derive the normal matrix from</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -796,13 +809,13 @@
 					<a name="premultiply" class="tsd-anchor"></a>
 					<h3>premultiply</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">premultiply<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">premultiply<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L146">src/math/Matrix3.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L155">src/math/Matrix3.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -813,10 +826,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m: <span class="tsd-signature-type">any</span></h5>
+									<h5>m: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -825,13 +838,13 @@
 					<a name="rotate" class="tsd-anchor"></a>
 					<h3>rotate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L164">src/math/Matrix3.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L175">src/math/Matrix3.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -842,13 +855,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -857,13 +870,13 @@
 					<a name="scale" class="tsd-anchor"></a>
 					<h3>scale</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L173">src/math/Matrix3.ts:173</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L185">src/math/Matrix3.ts:185</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -874,13 +887,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the vec2 to scale the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -889,13 +902,13 @@
 					<a name="set" class="tsd-anchor"></a>
 					<h3>set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>m00<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m01<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m02<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m10<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m20<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>m00<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m01<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m02<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m10<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m20<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L82">src/math/Matrix3.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L84">src/math/Matrix3.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -906,34 +919,34 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m00: <span class="tsd-signature-type">any</span></h5>
+									<h5>m00: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m01: <span class="tsd-signature-type">any</span></h5>
+									<h5>m01: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m02: <span class="tsd-signature-type">any</span></h5>
+									<h5>m02: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m10: <span class="tsd-signature-type">any</span></h5>
+									<h5>m10: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m11: <span class="tsd-signature-type">any</span></h5>
+									<h5>m11: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m12: <span class="tsd-signature-type">any</span></h5>
+									<h5>m12: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m20: <span class="tsd-signature-type">any</span></h5>
+									<h5>m20: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m21: <span class="tsd-signature-type">any</span></h5>
+									<h5>m21: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m22: <span class="tsd-signature-type">any</span></h5>
+									<h5>m22: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -942,25 +955,25 @@
 					<a name="sub" class="tsd-anchor"></a>
 					<h3>sub</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">sub<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">sub<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L311">src/math/Matrix3.ts:311</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L332">src/math/Matrix3.ts:332</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -968,13 +981,13 @@
 					<a name="subtract" class="tsd-anchor"></a>
 					<h3>subtract</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">subtract<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">subtract<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L258">src/math/Matrix3.ts:258</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L277">src/math/Matrix3.ts:277</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -985,13 +998,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，计算 this 和 a 的差</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1000,13 +1016,13 @@
 					<a name="toarray" class="tsd-anchor"></a>
 					<h3>to<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L49">src/math/Matrix3.ts:49</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L49">src/math/Matrix3.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1017,13 +1033,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> array: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> array: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = []</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>数组</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>数组偏移值</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1031,13 +1053,13 @@
 					<a name="translate" class="tsd-anchor"></a>
 					<h3>translate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L155">src/math/Matrix3.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L165">src/math/Matrix3.ts:165</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1048,13 +1070,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector2_.vector2.html" class="tsd-signature-type">Vector2</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>vector to translate by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1063,13 +1085,13 @@
 					<a name="transpose" class="tsd-anchor"></a>
 					<h3>transpose</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/adfcfce/src/math/Matrix3.ts#L98">src/math/Matrix3.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/5d2db60/src/math/Matrix3.ts#L102">src/math/Matrix3.ts:102</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1077,7 +1099,7 @@
 									<p>Transpose the values of this</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix3_.matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
 							<p>this</p>
 						</li>
 					</ul>

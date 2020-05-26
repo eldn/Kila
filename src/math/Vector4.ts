@@ -4,7 +4,8 @@ export class Vector4{
 
 
     elements : vec4;
-/**
+    
+    /**
      * Creates a new empty vec4
      * @param {Number} [x=0] X component
      * @param {Number} [y=0] Y component
