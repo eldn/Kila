@@ -3,10 +3,6 @@ import { EventObject } from "../event/EventObject"
 
 /**
  * 加载缓存类
- * @class
- * @mixes EventMixin
- * @fires update 更新事件
- * @ignore
  */
 class LoadCache extends EventObject{
 
@@ -28,11 +24,11 @@ class LoadCache extends EventObject{
         this._files = {};
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "LoadCache";
     }
 
-    update(key : string, state : number, data ?: any) {
+    public update(key : string, state : number, data ?: any) {
         if (!this.enabled) {
             return;
         }
@@ -46,22 +42,22 @@ class LoadCache extends EventObject{
         this.fire(`update:${file.key}`, file);
     }
 
-    get(key : string) {
+    public get(key : string) {
         if (!this.enabled) {
             return null;
         }
         return this._files[key];
     }
 
-    remove(key : string) {
+    public remove(key : string) {
         delete this._files[key];
     }
 
-    clear() {
+    public clear() {
         this._files = {};
     }
 
-    wait(file : any) {
+    public wait(file : any) : Promise<any>{
         if (!file) {
             return Promise.reject();
         }

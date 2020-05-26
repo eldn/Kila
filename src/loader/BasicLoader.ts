@@ -2,56 +2,74 @@ import LoadCache from "./LoadCache";
 import { EventObject } from "../event/EventObject";
 import { log } from "../utils/Log";
 import { Utils } from "../math/Utils";
+import { LoadingItem } from "./LoadingItem";
 
 const cache = new LoadCache();
 
 /**
  * 基础的资源加载类
- * @class
- * @fires beforeload loaded failed
- * @mixes EventMixin
- * @borrows EventMixin#on as #on
- * @borrows EventMixin#off as #off
- * @borrows EventMixin#fire as #fire
- * @fires beforeload 加载前事件
- * @fires loaded 加载事件
- * @fires failed 失败事件
- * @fires progress 进度事件
- * @example
- * var loader = new Hilo3d.BasicLoader();
+ * ```typescript
+ * var loader : Kila.Loader = new Kila.BasicLoader();
  * loader.load({
  *     src: '//img.alicdn.com/tfs/TB1aNxtQpXXXXX1XVXXXXXXXXXX-1024-1024.jpg',
  *     crossOrigin: true
  * }).then(img => {
- *     return new Hilo3d.Texture({
+ *     return new Kila.Texture({
  *         image: img
  *     });
  * }, err => {
- *     return new Hilo3d.Color(1, 0, 0);
+ *     return new Kila.Color(1, 0, 0);
  * }).then(diffuse => {
- *     return new Hilo3d.BasicMaterial({
+ *     return new Kila.BasicMaterial({
  *         diffuse: diffuse
  *     });
  * });
+ * ```
  */
+
+ class xhrOptions{
+    /**
+     *资源地址
+     */
+    url : string;
+    /**
+     *资源类型(json, buffer, text)
+     */
+    type : "json" |  "buffer" | "text" = "text"; 
+
+    /**
+     *请求类型(GET, POST ..)
+     */
+    method : "GET" |  "POST" = "GET";
+
+    /**
+     *请求头参数
+     */
+    headers ?: Object;
+
+    /**
+     *POST请求发送的数据
+     */
+    body ?: Document | BodyInit | null;
+
+    credentials ?: string;
+ }
+
 class BasicLoader extends EventObject  {
 
-  
-    static _cache : LoadCache = cache;
-
-    static enalbeCache() {
+    public static enalbeCache() {
         cache.enabled = true;
     }
 
-    static disableCache() {
+    public static disableCache() {
         cache.enabled = false;
     }
 
-    static deleteCache(key) {
+    public static deleteCache(key : string) {
         cache.remove(key);
     }
 
-    static clearCache() {
+    public static clearCache() {
         cache.clear();
     }
 
@@ -64,19 +82,16 @@ class BasicLoader extends EventObject  {
         log.warn('BasicLoader.cache is readonly!');
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "BasicLoader";
     }
     
-    
     /**
      * 加载资源，这里会自动调用 loadImg 或者 loadRes
-     * @param {object} data 参数
-     * @param {string} data.src 资源地址
-     * @param {string} [data.type] 资源类型(img, json, buffer)，不提供将根据 data.src 来判断类型
-     * @return {Promise.<data, Error>} 返回加载完的资源对象
+     * @param  data 参数
+     * @returns 返回加载完的资源对象
      */
-    load(data) {
+    public load(data : LoadingItem) : Promise<any>{
         const src = data.src;
         let type = data.type;
         if (!type) {
@@ -96,21 +111,21 @@ class BasicLoader extends EventObject  {
 
     /**
      * 判断链接是否跨域，无法处理二级域名，及修改 document.domain 的情况
-     * @param {string} url 需要判断的链接
-     * @return {boolean} 是否跨域
+     * @param  url 需要判断的链接
+     * @returns 是否跨域
      */
-    isCrossOrigin(url) {
+    public isCrossOrigin(url : string) : boolean{
         const loc = window.location;
         const a = document.createElement('a');
         a.href = url;
         return a.hostname !== loc.hostname || a.port !== loc.port || a.protocol !== loc.protocol;
     }
 
-    isBase64(url) {
+    public isBase64(url) : boolean{
         return /^data:(.+?);base64,/.test(url);
     }
 
-    Uint8ArrayFrom(source, mapFn) {
+    public Uint8ArrayFrom(source, mapFn) : Uint8Array {
         if (Uint8Array.from) {
             return Uint8Array.from(source, mapFn);
         }
@@ -124,11 +139,11 @@ class BasicLoader extends EventObject  {
 
     /**
      * 加载图片
-     * @param {string} url 图片地址
-     * @param {boolean} [crossOrigin=false] 是否跨域
-     * @return {Promise.<Image, Error>} 返回加载完的图片
+     * @param url 图片地址
+     * @param crossOrigin 是否跨域
+     * @return 返回加载完的图片
      */
-    loadImg(url, crossOrigin) {
+    public loadImg(url : string, crossOrigin : boolean = false) : Promise<any> {
         let file = cache.get(url);
 
         if (file) {
@@ -165,11 +180,11 @@ class BasicLoader extends EventObject  {
 
     /**
      * 使用XHR加载其他资源
-     * @param {string} url 资源地址
-     * @param {string} [type=text] 资源类型(json, buffer, text)
-     * @return {Promise.<data, Error>} 返回加载完的内容对象(Object, ArrayBuffer, String)
+     * @param  url 资源地址
+     * @param type 资源类型(json, buffer, text)
+     * @return  返回加载完的内容对象(Object, ArrayBuffer, String)
      */
-    loadRes(url, type) {
+    public loadRes(url : string, type : "json" | "buffer" | "text" = "text") : Promise<any> {
         if (this.isBase64(url)) {
             const mime = RegExp.$1;
             const base64Str = url.slice(13 + mime.length);
@@ -190,10 +205,11 @@ class BasicLoader extends EventObject  {
 
         this.fire('beforeload');
 
-        return this.request({
-            url,
-            type
-        }).then((data) => {
+        let opt : xhrOptions = new xhrOptions();
+        opt.url = url;
+        opt.type = type;
+
+        return this.request(opt).then((data) => {
             this.fire('loaded');
             cache.update(url, LoadCache.LOADED, data);
             return data;
@@ -206,15 +222,10 @@ class BasicLoader extends EventObject  {
 
     /**
      * XHR资源请求
-     * @param {object} opt 请求参数
-     * @param {string} opt.url 资源地址
-     * @param {string} [opt.type=text] 资源类型(json, buffer, text)
-     * @param {string} [opt.method=GET] 请求类型(GET, POST ..)
-     * @param {object} [opt.headers] 请求头参数
-     * @param {string} [opt.body] POST请求发送的数据
-     * @return {Promise.<data, Error>} 返回加载完的内容对象(Object, ArrayBuffer, String)
+     * @param opt 请求参数
+     * @returns  返回加载完的内容对象(Object, ArrayBuffer, String)
      */
-    request(opt) {
+    public request(opt : xhrOptions) : Promise<any>{
         return new Promise((resolve, reject) => {
             const xhr : XMLHttpRequest = new XMLHttpRequest();
             xhr.onload = () => {
