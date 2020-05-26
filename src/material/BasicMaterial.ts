@@ -8,88 +8,29 @@ import { RenderOptions } from "../renderer/RenderOptions";
 export class BasicMaterial extends Material{
 
      /**
-     * 光照类型，支持: NONE, PHONG, BLINN-PHONG, LAMBERT
-     * @default BLINN-PHONG
-     * @type {string}
-     */
-    lightType: string = 'BLINN-PHONG';
-
-
-     /**
      * 漫反射贴图，或颜色
-     * @default Color(.5, .5, .5)
-     * @type {Texture|Color}
      */
-    diffuse: Texture | Color = null;
+    diffuse: Texture | Color = new Color(.5, .5, .5);
 
 
     /**
      * 环境光贴图，或颜色
-     * @default null
-     * @type {Texture|Color}
      */
-    ambient:Texture|Color = null;
+    ambient:Texture | Color = null;
 
      /**
      * 镜面贴图，或颜色
-     * @default Color(1, 1, 1)
-     * @type {Texture|Color}
      */
-    specular: Texture|Color = null;
+    specular: Texture | Color = new Color(1, 1, 1);
 
 
     /**
      * 放射光贴图，或颜色
-     * @default Color(0, 0, 0)
-     * @type {Texture|Color}
      */
-    emission: Texture|Color = null;
-
-
-    /**
-     * 环境贴图
-     * @default null
-     * @type {CTexture}
-     */
-    specularEnvMap: Texture = null;
-
-
-
-    /**
-     * 环境贴图变化矩阵，如旋转等
-     * @default null
-     * @type {Matrix4}
-     */
-    specularEnvMatrix: Matrix4 = null;
-
-
-    /**
-     * 反射率
-     * @default 0
-     * @type {number}
-     */
-    reflectivity: number = 0;
-
-
-    /**
-     * 折射比率
-     * @default 0
-     * @type {number}
-     */
-    refractRatio: number = 0;
-
-
-     /**
-     * 折射率
-     * @default 0
-     * @type {number}
-     */
-    refractivity: number = 0;
+    emission: Texture | Color = new Color(0, 0, 0);
 
     /**
      * 高光发光值
-     * @default 32
-     * @type {number}
      */
     shininess: number = 32;
 
@@ -98,9 +39,7 @@ export class BasicMaterial extends Material{
     constructor(){
         super();
 
-        this.diffuse = new Color(.5, .5, .5);
-        this.specular = new Color(1, 1, 1);
-        this.emission = new Color(0, 0, 0);
+        this.lightType = 'BLINN-PHONG';
 
         Object.assign(this.uniforms, {
             u_diffuse: 'DIFFUSE',
@@ -145,7 +84,6 @@ export class BasicMaterial extends Material{
         if (option.HAS_LIGHT) {
             textureOption.add(this.specular, 'SPECULAR_MAP');
             textureOption.add(this.ambient, 'AMBIENT_MAP');
-            textureOption.add(this.specularEnvMap, 'SPECULAR_ENV_MAP');
         }
 
         textureOption.update();

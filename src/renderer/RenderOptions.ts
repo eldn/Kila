@@ -16,4 +16,6 @@ export interface RenderOptions{
     HAS_TEXCOORD0 ?: number;
     HAS_SPECULAR ?: number;
     DIFFUSE_CUBE_MAP ?: number;
+    HAS_FRAG_POS ?: number;
+    WRITE_ORIGIN_DATA ?: number;
 }

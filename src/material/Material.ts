@@ -30,46 +30,30 @@ const {
 } = glConstants;
 
 
-export class Material {
+export abstract class Material {
 
-
-	/**
-     * shader cache id
-     * @default null
-     * @type {String}
-     */
-	shaderCacheId: number;
-
-
-	_shaderNumId : number;
+	public _shaderNumId : number;
 
 	/**
-	 * 光照类型
-	 *
-	 * @private
-	 * @type {string} //NONE, PHONG, BLINN-PHONG, LAMBERT光照模型
-	 * @memberof Material
+	 * 光照类型 NONE, PHONG, BLINN-PHONG, LAMBERT光照模型
 	 */
-	private _lightType: string = 'NONE';
+	private _lightType: TypedLight = 'NONE';
 
-	public get lightType(): string {
+	public get lightType(): TypedLight {
 		return this._lightType;
 	}
 
-	public set lightType(value: string) {
+	public set lightType(value: TypedLight) {
 		this._lightType = value;
 	}
 
-	getClassName() : string{
+	public getClassName() : string{
         return "Material";
     }
 
 	/**
 	 * 
 	 * 深度测试
-	 * @private
-	 * @type {boolean}
-	 * @memberof Material
 	 */
 	private _depthTest: boolean = true;
 
@@ -83,10 +67,6 @@ export class Material {
 
 	/**
 	 * 深度测试mask
-	 *
-	 * @private
-	 * @type {boolean}
-	 * @memberof Material
 	 */
 	private _depthMask: boolean = true;
 
@@ -261,10 +241,6 @@ export class Material {
 
 	/**
 	 *透明度 0~1
-	 *
-	 * @private
-	 * @type {number}
-	 * @memberof Material
 	 */
 	private _transparency: number = 1;
 
@@ -278,10 +254,6 @@ export class Material {
 
 	/**
 	 *是否需要透明
-	 *
-	 * @private
-	 * @type {boolean}
-	 * @memberof Material
 	 */
 	private _transparent: boolean = false;
 
@@ -312,14 +284,9 @@ export class Material {
 		this._diffuse = value;
 	}
 
-	
-
 	/**
 	 *法线贴图
 	 *
-	 * @private
-	 * @type {Texture}
-	 * @memberof Material
 	 */
 	private _normalMap: Texture = null;
 
@@ -334,9 +301,6 @@ export class Material {
 	/**
 	 *
 	 *法线贴图scale
-	 * @private
-	 * @type {number}
-	 * @memberof Material
 	 */
 	private _normalMapScale: number = 1;
 
@@ -367,10 +331,6 @@ export class Material {
 
 	/**
 	 * 透明度剪裁，如果渲染的颜色透明度大于等于这个值的话渲染为完全不透明，否则渲染为完全透明
-	 *
-	 * @private
-	 * @type {number}
-	 * @memberof Material
 	 */
 	private _alphaCutoff: number = 0;
 
@@ -384,10 +344,6 @@ export class Material {
 
 	/**
 	 * 是否需要加基础 uniforms
-	 *
-	 * @private
-	 * @type {boolean}
-	 * @memberof Material
 	 */
 	private _needBasicUnifroms: boolean = true;
 
@@ -402,9 +358,6 @@ export class Material {
 	/**
 	 *
 	 * 是否需要加基础 attributes
-	 * @private
-	 * @type {boolean}
-	 * @memberof Material
 	 */
 	private _needBasicAttributes: boolean = true;
 
@@ -422,11 +375,7 @@ export class Material {
 	}
 
 	/**
-	 *可以通过指定，semantic来指定值的获取方式，或者自定义get方法
-	 *
-	 * @private
-	 * @type {Object}
-	 * @memberof Material
+	 * 可以通过指定，semantic来指定值的获取方式，或者自定义get方法
 	 */
 	private _uniforms: Object = {};
 
@@ -440,10 +389,6 @@ export class Material {
 
 	/**
 	 * 可以通过指定，semantic来指定值的获取方式，或者自定义get方法
-	 *
-	 * @private
-	 * @type {Object}
-	 * @memberof Material
 	 */
 	private _attributes: Object = {};
 
@@ -457,16 +402,12 @@ export class Material {
 
 	/**
      * 渲染顺序数字小的先渲染（透明物体和不透明在不同的队列）
-     * @default 0
-     * @type {Number}
      */
-    renderOrder: number = 0;
-	_premultiplyAlpha: boolean = true;
+    public renderOrder: number = 0;
+	private _premultiplyAlpha: boolean = true;
 
 	 /**
      * 是否预乘 alpha
-     * @type {Boolean}
-     * @default true
      */
 	get premultiplyAlpha() {
 		return this._premultiplyAlpha;
@@ -480,15 +421,12 @@ export class Material {
 	}
 
 
-	id: string;
+	public id: string;
 
 	constructor() {
 
 		this.id = math.generateUUID(this.getClassName());
-
-
 		this.uniforms = {};
-
 		this.attributes = {};
 
 		if (this.needBasicAttributes) {
@@ -498,13 +436,12 @@ export class Material {
 		if (this.needBasicUnifroms) {
 			this.addBasicUniforms();
 		}
-
 	}
 
 	/**
      * 增加基础 attributes
      */
-	addBasicAttributes() {
+	public addBasicAttributes() : void{
 		let attributes: Object = this.attributes;
 		this._copyProps(attributes, {
 			a_position: 'POSITION',
@@ -528,11 +465,10 @@ export class Material {
 		});
 	}
 
-
 	/**
-	* 增加基础 uniforms
-	*/
-	addBasicUniforms() {
+	 *增加基础 uniforms
+	 */
+	public addBasicUniforms() : void{
 		this._copyProps(this.uniforms, {
 			u_modelMatrix: 'MODEL',
 			u_viewMatrix: 'VIEW',
@@ -618,9 +554,9 @@ export class Material {
 
 	/**
      * 增加贴图 uniforms
-     * @param {Object} textureUniforms textureName:semanticName 键值对
+     * @param textureUniforms textureName:semanticName 键值对
      */
-	addTextureUniforms(textureUniforms: Object) {
+	public addTextureUniforms(textureUniforms: Object) : void {
 		const uniforms = {};
 
 		for (const uniformName in textureUniforms) {
@@ -632,15 +568,15 @@ export class Material {
 		this._copyProps(this.uniforms, uniforms);
 	}
 
-	_textureOption: TextureOptions = new TextureOptions();
+	protected _textureOption: TextureOptions = new TextureOptions();
 
 
 	/**
 	* 获取渲染选项值
-	* @param  {Object} [option={}] 渲染选项值
-	* @return {Object} 渲染选项值
+	* @param  option 渲染选项值
+	* @returns 渲染选项值
 	*/
-	getRenderOption(option: RenderOptions) {
+	public getRenderOption(option: RenderOptions = {}) : RenderOptions {
 		const lightType = this.lightType;
 		option[`LIGHT_TYPE_${lightType}`] = 1;
 		option.SIDE = this.side;
@@ -672,24 +608,24 @@ export class Material {
 	}
 
 
-	getUniformData(name: string, mesh: Mesh, programInfo) {
+	public getUniformData(name: string, mesh: Mesh, programInfo) {
 		return this.getUniformInfo(name).get(mesh, this, programInfo);
 	}
 
 
-	getAttributeData(name: string, mesh: Mesh, programInfo) {
+	public getAttributeData(name: string, mesh: Mesh, programInfo) {
 		return this.getAttributeInfo(name).get(mesh, this, programInfo);
 	}
 
-	getUniformInfo(name: string) {
+	public getUniformInfo(name: string) {
 		return this.getInfo('uniforms', name);
 	}
 
-	getAttributeInfo(name: string) {
+	public getAttributeInfo(name: string) {
 		return this.getInfo('attributes', name);
 	}
 
-	getInfo(dataType: string, name: string) {
+	public getInfo(dataType: string, name: string) {
 		const dataDict = this[dataType];
 		let info = dataDict[name];
 		if (typeof info === 'string') {
@@ -704,18 +640,12 @@ export class Material {
 		return info;
 	}
 
-
-	public load() {
-
-	}
-
 	/**
 	* 复制属性，只有没属性时才会覆盖
-	* @private
-	* @param  {Object} dest
-	* @param  {Object} src
+	* @param   dest
+	* @param  src
 	*/
-	private _copyProps(dest: Object, src: Object) {
+	private _copyProps(dest: Object, src: Object) : void {
 		for (const key in src) {
 			if (dest[key] === undefined) {
 				dest[key] = src[key];
@@ -727,7 +657,7 @@ export class Material {
      * 获取材质全部贴图
      * @returns
      */
-    getTextures() {
+    public getTextures() : Array<Texture>{
         const textures = [];
         for (const propName in this) {
             const texture = this[propName];
@@ -743,7 +673,7 @@ export class Material {
      * 销毁贴图
      * @returns this
      */
-    destroyTextures() {
+    public destroyTextures() : void{
         this.getTextures().forEach((texture) => {
             texture.destroy();
         });

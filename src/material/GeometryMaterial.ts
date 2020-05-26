@@ -1,6 +1,7 @@
 import { BasicMaterial } from "./BasicMaterial";
 import { glConstants } from "../constants/glConstants";
 import { vertexType } from "../constants/vertexType";
+import { RenderOptions } from "../renderer";
 
 const {
     NONE
@@ -15,23 +16,18 @@ const {
 
 export class GeometryMaterial extends BasicMaterial{
 
-/**
+   /**
      * 顶点类型 POSITION, NORMAL, DEPTH, DISTANCE
-     * @type {String}
      */
-    vertexType: string = POSITION;
-    lightType: string = "NONE";
+    public vertexType: string = POSITION;
+    public lightType: TypedLight = "NONE";
 
      /**
      * 是否直接存储
-     * @type {Boolean}
      */
-    writeOriginData: boolean = false;
+    public writeOriginData: boolean = false;
 
-    /**
-     * @constructs
-     * @param {object} params 初始化参数，所有params都会复制到实例上
-     */
+  
     constructor() {
         super();
         Object.assign(this.uniforms, {
@@ -41,7 +37,7 @@ export class GeometryMaterial extends BasicMaterial{
         });
     }
 
-    getRenderOption(option : any = {}) {
+    public getRenderOption(option : RenderOptions = {}) : RenderOptions {
         super.getRenderOption.call(this, option);
         option[`VERTEX_TYPE_${this.vertexType}`] = 1;
 
@@ -68,7 +64,7 @@ export class GeometryMaterial extends BasicMaterial{
         return option;
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "GeometryMaterial";
     }
 
