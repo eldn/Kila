@@ -759,7 +759,7 @@ export class GameObject extends EventObject{
     /**
      * 四元数角度
      */
-    private _quaternion : Quaternion;
+    protected _quaternion : Quaternion;
 
     get quaternion() {
         this.updateQuaternion();

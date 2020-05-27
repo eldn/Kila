@@ -1,6 +1,9 @@
 import GameObject from "../core/GameObject";
 import { Matrix4 } from "../math/Matrix4";
 
+
+const tempMatrix4 = new Matrix4();
+
 export abstract class Camera extends GameObject{
 
    /**
@@ -99,4 +102,9 @@ export abstract class Camera extends GameObject{
         return out;
     }
     
+    public lookAt(node : GameObject) : GameObject {
+        tempMatrix4.targetTo(this.position, node.position, this.up);
+        this._quaternion.fromMat4(tempMatrix4);
+        return this;
+    }
 }
