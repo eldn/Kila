@@ -11,6 +11,7 @@ import { Sphere } from "../math/Sphere";
 import { Utils } from "../math/Utils";
 import { glConstants } from "../constants/glConstants";
 import { iBounds } from "./Bounds";
+import { Euler } from "../math";
 
 const {
     TRIANGLES,
@@ -297,11 +298,11 @@ export class Geometry{
      * @returns  this
      */
     public rotate(x : number = 0, y : number = 0, z : number = 0) : Geometry{
-        this.transformMat4(tempMatrix4.fromQuat(tempQuaternion.fromEuler({
-            x: x * math.DEG2RAD,
-            y: y * math.DEG2RAD,
-            z: z * math.DEG2RAD
-        })));
+        this.transformMat4(tempMatrix4.fromQuat(tempQuaternion.fromEuler( new Euler(
+          x * math.DEG2RAD,
+          y * math.DEG2RAD,
+          z * math.DEG2RAD
+        ))));
         return this;
     }
 

@@ -4,6 +4,8 @@ import { quat } from "gl-matrix";
 import { Matrix4 } from './Matrix4';
 import { Vector3 } from './Vector3';
 import { EventObject } from '../event/EventObject';
+import { Euler } from './Euler';
+import { EulerNotifier } from './EulerNotifier';
 
 
 const tempMat3 = new Matrix3();
@@ -16,50 +18,50 @@ export class Quaternion extends EventObject{
 
    /**
      * Creates a new identity quat
-     * @constructs
-     * @param  {Number} [x=0] X component
-     * @param  {Number} [y=0] Y component
-     * @param  {Number} [z=0] Z component
-     * @param  {Number} [w=1] W component
+     * @param  x X component
+     * @param  y Y component
+     * @param  z Z component
+     * @param  w W component
      */
-    constructor(x = 0, y = 0, z = 0, w = 1) {
+    constructor(x : number = 0, y  : number= 0, z : number = 0, w  : number= 1){
         super();
         this.elements = quat.fromValues(x, y, z, w);
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Quaternion";
     }
 
     /**
      * Copy the values from one quat to this
-     * @param  {Quaternion} q
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   q
+     * @param  dontFireEventwether or not don`t fire change event.
+     * @return  this
      */
-    copy(q : Quaternion, dontFireEvent ?: boolean) {
+    public copy(q : Quaternion, dontFireEvent : boolean = false) : Quaternion {
         quat.copy(this.elements, q.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Creates a new quat initialized with values from an existing quaternion
-     * @return {Quaternion} a new quaternion
+     * @return  a new quaternion
      */
-    clone() {
+    public clone() : Quaternion{
         const el = this.elements;
         return new Quaternion(el[0], el[1], el[2], el[3]);
     }
 
     /**
      * 转换到数组
-     * @param  {Array}  [array=[]] 数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @return {Array}
+     * @param  array 数组
+     * @param  offset 数组偏移值
+     * @return 
      */
-    toArray(array = [], offset = 0) {
+    public toArray(array : Array<number> = [], offset : number = 0) : Array<number> {
         const el = this.elements;
 
         array[offset] = el[0];
@@ -69,14 +71,15 @@ export class Quaternion extends EventObject{
 
         return array;
     }
+
     /**
      * 从数组赋值
-     * @param  {Array} array  数组
-     * @param  {Number} [offset=0] 数组偏移值
-     * @param {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   array  数组
+     * @param  offset 数组偏移值
+     * @param dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    fromArray(array, offset = 0, dontFireEvent) {
+    public fromArray(array : Array<number>, offset : number = 0, dontFireEvent : boolean = false) : Quaternion {
         const el = this.elements;
 
         el[0] = array[offset];
@@ -93,14 +96,14 @@ export class Quaternion extends EventObject{
 
     /**
      * Set the components of a quat to the given values
-     * @param {Number} x  X component
-     * @param {Number} y  Y component
-     * @param {Number} z  Z component
-     * @param {Number} w  W component
-     * @param {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param x  X component
+     * @param  y  Y component
+     * @param z  Z component
+     * @param w  W component
+     * @param dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    set(x, y, z, w, dontFireEvent) {
+    public set(x : number, y : number, z : number, w : number, dontFireEvent : boolean = false) : Quaternion {
         quat.set(this.elements, x, y, z, w);
         if (!dontFireEvent) {
             this.fire('update');
@@ -110,64 +113,68 @@ export class Quaternion extends EventObject{
 
     /**
      * Set this to the identity quaternion
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    identity(dontFireEvent) {
+    public identity(dontFireEvent : boolean = false) : Quaternion {
         quat.identity(this.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Sets a quaternion to represent the shortest rotation from one
      * vector to another.
-     * @param  {Vector3} a the initial vector
-     * @param  {Vector3} b the destination vector
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  a the initial vector
+     * @param   b the destination vector
+     * @param  dontFireEventwether or not don`t fire change event.
+     * @return  this
      */
-    rotationTo(a, b, dontFireEvent) {
+    public rotationTo(a : Vector3, b : Vector3, dontFireEvent : boolean = false) : Quaternion {
         quat.rotationTo(this.elements, a.elements, b.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Sets the specified quaternion with values corresponding to the given
      * axes. Each axis is a vec3 and is expected to be unit length and
      * perpendicular to all other specified axes.
      *
-     * @param {Vector3} view  the vector representing the viewing direction
-     * @param {Vector3} right the vector representing the local "right" direction
-     * @param {Vector3} up    the vector representing the local "up" direction
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  view  the vector representing the viewing direction
+     * @param right the vector representing the local "right" direction
+     * @param up    the vector representing the local "up" direction
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    setAxes(view, right, up, dontFireEvent) {
+    public setAxes(view : Vector3, right : Vector3, up : Vector3, dontFireEvent : boolean = false) : Quaternion {
         quat.setAxes(this.elements, view.elements, right.elements, up.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Sets a quat from the given angle and rotation axis,
      * then returns it.
-     * @param {Vector3} axis the axis around which to rotate
-     * @param {Number} rad the angle in radians
-     * @param {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  axis the axis around which to rotate
+     * @param  rad the angle in radians
+     * @param dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    setAxisAngle(axis, rad, dontFireEvent) {
+    public setAxisAngle(axis : Vector3, rad : number, dontFireEvent : boolean = false) : Quaternion {
         quat.setAxisAngle(this.elements, axis.elements, rad);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Gets the rotation axis and angle for a given
      *  quaternion. If a quaternion is created with
@@ -177,97 +184,105 @@ export class Quaternion extends EventObject{
      * Example: The quaternion formed by axis [0, 0, 1] and
      *  angle -90 is the same as the quaternion formed by
      *  [0, 0, 1] and 270. This method favors the latter.
-     * @param  {Vector3} out_axis  Vector receiving the axis of rotation
-     * @return {Number} Angle, in radians, of the rotation
+     * @param   out_axis  Vector receiving the axis of rotation
+     * @return  Angle, in radians, of the rotation
      */
-    getAxisAngle(axis) {
+    public getAxisAngle(axis : Vector3) : number{
         return quat.getAxisAngle(axis.elements, this.elements);
     }
+    
     /**
      * Adds two quat's
-     * @param {Quaternion} q
-     * @param {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  q
+     * @param dontFireEventwether or not don`t fire change event.
+     * @return  this
      */
-    add(q, dontFireEvent) {
+    public add(q : Quaternion, dontFireEvent : boolean = false) : Quaternion {
         quat.add(this.elements, this.elements, q.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Multiplies two quat's
-     * @param  {Quaternion} q
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   q
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    multiply(q, dontFireEvent ?: boolean) {
+    public multiply(q : Quaternion, dontFireEvent : boolean = false) : Quaternion {
         quat.multiply(this.elements, this.elements, q.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * premultiply the quat
-     * @param  {Quaternion} q
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   q
+     * @param  dontFireEventwether or not don`t fire change event.
+     * @return this
      */
-    premultiply(q, dontFireEvent) {
+    public premultiply(q : Quaternion, dontFireEvent : boolean = false) : Quaternion {
         quat.multiply(this.elements, q.elements, this.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
+
     /**
      * Scales a quat by a scalar number
-     * @param  {Vector3} scale the vector to scale
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  scale the vector to scale
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    scale(scale, dontFireEvent) {
+    public scale(scale : number, dontFireEvent : boolean = false) : Quaternion {
         quat.scale(this.elements, this.elements, scale);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Rotates a quaternion by the given angle about the X axis
-     * @param  {Number} rad angle (in radians) to rotate
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   rad angle (in radians) to rotate
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    rotateX(rad, dontFireEvent) {
+    public rotateX(rad : number, dontFireEvent : boolean) : Quaternion {
         quat.rotateX(this.elements, this.elements, rad);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Rotates a quaternion by the given angle about the Y axis
-     * @param  {Number} rad angle (in radians) to rotate
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  rad angle (in radians) to rotate
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return this
      */
-    rotateY(rad, dontFireEvent) {
+    public rotateY(rad : number, dontFireEvent : boolean =  false) : Quaternion {
         quat.rotateY(this.elements, this.elements, rad);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Rotates a quaternion by the given angle about the Z axis
-     * @param  {Number} rad angle (in radians) to rotate
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   rad angle (in radians) to rotate
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    rotateZ(rad, dontFireEvent) {
+    public rotateZ(rad : number, dontFireEvent : boolean = false) : Quaternion {
         quat.rotateZ(this.elements, this.elements, rad);
         if (!dontFireEvent) {
             this.fire('update');
@@ -278,178 +293,190 @@ export class Quaternion extends EventObject{
      * Calculates the W component of a quat from the X, Y, and Z components.
      * Assumes that quaternion is 1 unit in length.
      * Any existing W component will be ignored.
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @returns {Quaternion} this
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @returns  this
      */
-    calculateW(dontFireEvent) {
+    public calculateW(dontFireEvent : boolean = false) : Quaternion {
         quat.calculateW(this.elements, this.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Calculates the dot product of two quat's
-     * @param  {Quaternion} q
-     * @return {Number} dot product of two quat's
+     * @param  q
+     * @return  dot product of two quat's
      */
-    dot(q) {
+    public dot(q : Quaternion) : number {
         return quat.dot(this.elements, q.elements);
     }
+
     /**
      * Performs a linear interpolation between two quat's
-     * @param  {Quaternion} q
-     * @param  {Number} t interpolation amount between the two inputs
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  q
+     * @param  t interpolation amount between the two inputs
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    lerp(q, t, dontFireEvent) {
+    public lerp(q : Quaternion, t : number, dontFireEvent : boolean = false) : Quaternion {
         quat.lerp(this.elements, this.elements, q.elements, t);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Performs a spherical linear interpolation between two quat
-     * @param  {Quaternion} q
-     * @param  {Number} t interpolation amount between the two inputs
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   q
+     * @param   t interpolation amount between the two inputs
+     * @param  ontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    slerp(q, t, dontFireEvent) {
+    public slerp(q : Quaternion, t : number, dontFireEvent : boolean = false) : Quaternion {
         quat.slerp(this.elements, this.elements, q.elements, t);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Performs a spherical linear interpolation with two control points
-     * @param  {Quaternion} qa
-     * @param  {Quaternion} qb
-     * @param  {Quaternion} qc
-     * @param  {Quaternion} qd
-     * @param  {Number} t interpolation amount
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param   qa
+     * @param   qb
+     * @param   qc
+     * @param  qd
+     * @param  t interpolation amount
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    sqlerp(qa, qb, qc, qd, t, dontFireEvent) {
+    public sqlerp(qa : Quaternion, qb : Quaternion, qc : Quaternion, qd : Quaternion, t : number, dontFireEvent : boolean = false) : Quaternion {
         quat.sqlerp(this.elements, qa.elements, qb.elements, qc.elements, qd.elements, t);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Calculates the inverse of a quat
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    invert(dontFireEvent) {
+    public invert(dontFireEvent : boolean = false) : Quaternion {
         quat.invert(this.elements, this.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Calculates the conjugate of a quat
      * If the quaternion is normalized, this function is faster than quat.inverse and produces the same result.
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    conjugate(dontFireEvent ?: boolean) {
+    public conjugate(dontFireEvent : boolean = false) : Quaternion {
         quat.conjugate(this.elements, this.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Calculates the length of a quat
-     * @return {Number} length of this
+     * @return length of this
      */
-    length() {
+    public length() : number{
         return quat.length(this.elements);
     }
+
     /**
      * Calculates the squared length of a quat
-     * @return {Number} squared length of this
+     * @return squared length of this
      */
-    squaredLength() {
+    public squaredLength() : number {
         return quat.squaredLength(this.elements);
     }
+
     /**
      * Normalize this
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    normalize(dontFireEvent) {
+    public normalize(dontFireEvent : boolean = false) : Quaternion {
         quat.normalize(this.elements, this.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Creates a quaternion from the given 3x3 rotation matrix.
      *
      * NOTE: The resultant quaternion is not normalized, so you should be sure
      * to renormalize the quaternion yourself where necessary.
      *
-     * @param {Matrix3} m rotation matrix
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  m rotation matrix
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    fromMat3(mat, dontFireEvent) {
+    public fromMat3(mat : Matrix3, dontFireEvent : boolean = false) : Quaternion {
         quat.fromMat3(this.elements, mat.elements);
         if (!dontFireEvent) {
             this.fire('update');
         }
         return this;
     }
+
     /**
      * Creates a quaternion from the given 3x3 rotation matrix.
      *
      * NOTE: The resultant quaternion is not normalized, so you should be sure
      * to renormalize the quaternion yourself where necessary.
      *
-     * @param {Matrix4} m rotation matrix
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * @param  m rotation matrix
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    fromMat4(mat : Matrix4, dontFireEvent ?: boolean) {
+    public fromMat4(mat : Matrix4, dontFireEvent : boolean = false) : Quaternion {
         tempMat3.fromMat4(mat);
         this.fromMat3(tempMat3, dontFireEvent);
         return this;
     }
+
     /**
      * Returns whether or not the quaternions have exactly the same elements in the same position (when compared with ===)
-     * @param  {Quaternion} q
-     * @return {Boolean}
+     * @param   q
+     * @return 
      */
-    exactEquals(q) {
+    public exactEquals(q : Quaternion) : boolean {
         return quat.exactEquals(this.elements, q.elements);
     }
+
     /**
      * Returns whether or not the quaternions have approximately the same elements in the same position.
-     * @param  {Quaternion} q
-     * @return {Boolean}
+     * @param   q
+     * @return
      */
-    equals(q) {
+    public equals(q : Quaternion) : boolean {
         return quat.equals(this.elements, q.elements);
     }
+
     /**
      * Creates a quaternion from the given euler.
-     * @param  {Euler} euler
-     * @param  {Boolean} [dontFireEvent=false] wether or not don`t fire change event.
-     * @return {Quaternion} this
+     * Based on https://github.com/mrdoob/three.js/blob/dev/src/math/Quaternion.js#L200
+     * @param euler
+     * @param  dontFireEvent wether or not don`t fire change event.
+     * @return  this
      */
-    fromEuler(euler, dontFireEvent ?: boolean) {
-        // Based on https://github.com/mrdoob/three.js/blob/dev/src/math/Quaternion.js#L200
-
-        // quat.fromEuler(this.elements, euler.x, euler.y, euler.z);
+    public fromEuler(euler : Euler | EulerNotifier, dontFireEvent : boolean = false) : Quaternion {
         const x = euler.x * .5;
         const y = euler.y * .5;
         const z = euler.z * .5;
@@ -502,9 +529,9 @@ export class Quaternion extends EventObject{
 
         return this;
     }
+
     /**
      * X component
-     * @type {Number}
      */
     public get x(): number {
         return this.elements[0];
@@ -517,7 +544,6 @@ export class Quaternion extends EventObject{
     
     /**
      * Y component
-     * @type {Number}
      */
     public get y(): number {
         return this.elements[1];
@@ -530,7 +556,6 @@ export class Quaternion extends EventObject{
 
     /**
      * Z component
-     * @type {Number}
      */
     public get z(): number {
         return this.elements[2];
@@ -543,7 +568,6 @@ export class Quaternion extends EventObject{
 
      /**
      * W component
-     * @type {Number}
      */
     public get w(): number {
         return this.elements[3];
@@ -554,11 +578,11 @@ export class Quaternion extends EventObject{
         this.fire('update');
     }
 
-    mul(a : Quaternion, b : boolean){
+    public mul(a : Quaternion, b : boolean){
         return this.multiply(a, b);
     }
 
-    mulVec3(r : Vector3) : Quaternion{
+    public mulVec3(r : Vector3) : Quaternion{
         let w_ = -this.x * r.x - this.y * r.y - this.z * r.z;
 		let x_ =  this.w * r.x + this.y * r.z - this.z * r.y;
 		let y_ =  this.w * r.y + this.z * r.x - this.x * r.z;
@@ -567,12 +591,12 @@ export class Quaternion extends EventObject{
 		return new Quaternion(x_, y_, z_, w_);
     }
 
-    len(){
+    public len(){
         return this.length();
     }
 
 
-    sqrLen(){
+    public sqrLen(){
         return this.squaredLength();
     }
 

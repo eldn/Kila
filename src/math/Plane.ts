@@ -7,25 +7,25 @@ export class Plane{
 
     /**
      * @constructs
-     * @param  {Vector3} [normal=new Vector3]   法线
-     * @param  {Number}  [distance=0] 距离
+     * @param  normal  法线
+     * @param  distance 距离
      */
     constructor(normal = new Vector3(), distance : number = 0) {
         this.normal = normal;
         this.distance = distance;
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Plane";
     }
 
 
      /**
      * Copy the values from one plane to this
-     * @param  {Plane} m the source plane
-     * @return {Plane} this
+     * @param   m the source plane
+     * @return  this
      */
-    copy(plane) {
+    public copy(plane : Plane) : Plane {
         this.normal.copy(plane.normal);
         this.distance = plane.distance;
         return this;
@@ -33,33 +33,32 @@ export class Plane{
 
      /**
      * Creates a new plane initialized with values from this plane
-     * @return {Plane} a new Plane
+     * @return a new Plane
      */
-    clone() {
+    public clone() : Plane {
         return new Plane(this.normal.clone(), this.distance);
     }
 
 
     /**
      * [set description]
-     * @param {Number} x 法线 x
-     * @param {Number} y 法线 y
-     * @param {Number} z 法线 z
-     * @param {Number} w 距离
-     * @return {Plane} this
+     * @param  x 法线 x
+     * @param y 法线 y
+     * @param  z 法线 z
+     * @param  w 距离
+     * @return this
      */
-    set(x, y, z, w) {
+    public set(x : number, y : number, z : number, w : number) : Plane {
         this.normal.set(x, y, z);
         this.distance = w;
-
         return this;
     }
 
     /**
      * 归一化
-     * @return {Plane} this
+     * @return this
      */
-    normalize() {
+    public normalize() : Plane {
         const inverseNormalLength = 1.0 / this.normal.length();
         this.normal.scale(inverseNormalLength);
         this.distance *= inverseNormalLength;
@@ -69,20 +68,19 @@ export class Plane{
 
     /**
      * 与点的距离
-     * @param  {Vector3} point
-     * @return {Number}
+     * @param   point
+     * @return 
      */
-    distanceToPoint(point : Vector3) {
+    public distanceToPoint(point : Vector3) : number {
         return this.normal.dot(point) + this.distance;
     }
 
-
     /**
      * 投影点
-     * @param  {Vector3} point
-     * @return {Vector3}
+     * @param  point
+     * @return 
      */
-    projectPoint(point) {
+    public projectPoint(point : Vector3) : Vector3 {
         return new Vector3().copy(this.normal).scale(-this.distanceToPoint(point)).add(point);
     }
 }
