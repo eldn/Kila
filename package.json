@@ -1,10 +1,10 @@
 {
-  "name": "3dgameengine",
+  "name": "kila",
   "version": "1.0.0",
   "description": "A webgl based 3d game engine.",
   "main": "index.js",
   "bin": {
-    "3dgameengine": "MainComponnet.js"
+    "kila": "MainComponnet.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -13,10 +13,6 @@ const {
 
 export class DataTexture extends Texture{
 
-    public getClassName() : string{
-        return "DataTexture";
-    }
-
     public target : number = TEXTURE_2D;
     public internalFormat : number = RGBA;
     public format : number = RGBA;
@@ -29,11 +25,14 @@ export class DataTexture extends Texture{
     public DataClass : any;
 
     
-    constructor(data : Object) {
+    constructor(data : any) {
         super();
-        this.data = data;
+        this.data = data.data;
     }
 
+    public getClassName() : string{
+        return "DataTexture";
+    }
 
     public resetSize(dataLen : number) : void {
         if (dataLen === this.dataLength) {

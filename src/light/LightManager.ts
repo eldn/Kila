@@ -13,21 +13,41 @@ const tempMatrix4 = new Matrix4();
 const tempVector3 = new Vector3();
 const tempFloat32Array = new Float32Array([0, 0, 0]);
 
+
+export interface iLightInfo {
+    uid : string;
+
+    AMBIENT_LIGHTS : number;
+    POINT_LIGHTS : number;
+    DIRECTIONAL_LIGHTS : number;
+    SPOT_LIGHTS : number;
+    AREA_LIGHTS : number;
+
+    SHADOW_POINT_LIGHTS : number;
+    SHADOW_SPOT_LIGHTS : number;
+    SHADOW_DIRECTIONAL_LIGHTS : number;
+}
+
 /**
  * 光管理类
  * @class
  */
-export class LightManager{
+export class LightManager {
 
 
-    pointLights : Array<any>;
-    spotLights : Array<any>;
-    public areaLights : Array<AreaLight>;
-    public ambientLights : Array<AmbientLight>;
-    public directionalLights : Array<DirectionLight>;
-    public lightInfo : any;
+    pointLights: Array<any>;
+    spotLights: Array<any>;
+    public areaLights: Array<AreaLight>;
+    public ambientLights: Array<AmbientLight>;
+    public directionalLights: Array<DirectionLight>;
+    public lightInfo: iLightInfo;
 
-  
+    directionalInfo: any;
+    pointInfo: any;
+    spotInfo: any;
+    areaInfo: any;
+    ambientInfo: any;
+
     constructor() {
         this.ambientLights = [];
         this.directionalLights = [];
@@ -35,20 +55,28 @@ export class LightManager{
         this.spotLights = [];
         this.areaLights = [];
         this.lightInfo = {
+
+            uid: "",
+
             AMBIENT_LIGHTS: 0,
             POINT_LIGHTS: 0,
             DIRECTIONAL_LIGHTS: 0,
             SPOT_LIGHTS: 0,
             AREA_LIGHTS: 0,
-            uid: 0
+
+            SHADOW_POINT_LIGHTS : 0,
+            SHADOW_SPOT_LIGHTS : 0,
+            SHADOW_DIRECTIONAL_LIGHTS : 0,
+
+            
         };
     }
 
-    public getClassName() : string{
+    public getClassName(): string {
         return "LightManager";
     }
 
-    public getRenderOption(option : Object = {}) : Object {
+    public getRenderOption(option: Object = {}): Object {
         Utils.each(this.lightInfo, (count, name) => {
             if (name === 'uid' || !count) {
                 return;
@@ -63,22 +91,22 @@ export class LightManager{
      * @param light 光源
      * @returns this
      */
-    public addLight(light : Light) : LightManager {
+    public addLight(light: Light): LightManager {
         let lights = null;
 
         if (!light.enabled) {
             return this;
         }
-        
+
         if (light instanceof DirectionLight) {
             lights = this.directionalLights;
         }
-        else if (light instanceof AmbientLight){
+        else if (light instanceof AmbientLight) {
             lights = this.ambientLights;
-        } 
-        else if (light instanceof AreaLight){
+        }
+        else if (light instanceof AreaLight) {
             lights = this.areaLights;
-        } 
+        }
         else {
             log.warnOnce(`LightManager.addLight(${light.id})`, 'Not support this light:', light);
         }
@@ -95,7 +123,7 @@ export class LightManager{
      * @param  camera 摄像机
      * @returns
      */
-    public getDirectionalInfo(camera : Camera) {
+    public getDirectionalInfo(camera: Camera) {
         const colors = [];
         const infos = [];
 
@@ -118,14 +146,14 @@ export class LightManager{
      * @param  camera 摄像机
      * @returns
      */
-    public getSpotInfo(camera : Camera) {
+    public getSpotInfo(camera: Camera) {
         const colors = [];
         const infos = [];
         const poses = [];
         const dirs = [];
         const cutoffs = [];
         const ranges = [];
-        
+
         const result = {
             colors: new Float32Array(colors),
             infos: new Float32Array(infos),
@@ -134,7 +162,7 @@ export class LightManager{
             cutoffs: new Float32Array(cutoffs),
             ranges: new Float32Array(ranges)
         };
-    
+
 
         return result;
     }
@@ -165,7 +193,7 @@ export class LightManager{
      * @param camera 摄像机
      * @returns
      */
-    public getAreaInfo(camera : Camera) {
+    public getAreaInfo(camera: Camera) {
         const colors = [];
         const poses = [];
         const width = [];
@@ -227,17 +255,13 @@ export class LightManager{
         return tempFloat32Array;
     }
 
-    directionalInfo : any;
-    pointInfo : any;
-    spotInfo : any;
-    areaInfo : any;
-    ambientInfo : any;
+  
 
     /**
      * 更新所有光源信息
      * @param   camera 摄像机
      */
-    updateInfo(camera : Camera) : void{
+    updateInfo(camera: Camera): void {
         const {
             lightInfo,
             ambientLights,
@@ -247,26 +271,26 @@ export class LightManager{
             areaLights
         } = this;
 
-        lightInfo['AMBIENT_LIGHTS'] = ambientLights.length;
-        lightInfo['POINT_LIGHTS'] = pointLights.length;
-        lightInfo['DIRECTIONAL_LIGHTS'] = directionalLights.length;
-        lightInfo['SPOT_LIGHTS'] = spotLights.length;
-        lightInfo['AREA_LIGHTS'] = areaLights.length;
+        lightInfo.AMBIENT_LIGHTS = ambientLights.length;
+        lightInfo.POINT_LIGHTS = pointLights.length;
+        lightInfo.DIRECTIONAL_LIGHTS = directionalLights.length;
+        lightInfo.SPOT_LIGHTS = spotLights.length;
+        lightInfo.AREA_LIGHTS = areaLights.length;
 
         const shadowFilter = light => !!light.shadow;
-        lightInfo['SHADOW_POINT_LIGHTS'] = pointLights.filter(shadowFilter).length;
-        lightInfo['SHADOW_SPOT_LIGHTS'] = spotLights.filter(shadowFilter).length;
-        lightInfo['SHADOW_DIRECTIONAL_LIGHTS'] = directionalLights.filter(shadowFilter).length;
+        lightInfo.SHADOW_POINT_LIGHTS = pointLights.filter(shadowFilter).length;
+        lightInfo.SHADOW_SPOT_LIGHTS = spotLights.filter(shadowFilter).length;
+        lightInfo.SHADOW_DIRECTIONAL_LIGHTS = directionalLights.filter(shadowFilter).length;
 
-        lightInfo['uid'] = [
-            lightInfo['AMBIENT_LIGHTS'],
-            lightInfo['POINT_LIGHTS'],
-            lightInfo['SHADOW_POINT_LIGHTS'],
-            lightInfo['DIRECTIONAL_LIGHTS'],
-            lightInfo['SHADOW_DIRECTIONAL_LIGHTS'],
-            lightInfo['SPOT_LIGHTS'],
-            lightInfo['SHADOW_SPOT_LIGHTS'],
-            lightInfo['AREA_LIGHTS']
+        lightInfo.uid = [
+            lightInfo.AMBIENT_LIGHTS,
+            lightInfo.POINT_LIGHTS,
+            lightInfo.SHADOW_POINT_LIGHTS,
+            lightInfo.DIRECTIONAL_LIGHTS,
+            lightInfo.SHADOW_DIRECTIONAL_LIGHTS,
+            lightInfo.SPOT_LIGHTS,
+            lightInfo.SHADOW_SPOT_LIGHTS,
+            lightInfo.AREA_LIGHTS
         ].join('_');
 
         this.directionalInfo = this.getDirectionalInfo(camera);
@@ -280,7 +304,7 @@ export class LightManager{
      * 获取光源信息
      * @returns
      */
-    public getInfo() {
+    public getInfo() : iLightInfo {
         return this.lightInfo;
     }
 
