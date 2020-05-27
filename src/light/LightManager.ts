@@ -6,6 +6,7 @@ import { DirectionLight } from "./DirectionLight";
 import AmbientLight from "./AmbientLight";
 import { Light } from "./Light";
 import { Camera } from "../camera";
+import { AreaLight } from "./AreaLight";
 
 
 const tempMatrix4 = new Matrix4();
@@ -21,7 +22,7 @@ export class LightManager{
 
     pointLights : Array<any>;
     spotLights : Array<any>;
-    areaLights : Array<any>;
+    public areaLights : Array<AreaLight>;
     public ambientLights : Array<AmbientLight>;
     public directionalLights : Array<DirectionLight>;
     public lightInfo : any;
@@ -74,6 +75,9 @@ export class LightManager{
         }
         else if (light instanceof AmbientLight){
             lights = this.ambientLights;
+        } 
+        else if (light instanceof AreaLight){
+            lights = this.areaLights;
         } 
         else {
             log.warnOnce(`LightManager.addLight(${light.id})`, 'Not support this light:', light);
@@ -169,6 +173,28 @@ export class LightManager{
 
         let ltcTexture1;
         let ltcTexture2;
+
+        this.areaLights.forEach((light, index) => {
+            const offset = index * 3;
+            light.getRealColor().toRGBArray(colors, offset);
+
+            camera.getModelViewMatrix(light, tempMatrix4);
+            tempMatrix4.getTranslation(tempVector3);
+            tempVector3.toArray(poses, offset);
+
+            const quat = tempMatrix4.getRotation();
+            tempMatrix4.fromQuat(quat);
+            tempVector3.set(light.width * 0.5, 0, 0);
+            tempVector3.transformMat4(tempMatrix4);
+            tempVector3.toArray(width, offset);
+
+            tempVector3.set(0.0, light.height * 0.5, 0.0);
+            tempVector3.transformMat4(tempMatrix4);
+            tempVector3.toArray(height, offset);
+
+            ltcTexture1 = light.ltcTexture1;
+            ltcTexture2 = light.ltcTexture2;
+        });
 
         const result = {
             colors: new Float32Array(colors),
