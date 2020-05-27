@@ -165,7 +165,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L16">src/math/Matrix4Notifier.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L18">src/math/Matrix4Notifier.ts:18</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
@@ -182,7 +182,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_event_eventobject_.eventobject.html">EventObject</a>.<a href="_event_eventobject_.eventobject.html#_listeners">_listeners</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/event/EventObject.ts#L5">src/event/EventObject.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/event/EventObject.ts#L5">src/event/EventObject.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -192,7 +192,7 @@
 					<div class="tsd-signature tsd-kind-icon">elements<span class="tsd-signature-symbol">:</span> <a href="" class="tsd-signature-type">mat4</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L16">src/math/Matrix4Notifier.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L18">src/math/Matrix4Notifier.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -203,13 +203,13 @@
 					<a name="add" class="tsd-anchor"></a>
 					<h3>add</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L549">src/math/Matrix4Notifier.ts:549</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L568">src/math/Matrix4Notifier.ts:568</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -220,13 +220,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，计算 this 和 a 的和</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -235,13 +238,13 @@
 					<a name="adjoint" class="tsd-anchor"></a>
 					<h3>adjoint</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">adjoint<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">adjoint<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L116">src/math/Matrix4Notifier.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L119">src/math/Matrix4Notifier.ts:119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -252,10 +255,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <span class="tsd-signature-type">this</span><span class="tsd-signature-symbol"> = this</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol"> = this</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -264,13 +267,13 @@
 					<a name="compose" class="tsd-anchor"></a>
 					<h3>compose</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">compose<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, p<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">compose<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a>, v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a>, s<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a>, p<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L607">src/math/Matrix4Notifier.ts:607</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L630">src/math/Matrix4Notifier.ts:630</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -281,28 +284,28 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>quaternion</p>
 									</div>
 								</li>
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>position</p>
 									</div>
 								</li>
 								<li>
-									<h5>s: <span class="tsd-signature-type">any</span></h5>
+									<h5>s: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>scale</p>
 									</div>
 								</li>
 								<li>
-									<h5>p: <span class="tsd-signature-type">any</span></h5>
+									<h5>p: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -311,13 +314,13 @@
 					<a name="copy" class="tsd-anchor"></a>
 					<h3>copy</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L33">src/math/Matrix4Notifier.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L35">src/math/Matrix4Notifier.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -328,13 +331,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m: <span class="tsd-signature-type">any</span></h5>
+									<h5>m: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the source matrix</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -343,13 +346,13 @@
 					<a name="decompose" class="tsd-anchor"></a>
 					<h3>decompose</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">decompose<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, p<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">decompose<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a>, v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a>, s<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a>, p<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L623">src/math/Matrix4Notifier.ts:623</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L647">src/math/Matrix4Notifier.ts:647</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -360,28 +363,28 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>quaternion</p>
 									</div>
 								</li>
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>position</p>
 									</div>
 								</li>
 								<li>
-									<h5>s: <span class="tsd-signature-type">any</span></h5>
+									<h5>s: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>scale</p>
 									</div>
 								</li>
 								<li>
-									<h5>p: <span class="tsd-signature-type">any</span></h5>
+									<h5>p: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -396,7 +399,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L126">src/math/Matrix4Notifier.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L129">src/math/Matrix4Notifier.ts:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -413,13 +416,13 @@
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L592">src/math/Matrix4Notifier.ts:592</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L614">src/math/Matrix4Notifier.ts:614</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -430,10 +433,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，比较 this 和 a 是否近似相等</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -444,13 +450,13 @@
 					<a name="exactequals" class="tsd-anchor"></a>
 					<h3>exact<wbr>Equals</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">exact<wbr>Equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">exact<wbr>Equals<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L579">src/math/Matrix4Notifier.ts:579</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L600">src/math/Matrix4Notifier.ts:600</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -461,10 +467,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，比较 this 和 a 是否相等</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -482,7 +491,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_event_eventobject_.eventobject.html">EventObject</a>.<a href="_event_eventobject_.eventobject.html#fire">fire</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/event/EventObject.ts#L71">src/event/EventObject.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/event/EventObject.ts#L71">src/event/EventObject.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -522,7 +531,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L540">src/math/Matrix4Notifier.ts:540</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L558">src/math/Matrix4Notifier.ts:558</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -539,13 +548,13 @@
 					<a name="fromarray" class="tsd-anchor"></a>
 					<h3>from<wbr>Array</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L45">src/math/Matrix4Notifier.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L48">src/math/Matrix4Notifier.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -556,7 +565,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>array: <span class="tsd-signature-type">any</span></h5>
+									<h5>array: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>数组</p>
 									</div>
@@ -565,7 +574,7 @@
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -574,13 +583,13 @@
 					<a name="fromquat" class="tsd-anchor"></a>
 					<h3>from<wbr>Quat</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Quat<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Quat<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L372">src/math/Matrix4Notifier.ts:372</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L383">src/math/Matrix4Notifier.ts:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -591,13 +600,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Quaternion to create matrix from</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -606,13 +615,13 @@
 					<a name="fromrotation" class="tsd-anchor"></a>
 					<h3>from<wbr>Rotation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, axis<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, axis<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L253">src/math/Matrix4Notifier.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L256">src/math/Matrix4Notifier.ts:256</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -623,19 +632,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 								<li>
-									<h5>axis: <span class="tsd-signature-type">any</span></h5>
+									<h5>axis: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the axis to rotate around</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -644,13 +653,13 @@
 					<a name="fromrotationtranslation" class="tsd-anchor"></a>
 					<h3>from<wbr>Rotation<wbr>Translation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a>, v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L297">src/math/Matrix4Notifier.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L302">src/math/Matrix4Notifier.ts:302</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -661,19 +670,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Rotation quaternion</p>
 									</div>
 								</li>
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Translation vector</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -682,13 +691,13 @@
 					<a name="fromrotationtranslationscale" class="tsd-anchor"></a>
 					<h3>from<wbr>Rotation<wbr>Translation<wbr>Scale</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<wbr>Scale<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<wbr>Scale<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a>, v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a>, s<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L346">src/math/Matrix4Notifier.ts:346</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L355">src/math/Matrix4Notifier.ts:355</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -699,25 +708,25 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Rotation quaternion</p>
 									</div>
 								</li>
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Translation vector</p>
 									</div>
 								</li>
 								<li>
-									<h5>s: <span class="tsd-signature-type">any</span></h5>
+									<h5>s: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Scaling vector</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -726,13 +735,13 @@
 					<a name="fromrotationtranslationscaleorigin" class="tsd-anchor"></a>
 					<h3>from<wbr>Rotation<wbr>Translation<wbr>Scale<wbr>Origin</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<wbr>Scale<wbr>Origin<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, o<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, dontFireEvent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Rotation<wbr>Translation<wbr>Scale<wbr>Origin<span class="tsd-signature-symbol">(</span>q<span class="tsd-signature-symbol">: </span><a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a>, v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a>, s<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a>, o<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a>, dontFireEvent<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L360">src/math/Matrix4Notifier.ts:360</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L370">src/math/Matrix4Notifier.ts:370</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -743,34 +752,37 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>q: <span class="tsd-signature-type">any</span></h5>
+									<h5>q: <a href="_math_quaternion_.quaternion.html" class="tsd-signature-type">Quaternion</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Rotation quaternion</p>
 									</div>
 								</li>
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Translation vector</p>
 									</div>
 								</li>
 								<li>
-									<h5>s: <span class="tsd-signature-type">any</span></h5>
+									<h5>s: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Scaling vector</p>
 									</div>
 								</li>
 								<li>
-									<h5>o: <span class="tsd-signature-type">any</span></h5>
+									<h5>o: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The origin vector around which to scale and rotate</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> dontFireEvent: <span class="tsd-signature-type">boolean</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> dontFireEvent: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>dontFireEvent</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -779,13 +791,13 @@
 					<a name="fromscaling" class="tsd-anchor"></a>
 					<h3>from<wbr>Scaling</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Scaling<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Scaling<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L241">src/math/Matrix4Notifier.ts:241</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L244">src/math/Matrix4Notifier.ts:244</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -796,13 +808,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Scaling vector</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -811,13 +823,13 @@
 					<a name="fromtranslation" class="tsd-anchor"></a>
 					<h3>from<wbr>Translation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">from<wbr>Translation<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Translation<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L230">src/math/Matrix4Notifier.ts:230</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L233">src/math/Matrix4Notifier.ts:233</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -828,10 +840,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -840,13 +852,13 @@
 					<a name="fromxrotation" class="tsd-anchor"></a>
 					<h3>fromXRotation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">fromXRotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">fromXRotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L265">src/math/Matrix4Notifier.ts:265</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L268">src/math/Matrix4Notifier.ts:268</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -857,13 +869,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -872,13 +884,13 @@
 					<a name="fromyrotation" class="tsd-anchor"></a>
 					<h3>fromYRotation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">fromYRotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">fromYRotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L276">src/math/Matrix4Notifier.ts:276</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L279">src/math/Matrix4Notifier.ts:279</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -889,13 +901,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -904,13 +916,13 @@
 					<a name="fromzrotation" class="tsd-anchor"></a>
 					<h3>fromZRotation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">fromZRotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">fromZRotation<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L286">src/math/Matrix4Notifier.ts:286</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L290">src/math/Matrix4Notifier.ts:290</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -921,13 +933,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -936,13 +948,13 @@
 					<a name="frustum" class="tsd-anchor"></a>
 					<h3>frustum</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">frustum<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, top<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">frustum<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, top<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L387">src/math/Matrix4Notifier.ts:387</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L399">src/math/Matrix4Notifier.ts:399</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -953,43 +965,43 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>left: <span class="tsd-signature-type">any</span></h5>
+									<h5>left: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Left bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>right: <span class="tsd-signature-type">any</span></h5>
+									<h5>right: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Right bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>bottom: <span class="tsd-signature-type">any</span></h5>
+									<h5>bottom: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Bottom bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>top: <span class="tsd-signature-type">any</span></h5>
+									<h5>top: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Top bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>near: <span class="tsd-signature-type">any</span></h5>
+									<h5>near: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Near bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>far: <span class="tsd-signature-type">any</span></h5>
+									<h5>far: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Far bound of the frustum</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1005,7 +1017,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_event_eventobject_.eventobject.html">EventObject</a>.<a href="_event_eventobject_.eventobject.html#getclassname">getClassName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L23">src/math/Matrix4Notifier.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L25">src/math/Matrix4Notifier.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -1022,7 +1034,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L335">src/math/Matrix4Notifier.ts:335</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L343">src/math/Matrix4Notifier.ts:343</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1051,13 +1063,13 @@
 					<a name="getscaling" class="tsd-anchor"></a>
 					<h3>get<wbr>Scaling</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Scaling<span class="tsd-signature-symbol">(</span>out<span class="tsd-signature-symbol">?: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Scaling<span class="tsd-signature-symbol">(</span>out<span class="tsd-signature-symbol">?: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L323">src/math/Matrix4Notifier.ts:323</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L330">src/math/Matrix4Notifier.ts:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1072,10 +1084,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> out: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> = new Vector3()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> out: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a><span class="tsd-signature-symbol"> = new Vector3()</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Vector to receive scaling factor component</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h4>
 							<p>out</p>
 						</li>
 					</ul>
@@ -1084,13 +1099,13 @@
 					<a name="gettranslation" class="tsd-anchor"></a>
 					<h3>get<wbr>Translation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Translation<span class="tsd-signature-symbol">(</span>out<span class="tsd-signature-symbol">?: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Translation<span class="tsd-signature-symbol">(</span>out<span class="tsd-signature-symbol">?: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L310">src/math/Matrix4Notifier.ts:310</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L316">src/math/Matrix4Notifier.ts:316</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1104,10 +1119,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> out: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> = new Vector3()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> out: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a><span class="tsd-signature-symbol"> = new Vector3()</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Vector to receive translation component</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><a href="_math_vector3notifier_.vector3notifier.html" class="tsd-signature-type">Vector3Notifier</a></h4>
 							<p>out</p>
 						</li>
 					</ul>
@@ -1116,13 +1134,13 @@
 					<a name="identity" class="tsd-anchor"></a>
 					<h3>identity</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">identity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">identity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L84">src/math/Matrix4Notifier.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L87">src/math/Matrix4Notifier.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1130,7 +1148,7 @@
 									<p>Set this to the identity matrix</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1139,13 +1157,13 @@
 					<a name="invert" class="tsd-anchor"></a>
 					<h3>invert</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">invert<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">invert<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L105">src/math/Matrix4Notifier.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L108">src/math/Matrix4Notifier.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1156,10 +1174,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <span class="tsd-signature-type">this</span><span class="tsd-signature-symbol"> = this</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> m: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol"> = this</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1168,13 +1186,13 @@
 					<a name="lookat" class="tsd-anchor"></a>
 					<h3>look<wbr>At</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">look<wbr>At<span class="tsd-signature-symbol">(</span>eye<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, center<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, up<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">look<wbr>At<span class="tsd-signature-symbol">(</span>eye<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span>, center<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span>, up<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L439">src/math/Matrix4Notifier.ts:439</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L455">src/math/Matrix4Notifier.ts:455</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1185,25 +1203,25 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eye: <span class="tsd-signature-type">any</span></h5>
+									<h5>eye: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Position of the viewer</p>
 									</div>
 								</li>
 								<li>
-									<h5>center: <span class="tsd-signature-type">any</span></h5>
+									<h5>center: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Point the viewer is looking at</p>
 									</div>
 								</li>
 								<li>
-									<h5>up: <span class="tsd-signature-type">any</span></h5>
+									<h5>up: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>pointing up</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1212,13 +1230,13 @@
 					<a name="multiply" class="tsd-anchor"></a>
 					<h3>multiply</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">multiply<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">multiply<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L137">src/math/Matrix4Notifier.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L140">src/math/Matrix4Notifier.ts:140</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1229,13 +1247,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
+									<h5>a: <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，计算 this 和 a 的乘积</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1251,7 +1272,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_event_eventobject_.eventobject.html">EventObject</a>.<a href="_event_eventobject_.eventobject.html#off">off</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/event/EventObject.ts#L37">src/event/EventObject.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/event/EventObject.ts#L37">src/event/EventObject.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1292,7 +1313,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_event_eventobject_.eventobject.html">EventObject</a>.<a href="_event_eventobject_.eventobject.html#on">on</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/event/EventObject.ts#L19">src/event/EventObject.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/event/EventObject.ts#L19">src/event/EventObject.ts:19</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1332,13 +1353,13 @@
 					<a name="ortho" class="tsd-anchor"></a>
 					<h3>ortho</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">ortho<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, top<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">ortho<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, top<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L427">src/math/Matrix4Notifier.ts:427</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L442">src/math/Matrix4Notifier.ts:442</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1349,43 +1370,43 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>left: <span class="tsd-signature-type">any</span></h5>
+									<h5>left: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Left bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>right: <span class="tsd-signature-type">any</span></h5>
+									<h5>right: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Right bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>bottom: <span class="tsd-signature-type">any</span></h5>
+									<h5>bottom: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Bottom bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>top: <span class="tsd-signature-type">any</span></h5>
+									<h5>top: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Top bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>near: <span class="tsd-signature-type">any</span></h5>
+									<h5>near: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Near bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>far: <span class="tsd-signature-type">any</span></h5>
+									<h5>far: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Far bound of the frustum</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1394,13 +1415,13 @@
 					<a name="perspective" class="tsd-anchor"></a>
 					<h3>perspective</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">perspective<span class="tsd-signature-symbol">(</span>fovy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, aspect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">perspective<span class="tsd-signature-symbol">(</span>fovy<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, aspect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L400">src/math/Matrix4Notifier.ts:400</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L413">src/math/Matrix4Notifier.ts:413</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1411,31 +1432,31 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>fovy: <span class="tsd-signature-type">any</span></h5>
+									<h5>fovy: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Vertical field of view in radians</p>
 									</div>
 								</li>
 								<li>
-									<h5>aspect: <span class="tsd-signature-type">any</span></h5>
+									<h5>aspect: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Aspect ratio. typically viewport width/height</p>
 									</div>
 								</li>
 								<li>
-									<h5>near: <span class="tsd-signature-type">any</span></h5>
+									<h5>near: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Near bound of the frustum</p>
 									</div>
 								</li>
 								<li>
-									<h5>far: <span class="tsd-signature-type">any</span></h5>
+									<h5>far: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Far bound of the frustum</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1444,13 +1465,13 @@
 					<a name="perspectivefromfieldofview" class="tsd-anchor"></a>
 					<h3>perspective<wbr>From<wbr>Field<wbr>OfView</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">perspective<wbr>From<wbr>Field<wbr>OfView<span class="tsd-signature-symbol">(</span>fov<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">perspective<wbr>From<wbr>Field<wbr>OfView<span class="tsd-signature-symbol">(</span>fov<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L412">src/math/Matrix4Notifier.ts:412</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L426">src/math/Matrix4Notifier.ts:426</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1461,22 +1482,22 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>fov: <span class="tsd-signature-type">any</span></h5>
+									<h5>fov: <span class="tsd-signature-type">Object</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Object containing the following values: upDegrees, downDegrees, leftDegrees, rightDegrees</p>
 									</div>
 								</li>
 								<li>
-									<h5>near: <span class="tsd-signature-type">any</span></h5>
+									<h5>near: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>far: <span class="tsd-signature-type">any</span></h5>
+									<h5>far: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Far bound of the frustum</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1485,13 +1506,13 @@
 					<a name="premultiply" class="tsd-anchor"></a>
 					<h3>premultiply</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">premultiply<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">premultiply<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L152">src/math/Matrix4Notifier.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L155">src/math/Matrix4Notifier.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1502,10 +1523,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m: <span class="tsd-signature-type">any</span></h5>
+									<h5>m: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1514,13 +1535,13 @@
 					<a name="rotate" class="tsd-anchor"></a>
 					<h3>rotate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, axis<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, axis<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L186">src/math/Matrix4Notifier.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L189">src/math/Matrix4Notifier.ts:189</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1531,19 +1552,19 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 								<li>
-									<h5>axis: <span class="tsd-signature-type">any</span></h5>
+									<h5>axis: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the axis to rotate around</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1552,13 +1573,13 @@
 					<a name="rotatex" class="tsd-anchor"></a>
 					<h3>rotateX</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">rotateX<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">rotateX<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L197">src/math/Matrix4Notifier.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L200">src/math/Matrix4Notifier.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1569,13 +1590,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1584,13 +1605,13 @@
 					<a name="rotatey" class="tsd-anchor"></a>
 					<h3>rotateY</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">rotateY<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">rotateY<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L208">src/math/Matrix4Notifier.ts:208</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L211">src/math/Matrix4Notifier.ts:211</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1601,13 +1622,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1616,13 +1637,13 @@
 					<a name="rotatez" class="tsd-anchor"></a>
 					<h3>rotateZ</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">rotateZ<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">rotateZ<span class="tsd-signature-symbol">(</span>rad<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L219">src/math/Matrix4Notifier.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L222">src/math/Matrix4Notifier.ts:222</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1633,13 +1654,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>rad: <span class="tsd-signature-type">any</span></h5>
+									<h5>rad: <span class="tsd-signature-type">number</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the angle to rotate the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1648,13 +1669,13 @@
 					<a name="scale" class="tsd-anchor"></a>
 					<h3>scale</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L174">src/math/Matrix4Notifier.ts:174</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L177">src/math/Matrix4Notifier.ts:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1665,13 +1686,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the vec3 to scale the matrix by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1680,13 +1701,13 @@
 					<a name="set" class="tsd-anchor"></a>
 					<h3>set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>m00<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m01<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m02<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m03<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m10<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m13<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m20<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m23<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m30<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m31<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m32<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, m33<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>m00<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m01<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m02<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m03<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m10<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m13<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m20<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m23<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m30<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m31<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m32<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, m33<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L74">src/math/Matrix4Notifier.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L77">src/math/Matrix4Notifier.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1697,55 +1718,55 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>m00: <span class="tsd-signature-type">any</span></h5>
+									<h5>m00: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m01: <span class="tsd-signature-type">any</span></h5>
+									<h5>m01: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m02: <span class="tsd-signature-type">any</span></h5>
+									<h5>m02: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m03: <span class="tsd-signature-type">any</span></h5>
+									<h5>m03: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m10: <span class="tsd-signature-type">any</span></h5>
+									<h5>m10: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m11: <span class="tsd-signature-type">any</span></h5>
+									<h5>m11: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m12: <span class="tsd-signature-type">any</span></h5>
+									<h5>m12: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m13: <span class="tsd-signature-type">any</span></h5>
+									<h5>m13: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m20: <span class="tsd-signature-type">any</span></h5>
+									<h5>m20: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m21: <span class="tsd-signature-type">any</span></h5>
+									<h5>m21: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m22: <span class="tsd-signature-type">any</span></h5>
+									<h5>m22: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m23: <span class="tsd-signature-type">any</span></h5>
+									<h5>m23: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m30: <span class="tsd-signature-type">any</span></h5>
+									<h5>m30: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m31: <span class="tsd-signature-type">any</span></h5>
+									<h5>m31: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m32: <span class="tsd-signature-type">any</span></h5>
+									<h5>m32: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>m33: <span class="tsd-signature-type">any</span></h5>
+									<h5>m33: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1754,13 +1775,13 @@
 					<a name="subtract" class="tsd-anchor"></a>
 					<h3>subtract</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">subtract<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">subtract<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a>, b<span class="tsd-signature-symbol">?: </span><a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L564">src/math/Matrix4Notifier.ts:564</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L584">src/math/Matrix4Notifier.ts:584</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1771,13 +1792,16 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>a: <span class="tsd-signature-type">any</span></h5>
+									<h5>a: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
 								</li>
 								<li>
-									<h5>b: <span class="tsd-signature-type">any</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> b: <a href="_math_matrix4_.matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> | </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>如果不传，计算 this 和 a 的差</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1786,13 +1810,13 @@
 					<a name="targetto" class="tsd-anchor"></a>
 					<h3>target<wbr>To</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">target<wbr>To<span class="tsd-signature-symbol">(</span>eye<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, target<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, up<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">target<wbr>To<span class="tsd-signature-symbol">(</span>eye<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span>, target<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span>, up<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L459">src/math/Matrix4Notifier.ts:459</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L476">src/math/Matrix4Notifier.ts:476</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1803,22 +1827,22 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>eye: <span class="tsd-signature-type">any</span></h5>
+									<h5>eye: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Position of the viewer</p>
 									</div>
 								</li>
 								<li>
-									<h5>target: <span class="tsd-signature-type">any</span></h5>
+									<h5>target: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li>
-									<h5>up: <span class="tsd-signature-type">any</span></h5>
+									<h5>up: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>pointing up</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1827,13 +1851,13 @@
 					<a name="translate" class="tsd-anchor"></a>
 					<h3>translate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L163">src/math/Matrix4Notifier.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L166">src/math/Matrix4Notifier.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1844,13 +1868,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>v: <span class="tsd-signature-type">any</span></h5>
+									<h5>v: <a href="_math_vector3_.vector3.html" class="tsd-signature-type">Vector3</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>vector to translate by</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>
@@ -1859,13 +1883,13 @@
 					<a name="transpose" class="tsd-anchor"></a>
 					<h3>transpose</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/6286f01/src/math/Matrix4Notifier.ts#L94">src/math/Matrix4Notifier.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/eldn/GameEngine/blob/f5ba8ed/src/math/Matrix4Notifier.ts#L97">src/math/Matrix4Notifier.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1873,7 +1897,7 @@
 									<p>Transpose the values of this</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_math_matrix4notifier_.matrix4notifier.html" class="tsd-signature-type">Matrix4Notifier</a></h4>
 							<p>this</p>
 						</li>
 					</ul>

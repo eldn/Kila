@@ -5,6 +5,7 @@ import { Vector3 } from "./Vector3";
 import { Quaternion } from "./Quaternion";
 import { EventObject } from "../event/EventObject";
 import { Matrix3 } from "./Matrix3";
+import { Vector3Notifier } from "./Vector3Notifier";
 
 
 let tempMatrix4;
@@ -31,7 +32,7 @@ export class Matrix4Notifier extends EventObject{
      * @param   m the source matrix
      * @return  this
      */
-    public copy(m : Matrix4) : Matrix4Notifier {
+    public copy(m : Matrix4 | Matrix4Notifier) : Matrix4Notifier {
         mat4.copy(this.elements, m.elements);
         this.fire('update');
         return this;
@@ -312,7 +313,7 @@ export class Matrix4Notifier extends EventObject{
      * @param  out Vector to receive translation component
      * @return  out
      */
-    public getTranslation(out : Vector3 = new Vector3()) : Vector3{
+    public getTranslation(out : Vector3 | Vector3Notifier = new Vector3()) : Vector3 | Vector3Notifier{
         mat4.getTranslation(out.elements, this.elements);
         return out;
     }
@@ -326,7 +327,7 @@ export class Matrix4Notifier extends EventObject{
      * @param  out Vector to receive scaling factor component
      * @return out
      */
-    public getScaling(out : Vector3 = new Vector3()) : Vector3 {
+    public getScaling(out : Vector3 | Vector3Notifier = new Vector3()) : Vector3 | Vector3Notifier {
         mat4.getScaling(out.elements, this.elements);
         return out;
     }
@@ -366,7 +367,7 @@ export class Matrix4Notifier extends EventObject{
      * @param  dontFireEvent dontFireEvent
      * @return  this
      */
-    public fromRotationTranslationScaleOrigin(q : Quaternion, v : Vector3, s : Vector3, o : Vector3, dontFireEvent : boolean = false) : Matrix4Notifier {
+    public fromRotationTranslationScaleOrigin(q : Quaternion, v : Vector3 | Vector3Notifier, s : Vector3 | Vector3Notifier, o : Vector3 | Vector3Notifier, dontFireEvent : boolean = false) : Matrix4Notifier {
         mat4.fromRotationTranslationScaleOrigin(this.elements, q.elements, v.elements, s.elements, o.elements);
         if (!dontFireEvent) {
             this.fire('update');
@@ -643,7 +644,7 @@ export class Matrix4Notifier extends EventObject{
      * @param  p [pivot]
      * @return   this
      */
-    public decompose(q : Quaternion, v : Vector3, s : Vector3, p : Vector3) : Matrix4Notifier {
+    public decompose(q : Quaternion, v : Vector3 | Vector3Notifier, s : Vector3 | Vector3Notifier, p : Vector3 | Vector3Notifier) : Matrix4Notifier {
         this.getScaling(s);
         this.getTranslation(v);
 
