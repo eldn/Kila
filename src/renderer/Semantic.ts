@@ -434,7 +434,7 @@ export class semantic{
      /**
      * @type {semanticObject}
      */
-    SHININESS: Object = {
+    static SHININESS: Object = {
         get(mesh, material, programInfo) {
             return material.shininess;
         }
