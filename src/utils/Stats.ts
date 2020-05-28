@@ -24,7 +24,7 @@ export class Stats{
             return;
         }
         this.container = document.createElement('div');
-        this.container.style.cssText = 'position: absolute;left: 5px;top:5px;color:#000;font-size: 12px;z-index: 999999;';
+        this.container.style.cssText = 'position: absolute;left: 5px;top:5px;color:rgb(140, 239, 89);font-size: 12px;z-index: 999999;';
         document.body.appendChild(this.container);
     }
 
