@@ -1,4 +1,6 @@
 import { Vector3 } from "./Vector3";
+import { GeometryData } from "../geometry";
+import { Matrix4 } from "./Matrix4";
 
 const tempVector3 = new Vector3();
 
@@ -6,34 +8,32 @@ export class Sphere{
 
     /**
      * 半径
-     * @type {Number}
-     * @default 0
      */
-    radius: number = 0;
+    public radius: number = 0;
 
-    center : Vector3;
+    public center : Vector3;
 
-    /**
-     * @constructs
-     * @param {object} params 初始化参数，所有params都会复制到实例上
-     */
-    constructor(params ?: any) {
-        Object.assign(this, params);
+
+    constructor(center ?: Vector3) {
+
+        if(center){
+            this.center = center;
+        }
+
         if (!this.center) {
             this.center = new Vector3(0, 0, 0);
         }
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Sphere";
     }
 
 
     /**
      * 克隆
-     * @return {Sphere}
      */
-    clone() {
+    public clone() : Sphere {
         const sphere = new Sphere();
         sphere.copy(this);
         return sphere;
@@ -41,10 +41,10 @@ export class Sphere{
 
     /**
      * 复制
-     * @param  {Sphere} sphere
-     * @return {Sphere} this
+     * @param   sphere
+     * @return this
      */
-    copy(sphere) {
+    public copy(sphere) : Sphere {
         this.center.copy(sphere.center);
         this.radius = sphere.radius;
         return this;
@@ -52,10 +52,10 @@ export class Sphere{
 
     /**
      * 从点生成
-     * @param  {Array} points
-     * @return {Sphere} this
+     * @param   points
+     * @return  this
      */
-    fromPoints(points) {
+    public fromPoints(points : Array<number>) : Sphere {
         let center = this.center;
         let maxSquaredRadius = 0;
         for (let i = 0; i < points.length; i += 3) {
@@ -71,10 +71,10 @@ export class Sphere{
 
      /**
      * 从点生成
-     * @param  {GeometryData} geometryData
-     * @return {Sphere} this
+     * @param  geometryData
+     * @return this
      */
-    fromGeometryData(geometryData) {
+    public fromGeometryData(geometryData : GeometryData) : Sphere {
         let center = this.center;
         let maxSquaredRadius = 0;
         geometryData.traverse((vertexData) => {
@@ -90,10 +90,10 @@ export class Sphere{
 
     /**
      * transformMat4
-     * @param  {Matrix4} mat4
-     * @return {Sphere} this
+     * @param   mat4
+     * @return  this
      */
-    transformMat4(mat4) {
+    public transformMat4(mat4 : Matrix4) : Sphere{
         this.center.transformMat4(mat4);
         const scale = mat4.getScaling(tempVector3);
         this.radius *= Math.max(scale.x, scale.y, scale.z);

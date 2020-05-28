@@ -610,9 +610,7 @@ export class Geometry{
     public getLocalSphereBounds(force : boolean = false) : Sphere{
         if (!this._localSphereBounds || force) {
             const localBounds = this.getLocalBounds(force);
-            const sphere = new Sphere({
-                center: new Vector3(localBounds.x, localBounds.y, localBounds.z)
-            });
+            const sphere = new Sphere(new Vector3(localBounds.x, localBounds.y, localBounds.z));
             const vertices = this.vertices;
             if (vertices) {
                 sphere.fromGeometryData(vertices);
