@@ -423,7 +423,7 @@ export class Matrix4Notifier extends EventObject{
      * @param   far Far bound of the frustum
      * @return  this
      */
-    public perspectiveFromFieldOfView(fov : Object, near : number, far : number) : Matrix4Notifier {
+    public perspectiveFromFieldOfView(fov : { upDegrees: number; downDegrees: number; leftDegrees: number; rightDegrees: number; }, near : number, far : number) : Matrix4Notifier {
         mat4.perspectiveFromFieldOfView(this.elements, fov, near, far);
         this.fire('update');
         return this;

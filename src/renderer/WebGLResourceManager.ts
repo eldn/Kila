@@ -7,7 +7,7 @@ import Shader from "../shader/shader";
  * WebGLResourceManager 资源管理器
  * @class
  */
-class WebGLResourceManager{
+export class WebGLResourceManager{
 
     /**
      * 是否有需要销毁的资源

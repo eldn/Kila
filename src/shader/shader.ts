@@ -18,7 +18,7 @@ const CUSTUM_OPTION_PREFIX = 'HILO_CUSTUM_OPTION_';
  * Shader类
  * @class
  */
-class Shader {
+export class Shader {
 
 
     /**

@@ -415,7 +415,7 @@ export class Matrix4{
      * @param  far Far bound of the frustum
      * @return this
      */
-    public perspectiveFromFieldOfView(fov : Object, near : number, far : number) : Matrix4 {
+    public perspectiveFromFieldOfView(fov : { upDegrees: number; downDegrees: number; leftDegrees: number; rightDegrees: number; }, near : number, far : number) : Matrix4 {
         mat4.perspectiveFromFieldOfView(this.elements, fov, near, far);
         return this;
     }

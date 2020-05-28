@@ -4,7 +4,7 @@
  * 渲染信息
  * @class
  */
-class RenderInfo{
+export class RenderInfo{
 
     /**
      * @constructs
