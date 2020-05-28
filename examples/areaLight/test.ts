@@ -15,7 +15,7 @@ let testAreaLight = function () {
     width: innerWidth,
 
     height: innerHeight,
-    clearColor: new KILA.Color(0.4, 0.4, 0.4),
+    clearColor: new KILA.Color(1, 1, 1, 1),
     camera: camera,
   });
 
@@ -38,7 +38,7 @@ let testAreaLight = function () {
   box.name = 'colorBox';
   box.geometry = new KILA.BoxGeometry();
   box.material = new KILA.BasicMaterial();
-  box.material.diffuse = new KILA.Color(0.8, 0, 0);
+  box.material.diffuse = new KILA.Color(1, 1, 1);
   box.rotationX = 30;
   box.rotationY = 30;
   box.setScale(10);
