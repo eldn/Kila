@@ -7,6 +7,8 @@ import AmbientLight from "./AmbientLight";
 import { Light } from "./Light";
 import { Camera } from "../camera";
 import { AreaLight } from "./AreaLight";
+import { PointLight } from "./PointLight";
+import { SpotLight } from "./SpotLight";
 
 
 const tempMatrix4 = new Matrix4();
@@ -35,8 +37,8 @@ export interface iLightInfo {
 export class LightManager {
 
 
-    pointLights: Array<any>;
-    spotLights: Array<any>;
+    public pointLights: Array<PointLight>;
+    public spotLights: Array<SpotLight>;
     public areaLights: Array<AreaLight>;
     public ambientLights: Array<AmbientLight>;
     public directionalLights: Array<DirectionLight>;
@@ -154,6 +156,19 @@ export class LightManager {
         const cutoffs = [];
         const ranges = [];
 
+        this.spotLights.forEach((light, index) => {
+            const offset = index * 3;
+            light.getRealColor().toRGBArray(colors, offset);
+            light.toInfoArray(infos, offset);
+            light.getViewDirection(camera).toArray(dirs, offset);
+            ranges.push(light.range);
+            cutoffs.push(light._cutoffCos, light._outerCutoffCos);
+
+            camera.getModelViewMatrix(light, tempMatrix4);
+            tempMatrix4.getTranslation(tempVector3);
+            tempVector3.toArray(poses, offset);
+        });
+
         const result = {
             colors: new Float32Array(colors),
             infos: new Float32Array(infos),
@@ -172,11 +187,22 @@ export class LightManager {
      * @param   camera 摄像机
      * @returns
      */
-    public getPointInfo(camera) {
+    public getPointInfo(camera : Camera) {
         const colors = [];
         const infos = [];
         const poses = [];
         const ranges = [];
+
+        this.pointLights.forEach((light, index) => {
+            const offset = index * 3;
+            light.getRealColor().toRGBArray(colors, offset);
+            light.toInfoArray(infos, offset);
+            ranges.push(light.range);
+
+            camera.getModelViewMatrix(light, tempMatrix4);
+            tempMatrix4.getTranslation(tempVector3);
+            tempVector3.toArray(poses, offset);
+        });
 
         const result = {
             colors: new Float32Array(colors),

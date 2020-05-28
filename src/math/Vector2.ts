@@ -442,7 +442,7 @@ export class Vector2 {
         return this.length();
     }
 
-    public sqrLen(a : Vector2 , b : Vector2) : number{
+    public sqrLen() : number{
         return this.squaredLength();
     }
 
