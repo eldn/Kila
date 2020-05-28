@@ -53,7 +53,6 @@ export class GeometryData{
     
  
     public bufferViewId: string;
-    public glBuffer: Buffer;
     public id : string;
 
      /**

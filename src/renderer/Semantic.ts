@@ -431,6 +431,15 @@ export class semantic{
         }
     }
 
+     /**
+     * @type {semanticObject}
+     */
+    SHININESS: Object = {
+        get(mesh, material, programInfo) {
+            return material.shininess;
+        }
+    }
+
 
     // light
 

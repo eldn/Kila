@@ -86,7 +86,7 @@ let test = function () {
     gl = renderer.gl;
   }, 10);
 
-
+  let stats = new KILA.Stats(ticker, scene.renderer.renderInfo, null);
 }
 
 window.onload = function () {

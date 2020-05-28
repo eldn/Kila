@@ -123,6 +123,8 @@ let testAreaLight = function () {
   }, 10);
 
 
+  let stats = new KILA.Stats(ticker, scene.renderer.renderInfo, null);
+  
 }
 
 window.onload = function () {
