@@ -6,7 +6,7 @@ import { RenderOptions } from "../renderer/RenderOptions";
 import { Mesh } from "../core/Mesh";
 import { log } from "../utils/Log";
 import { semantic } from "../renderer/Semantic";
-import { Color } from "../math";
+import { Color, Matrix3 } from "../math";
 
 
 
@@ -97,6 +97,16 @@ export abstract class Material {
 	public set depthFunc(value: number) {
 		this._depthFunc = value;
 	}
+
+	 /**
+     * uv transform eg:new Matrix3().fromRotationTranslationScale(Math.PI/2, 0, 0, 2, 2)
+     */
+    public uvMatrix: Matrix3 = null;
+
+    /**
+     * uv1 transform eg:new Matrix3().fromRotationTranslationScale(Math.PI/2, 0, 0, 2, 2)
+     */
+    public uvMatrix1: Matrix3 = null;
 
 	private _cullFace: boolean = true;
 
@@ -602,6 +612,14 @@ export abstract class Material {
 		if (this.alphaCutoff > 0) {
 			option.ALPHA_CUTOFF = 1;
 		}
+
+		if (this.uvMatrix) {
+            option.UV_MATRIX = 1;
+        }
+
+        if (this.uvMatrix1) {
+            option.UV_MATRIX1 = 1;
+        }
 
 		textureOption.update();
 		return option;

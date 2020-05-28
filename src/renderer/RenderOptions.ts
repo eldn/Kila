@@ -18,4 +18,6 @@ export interface RenderOptions{
     DIFFUSE_CUBE_MAP ?: number;
     HAS_FRAG_POS ?: number;
     WRITE_ORIGIN_DATA ?: number;
+    UV_MATRIX ?: number;
+    UV_MATRIX1 ?: number;
 }

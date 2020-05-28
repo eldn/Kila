@@ -20,7 +20,7 @@ export class AreaLight extends Light{
      */
     constructor() {
         super();
-        AreaLight.loadLtcTexture();
+        AreaLight._loadLtcTexture();
     }
 
 
@@ -38,7 +38,7 @@ export class AreaLight extends Light{
     /**
      * 初始化 ltcTexture
      */
-    public static loadLtcTexture() {
+    private static _loadLtcTexture() {
         if (this.ltcTextureReady) {
             return;
         }

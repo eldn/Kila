@@ -71,7 +71,7 @@ export class PerspectiveCamera extends Camera {
      */
     public updateProjectionMatrix() : void {
 
-        const elements = this._projectionMatrix.elements;
+        const elements = this.projectionMatrix.elements;
         const {
             near,
             far,

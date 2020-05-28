@@ -10,14 +10,14 @@ export abstract class Camera extends GameObject{
     * 相对于摄像头的矩阵
     *
     */
-   private _viewMatrix : Matrix4;
+   public viewMatrix : Matrix4;
 
 
     /**
      * 投影矩阵
      *
      */
-    protected _projectionMatrix : Matrix4;
+    public projectionMatrix : Matrix4;
 
     /**
      * View 联结投影矩阵
@@ -42,8 +42,8 @@ export abstract class Camera extends GameObject{
     constructor(){
         super();
 
-        this._viewMatrix = new Matrix4();
-        this._projectionMatrix = new Matrix4();
+        this.viewMatrix = new Matrix4();
+        this.projectionMatrix = new Matrix4();
         this.viewProjectionMatrix = new Matrix4();
     }
 
@@ -54,7 +54,7 @@ export abstract class Camera extends GameObject{
      */
     public updateViewMatrix() : Camera{
         this.updateMatrixWorld(true);
-        this._viewMatrix.invert(this.worldMatrix);
+        this.viewMatrix.invert(this.worldMatrix);
         return this;
     }
 
@@ -73,7 +73,7 @@ export abstract class Camera extends GameObject{
             this._needUpdateProjectionMatrix = false;
         }
         this.updateViewMatrix();
-        this.viewProjectionMatrix.multiply(this._projectionMatrix, this._viewMatrix);
+        this.viewProjectionMatrix.multiply(this.projectionMatrix, this.viewMatrix);
         return this;
     }
 
@@ -86,7 +86,7 @@ export abstract class Camera extends GameObject{
 
     public getModelViewMatrix(node : GameObject, out ?: Matrix4) : Matrix4{
         out = out || new Matrix4();
-        out.multiply(this._viewMatrix, node.worldMatrix);
+        out.multiply(this.viewMatrix, node.worldMatrix);
         return out;
     }
 

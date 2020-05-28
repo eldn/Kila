@@ -42,11 +42,11 @@ export class LightManager {
     public directionalLights: Array<DirectionLight>;
     public lightInfo: iLightInfo;
 
-    directionalInfo: any;
-    pointInfo: any;
-    spotInfo: any;
-    areaInfo: any;
-    ambientInfo: any;
+    public directionalInfo: any;
+    public pointInfo: any;
+    public spotInfo: any;
+    public areaInfo: any;
+    public ambientInfo: any;
 
     constructor() {
         this.ambientLights = [];
