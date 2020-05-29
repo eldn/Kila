@@ -1,62 +1,55 @@
 /**
- * WebGL 扩展
- * @namespace extensions
- * @type {Object}
- * @description WebGL 扩展管理，默认开启的扩展有：ANGLE_instanced_arrays, OES_vertex_array_object, OES_texture_float, WEBGL_lose_context, OES_element_index_uint, EXT_shader_texture_lod
+ * WebGL 扩展管理，默认开启的扩展有：ANGLE_instanced_arrays, OES_vertex_array_object, OES_texture_float, WEBGL_lose_context, OES_element_index_uint, EXT_shader_texture_lod
  */
-const extensions = {
+export class extensions{
     /**
      * ANGLE_instanced_arrays扩展
-     * @type {ANGLEInstancedArrays}
      */
-    instanced: undefined,
+    static instanced: any = undefined;
 
     /**
      * OES_vertex_array_object扩展
-     * @type {OESVertexArrayObject}
      */
-    vao: undefined,
+    static vao: any = undefined;
 
     /**
      * OES_texture_float扩展
-     * @type {OESTextureFloat}
      */
-    texFloat: undefined,
+    static texFloat: any = undefined;
 
     /**
      * WEBGL_lose_context扩展
-     * @typeof {WebGLLoseContext}
      */
-    loseContext: undefined,
+    static loseContext: any =  undefined;
 
     /**
      * EXT_texture_filter_anisotropic
-     * @type {EXTTextureFilterAnisotropic}
      */
-    textureFilterAnisotropic: undefined,
+    static textureFilterAnisotropic: any =  undefined;
 
 
-    shaderTextureLod : undefined,
+    static shaderTextureLod : any =  undefined;
 
 
-    uintIndices : undefined,
+    static uintIndices : any =  undefined;
 
-    _usedExtensions: {},
-    _disabledExtensions: {},
+    static _usedExtensions: Object = {};
+    static _disabledExtensions: Object = {};
+    static gl : WebGLRenderingContext;
 
     /**
      * 初始化
-     * @param {WebGLRenderingContext} gl
+     * @param  gl
      */
-    init(gl) {
+    static init(gl : WebGLRenderingContext) : void {
         this.reset(gl);
-    },
+    }
 
     /**
      * 重置扩展
-     * @param {WebGLRenderingContext} gl
+     * @param  gl
      */
-    reset(gl) {
+    static reset(gl : WebGLRenderingContext) : void {
         this.gl = gl;
         const usedExtensions = this._usedExtensions;
         for (let name in usedExtensions) {
@@ -64,28 +57,30 @@ const extensions = {
             this[alias] = undefined;
             this.get(name, alias);
         }
-    },
+    }
+
 
     /**
      * 使用扩展
-     * @param  {String} name 扩展名称
-     * @param {String} [alias=name] 别名，默认和 name 相同
+     * @param   name 扩展名称
+     * @param alias别名，默认和 name 相同
      */
-    use(name : string, alias : string = name) {
+    static use(name : string, alias : string = name) : void {
         if (this.gl) {
             this.get(name, alias);
         } else {
             this._usedExtensions[name] = alias;
         }
-    },
+    }
+
 
     /**
      * 获取扩展，如果不支持返回 null，必须在 Renderer 初始化完后用
-     * @param  {String} name 扩展名称
-     * @param {String} [alias=name] 别名，默认和 name 相同
-     * @return {ExtensionObject|null}
+     * @param   name 扩展名称
+     * @param alias 别名，默认和 name 相同
+     * @return 
      */
-    get(name : string, alias : string = name) {
+    static get(name : string, alias : string = name)  : any{
         if (this._disabledExtensions[name]) {
             return null;
         }
@@ -96,25 +91,25 @@ const extensions = {
             this[alias] = ext;
         }
         return ext;
-    },
+    }
 
     /**
      * 禁止扩展
-     * @param  {String} name 扩展名称
+     * @param  name 扩展名称
      */
-    disable(name) {
+    static disable(name : string) : void {
         this._disabledExtensions[name] = true;
-    },
+    }
 
     /**
      * 开启扩展
-     * @param  {String} name 扩展名称
+     * @param name 扩展名称
      */
-    enable(name) {
+    static enable(name : string) : void {
         this._disabledExtensions[name] = false;
-    },
+    }
 
-    _getExtension(name) {
+    static _getExtension(name : string) : any {
         const gl = this.gl;
 
         if (gl && gl.getExtension) {
@@ -122,7 +117,7 @@ const extensions = {
         }
         return null;
     }
-};
+}
 
 extensions.use('ANGLE_instanced_arrays', 'instanced');
 extensions.use('OES_vertex_array_object', 'vao');
