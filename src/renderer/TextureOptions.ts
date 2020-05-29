@@ -5,22 +5,22 @@ import Color from "../math/Color";
 
 export class TextureOptions {
 
-    uvTypes: Object = null;
-    option: RenderOptions = null;
+    public uvTypes: Object = null;
+    public option: RenderOptions = null;
 
 
-    reset(option : RenderOptions) {
+    public reset(option : RenderOptions) : TextureOptions {
         this.option = option;
         this.uvTypes = {};
         return this;
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "TextureOptions";
     }
 
 
-    add(texture : Texture | Color, optionName : string, callback ?: Function) {
+    public add(texture : Texture | Color, optionName : string, callback ?: Function) : TextureOptions {
         if (texture && texture instanceof Texture) {
             const {
                 uvTypes,
@@ -39,7 +39,7 @@ export class TextureOptions {
         return this;
     }
 
-    update() {
+    public update() : TextureOptions {
         const supportUV = [0, 1];
         const {
             uvTypes,

@@ -2,9 +2,10 @@ import { glConstants } from "../constants/glConstants";
 import { Pool } from "../utils/Pool";
 import extensions from "./extensions";
 import GLBuffer from "./GLBuffer";
-import { log } from "../utils/Log";
-import bufferUtil from "../utils/bufferUtil";
-
+import { GeometryData } from "../geometry/GeometryData";
+import { WebGLResourceManager } from "./WebGLResourceManager";
+import { Mesh } from "../core";
+import { WebGLRenderer } from "./WebGLRenderer";
 
 const {
     TRIANGLES
@@ -14,29 +15,25 @@ let globalStates = [];
 let currentVao = null;
 const cache = new Pool();
 
-/**
- * VAO
- * @class
- */
+
 export class VertexArrayObject {
     
     /**
      * 缓存
-     * @readOnly
-     * @return {Cache}
+     * @return
      */
-    static get cache(){
+    public static get cache() : Pool{
         return cache;
     }
 
     /**
      * 获取 vao
-     * @param  {WebGLRenderingContext} gl
-     * @param  {String} id  缓存id
-     * @param  {Object} params
-     * @return {VertexArrayObject}
+     * @param   gl
+     * @param   id  缓存id
+     * @param  params
+     * @return 
      */
-    static getVao(gl, id, useVao : boolean, mode : number) {
+    public static getVao(gl : WebGLRenderingContext, id : string, useVao : boolean, mode : number) : VertexArrayObject {
         let vao = cache.get(id);
         if (!vao) {
             vao = new VertexArrayObject(gl, id, useVao, mode);
@@ -52,9 +49,9 @@ export class VertexArrayObject {
 
     /**
      * 重置所有vao
-     * @param  {WebGLRenderingContext} gl
+     * @param  gl
      */
-    static reset(gl) { // eslint-disable-line no-unused-vars
+    public static reset(gl : WebGLRenderingContext) : void { 
         currentVao = null;
         globalStates = [];
         this.bindSystemVao();
@@ -67,7 +64,7 @@ export class VertexArrayObject {
     /**
      * 绑定系统vao
      */
-    static bindSystemVao() {
+    public static bindSystemVao() : void {
         if (extensions.vao) {
             extensions.vao.bindVertexArrayOES(null);
         }
@@ -75,54 +72,35 @@ export class VertexArrayObject {
         currentVao = null;
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "VertexArrayObject";
     }
 
-    /**
-     * @default VertexArrayObject
-     * @type {String}
-     */
-    className: String = 'VertexArrayObject';
+    public className: String = 'VertexArrayObject';
 
-    /**
-     * @default true
-     * @type {Boolean}
-     */
-    isVertexArrayObject: Boolean = true;
 
     /**
      * 顶点数量
-     * @type {Number}
-     * @private
      */
     vertexCount: number = null;
 
     /**
      * 是否使用 vao
-     * @type {Boolean}
-     * @default false
      */
     useVao: Boolean = false;
 
     /**
      * 是否使用 instanced
-     * @type {Boolean}
-     * @default false
      */
     useInstanced: Boolean = false;
 
     /**
      * 绘图方式
-     * @type {GLEnum}
-     * @default gl.TRIANGLES
      */
     mode: number = TRIANGLES;
 
     /**
      * 是否脏
-     * @type {Boolean}
-     * @default true
      */
     isDirty: boolean = true;
 
@@ -142,12 +120,10 @@ export class VertexArrayObject {
     indexType : number;
 
     /**
-     * @constructs
-     * @param  {WebGLRenderingContext} gl
-     * @param  {String} id  缓存id
-     * @param  {Object} params
+     * @param   gl
+     * @param   id  缓存id
      */
-    constructor(gl, id, useVao : boolean, mode : number) {
+    constructor(gl : WebGLRenderingContext, id : string, useVao : boolean, mode : number) {
         this.gl = gl;
         this.id = id;
         this.vaoExtension = extensions.vao;
@@ -176,7 +152,7 @@ export class VertexArrayObject {
     /**
      * bind
      */
-    bind() {
+    public bind() : void {
         if (currentVao !== this) {
             if (this.useVao) {
                 this.vaoExtension.bindVertexArrayOES(this.vao);
@@ -187,10 +163,7 @@ export class VertexArrayObject {
         }
     }
 
-    /**
-     * @private
-     */
-    bindSystemVao() {
+    public bindSystemVao() : void {
         const gl = this.gl;
         if (currentVao && currentVao.useVao) {
             currentVao.unbind();
@@ -236,7 +209,7 @@ export class VertexArrayObject {
     /**
      * unbind
      */
-    unbind() {
+    public unbind() : void{
         if (this.useVao) {
             this.vaoExtension.bindVertexArrayOES(null);
         }
@@ -246,7 +219,7 @@ export class VertexArrayObject {
     /**
      * draw
      */
-    draw() {
+    public draw() : void{
         this.bind();
         const {
             gl,
@@ -262,9 +235,9 @@ export class VertexArrayObject {
 
     /**
      * 获取顶点数量
-     * @return {Number} 顶点数量
+     * @return  顶点数量
      */
-    getVertexCount() {
+    public getVertexCount() : number {
         if (this.vertexCount === null) {
             const attributeObj = this.attributes[0];
             if (attributeObj) {
@@ -275,11 +248,12 @@ export class VertexArrayObject {
         }
         return this.vertexCount;
     }
+
     /**
      * drawInstance
-     * @param  {Number} [primcount=1]
+     * @param  primcount
      */
-    drawInstance(primcount = 1) {
+    public drawInstance(primcount : number = 1) : void {
         this.bind();
         const {
             gl,
@@ -293,13 +267,14 @@ export class VertexArrayObject {
             }
         }
     }
+
     /**
      * addIndexBuffer
-     * @param {GeometryData} data
-     * @param {GLenum} usage gl.STATIC_DRAW|gl.DYNAMIC_DRAW
-     * @return {GLBuffer} Buffer
+     * @param data
+     * @param usage gl.STATIC_DRAW|gl.DYNAMIC_DRAW
+     * @return  Buffer
      */
-    addIndexBuffer(geometryData, usage) {
+    public addIndexBuffer(geometryData : GeometryData, usage : number) : GLBuffer {
         this.bind();
         const gl = this.gl;
         let buffer = this.indexBuffer;
@@ -316,15 +291,16 @@ export class VertexArrayObject {
 
         return buffer;
     }
+
     /**
      * addAttribute
-     * @param {GeometryData} geometryData
-     * @param {Object} attribute
-     * @param {GLenum} usage gl.STATIC_DRAW|gl.DYNAMIC_DRAW
-     * @param {Function} onInit
-     * @return {AttributeObject} attributeObject
+     * @param  geometryData
+     * @param  attribute
+     * @param usage gl.STATIC_DRAW|gl.DYNAMIC_DRAW
+     * @param onInit
+     * @return  attributeObject
      */
-    addAttribute(geometryData, attribute, usage, onInit ?: Function) {
+    public addAttribute(geometryData : GeometryData, attribute : any, usage : number, onInit ?: Function) {
         this.bind();
         const gl = this.gl;
         const name = attribute.name;
@@ -355,11 +331,11 @@ export class VertexArrayObject {
 
     /**
      * 使用了资源
-     * @param  {WebGLResourceManager} resourceManager
-     * @param  {Mesh} mesh
-     * @return {VertexArrayObject}
+     * @param   resourceManager
+     * @param   mesh
+     * @return 
      */
-    useResource(resourceManager, mesh) {
+    public useResource(resourceManager : WebGLResourceManager, mesh : Mesh) :VertexArrayObject  {
         this.attributes.forEach((attributeObject) => {
             resourceManager.useResource(attributeObject.buffer, mesh);
         });
@@ -370,25 +346,26 @@ export class VertexArrayObject {
 
         return this;
     }
+
     /**
      * 没有被引用时销毁资源
-     * @param  {WebGLRenderer} renderer
-     * @return {VertexArrayObject} this
+     * @param   renderer
+     * @return this
      */
-    destroyIfNoRef(renderer) {
+    public destroyIfNoRef(renderer : WebGLRenderer) : VertexArrayObject {
         const resourceManager = renderer.resourceManager;
         resourceManager.destroyIfNoRef(this);
 
         return this;
     }
 
-    _isDestroyed : boolean;
+    public _isDestroyed : boolean;
 
     /**
      * 销毁资源
-     * @return {VertexArrayObject} this
+     * @return this
      */
-    destroy() {
+    public destroy() : VertexArrayObject {
         if (this._isDestroyed) {
             return this;
         }
