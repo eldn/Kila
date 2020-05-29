@@ -3,6 +3,8 @@
 import { glConstants } from "../constants/glConstants";
 import { Pool } from "../utils/Pool";
 import math from "../math/math";
+import { GeometryData } from "../geometry/GeometryData";
+import { WebGLRenderer } from "./WebGLRenderer";
 
 
 const {
@@ -17,21 +19,20 @@ const cache = new Pool();
  * 缓冲
  * @class
  */
-class GLBuffer {
+export class GLBuffer {
 
     /**
      * 缓存
-     * @readOnly
-     * @return {Cache}
+     * @return 
      */
-    static get cache() {
+    static get cache() : Pool {
         return cache;
     }
 
     /**
      * 重置缓存
      */
-    static reset(gl : WebGLRenderingContext) { // eslint-disable-line no-unused-vars
+    static reset(gl : WebGLRenderingContext) : void { // eslint-disable-line no-unused-vars
         cache.each((buffer) => {
             buffer.destroy();
         });
@@ -39,16 +40,16 @@ class GLBuffer {
 
     /**
      * 生成顶点缓冲
-     * @param  {WebGLRenderingContext} gl
-     * @param  {GeometryData} geometryData
-     * @param  {GLenum} [usage = STATIC_DRAW]
-     * @return {GLBuffer}
+     * @param   gl
+     * @param  geometryData
+     * @param  usage 
+     * @return 
      */
-    static createVertexBuffer(gl : WebGLRenderingContext, geometryData, usage = STATIC_DRAW) {
+    static createVertexBuffer(gl : WebGLRenderingContext, geometryData : GeometryData, usage : number = STATIC_DRAW) :GLBuffer {
         return this.createBuffer(gl, ARRAY_BUFFER, geometryData, usage);
     }
 
-    static createBuffer(gl, target, geometryData, usage) {
+    static createBuffer(gl : WebGLRenderingContext, target : number, geometryData : GeometryData, usage : number) : GLBuffer{
         const id = geometryData.bufferViewId;
         let buffer = cache.get(id);
         if (buffer) {
@@ -62,49 +63,29 @@ class GLBuffer {
 
     /**
      * 生成索引缓冲
-     * @param  {WebGLRenderingContext} gl
-     * @param  {GeometryData} geometryData
-     * @param  {GLenum} [usage = STATIC_DRAW]
-     * @return {GLBuffer}
+     * @param   gl
+     * @param  geometryData
+     * @param  usage
+     * @return
      */
-    static createIndexBuffer(gl, geometryData, usage = STATIC_DRAW) {
+    static createIndexBuffer(gl : WebGLRenderingContext, geometryData : GeometryData, usage : number = STATIC_DRAW) : GLBuffer{
         return this.createBuffer(gl, ELEMENT_ARRAY_BUFFER, geometryData, usage);
     }
 
-    /**
-     * id
-     * @type {String}
-     */
+   
     id : string;
-
-    gl : any;
-
-    /**
-     * target
-     * @type {GLenum}
-     */
+    gl : WebGLRenderingContext;
     target : number;
-
-     /**
-     * usage
-     * @type {GLenum}
-     */
     usage : number;
+    buffer : WebGLBuffer;
 
     /**
-     * buffer
-     * @type {GLBuffer}
+     * @param  gl
+     * @param  target
+     * @param  data
+     * @param  usage
      */
-    buffer : any;
-
-    /**
-     * @constructs
-     * @param  {WebGLRenderingContext} gl
-     * @param  {GLenum} [target = ARRAY_BUFFER]
-     * @param  {TypedArray} data
-     * @param  {GLenum} [usage = STATIC_DRAW]
-     */
-    constructor(gl, target = ARRAY_BUFFER, data, usage = STATIC_DRAW) {
+    constructor(gl : WebGLRenderingContext, target : number = ARRAY_BUFFER, data : TypedArray, usage  : number= STATIC_DRAW) {
         
         this.id = math.generateUUID(this.getClassName());
 
@@ -123,28 +104,28 @@ class GLBuffer {
         }
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "GLBuffer";
     }
 
     /**
      * 绑定
-     * @return {GLBuffer} this
+     * @return  this
      */
-    bind() {
+    public bind() : GLBuffer{
         this.gl.bindBuffer(this.target, this.buffer);
         return this;
     }
 
 
-    data : any;
+    data : TypedArray;
 
     /**
      * 上传数据
-     * @param  {TypedArray} data
-     * @return {GLBuffer} this
+     * @param  data
+     * @return  this
      */
-    bufferData(data) {
+    public bufferData(data : TypedArray) : GLBuffer {
         const {
             gl,
             target,
@@ -159,12 +140,12 @@ class GLBuffer {
 
     /**
      * 上传部分数据
-     * @param  {Number} byteOffset
-     * @param  {TypedArray} data
-     * @param  {Boolean} [isBinding=false]
-     * @return {GLBuffer} this
+     * @param   byteOffset
+     * @param   data
+     * @param  sBinding
+     * @return  this
      */
-    bufferSubData(byteOffset, data, isBinding = false) {
+    public bufferSubData(byteOffset : number, data : TypedArray, isBinding : boolean = false) : GLBuffer {
         const {
             gl,
             target
@@ -178,10 +159,10 @@ class GLBuffer {
     }
 
     /**
-     * @param  {GeometryData} geometryData
-     * @return {GLBuffer} this
+     * @param  geometryData
+     * @return  this
      */
-    uploadGeometryData(geometryData) {
+    public uploadGeometryData(geometryData : GeometryData) :  GLBuffer{
         const subDataList = geometryData.subDataList;
         if (!this.data || this.data.byteLength < geometryData.data.byteLength || geometryData._isAllDirty === true) {
             this.bufferData(geometryData.data);
@@ -202,7 +183,7 @@ class GLBuffer {
      * @param  {WebGLRenderer} renderer
      * @return {GLBuffer} this
      */
-    destroyIfNoRef(renderer) {
+    public destroyIfNoRef(renderer : WebGLRenderer) : GLBuffer {
         const resourceManager = renderer.resourceManager;
         resourceManager.destroyIfNoRef(this);
         return this;
@@ -212,9 +193,9 @@ class GLBuffer {
 
     /**
      * 销毁资源
-     * @return {GLBuffer} this
+     * @return this
      */
-    destroy() {
+    public destroy() : GLBuffer{
         if (this._isDestroyed) {
             return this;
         }

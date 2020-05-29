@@ -19,7 +19,7 @@ export class GeometryData{
 
     private _data : TypedArray;
 
-    private subDataList : Array<any>;
+    public subDataList : Array<any>;
 
     /**
      * The number of components per vertex attribute.Must be 1, 2, 3, or 4.
@@ -36,15 +36,15 @@ export class GeometryData{
      */
     public type: number;
 
-    private _isSubDirty:  boolean = false;
-    private _isAllDirty: boolean = false;
+    public _isSubDirty:  boolean = false;
+    public _isAllDirty: boolean = false;
 
   
     get isDirty() {
         return this._isSubDirty || this._isAllDirty;
     }
     
-    set isDirty(value) {
+    set isDirty(value : boolean) {
         this._isAllDirty = value;
         if (value === false) {
             this.clearSubData();
