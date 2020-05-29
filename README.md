@@ -16,7 +16,24 @@ A webgl based 3d rendering engine.
 ## Features
 
 - [x] render tree(scene management)  
+- [x] lights(point,area,directino,spot),Phong/BILIN-Phong
+- [ ] cubetexture
+- [ ] billboard
 - [ ] shadow mapping  
+- [ ] lightmap
+- [ ] ray cast/pick
+- [ ] skybox
+- [ ] compressed texture
+- [ ] SSAO
+- [ ] post process
+- [ ] normalMap, parallaxMap, emissionMap, sepecularEnvMap  support
+- [ ] custom shader material
 - [ ] frustum culling
 - [ ] gltf loader
+- [ ] bloom
+- [ ] lod
 - [ ] pbr
+- [ ] physic
+- [ ] HUD
+- [ ] HDR
+- [ ] Animation
