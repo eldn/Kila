@@ -4,6 +4,7 @@ import { Material } from "../material";
 import { Geometry } from "../geometry";
 import { VertexArrayObject } from "..";
 import Shader from "../shader/shader";
+import { Program } from "../renderer";
 
 export class Mesh extends GameObject{
 
@@ -34,7 +35,7 @@ export class Mesh extends GameObject{
         return opt;
     }
 
-    public useResource(res :  VertexArrayObject | Shader) {
+    public useResource(res :  VertexArrayObject | Shader | Program) {
         if (res) {
             this._usedResourceDict[res.getClassName() + ':' + res.id] = res;
         }

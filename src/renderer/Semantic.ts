@@ -25,13 +25,6 @@ let state : WebGLState;
 let fog;
 let renderer : WebGLRenderer;
 
-const blankInfo = {
-    isBlankInfo: true,
-    get() {
-        return undefined;
-    }
-};
-
 
 /**
  * 语义
@@ -39,39 +32,28 @@ const blankInfo = {
  * @type {Object}
  */
 export class semantic{
-    /**
-     * @type {State}
-     */
+
     public static state: WebGLState = null;
 
-    /**
-     * @type {Camera}
-     */
     public static  camera:  Camera = null;
 
-    /**
-     * @type {LightManager}
-     */
+
     public static  lightManager: LightManager = null;
 
-    /**
-     * @type {WebGLRenderingContext}
-     */
+ 
     public static  gl: WebGLRenderingContext = null;
-    /**
-     * WebGLRenderer
-     * @type {WebGLRenderer}
-     */
+ 
+
     private static _renderer: WebGLRenderer = null;
 
     /**
      * 初始化
-     * @param  {State} _state
-     * @param  {Camera} _camera
-     * @param  {LightManager} _lightManager
-     * @param  {Fog} _fog
+     * @param  _state
+     * @param  _camera
+     * @param  _lightManager
+     * @param  _fog
      */
-    public static init(_renderer : WebGLRenderer, _state : WebGLState, _camera : Camera, _lightManager : LightManager) {
+    public static init(_renderer : WebGLRenderer, _state : WebGLState, _camera : Camera, _lightManager : LightManager) : void{
         renderer = this._renderer = _renderer;
         state = this.state = _state;
         camera = this.camera = _camera;
@@ -81,11 +63,12 @@ export class semantic{
 
     /**
      * 设置相机
-     * @param {Camera} _camera
+     * @param  _camera
      */
-    public static setCamera(_camera : Camera) {
+    public static setCamera(_camera : Camera) : void {
         camera = this.camera = _camera;
     }
+
 
     public static handlerColorOrTexture(value : Color | Texture, textureIndex) {
         if (value && value instanceof Texture) {
@@ -101,7 +84,7 @@ export class semantic{
         return tempFloat32Array4;
     }
 
-    public static handlerTexture(value, textureIndex) {
+    public static handlerTexture(value : Texture, textureIndex) : number {
         if (value && value instanceof Texture) {
             return this.handlerGLTexture(value.target, value.getGLTexture(state), textureIndex);
         }
@@ -109,7 +92,7 @@ export class semantic{
         return undefined;
     }
 
-    public static handlerGLTexture(target, texture, textureIndex) {
+    public static handlerGLTexture(target : number, texture : WebGLTexture, textureIndex) : number{
         if (texture) {
             state.activeTexture(gl.TEXTURE0 + textureIndex);
             state.bindTexture(target, texture);
@@ -127,27 +110,19 @@ export class semantic{
         return 0;
     }
 
-    /**
-     * @type {semanticObject}
-     */
     static POSITION: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.geometry.vertices;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
     static NORMAL: Object =  {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.geometry.normals;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static TANGENT: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             const normalMap = material.normalMap;
@@ -162,9 +137,6 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
     static TEXCOORD_0: Object =  {
         get(mesh : Mesh, material : Material, programInfo) {
             if (!mesh.geometry.uvs) {
@@ -174,9 +146,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+   
     static TEXCOORD_1: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (!mesh.geometry.uvs1) {
@@ -186,9 +156,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static UVMATRIX_0: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (!material.uvMatrix) {
@@ -198,9 +166,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static UVMATRIX_1: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (!material.uvMatrix1) {
@@ -210,9 +176,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+   
     static CAMERAFAR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (camera instanceof PerspectiveCamera) {
@@ -222,9 +186,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+   
     static CAMERANEAR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (camera  instanceof PerspectiveCamera) {
@@ -234,9 +196,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static CAMERATYPE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (camera instanceof PerspectiveCamera) {
@@ -253,9 +213,7 @@ export class semantic{
     }
 
 
-    /**
-     * @type {semanticObject}
-     */
+
     static COLOR_0: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (!mesh.geometry.colors) {
@@ -267,9 +225,6 @@ export class semantic{
 
     // uniforms
 
-    /**
-     * @type {semanticObject}
-     */
     static RENDERERSIZE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             tempFloat32Array2[0] = renderer.width;
@@ -278,9 +233,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static LOCAL: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.matrix.elements;
@@ -288,9 +241,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static MODEL: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.worldMatrix.elements;
@@ -298,36 +249,27 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static VIEW: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return camera.viewMatrix.elements;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
     static PROJECTION: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return camera.projectionMatrix.elements;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static VIEWPROJECTION: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return camera.viewProjectionMatrix.elements;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static MODELVIEW: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return camera.getModelViewMatrix(mesh, tempMatrix4).elements;
@@ -335,9 +277,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static MODELVIEWPROJECTION: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return camera.getModelProjectionMatrix(mesh, tempMatrix4).elements;
@@ -345,9 +285,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static MODELINVERSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix4.invert(mesh.worldMatrix).elements;
@@ -355,36 +293,28 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static VIEWINVERSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return camera.worldMatrix.elements;
         }
     }
 
-    /**
-     * @type {semanticObject}
-    */
+
    static VIEWINVERSEINVERSETRANSPOSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix3.normalFromMat4(camera.worldMatrix).elements;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static PROJECTIONINVERSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix4.invert(camera.projectionMatrix).elements;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static MODELVIEWINVERSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix4.invert(camera.getModelViewMatrix(mesh, tempMatrix4)).elements;
@@ -392,9 +322,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static MODELVIEWPROJECTIONINVERSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix4.invert(camera.getModelProjectionMatrix(mesh, tempMatrix4)).elements;
@@ -402,9 +330,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static MODELINVERSETRANSPOSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix3.normalFromMat4(mesh.worldMatrix).elements;
@@ -412,9 +338,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static MODELVIEWINVERSETRANSPOSE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return tempMatrix3.normalFromMat4(camera.getModelViewMatrix(mesh, tempMatrix4)).elements;
@@ -422,18 +346,14 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static NORMALMAPSCALE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return material.normalMapScale;
         }
     }
 
-     /**
-     * @type {semanticObject}
-     */
+
     static SHININESS: Object = {
         get(mesh, material, programInfo) {
             return material.shininess;
@@ -443,36 +363,27 @@ export class semantic{
 
     // light
 
-    /**
-     * @type {semanticObject}
-     */
     static AMBIENTLIGHTSCOLOR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.ambientInfo;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static DIRECTIONALLIGHTSCOLOR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.directionalInfo.colors;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static DIRECTIONALLIGHTSINFO: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.directionalInfo.infos;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static DIRECTIONALLIGHTSSHADOWMAP: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             const result = lightManager.directionalInfo.shadowMap.map((texture, i) => {
@@ -482,72 +393,55 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static DIRECTIONALLIGHTSSHADOWMAPSIZE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.directionalInfo.shadowMapSize;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+   
     static DIRECTIONALLIGHTSSHADOWBIAS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.directionalInfo.shadowBias;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
     static DIRECTIONALLIGHTSPACEMATRIX: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.directionalInfo.lightSpaceMatrix;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static POINTLIGHTSPOS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.poses;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  POINTLIGHTSCOLOR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.colors;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  POINTLIGHTSINFO: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.infos;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static  POINTLIGHTSRANGE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.ranges;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  POINTLIGHTSSHADOWMAP: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             const result = lightManager.pointInfo.shadowMap.map((texture, i) => {
@@ -557,90 +451,70 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static  POINTLIGHTSSHADOWBIAS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.shadowBias;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static POINTLIGHTSPACEMATRIX: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.lightSpaceMatrix;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static POINTLIGHTCAMERA: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.pointInfo.cameras;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static SPOTLIGHTSPOS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.poses;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static SPOTLIGHTSDIR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.dirs;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static  SPOTLIGHTSCOLOR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.colors;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static SPOTLIGHTSCUTOFFS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.cutoffs;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static SPOTLIGHTSINFO: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.infos;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static  SPOTLIGHTSRANGE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.ranges;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static  SPOTLIGHTSSHADOWMAP: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             const result = lightManager.spotInfo.shadowMap.map((texture, i) => {
@@ -650,81 +524,63 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static SPOTLIGHTSSHADOWMAPSIZE: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.shadowMapSize;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static  SPOTLIGHTSSHADOWBIAS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.shadowBias;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  SPOTLIGHTSPACEMATRIX: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.spotInfo.lightSpaceMatrix;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static AREALIGHTSCOLOR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.areaInfo.colors;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static AREALIGHTSPOS: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.areaInfo.poses;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static  AREALIGHTSWIDTH: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.areaInfo.width;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  AREALIGHTSHEIGHT: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return lightManager.areaInfo.height;
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static  AREALIGHTSLTCTEXTURE1: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return semantic.handlerTexture(lightManager.areaInfo.ltcTexture1, programInfo.textureIndex);
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+
     static  AREALIGHTSLTCTEXTURE2: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return semantic.handlerTexture(lightManager.areaInfo.ltcTexture2, programInfo.textureIndex);
@@ -733,9 +589,7 @@ export class semantic{
 
     // fog
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  FOGCOLOR: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (fog) {
@@ -745,9 +599,7 @@ export class semantic{
         }
     }
 
-    /**
-     * @type {semanticObject}
-     */
+ 
     static  FOGINFO: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             if (fog) {
@@ -759,9 +611,7 @@ export class semantic{
 
     // unQuantize
 
-    /**
-     * @type {semanticObject}
-     */
+   
     static  POSITIONDECODEMAT: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.geometry.positionDecodeMat;
@@ -769,9 +619,7 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
+  
     static  NORMALDECODEMAT: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.geometry.normalDecodeMat;
@@ -779,10 +627,8 @@ export class semantic{
         isDependMesh: true
     }
 
-    /**
-     * @type {semanticObject}
-     */
-    static   UVDECODEMAT: Object = {
+ 
+    static UVDECODEMAT: Object = {
         get(mesh : Mesh, material : Material, programInfo) {
             return mesh.geometry.uvDecodeMat;
         },

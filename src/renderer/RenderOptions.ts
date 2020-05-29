@@ -1,5 +1,4 @@
 export interface RenderOptions{
-
     SIDE ?: number;
     HAS_LIGHT ?:number;
     PREMULTIPLY_ALPHA ?:number;

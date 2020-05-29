@@ -1,6 +1,7 @@
 import { Mesh } from "../core/Mesh";
 import VertexArrayObject from "./VertexArrayObject";
 import Shader from "../shader/shader";
+import Program from "./Program";
 
 
 /**
@@ -38,7 +39,7 @@ export class WebGLResourceManager{
      * @param  {Mesh} mesh 使用资源的mesh
      * @return {WebGLResourceManager} this
      */
-    useResource(res : VertexArrayObject | Shader, mesh : Mesh) {
+    useResource(res : VertexArrayObject | Shader | Program, mesh : Mesh) {
         if (res) {
             const key = res.getClassName() + ':' + res.id;
             if (!this._usedResourceDict[key]) {

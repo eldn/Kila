@@ -17,6 +17,7 @@ A webgl based 3d rendering engine.
 
 - [x] render tree(scene management)  
 - [x] lights(point,area,directino,spot),Phong/BILIN-Phong
+- [ ] fog
 - [ ] cubetexture
 - [ ] billboard
 - [ ] shadow mapping  

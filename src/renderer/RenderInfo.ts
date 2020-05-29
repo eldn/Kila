@@ -2,79 +2,61 @@
 
 /**
  * 渲染信息
- * @class
  */
 export class RenderInfo{
 
-    /**
-     * @constructs
-     */
+  
     constructor() {
         this.reset();
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "RenderInfo";
     }
 
     /**
      * 当前面数
-     * @type {Number}
-     * @private
      */
     private _currentFaceCount : number = 0;
 
     /**
      * 增加面数
-     * @param {number} num
+     * @param  num
      */
-    addFaceCount(num: number) {
+    public addFaceCount(num: number) : void {
         this._currentFaceCount += num;
     }
 
     /**
      * 当前绘图数
-     * @private
-     * @type {Number}
      */
     private _currentDrawCount : number = 0;
 
     /**
      * 增加绘图数
-     * @param {Number} num
+     * @param  num
      */
-    addDrawCount(num) {
+    public addDrawCount(num : number) : void{
         this._currentDrawCount += num;
     }
 
     /**
      * 面数
-     * @type {Number}
-     * @readOnly
      */
-    faceCount :  number = 0;
+    public faceCount :  number = 0;
 
     /**
      * 绘图数
-     * @type {Number}
-     * @readOnly
      */
-    drawCount : number = 0;
+    public drawCount : number = 0;
 
     /**
      * 重置信息
      */
-    reset() {
-        
+    public reset() : void {
         this.faceCount = Math.floor(this._currentFaceCount);
-
-        
         this.drawCount = Math.floor(this._currentDrawCount);
-
-        
         this._currentFaceCount = 0;
-
-        
         this._currentDrawCount = 0;
     }
 }

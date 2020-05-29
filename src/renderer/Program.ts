@@ -9,24 +9,21 @@ import { WebGLRenderer } from './WebGLRenderer';
 
 const cache = new Pool();
 
-/**
- * @class
- */
+
 export class Program {
    
     /**
      * 缓存
-     * @readOnly
-     * @return {Cache}
+     * @return
      */
-    static get cache(){
+    public static get cache() : Pool{
         return cache;
     }
 
     /**
      * 重置缓存
      */
-    static reset(gl : WebGLRenderingContext) { // eslint-disable-line no-unused-vars
+    public static reset(gl : WebGLRenderingContext) : void { 
         cache.each((program) => {
             program.destroy();
         });
@@ -34,12 +31,12 @@ export class Program {
 
     /**
      * 获取程序
-     * @param  {Shader} shader
-     * @param  {WebGLState} state
-     * @param  {Boolean} [ignoreError=false]
-     * @return {Program}
+     * @param  shader
+     * @param  state
+     * @param  ignoreError
+     * @return 
      */
-    static getProgram(shader : Shader, state : WebGLState, ignoreError : boolean = false) {
+    public static getProgram(shader : Shader, state : WebGLState, ignoreError : boolean = false) : Program {
         const id = shader.id;
         let program = cache.get(id);
         if (!program) {
@@ -57,86 +54,69 @@ export class Program {
 
     /**
      * 获取空白程序
-     * @param  {WebGLState} state
-     * @return {Program}
+     * @param  state
+     * @return
      */
-    static getBlankProgram(state : WebGLState) {
+    public static getBlankProgram(state : WebGLState) : Program {
         const shader = Shader.getCustomShader('void main(){}', 'precision HILO_MAX_FRAGMENT_PRECISION float;void main(){gl_FragColor = vec4(0.0);}', '', '__hiloBlankShader');
         return this.getProgram(shader, state, true);
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Program";
     }
 
     /**
      * 片段代码
-     * @type {String}
-     * @default ''
      */
-    fragShader: string = '';
+    public fragShader: string = '';
 
     /**
      * 顶点代码
-     * @type {String}
-     * @default ''
      */
-    vertexShader: string = '';
+    public vertexShader: string = '';
 
     /**
      * attribute 集合
-     * @type {Object}
-     * @default null
      */
-    attributes: Object = null;
+    public  attributes: Object = null;
 
     /**
      * uniform 集合
-     * @type {Object}
-     * @default null
      */
-    uniforms: Object = null;
+    public uniforms: Object = null;
 
     /**
      * program
-     * @type {WebGLProgram}
-     * @default null
      */
-    program: WebGLProgram = null;
+    public program: WebGLProgram = null;
 
     /**
      * gl
-     * @type {WebGL}
      */
-    gl: WebGLRenderingContext =  null;
+    public gl: WebGLRenderingContext =  null;
 
     /**
      * webglState
-     * @type {WebGLState}
-     * @default null
      */
-    state: WebGLState =null;
+    public state: WebGLState =null;
 
     /**
      * 是否始终使用
-     * @default true
-     * @type {Boolean}
      */
-    alwaysUse: Boolean = false;
+    public alwaysUse: Boolean = false;
 
     /**
      * id
-     * @type {String}
      */
-    id : string;
+    public id : string;
     
-    _dict : Object;
+    public _dict : Object;
 
-    ignoreError : boolean;
+    public ignoreError : boolean;
 
     /**
-     * @constructs
-     * @param  {WebGLState}state WebGL state
+     * @param  state WebGL state
      */
     constructor(state : WebGLState, vertexShader : string, fragShader : string, ignoreError : boolean) {
         
@@ -168,9 +148,9 @@ export class Program {
 
     /**
      * 生成 program
-     * @return {WebGLProgram}
+     * @return 
      */
-    createProgram() {
+    public createProgram() : WebGLProgram {
         const gl = this.gl;
         const program = gl.createProgram();
         const vertexShader = this.createShader(gl.VERTEX_SHADER, this.vertexShader);
@@ -199,17 +179,17 @@ export class Program {
     /**
      * 使用 program
      */
-    useProgram() {
+    public useProgram() : void {
         this.state.useProgram(this.program);
     }
 
     /**
      * 生成 shader
-     * @param  {Number} shaderType
-     * @param  {String} code
-     * @return {WebGLShader}
+     * @param   shaderType
+     * @param  code
+     * @return 
      */
-    createShader(shaderType : number, code : string) {
+    public createShader(shaderType : number, code : string) : WebGLShader {
         const gl = this.gl;
         const shader = gl.createShader(shaderType);
         gl.shaderSource(shader, code);
@@ -227,7 +207,7 @@ export class Program {
     /**
      * 初始化 attribute 信息
      */
-    initAttributes() {
+    public initAttributes() : void{
         const gl = this.gl;
         const program = this.program;
 
@@ -328,7 +308,7 @@ export class Program {
     /**
      * 初始化 uniform 信息
      */
-    initUniforms() {
+    public initUniforms() : void {
         const gl = this.gl;
         const program = this.program;
 
@@ -377,23 +357,23 @@ export class Program {
 
     /**
      * 没有被引用时销毁资源
-     * @param  {WebGLRenderer} renderer
-     * @return {Program} this
+     * @param   renderer
+     * @return this
      */
-    destroyIfNoRef(renderer : WebGLRenderer) {
+    public destroyIfNoRef(renderer : WebGLRenderer) : Program {
         const resourceManager = renderer.resourceManager;
         resourceManager.destroyIfNoRef(this);
 
         return this;
     }
 
-    _isDestroyed : boolean;
+    public _isDestroyed : boolean;
 
     /**
      * 销毁资源
-     * @return {Program} this
+     * @return this
      */
-    destroy() {
+    public destroy() : Program {
         if (this._isDestroyed) {
             return this;
         }

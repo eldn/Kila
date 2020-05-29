@@ -39,50 +39,42 @@ const transparentSort = function(meshA : Mesh, meshB : Mesh) {
 
 /**
  * 渲染列表
- * @class
  */
 export class RenderList{
 
     /**
      * 不透明物体列表
-     * @type {Array}
      */
-    opaqueList : Array<Mesh>;
+    public opaqueList : Array<Mesh>;
 
     /**
      * 透明物体列表
-     * @type {Array}
      */
-    transparentList : Array<Mesh>;
+    public transparentList : Array<Mesh>;
 
-    /**
-     * @constructs
-     */
+  
     constructor() {
-        
         this.opaqueList = [];
-
-       
         this.transparentList = [];
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "RenderList";
     }
 
     /**
      * 重置列表
      */
-    reset() {
+    public reset() : void {
         this.opaqueList.length = 0;
         this.transparentList.length = 0;
     }
 
     /**
      * 遍历列表执行回调
-     * @param  {RenderList~traverseCallback} callback callback(mesh)nstancedCallback(instancedMeshes)
+     * @param   callback callback(mesh)nstancedCallback(instancedMeshes)
      */
-    traverse(callback) {
+    public traverse(callback : Function) : void {
         this.opaqueList.forEach((mesh) => {
             callback(mesh);
         });
@@ -92,17 +84,17 @@ export class RenderList{
         });
     }
 
-    sort() {
+    public sort() : void {
         this.transparentList.sort(transparentSort);
         this.opaqueList.sort(opaqueSort);
     }
 
     /**
      * 增加 mesh
-     * @param {Mesh} mesh
-     * @param {Camera} camera
+     * @param  mesh
+     * @param  camera
      */
-    addMesh(mesh : Mesh, camera : Camera) {
+    public addMesh(mesh : Mesh, camera : Camera) : void {
         const material = mesh.material;
         const geometry = mesh.geometry;
 
@@ -125,13 +117,3 @@ export class RenderList{
 }
 
 export default RenderList;
-
-/**
- * @callback RenderList~traverseCallback
- * @param {Mesh} mesh
- */
-
-/**
- * @callback RenderList~instancedTraverseCallback
- * @param {Mesh[]} meshes
- */
