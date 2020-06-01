@@ -10,7 +10,7 @@ A webgl based 3d rendering engine.
 ## Documentation
 
 - [Documentation](https://eldn.github.io/Kila/index.html)
-- [Examples](https://eldn.github.io/Kila/index.html))
+- [Examples](https://eldn.github.io/Kila/index.html)
 
 
 ## Features
