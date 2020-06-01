@@ -21,12 +21,12 @@ import { Scene } from "../core/Scene";
 import { semantic } from "./Semantic";
 import GameObject from "../core/GameObject";
 import { Light } from "../light/Light";
+import { Geometry } from "../geometry";
 
 
 
 const {
     DEPTH_TEST,
-    SAMPLE_ALPHA_TO_COVERAGE,
     CULL_FACE,
     FRONT_AND_BACK,
     BLEND,
@@ -39,137 +39,95 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * gl
-     * @default null
-     * @type {WebGLRenderingContext}
      */
     gl: WebGLRenderingContext = null;
 
 
      /**
      * 宽
-     * @type {number}
-     * @default 0
      */
     width : number =  0;
 
     /**
      * 高
-     * @type {number}
-     * @default 0
      */
     height: number = 0;
 
 
      /**
      * 偏移值
-     * @type {Number}
-     * @default 0
      */
     offsetX: number = 0;
 
     /**
      * 偏移值
-     * @type {Number}
-     * @default 0
      */
     offsetY: number = 0;
 
     /**
      * 像素密度
-     * @type {number}
-     * @default 1
      */
     pixelRatio: number = 1;
 
 
     /**
      * dom元素
-     * @type {Canvas}
-     * @default null
      */
     domElement: HTMLCanvasElement = null;
 
     /**
      * 是否开启透明背景
-     * @type {boolean}
-     * @default false
      */
     alpha: boolean = false;
 
-    /**
-     * @type {boolean}
-     * @default true
-     */
+ 
     depth: boolean = true;
 
-    /**
-     * @type {boolean}
-     * @default false
-     */
+  
     stencil: boolean = false;
 
      /**
      * 顶点着色器精度, 可以是以下值：highp, mediump, lowp
-     * @type {string}
-     * @default highp
      */
     vertexPrecision: string = 'highp';
 
     /**
      * 片段着色器精度, 可以是以下值：highp, mediump, lowp
-     * @type {string}
-     * @default mediump
      */
     fragmentPrecision: string = 'highp';
 
      /**
      * 是否初始化失败
-     * @default false
-     * @type {Boolean}
      */
     isInitFailed: boolean = false;
 
     /**
      * 是否初始化
-     * @type {Boolean}
-     * @default false
-     * @private
      */
     _isInit: boolean = false;
 
     /**
      * 是否lost context
-     * @type {Boolean}
-     * @default false
-     * @private
      */
     _isContextLost: boolean = false;
 
     /**
      * 背景色
-     * @type {Color}
-     * @default new Color(1, 1, 1, 1)
      */
     clearColor : Color;
 
     /**
      * 渲染信息
-     * @type {RenderInfo}
-     * @default new RenderInfo
      */
     renderInfo : RenderInfo;
 
     /**
      * 渲染列表
-     * @type {RenderList}
-     * @default new RenderList
      */
     renderList : RenderList;
 
     /**
      * 资源管理器
-     * @type {WebGLResourceManager}
-     * @default new WebGLResourceManager
      */
     lightManager : LightManager;
 
@@ -180,8 +138,6 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 是否使用VAO
-     * @type {Boolean}
-     * @default true
      */
     useVao: boolean = true;
 
@@ -199,18 +155,17 @@ export class WebGLRenderer extends EventObject{
         this.resourceManager = new WebGLResourceManager();
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "WebGLRenderer";
     }
 
-
      /**
      * 改变大小
-     * @param  {number} width  宽
-     * @param  {number} height  高
-     * @param  {boolean} [force=false] 是否强制刷新
+     * @param   width  宽
+     * @param height  高
+     * @param force 是否强制刷新
      */
-    resize(width : number, height : number, force : boolean) {
+    public resize(width : number, height : number, force : boolean = false) : void {
         if (force || this.width !== width || this.height !== height) {
             const canvas = this.domElement;
             this.width = width;
@@ -223,10 +178,10 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 设置viewport偏移值
-     * @param {Number} x x
-     * @param {Number} y y
+     * @param  x x
+     * @param  y y
      */
-    setOffset(x : number, y : number) {
+    public setOffset(x : number, y : number) : void{
         if (this.offsetX !== x || this.offsetY !== y) {
             this.offsetX = x;
             this.offsetY = y;
@@ -236,12 +191,12 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 设置viewport
-     * @param  {Number} [x=this.offsetX]  x
-     * @param  {Number} [y=this.offsetY] y
-     * @param  {Number} [width=this.gl.drawingBufferWidth]  width
-     * @param  {Number} [height=this.gl.drawingBufferHeight]  height
+     * @param  x  x
+     * @param  y y
+     * @param  width  width
+     * @param  height  height
      */
-    viewport(x ?: number, y ?: number, width ?: number, height ?: number) {
+    public viewport(x : number = this.offsetX, y : number = this.offsetY, width : number = this.gl.drawingBufferWidth, height : number = this.gl.drawingBufferHeight) : void {
         const {
             state,
             gl
@@ -274,19 +229,15 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 是否初始化
-     * @type {Boolean}
-     * @default false
-     * @readOnly
      */
-    get isInit() : boolean{
+    public get isInit() : boolean{
         return this._isInit && !this.isInitFailed;
     }
     
     /**
      * 初始化回调
-     * @return {WebGLRenderer} this
      */
-    onInit(callback : Function) {
+    public onInit(callback : Function){
         if (this._isInit) {
             callback(this);
         } else {
@@ -300,7 +251,7 @@ export class WebGLRenderer extends EventObject{
      /**
      * 初始化 context
      */
-    initContext() {
+    public initContext() : void {
         if (!this._isInit) {
             this._isInit = true;
             try {
@@ -313,7 +264,7 @@ export class WebGLRenderer extends EventObject{
         }
     }
 
-    private _initContext() {
+    private _initContext() : void {
         const contextAttributes = {
             alpha: this.alpha,
             depth: this.depth,
@@ -348,7 +299,7 @@ export class WebGLRenderer extends EventObject{
     private _lastMaterial : Material;
     private _lastProgram : Program;
 
-    _onContextLost(e) {
+    private _onContextLost(e) : void {
         this.fire('webglContextLost');
         const gl = this.gl;
         this._isContextLost = true;
@@ -365,7 +316,7 @@ export class WebGLRenderer extends EventObject{
         this._lastProgram = null;
     }
 
-    _onContextRestore(e) { // eslint-disable-line no-unused-vars
+    private _onContextRestore(e)  : void{ 
         this.fire('webglContextRestored');
         const gl = this.gl;
         this._isContextLost = false;
@@ -374,9 +325,9 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 设置深度检测
-     * @param  {Material} material
+     * @param  material
      */
-    setupDepthTest(material : Material) {
+    private setupDepthTest(material : Material) : void{
         const state = this.state;
         if (material.depthTest) {
             state.enable(DEPTH_TEST);
@@ -390,9 +341,9 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 设置背面剔除
-     * @param  {Material} material
+     * @param   material
      */
-    setupCullFace(material : Material) {
+    private setupCullFace(material : Material) : void {
         const state = this.state;
         if (material.cullFace && material.cullFaceType !== FRONT_AND_BACK) {
             state.enable(CULL_FACE);
@@ -404,9 +355,9 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 设置混合
-     * @param  {Material} material
+     * @param   material
      */
-    setupBlend(material : Material) {
+    setupBlend(material : Material) : void {
         const state = this.state;
         if (material.blend) {
             state.enable(BLEND);
@@ -431,11 +382,11 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 设置vao
-     * @param  {VertexArrayObject} vao
-     * @param  {Program} program
-     * @param  {Mesh} mesh
+     * @param  vao
+     * @param  program
+     * @param  mesh
      */
-    setupVao(vao : VertexArrayObject, program : Program, mesh : Mesh) {
+    setupVao(vao : VertexArrayObject, program : Program, mesh : Mesh) : void {
         const geometry = mesh.geometry;
         const isStatic = geometry.isStatic;
 
@@ -463,11 +414,11 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 设置通用的 uniform
-     * @param  {Program} program
-     * @param  {Mesh} mesh
-     * @param  {Boolean} [force=false] 是否强制更新
+     * @param   program
+     * @param  mesh
+     * @param  force 是否强制更新
      */
-    setupUniforms(program : Program, mesh : Mesh,  force : boolean) {
+    setupUniforms(program : Program, mesh : Mesh,  force : boolean = false) : void {
         const material = this.forceMaterial || mesh.material;
         for (let name in program.uniforms) {
             const uniformInfo = material.getUniformInfo(name);
@@ -485,10 +436,10 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 设置材质
-     * @param  {Program} program
-     * @param  {Mesh} mesh
+     * @param   program
+     * @param  mesh
      */
-    setupMaterial(program : Program, mesh : Mesh, needForceUpdateUniforms : boolean = false) {
+    setupMaterial(program : Program, mesh : Mesh, needForceUpdateUniforms : boolean = false) : void{
         const material = this.forceMaterial || mesh.material;
         if (material.isDirty || this._lastMaterial !== material) {
             this.setupDepthTest(material);
@@ -502,15 +453,12 @@ export class WebGLRenderer extends EventObject{
         this._lastMaterial = material;
     }
 
-      /**
+    /**
      * 设置mesh
-     * @param  {Mesh} mesh
-     * @return {Object} res
-     * @return {VertexArrayObject} res.vao
-     * @return {Program} res.program
-     * @return {Geometry} res.geometry
+     * @param   mesh
+     * @return res
      */
-    setupMesh(mesh : Mesh) {
+    setupMesh(mesh : Mesh) : {vao : VertexArrayObject, program : Program, geometry : Geometry}{
         const gl = this.gl;
         const state = this.state;
         const lightManager = this.lightManager;
@@ -541,10 +489,10 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 增加渲染信息
-     * @param {Number} faceCount 面数量
-     * @param {Number} drawCount 绘图数量
+     * @param faceCount 面数量
+     * @param  drawCount 绘图数量
      */
-    addRenderInfo(faceCount : number, drawCount : number) {
+    addRenderInfo(faceCount : number, drawCount : number) : void{
         const renderInfo = this.renderInfo;
         renderInfo.addFaceCount(faceCount);
         renderInfo.addDrawCount(drawCount);
@@ -553,9 +501,9 @@ export class WebGLRenderer extends EventObject{
 
     /**
      * 渲染
-     * @param  {Stage} stage
-     * @param  {Camera} camera
-     * @param  {Boolean} [fireEvent=false] 是否发送事件
+     * @param  stage
+     * @param  camera
+     * @param  fireEvent 是否发送事件
      */
     render(stage : Scene, camera : Camera, fireEvent  : boolean = false) {
         this.initContext();
@@ -628,9 +576,9 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 清除背景
-     * @param  {Color} [clearColor=this.clearColor]
+     * @param  clearColor
      */
-    clear(clearColor ?: Color) {
+    clear(clearColor : Color = this.clearColor) {
         const {
             gl,
             state
@@ -648,9 +596,9 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 渲染一个mesh
-     * @param  {Mesh} mesh
+     * @param  mesh
      */
-    renderMesh(mesh) {
+    renderMesh(mesh : Mesh) : void {
         const vao = this.setupMesh(mesh).vao;
         vao.draw();
         this.addRenderInfo(vao.vertexCount / 3, 1);
@@ -658,9 +606,9 @@ export class WebGLRenderer extends EventObject{
 
      /**
      * 渲染一组普通mesh
-     * @param  {Mesh[]} meshes
+     * @param  meshes
      */
-    renderMultipleMeshes(meshes : Array<Mesh>) {
+    renderMultipleMeshes(meshes : Array<Mesh>) : void {
         meshes.forEach((mesh) => {
             this.renderMesh(mesh);
         });
@@ -669,7 +617,7 @@ export class WebGLRenderer extends EventObject{
      /**
      * 销毁 WebGL 资源
      */
-    releaseGLResource() {
+    releaseGLResource() : void{
         const gl = this.gl;
         if (gl) {
             Program.reset(gl);

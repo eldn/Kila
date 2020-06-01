@@ -2,18 +2,16 @@ import { Mesh } from "../core/Mesh";
 import VertexArrayObject from "./VertexArrayObject";
 import Shader from "../shader/shader";
 import Program from "./Program";
+import GLBuffer from "./GLBuffer";
 
 
 /**
  * WebGLResourceManager 资源管理器
- * @class
  */
 export class WebGLResourceManager{
 
     /**
      * 是否有需要销毁的资源
-     * @type {boolean}
-     * @default false
      */
     hasNeedDestroyResource: boolean = false;
 
@@ -22,24 +20,22 @@ export class WebGLResourceManager{
 
     private _needDestroyDict : Object;
 
-    /**
-     * @constructs始化参数，所有params都会复制到实例上
-     */
+
     constructor() {
        
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "WebGLResourceManager";
     }
 
     /**
      * 标记使用资源
-     * @param  {VertexArrayObject | Shader} res
-     * @param  {Mesh} mesh 使用资源的mesh
-     * @return {WebGLResourceManager} this
+     * @param  res
+     * @param  mesh 使用资源的mesh
+     * @return  this
      */
-    useResource(res : VertexArrayObject | Shader | Program, mesh : Mesh) {
+    public useResource(res : VertexArrayObject | Shader | Program | GLBuffer, mesh : Mesh) : WebGLResourceManager{
         if (res) {
             const key = res.getClassName() + ':' + res.id;
             if (!this._usedResourceDict[key]) {
@@ -60,17 +56,17 @@ export class WebGLResourceManager{
 
     /**
      * 没有引用时销毁资源
-     * @param  {Object} res
-     * @return {WebGLResourceManager} this
+     * @param   res
+     * @return this
      */
-    destroyIfNoRef(res) {
+    public destroyIfNoRef(res : VertexArrayObject | Shader | Program | GLBuffer) : WebGLResourceManager {
         if (!this._needDestroyDict) {
             this._needDestroyDict = {};
         }
 
         if (res) {
             this.hasNeedDestroyResource = true;
-            this._needDestroyDict[res.className + ':' + res.id] = res;
+            this._needDestroyDict[res.getClassName() + ':' + res.id] = res;
         }
 
         return this;
@@ -79,9 +75,9 @@ export class WebGLResourceManager{
 
     /**
      * 销毁没被使用的资源
-     * @return {WebGLResourceManager} this
+     * @return  this
      */
-    destroyUnsuedResource() {
+    public destroyUnsuedResource() : WebGLResourceManager {
         if (!this.hasNeedDestroyResource) {
             return this;
         }
@@ -104,9 +100,9 @@ export class WebGLResourceManager{
 
     /**
      * 重置
-     * @return {WebGLResourceManager} this
+     * @return this
      */
-    reset() {
+    public reset() : WebGLResourceManager {
         this._usedResourceDict = {};
 
         return this;

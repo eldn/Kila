@@ -1,40 +1,34 @@
 
 /**
  * WebGL 状态管理，减少 api 调用
- * @class
  */
 export class WebGLState{
 
     gl: WebGLRenderingContext;
-
     private _dict : Object;
-
     private activeTextureIndex : number;
-
     private textureUnitDict : Object;
-
     private  currentFramebuffer : WebGLFramebuffer;
     public  preFramebuffer : WebGLFramebuffer;
     private systemFramebuffer : WebGLFramebuffer;
     private _pixelStorei : Object;
 
     /**
-     * @constructs
-     * @param  {WebGLRenderingContext} gl
+     * @param gl
      */
     constructor(gl : WebGLRenderingContext) {
         this.gl = gl;
         this.reset(gl);
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "WebGLState";
     }
 
     /**
      * 重置状态
      */
-    reset(gl) {
+    public reset(gl) {
         this._dict = {};
         this.activeTextureIndex = null;
         this.textureUnitDict = {};
@@ -45,9 +39,9 @@ export class WebGLState{
 
     /**
      * enable
-     * @param  {GLenum} capability
+     * @param  capability
      */
-    enable(capability : number) {
+    public enable(capability : number) {
         const value = this._dict[capability];
         if (value !== true) {
             this._dict[capability] = true;
@@ -57,9 +51,9 @@ export class WebGLState{
 
     /**
      * disable
-     * @param  {GLenum} capability
+     * @param capability
      */
-    disable(capability : number) {
+    public disable(capability : number) {
         const value = this._dict[capability];
         if (value !== false) {
             this._dict[capability] = false;
@@ -69,10 +63,10 @@ export class WebGLState{
 
     /**
      * bindFramebuffer
-     * @param  {GLenum} target
-     * @param  {WebGLFramebuffer} framebuffer
+     * @param  target
+     * @param  framebuffer
      */
-    bindFramebuffer(target : number, framebuffer : WebGLFramebuffer) {
+    public bindFramebuffer(target : number, framebuffer : WebGLFramebuffer) {
         if (this.currentFramebuffer !== framebuffer) {
             this.preFramebuffer = this.currentFramebuffer;
             this.currentFramebuffer = framebuffer;
@@ -83,114 +77,114 @@ export class WebGLState{
     /**
      * 绑定系统framebuffer
      */
-    bindSystemFramebuffer() {
+    public bindSystemFramebuffer() {
         this.bindFramebuffer(this.gl.FRAMEBUFFER, this.systemFramebuffer);
     }
 
     /**
      * useProgram
-     * @param  { WebGLProgram} program
+     * @param  program
      */
-    useProgram(program : WebGLProgram) {
+    public useProgram(program : WebGLProgram) {
         this.set1('useProgram', program);
     }
 
     /**
      * depthFunc
-     * @param  {GLenum } func
+     * @param   func
      */
-    depthFunc(func : number) {
+    public depthFunc(func : number) {
         this.set1('depthFunc', func);
     }
 
     /**
      * depthMask
-     * @param  {GLenum } flag
+     * @param   flag
      */
-    depthMask(flag : number | boolean) {
+    public depthMask(flag : number | boolean) {
         this.set1('depthMask', flag);
     }
 
     /**
      * clear
-     * @param  {Number} mask
+     * @param   mask
      */
-    clear(mask : number) {
+    public clear(mask : number) {
         this.gl.clear(mask);
     }
 
     /**
      * depthRange
-     * @param  {Number} zNear
-     * @param  {Number} zFar
+     * @param   zNear
+     * @param  zFar
      */
-    depthRange(zNear : number, zFar : number) {
+    public depthRange(zNear : number, zFar : number) {
         this.set2('depthRange', zNear, zFar);
     }
 
     /**
      * stencilFunc
-     * @param  {GLenum} func
-     * @param  {Number} ref
-     * @param  {Number} mask
+     * @param  func
+     * @param   ref
+     * @param   mask
      */
-    stencilFunc(func : number, ref : number, mask : number) {
+    public stencilFunc(func : number, ref : number, mask : number) {
         this.set3('stencilFunc', func, ref, mask);
     }
 
     /**
      * stencilMask
-     * @param  {Number} mask
+     * @param   mask
      */
-    stencilMask(mask : number) {
+    public stencilMask(mask : number) {
         this.set1('stencilMask', mask);
     }
 
     /**
      * stencilOp
-     * @param  {GLenum} fail
-     * @param  {GLenum} zfail
-     * @param  {GLenum} zpass
+     * @param  fail
+     * @param  zfail
+     * @param  zpass
      */
-    stencilOp(fail : number, zfail : number, zpass : number) {
+    public stencilOp(fail : number, zfail : number, zpass : number) {
         this.set3('stencilOp', fail, zfail, zpass);
     }
 
     /**
      * colorMask
-     * @param  {Boolean} red
-     * @param  {Boolean} green
-     * @param  {Boolean} blue
-     * @param  {Boolean} alpha
+     * @param  red
+     * @param   green
+     * @param   blue
+     * @param  alpha
      */
-    colorMask(red : number, green : number, blue : number, alpha : number) {
+    public colorMask(red : number, green : number, blue : number, alpha : number) {
         this.set4('colorMask', red, green, blue, alpha);
     }
 
     /**
      * cullFace
-     * @param  {GLenum} mode
+     * @param  mode
      */
-    cullFace(mode) {
+    public cullFace(mode : number) {
         this.set1('cullFace', mode);
     }
 
     /**
      * frontFace
-     * @param  {GLenum} mode
+     * @param  mode
      */
-    frontFace(mode) {
+    public frontFace(mode : number) {
         this.set1('frontFace', mode);
     }
 
     /**
      * blendFuncSeparate
-     * @param  {GLenum} srcRGB
-     * @param  {GLenum} dstRGB
-     * @param  {GLenum} srcAlpha
-     * @param  {GLenum} dstAlpha
+     * @param   srcRGB
+     * @param   dstRGB
+     * @param   srcAlpha
+     * @param  dstAlpha
      */
-    blendFuncSeparate(srcRGB, dstRGB, srcAlpha, dstAlpha) {
+    public blendFuncSeparate(srcRGB : number, dstRGB : number, srcAlpha : number, dstAlpha : number) {
         this.set4('blendFuncSeparate', srcRGB, dstRGB, srcAlpha, dstAlpha);
     }
 
@@ -199,16 +193,16 @@ export class WebGLState{
      * @param  {GLenum} modeRGB
      * @param  {GLenum} modeAlpha
      */
-    blendEquationSeparate(modeRGB, modeAlpha) {
+    public blendEquationSeparate(modeRGB : number, modeAlpha : number) {
         this.set2('blendEquationSeparate', modeRGB, modeAlpha);
     }
 
     /**
      * pixelStorei
-     * @param  {Glenum} pname
-     * @param  {Glenum} param
+     * @param   pname
+     * @param  param
      */
-    pixelStorei(pname, param) {
+    public pixelStorei(pname : number, param : number) {
         const currentParam = this._pixelStorei[pname];
         if (currentParam !== param) {
             this._pixelStorei[pname] = param;
@@ -218,21 +212,21 @@ export class WebGLState{
 
     /**
      * viewport
-     * @param  {Number} x
-     * @param  {Number} y
-     * @param  {Number} width
-     * @param  {Number} height
+     * @param   x
+     * @param   y
+     * @param  width
+     * @param  height
      */
-    viewport(x, y, width, height) {
+    public viewport(x : number, y : number, width : number, height : number) : void{
         this.set4('viewport', x, y, width, height);
     }
 
 
     /**
      * activeTexture
-     * @param  {Number} texture
+     * @param  texture
      */
-    activeTexture(texture) {
+    public activeTexture(texture : number) : void {
         if (this.activeTextureIndex !== texture) {
             this.activeTextureIndex = texture;
             this.gl.activeTexture(texture);
@@ -241,10 +235,10 @@ export class WebGLState{
 
     /**
      * bindTexture
-     * @param  {GLenum} target
-     * @param  {WebGLTexture } texture
+     * @param  target
+     * @param   texture
      */
-    bindTexture(target, texture) {
+    public bindTexture(target : number, texture : WebGLTexture) : void {
         let textureUnit = this.getActiveTextureUnit();
         if (textureUnit[target] !== texture) {
             textureUnit[target] = texture;
@@ -254,9 +248,9 @@ export class WebGLState{
 
     /**
      * 获取当前激活的纹理对象
-     * @return {TextureUnit}
+     * @return
      */
-    getActiveTextureUnit() {
+    public getActiveTextureUnit() : number {
         let textureUnit = this.textureUnitDict[this.activeTextureIndex];
         if (!textureUnit) {
             textureUnit = this.textureUnitDict[this.activeTextureIndex] = {};
@@ -266,11 +260,10 @@ export class WebGLState{
 
     /**
      * 调 gl 1参数方法
-     * @private
-     * @param  {String} name  方法名
-     * @param  {Number|Object} param 方法参数
+     * @param   name  方法名
+     * @param   param 方法参数
      */
-    set1(name, param) {
+    public set1(name : string, param : number | Object) {
         const value = this._dict[name];
         if (value !== param) {
             this._dict[name] = param;
@@ -280,12 +273,11 @@ export class WebGLState{
 
     /**
      * 调 gl 2参数方法
-     * @private
-     * @param  {String} name  方法名
-     * @param  {Number|Object} param0 方法参数
-     * @param  {Number|Object} param1 方法参数
+     * @param   name  方法名
+     * @param   param0 方法参数
+     * @param   param1 方法参数
      */
-    set2(name, param0, param1) {
+    public set2(name : string, param0 : number|Object, param1 : number|Object) {
         let value = this._dict[name];
         if (!value) {
             value = this._dict[name] = [];
@@ -300,13 +292,12 @@ export class WebGLState{
 
     /**
      * 调 gl 3参数方法
-     * @private
-     * @param  {String} name  方法名
-     * @param  {Number|Object} param0 方法参数
-     * @param  {Number|Object} param1 方法参数
-     * @param  {Number|Object} param2 方法参数
+     * @param name  方法名
+     * @param  param0 方法参数
+     * @param  param1 方法参数
+     * @param  param2 方法参数
      */
-    set3(name, param0, param1, param2) {
+    public set3(name : string, param0 : number | Object, param1: number | Object, param2: number | Object) {
         let value = this._dict[name];
         if (!value) {
             value = this._dict[name] = [];
@@ -322,14 +313,13 @@ export class WebGLState{
 
     /**
      * 调 gl 4参数方法
-     * @private
-     * @param  {String} name  方法名
-     * @param  {Number|Object} param0 方法参数
-     * @param  {Number|Object} param1 方法参数
-     * @param  {Number|Object} param2 方法参数
-     * @param  {Number|Object} param3 方法参数
+     * @param  name  方法名
+     * @param  param0 方法参数
+     * @param  param1 方法参数
+     * @param  param2 方法参数
+     * @param  param3 方法参数
      */
-    set4(name, param0, param1, param2, param3) {
+    public set4(name : string, param0: number | Object, param1: number | Object, param2: number | Object, param3: number | Object) {
         let value = this._dict[name];
         if (!value) {
             value = this._dict[name] = [];
@@ -344,7 +334,7 @@ export class WebGLState{
         }
     }
 
-    get(name) {
+    public get(name : string) {
         return this._dict[name];
     }
 }
