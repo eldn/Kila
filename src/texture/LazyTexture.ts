@@ -8,17 +8,14 @@ placeHolder.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAA
 
 /**
  * 懒加载纹理
- * @class
- * @extends Texture
- * @fires load 加载成功事件
- * @fires error 加载失败事件
- * @example
+ * ```typescript
  * var material = new Hilo3d.BasicMaterial({
  *     diffuse: new Hilo3d.LazyTexture({
  *         crossOrigin: true,
  *         src: '//img.alicdn.com/tfs/TB1aNxtQpXXXXX1XVXXXXXXXXXX-1024-1024.jpg'
  *     });
  * });
+ * ```
  */
 export class LazyTexture extends Texture{
 
@@ -27,32 +24,26 @@ export class LazyTexture extends Texture{
 
     /**
      * 图片是否跨域
-     * @default false
-     * @type {boolean}
      */
     crossOrigin: boolean = false;
 
     /**
      * 是否在设置src后立即加载图片
-     * @default true
-     * @type {boolean}
      */
     autoLoad: boolean = true;
     /**
      * 资源类型，用于加载时判断
-     * @type {string}
      */
     resType: string = '';
 
     /**
      * 图片地址
-     * @type {string}
      */
-    get src() {
+    get src() : string {
         return this._src;
     }
 
-    set src(src) {
+    set src(src : string) {
         if (this._src !== src) {
             this._src = src;
             if (this.autoLoad) {
@@ -61,7 +52,7 @@ export class LazyTexture extends Texture{
         }
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "LazyTexture";
     }
 
@@ -69,14 +60,13 @@ export class LazyTexture extends Texture{
     
 
     /**
-     * @constructs
-     * @param {object} params 初始化参数，所有params都会复制到实例上
-     * @param {boolean} [params.crossOrigin=false] 是否跨域
-     * @param {Image} [params.placeHolder] 占位图片，默认为1像素的透明图片
-     * @param {boolean} [params.autoLoad=true] 是否自动加载
-     * @param {string} [params.src] 图片地址
+     * @param params 初始化参数，所有params都会复制到实例上
+     * @param params.crossOrigin 是否跨域
+     * @param params.placeHolder 占位图片，默认为1像素的透明图片
+     * @param params.autoLoad 是否自动加载
+     * @param params.src 图片地址
      */
-    constructor(params) {
+    constructor(params : {placeHolder ?: any,autoLoad ?: boolean, src ?: string , crossOrigin ?:boolean}) {
         super();
         if (params) {
             // 必须在src设置前赋值
@@ -96,14 +86,14 @@ export class LazyTexture extends Texture{
         this.image = this.placeHolder || placeHolder;
     }
 
-    static loader : any;
+    static loader : Loader;
 
     /**
      * 加载图片
-     * @param {boolean} [throwError=false] 是否 throw error
-     * @return {Promise} 返回加载的Promise
+     * @param hrowError 是否 throw error
+     * @return 返回加载的Promise
      */
-    load(throwError ?: boolean) {
+    public load(throwError : boolean = false) : Promise<any> {
         LazyTexture.loader = LazyTexture.loader || new Loader();
         return LazyTexture.loader.load({
             src: this.src,

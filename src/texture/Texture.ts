@@ -25,8 +25,6 @@ export class Texture extends EventObject{
     
     /**
      * 缓存
-     * @readOnly
-     * @type {Object}
      */
     static get cache() {
         return cache;
@@ -34,9 +32,9 @@ export class Texture extends EventObject{
     
     /**
      * 重置
-     * @param  {WebGLRenderingContext} gl
+     * @param gl
      */
-    static reset(gl) {
+    public static reset(gl : WebGLRenderingContext) : void {
         cache.each((glTexture, id) => {
             gl.deleteTexture(glTexture);
             cache.remove(id);
@@ -45,8 +43,6 @@ export class Texture extends EventObject{
 
     /**
      * 图片资源是否可以释放，可以的话，上传到GPU后将释放图片引用
-     * @type {boolean}
-     * @default false
      */
     isImageCanRelease: boolean = false;
     _isImageReleased: boolean = false;
@@ -55,8 +51,6 @@ export class Texture extends EventObject{
 
     /**
      * 图片对象
-     * @type {Image}
-     * @default null
      */
     get image() {
         if (this._isImageReleased) {
@@ -85,148 +79,93 @@ export class Texture extends EventObject{
 
     /**
      * mipmaps
-     * @type {Image[]|TypedArray[]}
-     * @default null
      */
     mipmaps: Array<any> = null;
 
     /**
      * Texture Target
-     * @default gl.TEXTURE_2D
-     * @type {GLenum}
      */
     target : number = TEXTURE_2D;
 
     /**
      * Texture Internal Format
-     * @default gl.RGBA
-     * @type {GLenum}
      */
     internalFormat: number = RGBA;
 
     /**
      * 图片 Format
-     * @default gl.RGBA
-     * @type {GLenum}
      */
     format: number = RGBA;
 
     /**
      * 类型
-     * @default gl.UNSIGNED_BYTE
-     * @type {GLenum}
      */
     type: number =  UNSIGNED_BYTE;
-
-    /**
-     * @default 0
-     * @type {number}
-     */
     width: number = 0;
-
-    /**
-     * @default 0
-     * @type {number}
-     */
     height: number = 0;
-
-    /**
-     * @default 0
-     * @readOnly
-     * @type {Number}
-     */
     border: number = 0;
 
     /**
      * magFilter
-     * @default gl.LINEAR
-     * @type {GLenum}
      */
     magFilter: number = LINEAR;
 
     /**
      * minFilter
-     * @default gl.LINEAR
-     * @type {GLenum}
      */
     minFilter: number = LINEAR;
 
     /**
      * wrapS
-     * @default gl.REPEAT
-     * @type {GLenum}
      */
     wrapS: number = REPEAT;
 
     /**
      * wrapT
-     * @default gl.REPEAT
-     * @type {GLenum}
      */
     wrapT: number = REPEAT;
 
-    /**
-     * @type {string}
-     */
+
     name: string = '';
 
-    /**
-     * @default false
-     * @type {boolean}
-     */
+
     premultiplyAlpha: boolean = false;
 
     /**
      * 是否翻转Texture的Y轴
-     * @default false
-     * @type {boolean}
      */
     flipY: boolean = false;
 
     /**
      * 是否压缩
-     * @default false
-     * @type {Boolean}
      */
     compressed: boolean = false;
 
     /**
      * 是否需要更新Texture
-     * @default true
-     * @type {boolean}
      */
     needUpdate: boolean = true;
     /**
      * 是否需要销毁之前的Texture，Texture参数变更之后需要销毁
-     * @default false
-     * @type {boolean}
      */
     needDestroy: boolean = false;
 
     /**
      * 是否每次都更新Texture
-     * @default false
-     * @type {boolean}
      */
     autoUpdate: boolean = false;
     /**
      * uv
-     * @default 0
-     * @type {number}
      */
     uv: number = 0;
 
     /**
      * anisotropic
-     * @default 1
-     * @type {Number}
      */
     anisotropic: number = 1;
 
     /**
      * 获取原始图像宽度。
-     * @default 0
-     * @type {Number}
      */
     get origWidth() {
         if (this._originImage) {
@@ -240,15 +179,13 @@ export class Texture extends EventObject{
         return this.width;
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Texture";
     }
     
 
     /**
      * 获取原始图像高度。
-     * @default 0
-     * @type {Number}
      */
     get origHeight() {
         if (this._originImage) {
@@ -265,8 +202,6 @@ export class Texture extends EventObject{
 
     /**
      * 是否使用 mipmap
-     * @readOnly
-     * @type {Boolean}
      */
     get useMipmap() {
         return this.minFilter !== LINEAR && this.minFilter !== NEAREST;
@@ -279,8 +214,6 @@ export class Texture extends EventObject{
 
     /**
      * 是否使用 repeat
-     * @readOnly
-     * @type {Boolean}
      */
     get useRepeat() {
         return this.wrapS !== CLAMP_TO_EDGE || this.wrapT !== CLAMP_TO_EDGE;
@@ -293,8 +226,6 @@ export class Texture extends EventObject{
 
     /**
      * mipmapCount
-     * @readOnly
-     * @type {Number}
      */
     get mipmapCount() {
         return Math.floor(Math.log2(Math.max(this.width, this.height)) + 1);
@@ -306,8 +237,7 @@ export class Texture extends EventObject{
     
 
     /**
-     * @constructs
-     * @param {object} params 初始化参数，所有params都会复制到实例上
+     * @param params 初始化参数，所有params都会复制到实例上
      */
     constructor() {
         super();
@@ -317,8 +247,8 @@ export class Texture extends EventObject{
 
     /**
      * 是否是 2 的 n 次方
-     * @param  {Image}  img
-     * @return {Boolean}
+     * @param   img
+     * @return 
      */
     isImgPowerOfTwo(img) {
         return math.isPowerOfTwo(img.width) && math.isPowerOfTwo(img.height);
@@ -326,9 +256,9 @@ export class Texture extends EventObject{
     
     /**
      * 获取支持的尺寸
-     * @param  {Image} img
-     * @param  {Boolean} [needPowerOfTwo=false]
-     * @return {Object} { width, height }
+     * @param  img
+     * @param  needPowerOfTwo
+     * @return
      */
     getSupportSize(img, needPowerOfTwo = false) {
         let width = img.width;
@@ -358,8 +288,8 @@ export class Texture extends EventObject{
 
     /**
      * 更新图片大小成为 2 的 n 次方
-     * @param  {Image} img
-     * @return {Canvas|Image}
+     * @param  img
+     * @return
      */
     resizeImgToPowerOfTwo(img) {
         const sizeResult = this.getSupportSize(img, true);
@@ -368,10 +298,10 @@ export class Texture extends EventObject{
 
     /**
      * 更新图片大小
-     * @param  {Image} img
-     * @param {Number} width
-     * @param {Number} height
-     * @return {Canvas|Image}
+     * @param   img
+     * @param width
+     * @param height
+     * @return 
      */
     resizeImg(img, width, height) {
         if (img.width === width && img.height === height) {
@@ -398,16 +328,15 @@ export class Texture extends EventObject{
 
     /**
      * GL上传贴图
-     * @private
-     * @param  {WebGLState} state
-     * @param  {GLEnum} target
-     * @param  {Image|TypedArray} image
-     * @param  {image} [level=0]
-     * @param  {Number} [width=this.width]
-     * @param  {Number} [height=this.height]
-     * @return {Texture}  this
+     * @param  state
+     * @param  target
+     * @param  image
+     * @param  level
+     * @param  width
+     * @param  height
+     * @return  this
      */
-    _glUploadTexture(state, target, image, level = 0, width = this.width, height = this.height) {
+    _glUploadTexture(state : WebGLState, target : number, image : any, level : number = 0, width : number = this.width, height : number = this.height) {
         const gl = state.gl;
         if (this.compressed) {
             gl.compressedTexImage2D(target, level, this.internalFormat, width, height, this.border, image);
@@ -422,11 +351,10 @@ export class Texture extends EventObject{
 
     /**
      * 上传贴图，子类可重写
-     * @private
-     * @param  {WebGLState} state
-     * @return {Texture} this
+     * @param   state
+     * @return  this
      */
-    _uploadTexture(state) {
+    _uploadTexture(state : WebGLState) : Texture {
         if (this.useMipmap && this.mipmaps) {
             this.mipmaps.forEach((mipmap, index) => {
                 this._glUploadTexture(state, this.target, mipmap.data, index, mipmap.width, mipmap.height);
@@ -440,11 +368,11 @@ export class Texture extends EventObject{
 
     /**
      * 更新 Texture
-     * @param  {WebGLState} state
-     * @param  {WebGLTexture} glTexture
-     * @return {Texture} this
+     * @param   state
+     * @param   glTexture
+     * @return this
      */
-    updateTexture(state, glTexture) {
+    updateTexture(state : WebGLState, glTexture : WebGLTexture) : Texture {
         const gl = state.gl;
         if (this.needUpdate || this.autoUpdate) {
             if (this._originImage && this.image === this._canvasImage) {
@@ -499,11 +427,10 @@ export class Texture extends EventObject{
 
     /**
      * 跟新所有的局部贴图
-     * @private
-     * @param  {WebGLState} state
-     * @param  {WebGLTexture} glTexture
+     * @param   state
+     * @param  glTexture
      */
-    _uploadSubTextures(state, glTexture) {
+    _uploadSubTextures(state : WebGLState, glTexture : WebGLTexture) {
         if (this._subTextureList && this._subTextureList.length > 0) {
             const gl = state.gl;
             state.activeTexture(gl.TEXTURE0 + capabilities.MAX_TEXTURE_INDEX);
@@ -527,11 +454,11 @@ export class Texture extends EventObject{
 
     /**
      * 跟新局部贴图
-     * @param  {Number} xOffset
-     * @param  {Number} yOffset
-     * @param  {Image|Canvas|ImageData} image
+     * @param  xOffset
+     * @param   yOffset
+     * @param  image
      */
-    updateSubTexture(xOffset, yOffset, image) {
+    updateSubTexture(xOffset : number, yOffset : number, image) {
         if (!this._subTextureList) {
             this._subTextureList = [];
         }
@@ -546,10 +473,10 @@ export class Texture extends EventObject{
 
     /**
      * 获取 GLTexture
-     * @param  {WebGLState} state
-     * @return {WebGLTexture}
+     * @param   state
+     * @return
      */
-    getGLTexture(state) {
+    getGLTexture(state : WebGLState) : WebGLState {
         this.state = state;
         const gl = this.gl = state.gl;
         const id = this.id;
@@ -578,11 +505,11 @@ export class Texture extends EventObject{
 
     /**
      * 设置 GLTexture
-     * @param {WebGLTexture}  texture
-     * @param {Boolean} [needDestroy=false] 是否销毁之前的 GLTexture
-     * @return {Texture} this
+     * @param  texture
+     * @param needDestroy 是否销毁之前的 GLTexture
+     * @return this
      */
-    setGLTexture(texture, needDestroy = false) {
+    setGLTexture(texture : WebGLTexture, needDestroy : boolean = false) : Texture {
         if (needDestroy) {
             this.destroy();
         }
@@ -590,9 +517,10 @@ export class Texture extends EventObject{
 
         return this;
     }
+
     /**
      * 销毁当前Texture
-     * @return {Texture} this
+     * @return  this
      */
     destroy() {
         const id = this.id;
@@ -603,16 +531,18 @@ export class Texture extends EventObject{
         }
         return this;
     }
+
     /**
      * clone
-     * @return {Texture}
+     * @return 
      */
-    clone() {
+    clone() : Texture {
         const texture = new Texture();
         Object.assign(texture, this);
         texture.id = math.generateUUID(this.getClassName());
         return texture;
     }
+
 }
 
 export default Texture;

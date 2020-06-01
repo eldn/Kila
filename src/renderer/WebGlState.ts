@@ -202,7 +202,7 @@ export class WebGLState{
      * @param   pname
      * @param  param
      */
-    public pixelStorei(pname : number, param : number) {
+    public pixelStorei(pname : number, param : number | boolean) {
         const currentParam = this._pixelStorei[pname];
         if (currentParam !== param) {
             this._pixelStorei[pname] = param;
