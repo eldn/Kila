@@ -23,15 +23,11 @@ export class Shader {
 
     /**
      * vs 顶点代码
-     * @default ''·
-     * @type {String}
      */
     vs: string = '';
 
     /**
      * vs 片段代码
-     * @default ''
-     * @type {String}
      */
     fs: string = '';
 
@@ -42,7 +38,6 @@ export class Shader {
 
     /**
      * 内部的所有shader块字符串，可以用来拼接glsl代码
-     * @type {Object}
      */
     static shaders: Object = {
         'chunk/baseDefine.glsl': require('./chunk/baseDefine.glsl'),
@@ -107,49 +102,45 @@ export class Shader {
 
     /**
      * 初始化
-     * @param  {WebGLRenderer} renderer
+     * @param renderer
      */
-    static init(renderer : WebGLRenderer) {
+    static init(renderer : WebGLRenderer) : void{
         this.renderer = renderer;
         this.commonHeader = this._getCommonHeader(this.renderer);
     }
 
     /**
      * Shader 缓存
-     * @readOnly
-     * @type {Cache}
      */
-    static get cache() {
+    static get cache() : Pool{
         return cache;
     }
 
     /**
      * Shader header缓存，一般不用管
-     * @readOnly
-     * @type {Cache}
      */
-    static get headerCache() {
+    static get headerCache() : Pool{
         return headerCache;
     }
 
     /**
      * 重置
      */
-    static reset(gl) { // eslint-disable-line no-unused-vars
+    static reset(gl) : void { 
         cache.removeAll();
     }
 
 
     /**
      * 获取header缓存的key
-     * @param {Mesh} mesh mesh
-     * @param {Material} material 材质
-     * @param {LightManager} lightManager lightManager
-     * @param {Fog} fog fog
-     * @param {Boolean} useLogDepth 是否使用对数深度
-     * @return {string}
+     * @param mesh mesh
+     * @param material 材质
+     * @param lightManager lightManager
+     * @param fog fog
+     * @param  useLogDepth 是否使用对数深度
+     * @return
      */
-    static getHeaderKey(mesh : Mesh, material, lightManager : LightManager) {
+    static getHeaderKey(mesh : Mesh, material, lightManager : LightManager) : string {
         let headerKey = 'header_' + material.id + '_' + lightManager.lightInfo.uid;
         headerKey += '_' + mesh.geometry.getShaderKey();
         return headerKey;
@@ -158,13 +149,12 @@ export class Shader {
 
     /**
      * 获取header
-     * @param {Mesh} mesh
-     * @param {Material} material
-     * @param {LightManager} lightManager
-     * @param {Fog} fog
-     * @return {String}
+     * @param  mesh
+     * @param material
+     * @param lightManager
+     * @return 
      */
-    static getHeader(mesh : Mesh, material : Material, lightManager : LightManager) {
+    static getHeader(mesh : Mesh, material : Material, lightManager : LightManager) : string{
         const headerKey = this.getHeaderKey(mesh, material, lightManager);
         let header = headerCache.get(headerKey);
         if (!header || material.isDirty) {
@@ -199,7 +189,7 @@ export class Shader {
         return header;
     }
 
-    static _getCommonHeader(renderer) {
+    static _getCommonHeader(renderer : WebGLRenderer) : string {
         const vertexPrecision = capabilities.getMaxPrecision(capabilities.MAX_VERTEX_PRECISION, renderer.vertexPrecision);
         const fragmentPrecision = capabilities.getMaxPrecision(capabilities.MAX_FRAGMENT_PRECISION, renderer.fragmentPrecision);
         const precision = capabilities.getMaxPrecision(vertexPrecision, fragmentPrecision);
@@ -213,15 +203,14 @@ export class Shader {
 
     /**
      * 获取 shader
-     * @param {Mesh} mesh
-     * @param {Material} material
-     * @param {Boolean} isUseInstance
-     * @param {LightManager} lightManager
-     * @param {Fog} fog
-     * @param {Boolean} useLogDepth
-     * @return {Shader}
+     * @param mesh
+     * @param material
+     * @param isUseInstance
+     * @param lightManager
+     * @param useLogDepth
+     * @return
      */
-    static getShader(mesh : Mesh, material : Material, lightManager : LightManager) {
+    static getShader(mesh : Mesh, material : Material, lightManager : LightManager) : string {
         const header = this.getHeader(mesh, material, lightManager);
 
         if (material instanceof BasicMaterial) {
@@ -233,13 +222,12 @@ export class Shader {
 
     /**
      * 获取基础 shader
-     * @param  {Material}  material
-     * @param  {Boolean} isUseInstance
-     * @param  {LightManager}  lightManager
-     * @param  {Fog}  fog
-     * @return {Shader}
+     * @param  material
+     * @param  isUseInstance
+     * @param  lightManager
+     * @return
      */
-    static getBasicShader(material : Material, header : string) {
+    static getBasicShader(material : Material, header : string) : string{
         let key = material.getClassName() + ':';
 
         let shader = cache.get(key);
@@ -275,13 +263,13 @@ export class Shader {
 
     /**
      * 获取自定义shader
-     * @param  {String} vs 顶点代码
-     * @param  {String} fs 片段代码
-     * @param  {String} [cacheKey] 如果有，会以此值缓存 shader
-     * @param  {String} [useHeaderCache=false] 如果cacheKey和useHeaderCache同时存在，使用 cacheKey+useHeaderCache缓存 shader
-     * @return {Shader}
+     * @param   vs 顶点代码
+     * @param   fs 片段代码
+     * @param  cacheKey 如果有，会以此值缓存 shader
+     * @param  useHeaderCache 如果cacheKey和useHeaderCache同时存在，使用 cacheKey+useHeaderCache缓存 shader
+     * @return
      */
-    static getCustomShader(vs, fs, header, cacheKey, useHeaderCache ?: boolean) {
+    static getCustomShader(vs : string, fs : string, header : string, cacheKey : string, useHeaderCache : boolean = false) : string {
         const commonHeader = this.commonHeader;
         let shader;
         if (cacheKey) {
@@ -307,51 +295,46 @@ export class Shader {
 
     /**
      * 是否始终使用
-     * @default true
-     * @type {Boolean}
      */
     alwaysUse: boolean = false;
 
     id : string;
 
     /**
-     * @constructs
-     * @param  {Object} params 初始化参数，所有params都会复制到实例上
+     * @param  params 初始化参数，所有params都会复制到实例上
      */
     constructor(params) {
         this.id = math.generateUUID(this.getClassName());
         Object.assign(this, params);
     }
 
-    getClassName() : string{
+    public getClassName() : string{
         return "Shader";
     }
 
     /**
      * 没有被引用时销毁资源
-     * @param  {WebGLRenderer} renderer
-     * @return {Shader} this
+     * @param renderer
+     * @return this
      */
-    destroyIfNoRef(renderer) {
+    public destroyIfNoRef(renderer : WebGLRenderer) : Shader{
         const resourceManager = renderer.resourceManager;
         resourceManager.destroyIfNoRef(this);
-
         return this;
     }
 
 
-    _isDestroyed : boolean;
+    public _isDestroyed : boolean;
 
     /**
      * 销毁资源
-     * @return {Shader} this
+     * @return this
      */
-    destroy() {
+    public destroy() : Shader {
         if (this._isDestroyed) {
             return this;
         }
         cache.removeObject(this);
-
         this._isDestroyed = true;
         return this;
     }
