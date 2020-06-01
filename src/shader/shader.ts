@@ -210,7 +210,7 @@ export class Shader {
      * @param useLogDepth
      * @return
      */
-    static getShader(mesh : Mesh, material : Material, lightManager : LightManager) : string {
+    static getShader(mesh : Mesh, material : Material, lightManager : LightManager) : Shader {
         const header = this.getHeader(mesh, material, lightManager);
 
         if (material instanceof BasicMaterial) {
@@ -227,7 +227,7 @@ export class Shader {
      * @param  lightManager
      * @return
      */
-    static getBasicShader(material : Material, header : string) : string{
+    static getBasicShader(material : Material, header : string) : Shader{
         let key = material.getClassName() + ':';
 
         let shader = cache.get(key);
@@ -269,7 +269,7 @@ export class Shader {
      * @param  useHeaderCache 如果cacheKey和useHeaderCache同时存在，使用 cacheKey+useHeaderCache缓存 shader
      * @return
      */
-    static getCustomShader(vs : string, fs : string, header : string, cacheKey : string, useHeaderCache : boolean = false) : string {
+    static getCustomShader(vs : string, fs : string, header : string, cacheKey : string, useHeaderCache : boolean = false) : Shader {
         const commonHeader = this.commonHeader;
         let shader;
         if (cacheKey) {
