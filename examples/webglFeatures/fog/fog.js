@@ -295,7 +295,7 @@ function isPowerOf2(value) {
 // Draw the scene.
 //
 function drawScene(gl, programInfo, buffers, texture, deltaTime) {
-  gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
+  gl.clearColor(0.6,0.8,0.9, 1.0);  // Clear to black, fully opaque
   gl.clearDepth(1.0);                 // Clear everything
   gl.enable(gl.DEPTH_TEST);           // Enable depth testing
   gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
@@ -416,8 +416,8 @@ function drawScene(gl, programInfo, buffers, texture, deltaTime) {
   // fog info
   // uniform vec2 u_FogDist;
   // uniform vec4 u_FogColor;
-  gl.uniform2fv(programInfo.uniformLocations.u_FogDist, [0.1, 10]);
-  gl.uniform4fv(programInfo.uniformLocations.u_FogColor, [1.0, 0.0, 0.0, 1.0]);
+  gl.uniform2fv(programInfo.uniformLocations.u_FogDist, [-6, 10]);
+  gl.uniform4fv(programInfo.uniformLocations.u_FogColor, [0.6,0.8,0.9, 1.0]);
 
 
   {
