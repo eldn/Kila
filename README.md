@@ -17,11 +17,11 @@ A webgl based 3d rendering engine.
 
 - [x] render tree(scene management)  
 - [x] lights(point,area,directino,spot),Phong/BILIN-Phong
-- [ ] VAO/Instance draw, 
+- [x] VAO/Instance draw, 
+- [ ] shadow mapping
 - [ ] fog
 - [ ] cubetexture
 - [ ] billboard
-- [ ] shadow mapping  
 - [ ] lightmap
 - [ ] ray cast/pick
 - [ ] skybox
