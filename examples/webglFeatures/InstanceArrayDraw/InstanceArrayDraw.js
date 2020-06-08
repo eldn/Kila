@@ -51,13 +51,9 @@ function main() {
     }
   `;
 
-  // Initialize a shader program; this is where all the lighting
-  // for the vertices and so forth is established.
+
   const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
 
-  // Collect all the info needed to use the shader program.
-  // Look up which attribute our shader program is using
-  // for aVertexPosition and look up uniform locations.
   const programInfo = {
     program: shaderProgram,
     attribLocations: {
@@ -104,6 +100,20 @@ function initBuffers(gl, programInfo) {
     ]), gl.STATIC_DRAW);
   numVertices = 12;
 
+
+   // setup colors, one per instance
+   colorBuffer = gl.createBuffer();
+   gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+   gl.bufferData(gl.ARRAY_BUFFER,
+       new Float32Array([
+           1, 0, 0, 1,  // red
+           0, 1, 0, 1,  // green
+           0, 0, 1, 1,  // blue
+           1, 0, 1, 1,  // magenta
+           0, 1, 1, 1,  // cyan
+         ]),
+       gl.STATIC_DRAW);
+
   // matrix
   numInstances = 5;
   matrixData = new Float32Array(numInstances * 16);
@@ -117,18 +127,7 @@ function initBuffers(gl, programInfo) {
   gl.bindBuffer(gl.ARRAY_BUFFER, matrixBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, matrixData.byteLength, gl.DYNAMIC_DRAW);
 
-  // setup colors, one per instance
-  colorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER,
-      new Float32Array([
-          1, 0, 0, 1,  // red
-          0, 1, 0, 1,  // green
-          0, 0, 1, 1,  // blue
-          1, 0, 1, 1,  // magenta
-          0, 1, 1, 1,  // cyan
-        ]),
-      gl.STATIC_DRAW);
+ 
 }
 
 //
@@ -157,6 +156,14 @@ function drawScene(time, gl, programInfo) {
       0,            // offset in buffer
   );
 
+
+   // set attribute for color
+   gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+   gl.enableVertexAttribArray(programInfo.attribLocations.color);
+   gl.vertexAttribPointer(programInfo.attribLocations.color, 4, gl.FLOAT, false, 0, 0);
+   // this line says this attribute only changes for each 1 instance
+   ext.vertexAttribDivisorANGLE(programInfo.attribLocations.color, 1);
+
   
   // update all the matrices
   matrices.forEach((mat, ndx) => {
@@ -168,6 +175,7 @@ function drawScene(time, gl, programInfo) {
   gl.bindBuffer(gl.ARRAY_BUFFER, matrixBuffer);
   gl.bufferSubData(gl.ARRAY_BUFFER, 0, matrixData);
 
+  // a mat need 4 attribute locations.
   const bytesPerMatrix = 4 * 16;
   for (let i = 0; i < 4; ++i) {
     const loc = programInfo.attribLocations.matrix + i;
@@ -185,14 +193,6 @@ function drawScene(time, gl, programInfo) {
     // this line says this attribute only changes for each 1 instance
     ext.vertexAttribDivisorANGLE(loc, 1);
   }
-
-  // set attribute for color
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-  gl.enableVertexAttribArray(programInfo.attribLocations.color);
-  gl.vertexAttribPointer(programInfo.attribLocations.color, 4, gl.FLOAT, false, 0, 0);
-  // this line says this attribute only changes for each 1 instance
-  ext.vertexAttribDivisorANGLE(programInfo.attribLocations.color, 1);
-
 
 
   ext.drawArraysInstancedANGLE(
