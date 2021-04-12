@@ -263,7 +263,7 @@ export class WebGLState{
      * @param   name  方法名
      * @param   param 方法参数
      */
-    public set1(name : string, param : number | Object) {
+    private set1(name : string, param : number | Object) {
         const value = this._dict[name];
         if (value !== param) {
             this._dict[name] = param;
@@ -277,7 +277,7 @@ export class WebGLState{
      * @param   param0 方法参数
      * @param   param1 方法参数
      */
-    public set2(name : string, param0 : number|Object, param1 : number|Object) {
+    private set2(name : string, param0 : number|Object, param1 : number|Object) {
         let value = this._dict[name];
         if (!value) {
             value = this._dict[name] = [];
@@ -297,7 +297,7 @@ export class WebGLState{
      * @param  param1 方法参数
      * @param  param2 方法参数
      */
-    public set3(name : string, param0 : number | Object, param1: number | Object, param2: number | Object) {
+    private set3(name : string, param0 : number | Object, param1: number | Object, param2: number | Object) {
         let value = this._dict[name];
         if (!value) {
             value = this._dict[name] = [];
@@ -319,7 +319,7 @@ export class WebGLState{
      * @param  param2 方法参数
      * @param  param3 方法参数
      */
-    public set4(name : string, param0: number | Object, param1: number | Object, param2: number | Object, param3: number | Object) {
+    private set4(name : string, param0: number | Object, param1: number | Object, param2: number | Object, param3: number | Object) {
         let value = this._dict[name];
         if (!value) {
             value = this._dict[name] = [];
